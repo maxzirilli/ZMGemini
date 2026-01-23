@@ -1,9 +1,0 @@
-1. Aggiungere eventuali configuazioni specifiche 
-2. Inserire lista delle attrezzature per contratto
-3. Inserire la lista delle attrezzature per i rapporti di intervento
-4. Stampa rapporto di intervento
-5. Esportazione dati verso mobile
-6. Gestione mobile delle schede
-7. Riacquisizione dei dati da mobile
-8. Gestione pagina non conformità
-9. Attrezzature nella gestione anomalie

@@ -81,16 +81,16 @@
           <div style="float:left;width:19%">
               <label style="font-weight: bold;">Unità di misura</label>
               <VUEInputUdm v-model="SchedaProdotto.Dati.UNITA_DI_MISURA" class="form-control" />
-              <label v-if="SchedaProdotto.Dati.UNITA_DI_MISURA == -1" class="ZMFormLabelError">Campo obbligatorio</label>
+              <!-- <label v-if="SchedaProdotto.Dati.UNITA_DI_MISURA == -1" class="ZMFormLabelError">Campo obbligatorio</label> -->
           </div> 
       </div>
-      <div class="ZMNuovaRigaScheda" style="padding-top:5px">
+      <!-- <div class="ZMNuovaRigaScheda" style="padding-top:5px">
         <div v-if="!SchedaProdotto.Dati.PRODOTTO_COMPOSTO" style="float:left;width:20%">
             <label style="font-weight: bold;">Qnt sug.</label>
             <input type="number" class="form-control" v-model="SchedaProdotto.Dati.QUANTITA_SUGGERITA"/>
         </div> 
 
-      </div>
+      </div> -->
    </div>
 
    <div v-if="Tabs.ActiveTab == 'QntMagazzino'" style="height:50%">
@@ -206,8 +206,7 @@
 
     CanRecord()
     {
-      return this.Dati.DESCRIZIONE.trim() != '' && 
-              this.Dati.UNITA_DI_MISURA != -1 &&
+      return this.Dati.DESCRIZIONE.trim() != '' &&
               this.Dati.ID_SETTORE != -1 &&
               this.DataTableProdottiMontaggio.AllDataOk();
     }
