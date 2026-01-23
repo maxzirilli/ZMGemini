@@ -2968,7 +2968,7 @@ BEGIN
     FROM prodotti
     WHERE CHIAVE = NEW.ID_PRODOTTO;
 
-    -- Aumento quantità prodotto composto
+    -- Aumento quantità prodotto (composto o semplice)
     CALL CONTROLLO_PRESENZA_QNT_PRODOTTI(NEW.ID_PRODOTTO, CHIAVE_MAGAZZINO);
 
     UPDATE qnt_x_magazzino
@@ -2976,7 +2976,18 @@ BEGIN
     WHERE ID_PRODOTTO = NEW.ID_PRODOTTO
       AND ID_MAGAZZINO = CHIAVE_MAGAZZINO;
 
-    -- Se è composto → scala componenti
+    -- Log inserimento prodotto
+    INSERT INTO log_magazzino (CHIAVE, DATA, ID_PRODOTTO, ID_MAGAZZINO, QUANTITA, DESCRIZIONE)
+    VALUES (
+        GET_NEW_KEY(),
+        NOW(),
+        NEW.ID_PRODOTTO,
+        CHIAVE_MAGAZZINO,
+        NEW.QUANTITA,
+        CONCAT('Inserito prodotto ', NEW.ID_PRODOTTO, ' nel magazzino ', CHIAVE_MAGAZZINO)
+    );
+
+    -- Se è composto → scala componenti e logga
     IF ProdottoComposto = 'T' THEN
 
         OPEN CursorProdotti;
@@ -2991,11 +3002,22 @@ BEGIN
 
             CALL CONTROLLO_PRESENZA_QNT_PRODOTTI(IdProdottoSemplice, CHIAVE_MAGAZZINO);
 
+            -- Scala componenti
             UPDATE qnt_x_magazzino
-            SET QUANTITA_MAGAZZINO = QUANTITA_MAGAZZINO - 
-                (QuantitaProdottoSemplice * NEW.QUANTITA)
+            SET QUANTITA_MAGAZZINO = QUANTITA_MAGAZZINO - (QuantitaProdottoSemplice * NEW.QUANTITA)
             WHERE ID_PRODOTTO = IdProdottoSemplice
               AND ID_MAGAZZINO = CHIAVE_MAGAZZINO;
+
+            -- Log componente scalato
+            INSERT INTO log_magazzino (CHIAVE, DATA, ID_PRODOTTO, ID_MAGAZZINO, QUANTITA, DESCRIZIONE)
+            VALUES (
+                GET_NEW_KEY(),
+                NOW(),
+                IdProdottoSemplice,
+                CHIAVE_MAGAZZINO,
+                QuantitaProdottoSemplice * (-1) * NEW.QUANTITA,
+                CONCAT('Scala componente prodotto ', IdProdottoSemplice, ' per inserimento composto ', NEW.ID_PRODOTTO)
+            );
 
         END LOOP;
 
@@ -3023,13 +3045,13 @@ BEGIN
 
     DECLARE CONTINUE HANDLER FOR NOT FOUND SET FINITO = 1;
 
-    -- Prendo il magazzino
+    -- Prendo il magazzino dal documento
     SELECT ID_MAGAZZINO
     INTO CHIAVE_MAGAZZINO
     FROM doc_scarico_prodotti_composti
     WHERE CHIAVE = NEW.ID_DOCUMENTO;
 
-    -- Controllo se è composto
+    -- Controllo se il prodotto è composto
     SELECT PRODOTTO_COMPOSTO
     INTO ProdottoComposto
     FROM prodotti
@@ -3043,7 +3065,22 @@ BEGIN
     WHERE ID_PRODOTTO = NEW.ID_PRODOTTO
       AND ID_MAGAZZINO = CHIAVE_MAGAZZINO;
 
-    -- Se è composto → aggiorna componenti
+    -- Log del prodotto modificato
+    IF DELTA_Q <> 0 THEN
+        INSERT INTO log_magazzino (CHIAVE, DATA, ID_PRODOTTO, ID_MAGAZZINO, QUANTITA, DESCRIZIONE)
+        VALUES (
+            GET_NEW_KEY(),
+            NOW(),
+            NEW.ID_PRODOTTO,
+            CHIAVE_MAGAZZINO,
+            DELTA_Q,
+            CONCAT('Modificata quantità prodotto composto ', NEW.ID_PRODOTTO, 
+                   ' - delta: ', DELTA_Q, 
+                   ' - magazzino ', CHIAVE_MAGAZZINO)
+        );
+    END IF;
+
+    -- Se è composto → aggiorna componenti e logga
     IF ProdottoComposto = 'T' THEN
         OPEN CursorProdotti;
 
@@ -3062,6 +3099,20 @@ BEGIN
             SET QUANTITA_MAGAZZINO = QUANTITA_MAGAZZINO - (QuantitaProdottoSemplice * DELTA_Q)
             WHERE ID_PRODOTTO = IdProdottoSemplice
               AND ID_MAGAZZINO = CHIAVE_MAGAZZINO;
+
+            -- Log componente scalato o ripristinato
+            IF DELTA_Q <> 0 THEN
+                INSERT INTO log_magazzino (CHIAVE, DATA, ID_PRODOTTO, ID_MAGAZZINO, QUANTITA, DESCRIZIONE)
+                VALUES (
+                    GET_NEW_KEY(),
+                    NOW(),
+                    IdProdottoSemplice,
+                    CHIAVE_MAGAZZINO,
+                    QuantitaProdottoSemplice * (-1) * DELTA_Q,
+                    CONCAT('Scala/ripristino componente ', IdProdottoSemplice, 
+                           ' per modifica prodotto composto ', NEW.ID_PRODOTTO)
+                );
+            END IF;
 
         END LOOP;
 
@@ -3088,19 +3139,19 @@ BEGIN
 
     DECLARE CONTINUE HANDLER FOR NOT FOUND SET FINITO = 1;
 
-    -- Prendo il magazzino
+    -- Prendo il magazzino dal documento
     SELECT ID_MAGAZZINO
     INTO CHIAVE_MAGAZZINO
     FROM doc_scarico_prodotti_composti
     WHERE CHIAVE = OLD.ID_DOCUMENTO;
 
-    -- Controllo se è composto
+    -- Controllo se il prodotto è composto
     SELECT PRODOTTO_COMPOSTO
     INTO ProdottoComposto
     FROM prodotti
     WHERE CHIAVE = OLD.ID_PRODOTTO;
 
-    -- Riduco quantità prodotto composto
+    -- Riduco quantità prodotto cancellato
     CALL CONTROLLO_PRESENZA_QNT_PRODOTTI(OLD.ID_PRODOTTO, CHIAVE_MAGAZZINO);
 
     UPDATE qnt_x_magazzino
@@ -3108,7 +3159,20 @@ BEGIN
     WHERE ID_PRODOTTO = OLD.ID_PRODOTTO
       AND ID_MAGAZZINO = CHIAVE_MAGAZZINO;
 
-    -- Se è composto → ripristina componenti
+    -- Log prodotto cancellato
+    INSERT INTO log_magazzino (CHIAVE, DATA, ID_PRODOTTO, ID_MAGAZZINO, QUANTITA, DESCRIZIONE)
+    VALUES (
+        GET_NEW_KEY(),
+        NOW(),
+        OLD.ID_PRODOTTO,
+        CHIAVE_MAGAZZINO,
+        OLD.QUANTITA * (-1),
+        CONCAT('Cancellato prodotto ', OLD.ID_PRODOTTO, 
+               ' - quantità: ', OLD.QUANTITA, 
+               ' - magazzino ', CHIAVE_MAGAZZINO)
+    );
+
+    -- Se è composto → ripristina componenti e logga
     IF ProdottoComposto = 'T' THEN
         OPEN CursorProdotti;
 
@@ -3122,11 +3186,23 @@ BEGIN
 
             CALL CONTROLLO_PRESENZA_QNT_PRODOTTI(IdProdottoSemplice, CHIAVE_MAGAZZINO);
 
-            -- Ripristino i componenti tolti
+            -- Ripristino componenti tolti
             UPDATE qnt_x_magazzino
             SET QUANTITA_MAGAZZINO = QUANTITA_MAGAZZINO + (QuantitaProdottoSemplice * OLD.QUANTITA)
             WHERE ID_PRODOTTO = IdProdottoSemplice
               AND ID_MAGAZZINO = CHIAVE_MAGAZZINO;
+
+            -- Log componente ripristinato
+            INSERT INTO log_magazzino (CHIAVE, DATA, ID_PRODOTTO, ID_MAGAZZINO, QUANTITA, DESCRIZIONE)
+            VALUES (
+                GET_NEW_KEY(),
+                NOW(),
+                IdProdottoSemplice,
+                CHIAVE_MAGAZZINO,
+                QuantitaProdottoSemplice * OLD.QUANTITA,
+                CONCAT('Ripristinato componente ', IdProdottoSemplice,
+                       ' per cancellazione prodotto composto ', OLD.ID_PRODOTTO)
+            );
 
         END LOOP;
 
