@@ -1,0 +1,37 @@
+{
+	"RuoliAbilitati" : "",
+	"SelectSQL" : [
+		{
+			"Name" : "ListaMessaggi",
+			"SQL" : "SELECT * FROM messaggi\nORDER BY CHIAVE DESC\n"
+		},
+		{
+			"Name" : "ListaAllegati",
+			"SQL" : "SELECT * FROM allegati_messaggio\n"
+		},
+		{
+			"Name" : "ListaLetti",
+			"SQL" : "SELECT ID_MESSAGGIO\nFROM utente_messaggio_letto\nWHERE ID_UTENTE = :KeyAccount\n"
+		}
+	],
+	"SelectNotifiche" : [
+		{
+			"Name" : "MessaggiCount",
+			"SQL" : "SELECT COUNT(messaggi.CHIAVE) AS COUNT\nFROM messaggi\n"
+		},
+		{
+			"Name" : "MessaggiLettiCount",
+			"SQL" : "SELECT COUNT(utente_messaggio_letto.ID_MESSAGGIO) AS COUNT_LETTI\nFROM utente_messaggio_letto\nWHERE utente_messaggio_letto.ID_UTENTE = :KeyAccount\n\n"
+		}
+	],
+	"EditSQL" : [
+		{
+			"Name" : "Insert",
+			"SQL" : "INSERT INTO utente_messaggio_letto(ID_MESSAGGIO, ID_UTENTE)\n                            VALUES(:ID_MESSAGGIO, :KeyAccount)\n"
+		},
+		{
+			"Name" : "Delete",
+			"SQL" : "DELETE FROM utente_messaggio_letto\nWHERE ID_MESSAGGIO = :ID_MESSAGGIO AND\n      ID_UTENTE = :KeyAccount\n"
+		}
+]
+}

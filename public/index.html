@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="">
+  <head id="Intestazione">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <!-- <link rel="icon" href="<%= BASE_URL %>ArtaxFavicon2.ico"> -->
+    <title>GEMINI</title>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-8NP3FJK11N"></script>
+    <script>
+      const HOST_ARTAX_ANTINCENDIO = 'www.artaxantincendio.com';
+      if(window.location.host == HOST_ARTAX_ANTINCENDIO)
+      {
+        window.dataLayer = window.dataLayer || [];
+        function gtag()
+        {
+          dataLayer.push(arguments);
+        }
+        gtag('js', new Date());
+        gtag('config', 'G-8NP3FJK11N');
+
+        (function(c,l,a,r,i,t,y){
+            c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+            t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+            y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+        })(window, document, "clarity", "script", "ocdec1lhrd");
+        console.log('Google and Clarity Configured')
+      }
+    </script>
+  </head>
+  <body>
+    <noscript>
+      <strong>We're sorry but <%= htmlWebpackPlugin.options.title %> doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
+    </noscript>
+    <div id="ZGeminiApp"></div>
+  </body>
+</html>

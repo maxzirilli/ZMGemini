@@ -1,0 +1,23 @@
+{
+	"RuoliAbilitati" : "",
+	"EditSQL" : [
+		{
+			"Name" : "Insert",
+			"SQL" : "INSERT INTO settori (CHIAVE,DESCRIZIONE, IS_SERVIZI)\n     VALUES (:NewKey1,#DESCRIZIONE, #IS_SERVIZI)\n"
+		},
+		{
+			"Name" : "Update",
+			"SQL" : "UPDATE settori\n   SET DESCRIZIONE=#DESCRIZIONE,\n          IS_SERVIZI = #IS_SERVIZI\n WHERE CHIAVE = :CHIAVE\n"
+		},
+		{
+			"Name" : "Delete",
+			"SQL" : "DELETE FROM settori WHERE CHIAVE = :CHIAVE\n"
+		}
+	],
+	"SelectSQL" : [
+		{
+			"Name" : "Tutto",
+			"SQL" : "SELECT *\n  FROM settori\n"
+		}
+]
+}

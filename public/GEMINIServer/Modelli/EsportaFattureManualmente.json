@@ -1,0 +1,75 @@
+{
+	"RuoliAbilitati" : "",
+	"EditSQL" : [
+		{
+			"Name" : "UpdateFattureDaZippare",
+			"SQL" : "UPDATE fatture\n      SET STATO_ESPORTAZIONE_MANUALE = 'D'\n WHERE CHIAVE IN ?ChiaviFatture\n"
+		},
+		{
+			"Name" : "UpdateAutofattureDaZippare",
+			"SQL" : "UPDATE autofatture\n      SET STATO_ESPORTAZIONE_MANUALE = 'D'\n WHERE CHIAVE IN ?ChiaviAutofatture\n"
+		},
+		{
+			"Name" : "UpdateNoteDiCreditoDaZippare",
+			"SQL" : "UPDATE note_di_credito\n      SET STATO_ESPORTAZIONE_MANUALE = 'D'\n WHERE CHIAVE IN ?ChiaviNoteDiCredito \n"
+		},
+		{
+			"Name" : "UpdateFattureStatoInviato",
+			"SQL" : "UPDATE fatture\n      SET STATO_ESPORTAZIONE_MANUALE = 'I',\n             DATA_ESPORTAZIONE_MANUALE_INVIATO = NOW()\n WHERE CHIAVE IN ?ListaChiavi\n"
+		},
+		{
+			"Name" : "UpdateAutofattureStatoInviato",
+			"SQL" : "UPDATE autofatture\n      SET STATO_ESPORTAZIONE_MANUALE = 'I',\n             DATA_ESPORTAZIONE_MANUALE_INVIATO = NOW()\n WHERE CHIAVE IN ?ListaChiavi\n"
+		},
+		{
+			"Name" : "UpdateNoteDiCreditoStatoInviato",
+			"SQL" : "UPDATE note_di_credito\n      SET STATO_ESPORTAZIONE_MANUALE = 'I',\n             DATA_ESPORTAZIONE_MANUALE_INVIATO = NOW()\n WHERE CHIAVE IN ?ListaChiavi\n"
+		},
+		{
+			"Name" : "UpdateAutofattureStatoConfermato",
+			"SQL" : "UPDATE autofatture\n      SET STATO_ESPORTAZIONE_MANUALE = 'Z'\n WHERE CHIAVE IN ?ListaChiavi\n"
+		},
+		{
+			"Name" : "UpdateFattureStatoConfermato",
+			"SQL" : "UPDATE fatture\n      SET STATO_ESPORTAZIONE_MANUALE = 'Z'\n WHERE CHIAVE IN ?ListaChiavi\n"
+		},
+		{
+			"Name" : "UpdateNoteDiCreditoStatoConfermato",
+			"SQL" : "UPDATE note_di_credito\n      SET STATO_ESPORTAZIONE_MANUALE = 'Z'\n WHERE CHIAVE IN ?ListaChiavi\n"
+		},
+		{
+			"Name" : "UpdateFattureResetStatoDaZippare",
+			"SQL" : "UPDATE fatture\n      SET STATO_ESPORTAZIONE_MANUALE = 'D',\n             DATA_ESPORTAZIONE_MANUALE_INVIATO = NULL\n WHERE CHIAVE IN ?ListaChiavi\n"
+		},
+		{
+			"Name" : "UpdateNoteDiCreditoResetStatoDaZippare",
+			"SQL" : "UPDATE note_di_credito\n      SET STATO_ESPORTAZIONE_MANUALE = 'D',\n             DATA_ESPORTAZIONE_MANUALE_INVIATO = NULL\n WHERE CHIAVE IN ?ListaChiavi\n"
+		},
+		{
+			"Name" : "UpdateAutofattureResetStatoDaZippare",
+			"SQL" : "UPDATE autofatture\n      SET STATO_ESPORTAZIONE_MANUALE = 'D',\n             DATA_ESPORTAZIONE_MANUALE_INVIATO = NULL\n WHERE CHIAVE IN ?ListaChiavi\n"
+		},
+		{
+			"Name" : "UpdateFattureResetDaZipparePostTimeCheck",
+			"SQL" : "UPDATE fatture   \n      SET STATO_ESPORTAZIONE_MANUALE = 'D',\n             DATA_ESPORTAZIONE_MANUALE_INVIATO = NULL \n WHERE STATO_ESPORTAZIONE_MANUALE = 'I' \n      AND TIMESTAMPDIFF(SECOND, DATA_ESPORTAZIONE_MANUALE_INVIATO, #DataLancioScript) > :IntervalloInSecondi;\n"
+		},
+		{
+			"Name" : "UpdateNoteDiCreditoResetDaZipparePostTimeCheck",
+			"SQL" : "UPDATE note_di_credito\n      SET STATO_ESPORTAZIONE_MANUALE = 'D',\n             DATA_ESPORTAZIONE_MANUALE_INVIATO = NULL \n WHERE STATO_ESPORTAZIONE_MANUALE = 'I' \n      AND TIMESTAMPDIFF(SECOND, DATA_ESPORTAZIONE_MANUALE_INVIATO, #DataLancioScript) > :IntervalloInSecondi;\n"
+		},
+		{
+			"Name" : "UpdateAutofattureResetDaZipparePostTimeCheck",
+			"SQL" : "UPDATE autofatture   \n      SET STATO_ESPORTAZIONE_MANUALE = 'D',\n             DATA_ESPORTAZIONE_MANUALE_INVIATO = NULL\n WHERE STATO_ESPORTAZIONE_MANUALE = 'I' \n      AND TIMESTAMPDIFF(SECOND, DATA_ESPORTAZIONE_MANUALE_INVIATO, #DataLancioScript) > :IntervalloInSecondi;\n"
+		}
+	],
+	"SelectSQL" : [
+		{
+			"Name" : "FattureInCompilazione",
+			"SQL" : "(SELECT fatture.DATA,\n             fatture.ANNO, \n             fatture.CHIAVE,\n             fatture.RAGIONE_SOCIALE, \n             fatture.NUMERO, \n             fatture.DA_BANCO,\n             GET_IMPONIBILE(fatture.CHIAVE) AS IMPORTO,\n       (SELECT COUNT(*)\n          FROM rate_fattura\n         WHERE DATA_PAGAMENTO IS NULL\n           AND ID_MOVIMENTO IS NULL\n           AND ID_FATTURA = fatture.CHIAVE) AS RATE_NON_PAGATE,\n           'F' AS IS_NOTA_DI_CREDITO,\n           'F' AS IS_AUTOFATTURA\n FROM fatture\nWHERE fatture.NUMERO IS NOT NULL\n     AND fatture.STATO_ESPORTAZIONE_MANUALE = 'C')\nUNION\n(SELECT note_di_credito.DATA, \n             note_di_credito.ANNO,\n             note_di_credito.CHIAVE, \n             note_di_credito.RAGIONE_SOCIALE, \n             note_di_credito.NUMERO,\n             0 AS DA_BANCO,\n             GET_IMPONIBILE_NOTE(note_di_credito.CHIAVE) AS IMPORTO, 0 AS RATE_NON_PAGATE, \n             'T' AS IS_NOTA_DI_CREDITO, \n             'F' AS IS_AUTOFATTURA\n FROM note_di_credito\nWHERE note_di_credito.NUMERO IS NOT NULL\n     AND note_di_credito.STATO_ESPORTAZIONE_MANUALE = 'C')\nUNION\n(SELECT autofatture.DATA,\n             autofatture.ANNO,\n             autofatture.CHIAVE,  \n             autofatture.RAGIONE_SOCIALE, \n             autofatture.NUMERO,\n             0 AS DA_BANCO,\n             GET_IMPONIBILE_AUTOFATTURE(autofatture.CHIAVE) AS IMPORTO, \n             0 AS RATE_NON_PAGATE, \n             'F' AS IS_NOTA_DI_CREDITO,\n             'T' AS IS_AUTOFATTURA\n FROM autofatture\nWHERE autofatture.NUMERO IS NOT NULL\n     AND autofatture.STATO_ESPORTAZIONE_MANUALE = 'C')\nORDER BY DATA, NUMERO\n"
+		},
+		{
+			"Name" : "FattureDaInviare",
+			"SQL" : "(SELECT fatture.DATA,\n             fatture.ANNO, \n             fatture.CHIAVE,\n             fatture.RAGIONE_SOCIALE, \n             fatture.NUMERO, \n             fatture.DA_BANCO,\n             GET_IMPONIBILE(fatture.CHIAVE) AS IMPORTO,\n       (SELECT COUNT(*)\n          FROM rate_fattura\n         WHERE DATA_PAGAMENTO IS NULL\n           AND ID_MOVIMENTO IS NULL\n           AND ID_FATTURA = fatture.CHIAVE) AS RATE_NON_PAGATE,\n           'F' AS IS_NOTA_DI_CREDITO,\n           'F' AS IS_AUTOFATTURA\n FROM fatture\nWHERE fatture.NUMERO IS NOT NULL\n     AND fatture.STATO_ESPORTAZIONE_MANUALE = 'D')\nUNION\n(SELECT note_di_credito.DATA, \n             note_di_credito.ANNO,\n             note_di_credito.CHIAVE, \n             note_di_credito.RAGIONE_SOCIALE, \n             note_di_credito.NUMERO,\n             0 AS DA_BANCO,\n             GET_IMPONIBILE_NOTE(note_di_credito.CHIAVE) AS IMPORTO, 0 AS RATE_NON_PAGATE, \n             'T' AS IS_NOTA_DI_CREDITO, \n             'F' AS IS_AUTOFATTURA\n FROM note_di_credito\nWHERE note_di_credito.NUMERO IS NOT NULL\n     AND note_di_credito.STATO_ESPORTAZIONE_MANUALE = 'D')\nUNION\n(SELECT autofatture.DATA,\n             autofatture.ANNO,\n             autofatture.CHIAVE,  \n             autofatture.RAGIONE_SOCIALE, \n             autofatture.NUMERO,\n             0 AS DA_BANCO,\n             GET_IMPONIBILE_AUTOFATTURE(autofatture.CHIAVE) AS IMPORTO, \n             0 AS RATE_NON_PAGATE, \n             'F' AS IS_NOTA_DI_CREDITO,\n             'T' AS IS_AUTOFATTURA\n FROM autofatture\nWHERE autofatture.NUMERO IS NOT NULL\n     AND autofatture.STATO_ESPORTAZIONE_MANUALE = 'D')\nORDER BY DATA, NUMERO\n"
+		}
+]
+}

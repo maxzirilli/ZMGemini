@@ -1,0 +1,17 @@
+{
+	"RuoliAbilitati" : "",
+	"EditSQL" : [
+		{
+			"Name" : "Inserisci",
+			"SQL" : "INSERT INTO note_rate_fattura (CHIAVE,ID_FATTURA,ID_FATTURA_INSOLUTA_PREGRESSA,DATA, DESCRIZIONE)\nVALUES (:NewKey1,:ID_FATTURA,:ID_FATTURA_INSOLUTA_PREGRESSA,#DATA,#DESCRIZIONE)\n\n\n"
+		},
+		{
+			"Name" : "Modifica",
+			"SQL" : "UPDATE note_rate_fattura\n SET ID_FATTURA = :ID_FATTURA,\n        ID_FATTURA_INSOLUTA_PREGRESSA = :ID_FATTURA_INSOLUTA_PREGRESSA,\n        DATA = #DATA,\n        DESCRIZIONE = #DESCRIZIONE\nWHERE CHIAVE = :ChiaveNota\n"
+		},
+		{
+			"Name" : "Elimina",
+			"SQL" : "DELETE FROM note_rate_fattura\n WHERE CHIAVE = :ChiaveNota\n"
+		}
+]
+}

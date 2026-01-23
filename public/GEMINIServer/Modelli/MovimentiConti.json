@@ -1,0 +1,271 @@
+{
+	"RuoliAbilitati" : "",
+	"EditSQL" : [
+		{
+			"Name" : "Insert",
+			"SQL" : "INSERT INTO conti_correnti_casse(CHIAVE, BANCA, AGENZIA, INDIRIZZO, NR_CONTO, BIC, IBAN, DESCRIZIONE,\n                            DATA_INIZIO_SESSIONE, SALDO_AD_INIZIO_SESSIONE, CONTO_CORRENTE, SWIFT, DESCRIZIONE_ABBR)\n     VALUES (:NewKey1, #BANCA, #AGENZIA, #INDIRIZZO, #NR_CONTO, #BIC, #IBAN, #DESCRIZIONE,\n             #DATA_INIZIO_SESSIONE, :SALDO_AD_INIZIO_SESSIONE, #CONTO_CORRENTE, #SWIFT, #DESCRIZIONE_ABBR)\n"
+		},
+		{
+			"Name" : "Update",
+			"SQL" : "UPDATE conti_correnti_casse SET\n                BANCA = #BANCA,\n                DESCRIZIONE = #DESCRIZIONE,\n                AGENZIA = #AGENZIA,\n                INDIRIZZO = #INDIRIZZO,\n                NR_CONTO = #NR_CONTO,\n                BIC = #BIC,\n                IBAN = #IBAN,\n                DATA_INIZIO_SESSIONE = #DATA_INIZIO_SESSIONE,\n                SALDO_AD_INIZIO_SESSIONE = :SALDO_AD_INIZIO_SESSIONE,\n                CONTO_CORRENTE = #CONTO_CORRENTE,\n                SWIFT = #SWIFT,\n                DESCRIZIONE_ABBR = #DESCRIZIONE_ABBR\n          WHERE CHIAVE = :CHIAVE\n"
+		},
+		{
+			"Name" : "Delete",
+			"SQL" : "DELETE FROM conti_correnti_casse WHERE CHIAVE = :CHIAVE_CONTO_CORRENTE\n"
+		},
+		{
+			"Name" : "InsertMovimento",
+			"SQL" : "INSERT INTO movimenti (CHIAVE, DATA, IMPORTO, SOSPESO, DESCRIZIONE,\n                       CONTO_CORRENTE_PRELIEVO,DATA_CHIUSURA,\n                       CONTO_CORRENTE_VERSAMENTO, ID_CATEGORIA_MOVIMENTO, ID_CLIENTE, ID_FORNITORE,\n                       NO_PRIMA_NOTA)\n                VALUES(:NewKey1, #DATA, :IMPORTO, #SOSPESO, #DESCRIZIONE, \n                       :CONTO_CORRENTE_PRELIEVO,#DATA_CHIUSURA,\n                       :CONTO_CORRENTE_VERSAMENTO, #ID_CATEGORIA_MOVIMENTO, :ID_CLIENTE, :ID_FORNITORE,\n                        #NO_PRIMA_NOTA)\n"
+		},
+		{
+			"Name" : "UpdateMovimento",
+			"SQL" : "UPDATE movimenti SET \n       DATA = #DATA,\n       IMPORTO = :IMPORTO,\n       SOSPESO = #SOSPESO,\n       DESCRIZIONE = #DESCRIZIONE, \n       DATA_CHIUSURA = #DATA_CHIUSURA,\n       CONTO_CORRENTE_PRELIEVO = :CONTO_CORRENTE_PRELIEVO,\n       CONTO_CORRENTE_VERSAMENTO = :CONTO_CORRENTE_VERSAMENTO,\n       ID_CATEGORIA_MOVIMENTO = #ID_CATEGORIA_MOVIMENTO,\n       ID_CLIENTE = :ID_CLIENTE,\n       ID_FORNITORE = :ID_FORNITORE,\n       NO_PRIMA_NOTA =#NO_PRIMA_NOTA\n\n WHERE CHIAVE = :CHIAVE\n"
+		},
+		{
+			"Name" : "DeleteMovimento",
+			"SQL" : "DELETE FROM movimenti WHERE CHIAVE = :CHIAVE_MOVIMENTO\n"
+		},
+		{
+			"Name" : "CorrelaMovimentoAllaRata",
+			"SQL" : "UPDATE rate_fattura\n      SET ID_MOVIMENTO = :CHIAVE_MOVIMENTO\n WHERE CHIAVE = :CHIAVE_RATA\n"
+		},
+		{
+			"Name" : "CancellaMovimentoCorrelato",
+			"SQL" : "UPDATE rate_fattura\n      SET ID_MOVIMENTO = NULL\n WHERE rate_fattura.CHIAVE = :CHIAVE_RATA\n"
+		},
+		{
+			"Name" : "DeleteCorrelazioneMovimento",
+			"SQL" : "UPDATE rate_fattura\n      SET rate_fattura.ID_MOVIMENTO = NULL\n WHERE rate_fattura.ID_MOVIMENTO = :CHIAVE_MOVIMENTO\n"
+		},
+		{
+			"Name" : "CorrelaMovimentoAllaFatturaPregressa",
+			"SQL" : "UPDATE fatture_insolute_pregresse\n      SET ID_MOVIMENTO = :CHIAVE_MOVIMENTO\n WHERE CHIAVE = :CHIAVE\n"
+		},
+		{
+			"Name" : "CancellaMovimentoCorrelatoAllaFattura",
+			"SQL" : "UPDATE fatture_insolute_pregresse\n      SET ID_MOVIMENTO = NULL\n WHERE CHIAVE = :CHIAVE\n"
+		},
+		{
+			"Name" : "DeleteCorrelazioneMovimentoFatturaPregressa",
+			"SQL" : "UPDATE fatture_insolute_pregresse\n      SET ID_MOVIMENTO = NULL\n WHERE ID_MOVIMENTO = :CHIAVE_MOVIMENTO\n"
+		},
+		{
+			"Name" : "CorrelaMovimentoAllaFatturaPregressaFornitore",
+			"SQL" : "UPDATE fatture_insolute_pregresse_fornitori\n      SET ID_MOVIMENTO = :CHIAVE_MOVIMENTO\n WHERE CHIAVE = :CHIAVE\n"
+		},
+		{
+			"Name" : "CancellaMovimentoCorrelatoAllaFatturaPregressaFornitore",
+			"SQL" : "UPDATE fatture_insolute_pregresse_fornitori\n      SET ID_MOVIMENTO = NULL\n WHERE fatture_insolute_pregresse_fornitori.CHIAVE = :CHIAVE_FATTURA\n"
+		},
+		{
+			"Name" : "DeleteCorrelazioneMovimentoFatturaPregressaFornitori",
+			"SQL" : "UPDATE fatture_insolute_pregresse_fornitori\n      SET ID_MOVIMENTO = NULL\n WHERE ID_MOVIMENTO = :CHIAVE_MOVIMENTO\n"
+		},
+		{
+			"Name" : "CorrelaMovimentoAllaFatturaFornitore",
+			"SQL" : "UPDATE rate_fatture_passive\n      SET ID_MOVIMENTO = :CHIAVE_MOVIMENTO\n WHERE CHIAVE = :CHIAVE_RATA\n"
+		},
+		{
+			"Name" : "CancellaMovimentoCorrelatoAllaFatturaFornitore",
+			"SQL" : "UPDATE rate_fatture_passive\n      SET ID_MOVIMENTO = NULL\n WHERE rate_fatture_passive.CHIAVE = :CHIAVE_RATA\n"
+		},
+		{
+			"Name" : "DeleteCorrelazioneMovimentoFatturaFornitori",
+			"SQL" : "UPDATE rate_fatture_passive\n      SET ID_MOVIMENTO = NULL\n WHERE ID_MOVIMENTO = :CHIAVE_MOVIMENTO\n"
+		},
+		{
+			"Name" : "AggiungiRataDifferenzaMovimento",
+			"SQL" : "INSERT INTO rate_fattura (CHIAVE, ID_FATTURA, IMPORTO, DATA, NOTE)\n                          VALUES (:NewKey1, :ID_FATTURA, :IMPORTO, #DATA, #NOTE)\n"
+		},
+		{
+			"Name" : "ModificaImportoRataPerMovimentoConImportoMinore",
+			"SQL" : "UPDATE rate_fattura\n      SET IMPORTO = :IMPORTO\n WHERE CHIAVE = :CHIAVE_RATA\n"
+		},
+		{
+			"Name" : "AggiungiFatturaPregressaDifferenzaMovimento",
+			"SQL" : "INSERT INTO fatture_insolute_pregresse (CHIAVE, ID_CLIENTE, IMPORTO, DATA, NOTE, NUMERO)\n                          VALUES (:NewKey1, :ID_CLIENTE, :IMPORTO, #DATA, #NOTE, :NUMERO)\n"
+		},
+		{
+			"Name" : "ModificaImportoFatturaPregressaPerMovimentoConImportoMinore",
+			"SQL" : "UPDATE fatture_insolute_pregresse \n      SET IMPORTO = :IMPORTO\n WHERE CHIAVE = :CHIAVE_FATTURA\n"
+		},
+		{
+			"Name" : "EliminaRecordSaldiChiusureAnnuali",
+			"SQL" : "DELETE FROM saldi_chiusure_annuali\n WHERE ID_CLIENTE = :CHIAVE_CLIENTE\n     AND ANNO >= #ANNO\n"
+		},
+		{
+			"Name" : "EliminaRecordSaldiChiusureAnnualiFornitore",
+			"SQL" : "DELETE FROM saldi_chiusure_annuali\n WHERE ID_FORNITORE = :CHIAVE_FORNITORE\n     AND ANNO >= #ANNO\n"
+		},
+		{
+			"Name" : "AggiungiRataDifferenzaMovimentoFornitore",
+			"SQL" : "INSERT INTO rate_fatture_passive (CHIAVE, ID_FATTURA_PASSIVA, IMPORTO, DATA_SCADENZA, NOTE)\n                          VALUES (:NewKey1, :ID_FATTURA_PASSIVA, :IMPORTO, #DATA_SCADENZA, #NOTE)\n"
+		},
+		{
+			"Name" : "ModificaImportoRataPerMovimentoConImportoMinoreFornitore",
+			"SQL" : "UPDATE rate_fatture_passive\n      SET IMPORTO = :IMPORTO\n WHERE CHIAVE = :CHIAVE_RATA\n"
+		},
+		{
+			"Name" : "AggiungiFatturaPregressaDifferenzaMovimentoFornitore",
+			"SQL" : "INSERT INTO fatture_insolute_pregresse_fornitori (CHIAVE, ID_FORNITORE, IMPORTO, DATA, NOTE, NUMERO)\n                          VALUES (:NewKey1, :ID_FORNITORE, :IMPORTO, #DATA, #NOTE, :NUMERO)\n"
+		},
+		{
+			"Name" : "ModificaImportoFatturaPregressaPerMovimentoConImportoMinoreFornitore",
+			"SQL" : "UPDATE fatture_insolute_pregresse_fornitori\n      SET IMPORTO = :IMPORTO\n WHERE CHIAVE = :CHIAVE_FATTURA\n"
+		},
+		{
+			"Name" : "EliminaRataGenerataDaCorrelazioneConMovimento",
+			"SQL" : "DELETE FROM rate_fatture_passive\n WHERE ID_FATTURA_PASSIVA = :ID_FATTURA_PASSIVA\n      AND rate_fatture_passive.DATA_SCADENZA IS NULL\n"
+		}
+	],
+	"FiltroMovimenti" : [
+		{
+			"Name" : "FiltroMovimenti",
+			"SQL" : "SELECT *\n  FROM movimenti\n  {W~DallaData~DATA >= #DallaData\n      ~AllaData~DATA <= #AllaData\n      ~Tipologia~ ID_CATEGORIA_MOVIMENTO = :Tipologia}\nORDER BY DATA DESC, CHIAVE DESC\nLIMIT :LimitNumRows OFFSET :LimitStart\n"
+		}
+	],
+	"FiltroRateNonPagateFattureFornitoriNumerate" : [
+		{
+			"Name" : "FiltroRateNonPagateFattureFornitoriNumerate",
+			"SQL" : "SELECT rate_fatture_passive.CHIAVE,\n            fatture_passive.NUMERO AS NUMERO_FATTURA,\n            rate_fatture_passive.DATA_SCADENZA AS DATA,\n            fatture_passive.RAGIONE_SOCIALE,\n            rate_fatture_passive.IMPORTO,\n            rate_fatture_passive.ID_FATTURA_PASSIVA,\n            rate_fatture_passive.ID_MOVIMENTO,\n            fornitori.CODICE_FORNITORE,\n            'D' as TIPO_RATE,\n            fatture_passive.DATA AS DATA_FATTURA,\n            fatture_passive.ID_FORNITORE,\n            rate_fatture_passive.NOTE\n  FROM rate_fatture_passive\n           JOIN fatture_passive ON fatture_passive.CHIAVE = rate_fatture_passive.ID_FATTURA_PASSIVA\n           JOIN fornitori ON fornitori.CHIAVE = fatture_passive.ID_FORNITORE\nWHERE fatture_passive.NUMERO IS NOT NULL\n    AND rate_fatture_passive.DATA_PAGAMENTO IS NULL\n    AND rate_fatture_passive.ID_MOVIMENTO IS NULL\n    AND fatture_passive.IS_FATTURA = 'T'\nORDER BY rate_fatture_passive.DATA_SCADENZA, fatture_passive.NUMERO\n"
+		}
+	],
+	"FiltroRateNonPagateFattureNumerate" : [
+		{
+			"Name" : "FiltroRateNonPagateFattureNumerate",
+			"SQL" : "SELECT rate_fattura.CHIAVE,\n            fatture.NUMERO AS NUMERO_FATTURA,\n            rate_fattura.ID_FATTURA,\n            rate_fattura.DATA,\n            fatture.RAGIONE_SOCIALE,\n            rate_fattura.IMPORTO,\n            rate_fattura.ID_MOVIMENTO,\n            'R' as TIPO_RATE,\n            fatture.DATA AS DATA_FATTURA,\n            clienti.CODICE_CLIENTE,\n            fatture.ID_CLIENTE\n  FROM rate_fattura\n           JOIN fatture ON fatture.CHIAVE = rate_fattura.ID_FATTURA\n           JOIN clienti ON clienti.CHIAVE = fatture.ID_CLIENTE\nWHERE fatture.NUMERO IS NOT NULL\n    AND rate_fattura.DATA_PAGAMENTO IS NULL\n    AND rate_fattura.ID_MOVIMENTO IS NULL\nORDER BY rate_fattura.DATA, fatture.NUMERO\n"
+		}
+	],
+	"ListaAnniMovimentiXCliente" : [
+		{
+			"Name" : "ListaAnni",
+			"SQL" : "SELECT EXTRACT(YEAR FROM movimenti.DATA) AS ANNO\nFROM movimenti\nWHERE movimenti.ID_CLIENTE = :ChiaveCliente\n  OR movimenti.CHIAVE IN (SELECT rate_fattura.ID_MOVIMENTO\n                                           FROM rate_fattura\n                                         WHERE rate_fattura.ID_FATTURA IN (SELECT fatture.CHIAVE\n\t\t\t\t\t\t              FROM fatture\n                                                                                                WHERE fatture.ID_CLIENTE = :ChiaveCliente))\n   OR movimenti.CHIAVE IN (SELECT fatture_insolute_pregresse.ID_MOVIMENTO\n                                            FROM fatture_insolute_pregresse\n                                          WHERE fatture_insolute_pregresse.ID_CLIENTE = :ChiaveCliente) \nGROUP BY ANNO ORDER BY ANNO DESC\n"
+		}
+	],
+	"ListaAnniMovimentiXFornitore" : [
+		{
+			"Name" : "ListaAnni",
+			"SQL" : "SELECT EXTRACT(YEAR FROM movimenti.DATA) AS ANNO\nFROM movimenti\n WHERE (movimenti.ID_FORNITORE = :ChiaveFornitore\n  OR movimenti.CHIAVE IN (SELECT rate_fatture_passive.ID_MOVIMENTO\n                            FROM rate_fatture_passive\n                           WHERE rate_fatture_passive.ID_FATTURA_PASSIVA IN (SELECT fatture_passive.CHIAVE\n                                                                                                              FROM fatture_passive\n                                                                                                             WHERE fatture_passive.ID_FORNITORE = :ChiaveFornitore)\n                                                                                                                                                       \n\t\t\t\t\t\t\t         )\n   OR movimenti.CHIAVE IN (SELECT fatture_insolute_pregresse_fornitori.ID_MOVIMENTO\n                             FROM fatture_insolute_pregresse_fornitori\n                            WHERE fatture_insolute_pregresse_fornitori.ID_FORNITORE = :ChiaveFornitore))\n                             \nGROUP BY ANNO ORDER BY ANNO DESC\n"
+		}
+	],
+	"ListaContiCorrentiCasse" : [
+		{
+			"Name" : "ListaContiCorrentiCasse",
+			"SQL" : "SELECT CHIAVE,BANCA,DESCRIZIONE,NR_CONTO, CONTO_CORRENTE\n  FROM conti_correnti_casse\n ORDER BY CONTO_CORRENTE DESC, DESCRIZIONE ASC\n\n"
+		}
+	],
+	"ListaFatturePregresseDaCorrelare" : [
+		{
+			"Name" : "Lista",
+			"SQL" : "SELECT fatture_insolute_pregresse.CHIAVE,\n             fatture_insolute_pregresse.NUMERO AS NUMERO_FATTURA,\n             fatture_insolute_pregresse.ID_CLIENTE,\n             fatture_insolute_pregresse.DATA,\n             clienti.RAGIONE_SOCIALE,\n             fatture_insolute_pregresse.IMPORTO,\n             fatture_insolute_pregresse.ID_MOVIMENTO,\n             clienti.CODICE_CLIENTE,\n             'F' as TIPO_RATE\n  FROM fatture_insolute_pregresse\n            LEFT OUTER JOIN clienti ON clienti.CHIAVE = fatture_insolute_pregresse.ID_CLIENTE\n WHERE DATA_PAGAMENTO IS NULL\n     AND ID_MOVIMENTO IS NULL\n ORDER BY fatture_insolute_pregresse.DATA, fatture_insolute_pregresse.NUMERO\n"
+		}
+	],
+	"ListaFatturePregresseFornitoriDaCorrelare" : [
+		{
+			"Name" : "Lista",
+			"SQL" : "SELECT fatture_insolute_pregresse_fornitori.CHIAVE,\n            fatture_insolute_pregresse_fornitori.NUMERO AS NUMERO_FATTURA,\n            fatture_insolute_pregresse_fornitori.DATA,\n            fatture_insolute_pregresse_fornitori.ID_FORNITORE,\n            fornitori.RAGIONE_SOCIALE,\n            fatture_insolute_pregresse_fornitori.IMPORTO * 10 AS IMPORTO,\n            fatture_insolute_pregresse_fornitori.ID_MOVIMENTO,\n            fornitori.CODICE_FORNITORE,\n            'P' as TIPO_RATE\n  FROM fatture_insolute_pregresse_fornitori\n            LEFT OUTER JOIN fornitori ON fornitori.CHIAVE = fatture_insolute_pregresse_fornitori.ID_FORNITORE\n WHERE DATA_PAGAMENTO IS NULL\n     AND ID_MOVIMENTO IS NULL\n ORDER BY fatture_insolute_pregresse_fornitori.DATA, fatture_insolute_pregresse_fornitori.NUMERO\n"
+		}
+	],
+	"ListaMesiMovimentiXCliente" : [
+		{
+			"Name" : "ListaMesi",
+			"SQL" : "SELECT EXTRACT(MONTH FROM movimenti.DATA) AS MESE\n  FROM movimenti\n WHERE EXTRACT(YEAR FROM movimenti.DATA) = :AnnoMovimento\n     AND (movimenti.ID_CLIENTE = :ChiaveCliente\n             OR movimenti.CHIAVE IN (SELECT rate_fattura.ID_MOVIMENTO\n                                                     FROM rate_fattura\n                                                   WHERE rate_fattura.ID_FATTURA IN (SELECT fatture.CHIAVE\n                                                                                                            FROM fatture\n                                                                                                          WHERE fatture.ID_CLIENTE = :ChiaveCliente))\n             OR movimenti.CHIAVE IN (SELECT fatture_insolute_pregresse.ID_MOVIMENTO\n                                                     FROM fatture_insolute_pregresse\n                                                   WHERE fatture_insolute_pregresse.ID_CLIENTE = :ChiaveCliente))\n\nGROUP BY MESE ORDER BY MESE DESC\n"
+		}
+	],
+	"ListaMesiMovimentiXFornitore" : [
+		{
+			"Name" : "ListaMesi",
+			"SQL" : "SELECT EXTRACT(MONTH FROM movimenti.DATA) AS MESE\n  FROM movimenti\n WHERE EXTRACT(YEAR FROM movimenti.DATA) = :AnnoMovimento\n     AND (movimenti.ID_FORNITORE = :ChiaveFornitore OR\n            movimenti.CHIAVE IN (SELECT rate_fatture_passive.ID_MOVIMENTO\n                                               FROM rate_fatture_passive\n                                             WHERE rate_fatture_passive.ID_FATTURA_PASSIVA IN (SELECT fatture_passive.CHIAVE\n                                                                                                                                 FROM fatture_passive\n                                                                                                                               WHERE fatture_passive.ID_FORNITORE = :ChiaveFornitore)) \n            OR\n            movimenti.CHIAVE IN (SELECT fatture_insolute_pregresse_fornitori.ID_MOVIMENTO\n                                               FROM fatture_insolute_pregresse_fornitori\n                                             WHERE fatture_insolute_pregresse_fornitori.ID_FORNITORE = :ChiaveFornitore))\nGROUP BY MESE ORDER BY MESE DESC\n"
+		}
+	],
+	"LsAnniMovimentiXConto" : [
+		{
+			"Name" : "LsAnnoMovimenti",
+			"SQL" : "(SELECT EXTRACT(YEAR FROM movimenti.DATA) AS ANNO\n  FROM conti_correnti_casse, movimenti\n WHERE conti_correnti_casse.CHIAVE = :ChiaveContoCassa\n   AND (conti_correnti_casse.CHIAVE = movimenti.CONTO_CORRENTE_PRELIEVO\n    OR conti_correnti_casse.CHIAVE = movimenti.CONTO_CORRENTE_VERSAMENTO)\nGROUP BY ANNO ORDER BY ANNO DESC)\nUNION\n(SELECT EXTRACT(YEAR FROM rate_fattura.DATA_PAGAMENTO) AS ANNO\n  FROM  rate_fattura\n WHERE rate_fattura.DATA_PAGAMENTO IS NOT NULL\n   AND rate_fattura.ID_CONTO_CASSE = :ChiaveContoCassa\nGROUP BY ANNO ORDER BY ANNO DESC)\nUNION\n(SELECT EXTRACT(YEAR FROM rate_fatture_passive.DATA_PAGAMENTO) AS ANNO\n  FROM  rate_fatture_passive\n WHERE rate_fatture_passive.DATA_PAGAMENTO IS NOT NULL\n   AND rate_fatture_passive.ID_CONTO_CASSA = :ChiaveContoCassa\nGROUP BY ANNO ORDER BY ANNO DESC)\n"
+		}
+	],
+	"LsMesiMovimentiXConto" : [
+		{
+			"Name" : "ListaMesi",
+			"SQL" : "(SELECT EXTRACT(MONTH FROM movimenti.DATA) AS MESE\n    FROM conti_correnti_casse, movimenti\n  WHERE conti_correnti_casse.CHIAVE = :ChiaveContoCassa\n      AND EXTRACT(YEAR FROM movimenti.DATA) = :AnnoMovimento\n      AND (conti_correnti_casse.CHIAVE = movimenti.CONTO_CORRENTE_PRELIEVO\n               OR conti_correnti_casse.CHIAVE = movimenti.CONTO_CORRENTE_VERSAMENTO)\nGROUP BY MESE ORDER BY MESE DESC)\n\nUNION\n\n(SELECT EXTRACT(MONTH FROM rate_fattura.DATA_PAGAMENTO) AS MESE\n    FROM rate_fattura\n  WHERE rate_fattura.DATA_PAGAMENTO IS NOT NULL\n      AND (EXTRACT(YEAR FROM rate_fattura.DATA_PAGAMENTO) = :AnnoMovimento)\n      AND rate_fattura.ID_CONTO_CASSE = :ChiaveContoCassa\nGROUP BY MESE ORDER BY MESE DESC)\n\nUNION\n\n(SELECT EXTRACT(MONTH FROM rate_fatture_passive.DATA_PAGAMENTO) AS MESE\n    FROM rate_fatture_passive\n  WHERE rate_fatture_passive.DATA_PAGAMENTO IS NOT NULL\n      AND (EXTRACT(YEAR FROM rate_fatture_passive.DATA_PAGAMENTO) = :AnnoMovimento)\n      AND rate_fatture_passive.ID_CONTO_CASSA = :ChiaveContoCassa\nGROUP BY MESE ORDER BY MESE DESC)\n"
+		}
+	],
+	"LsMovXCliente" : [
+		{
+			"Name" : "ListaMovimenti",
+			"SQL" : "SELECT *\n  FROM movimenti\nWHERE movimenti.ID_CLIENTE = :ChiaveCliente\n  OR movimenti.CHIAVE IN (SELECT rate_fattura.ID_MOVIMENTO\n                                           FROM rate_fattura\n                                         WHERE rate_fattura.ID_FATTURA IN (SELECT fatture.CHIAVE\n\t\t\t\t\t\t              FROM fatture\n                                                                                                WHERE fatture.ID_CLIENTE = :ChiaveCliente))\n   OR movimenti.CHIAVE IN (SELECT fatture_insolute_pregresse.ID_MOVIMENTO\n                                            FROM fatture_insolute_pregresse\n                                          WHERE fatture_insolute_pregresse.ID_CLIENTE = :ChiaveCliente) \n"
+		}
+	],
+	"RiassuntoMovimentiPerMese" : [
+		{
+			"Name" : "RiassuntoMovimenti",
+			"SQL" : "SELECT *\n  FROM movimenti\n WHERE EXTRACT(YEAR FROM DATA) = :AnnoMovimento\n   AND EXTRACT(MONTH FROM DATA) = :MeseMovimento\n   AND (CONTO_CORRENTE_PRELIEVO = :ChiaveContoCassa\n    OR CONTO_CORRENTE_VERSAMENTO = :ChiaveContoCassa)\n   \n"
+		},
+		{
+			"Name" : "RiassuntoFatture",
+			"SQL" : "SELECT 'F' AS TIPO_DOCUMENTO,\n       fatture.CHIAVE,\n       rate_fattura.DATA_PAGAMENTO AS DATA,\n       fatture.NUMERO, \n       fatture.DA_BANCO,\n       fatture.INVIATA_ALLO_SDI,\n       EXTRACT(YEAR FROM fatture.DATA) AS ANNO, \n       fatture.ID_CLIENTE,\n       fatture.RAGIONE_SOCIALE,\n       clienti.RAGIONE_SOCIALE AS NOME_CLIENTE,\n       (SELECT COUNT(*)\n          FROM rate_fattura\n         WHERE rate_fattura.DATA_PAGAMENTO IS NULL\n           AND ID_FATTURA = fatture.CHIAVE) AS RATE_NON_PAGATE,\n        (SELECT COUNT(*)\n          FROM rate_fattura\n         WHERE ID_FATTURA = fatture.CHIAVE) AS RATE_TOTALI\n  FROM fatture, rate_fattura, clienti\n  WHERE rate_fattura.ID_FATTURA = fatture.CHIAVE\n    AND clienti.CHIAVE = fatture.ID_CLIENTE\n    AND EXTRACT(YEAR FROM rate_fattura.DATA_PAGAMENTO) = :AnnoMovimento\n    AND EXTRACT(MONTH FROM rate_fattura.DATA_PAGAMENTO) = :MeseMovimento\n    AND rate_fattura.ID_CONTO_CASSE = :ChiaveContoCassa\n"
+		},
+		{
+			"Name" : "RiassuntoFatturePassive",
+			"SQL" : "SELECT 'P' AS TIPO_DOCUMENTO,\n       fatture_passive.CHIAVE,\n       rate_fatture_passive.DATA_PAGAMENTO AS DATA,\n       fatture_passive.NUMERO, \n       EXTRACT(YEAR FROM fatture_passive.DATA) AS ANNO, \n       fatture_passive.ID_FORNITORE,\n       fatture_passive.RAGIONE_SOCIALE,\n       fatture_passive.IS_FATTURA,\n       (SELECT COUNT(*)\n          FROM rate_fatture_passive\n         WHERE rate_fatture_passive.DATA_PAGAMENTO IS NULL\n           AND ID_FATTURA_PASSIVA = fatture_passive.CHIAVE) AS RATE_NON_PAGATE\n  FROM fatture_passive, rate_fatture_passive\n  WHERE rate_fatture_passive.ID_FATTURA_PASSIVA = fatture_passive.CHIAVE\n    AND EXTRACT(YEAR FROM rate_fatture_passive.DATA_PAGAMENTO) = :AnnoMovimento\n    AND EXTRACT(MONTH FROM rate_fatture_passive.DATA_PAGAMENTO) = :MeseMovimento\n    AND rate_fatture_passive.ID_CONTO_CASSA = :ChiaveContoCassa\n"
+		}
+	],
+	"RiassuntoMovimentiPerMesePerCliente" : [
+		{
+			"Name" : "RiassuntoMovimenti",
+			"SQL" : "SELECT *\n  FROM movimenti\n WHERE EXTRACT(YEAR FROM DATA) = :AnnoMovimento\n     AND EXTRACT(MONTH FROM DATA) = :MeseMovimento\n     AND (movimenti.ID_CLIENTE = :ChiaveCliente\n           OR movimenti.CHIAVE IN (SELECT rate_fattura.ID_MOVIMENTO\n                                                   FROM rate_fattura\n                                                 WHERE rate_fattura.ID_FATTURA IN (SELECT fatture.CHIAVE\n\t\t\t\t\t\t                      FROM fatture\n                                                                                                        WHERE fatture.ID_CLIENTE = :ChiaveCliente))\n           OR movimenti.CHIAVE IN (SELECT fatture_insolute_pregresse.ID_MOVIMENTO\n                                                    FROM fatture_insolute_pregresse\n                                                  WHERE fatture_insolute_pregresse.ID_CLIENTE = :ChiaveCliente))\n"
+		}
+	],
+	"RiassuntoMovimentiPerMesePerFornitore" : [
+		{
+			"Name" : "RiassuntoMovimenti",
+			"SQL" : "SELECT *\n  FROM movimenti\n WHERE EXTRACT(YEAR FROM DATA) = :AnnoMovimento\n   AND EXTRACT(MONTH FROM DATA) = :MeseMovimento\n   AND (movimenti.ID_FORNITORE =:ChiaveFornitore \n OR (movimenti.CHIAVE IN (SELECT rate_fatture_passive.ID_MOVIMENTO\n                            FROM rate_fatture_passive\n                           WHERE rate_fatture_passive.ID_FATTURA_PASSIVA IN (SELECT fatture_passive.CHIAVE\n                                                                                                              FROM fatture_passive\n                                                                                                             WHERE fatture_passive.ID_FORNITORE = :ChiaveFornitore)\n                                                                                                                                                       \n\t\t\t\t\t\t\t         ))\n   OR (movimenti.CHIAVE IN (SELECT fatture_insolute_pregresse_fornitori.ID_MOVIMENTO\n                             FROM fatture_insolute_pregresse_fornitori\n                            WHERE fatture_insolute_pregresse_fornitori.ID_FORNITORE = :ChiaveFornitore)))\n"
+		},
+		{
+			"Name" : "RiassuntoFatturePassive",
+			"SQL" : "SELECT 'P' AS TIPO_DOCUMENTO,\n       fatture_passive.CHIAVE,\n       rate_fatture_passive.DATA_PAGAMENTO AS DATA,\n       fatture_passive.NUMERO, \n       EXTRACT(YEAR FROM fatture_passive.DATA) AS ANNO, \n       fatture_passive.ID_FORNITORE,\n       fatture_passive.RAGIONE_SOCIALE,\n       fatture_passive.IS_FATTURA,\n       (SELECT COUNT(*)\n          FROM rate_fatture_passive\n         WHERE rate_fatture_passive.DATA_PAGAMENTO IS NULL\n           AND ID_FATTURA_PASSIVA = fatture_passive.CHIAVE) AS RATE_NON_PAGATE\n  FROM fatture_passive, rate_fatture_passive\n  WHERE rate_fatture_passive.ID_FATTURA_PASSIVA = fatture_passive.CHIAVE\n    AND EXTRACT(YEAR FROM rate_fatture_passive.DATA_PAGAMENTO) = :AnnoMovimento\n    AND EXTRACT(MONTH FROM rate_fatture_passive.DATA_PAGAMENTO) = :MeseMovimento\n    AND fatture_passive.ID_FORNITORE = :ChiaveFornitore\n"
+		},
+		{
+			"Name" : "RiassuntoFatture",
+			"SQL" : "SELECT \n       fatture_insolute_pregresse_fornitori.CHIAVE,\n       fatture_insolute_pregresse_fornitori.NUMERO,\n       fatture_insolute_pregresse_fornitori.DATA AS DATA, \n       EXTRACT(YEAR FROM fatture_insolute_pregresse_fornitori.DATA) AS ANNO,\n       EXTRACT(MONTH FROM fatture_insolute_pregresse_fornitori.DATA) AS MESE,\n       fatture_insolute_pregresse_fornitori.DATA_PAGAMENTO,\n       fatture_insolute_pregresse_fornitori.ID_FORNITORE\n  FROM fatture_insolute_pregresse_fornitori\n  WHERE fatture_insolute_pregresse_fornitori.ID_FORNITORE = :ChiaveFornitore\n AND EXTRACT(MONTH FROM fatture_insolute_pregresse_fornitori.DATA_PAGAMENTO) = :MesePagamento\n AND (EXTRACT(YEAR FROM fatture_insolute_pregresse_fornitori.DATA_PAGAMENTO) = :AnnoPagamento\n OR fatture_insolute_pregresse_fornitori.DATA_PAGAMENTO IS NULL)\n"
+		}
+	],
+	"SelectDettaglio" : [
+		{
+			"Name" : "Dettaglio",
+			"SQL" : "SELECT *\n  FROM conti_correnti_casse\nWHERE CHIAVE = :CHIAVE\n"
+		}
+	],
+	"SelectDettaglioMovimento" : [
+		{
+			"Name" : "SelectMovimento",
+			"SQL" : "SELECT *\n  FROM movimenti\nWHERE CHIAVE = :CHIAVE\n"
+		},
+		{
+			"Name" : "RateCorrelate",
+			"SQL" : "SELECT rate_fattura.CHIAVE,\n            fatture.NUMERO AS NUMERO_FATTURA,\n            rate_fattura.ID_FATTURA,\n            rate_fattura.DATA,\n            fatture.RAGIONE_SOCIALE,\n            rate_fattura.IMPORTO,\n            rate_fattura.ID_MOVIMENTO,\n            fatture.ID_CLIENTE,\n            'R' as TIPO_RATE\n  FROM rate_fattura\n            JOIN fatture ON fatture.CHIAVE = rate_fattura.ID_FATTURA\nWHERE rate_fattura.ID_MOVIMENTO = :CHIAVE\n"
+		},
+		{
+			"Name" : "FatturePregresseCorrelate",
+			"SQL" : "SELECT fatture_insolute_pregresse.CHIAVE,\n            fatture_insolute_pregresse.NUMERO AS NUMERO_FATTURA,\n            fatture_insolute_pregresse.DATA,\n            fatture_insolute_pregresse.ID_CLIENTE,\n            clienti.RAGIONE_SOCIALE,\n            fatture_insolute_pregresse.IMPORTO,\n            fatture_insolute_pregresse.ID_MOVIMENTO,\n            fatture_insolute_pregresse.ID_CLIENTE,\n            'F' as TIPO_RATE\n  FROM fatture_insolute_pregresse\n            LEFT OUTER JOIN clienti ON clienti.CHIAVE = fatture_insolute_pregresse.ID_CLIENTE\nWHERE fatture_insolute_pregresse.ID_MOVIMENTO = :CHIAVE\n"
+		},
+		{
+			"Name" : "FatturePregresseCorrelateFornitori",
+			"SQL" : "SELECT fatture_insolute_pregresse_fornitori.CHIAVE,\n            fatture_insolute_pregresse_fornitori.NUMERO AS NUMERO_FATTURA,\n            fatture_insolute_pregresse_fornitori.DATA,\n            fornitori.RAGIONE_SOCIALE,\n            fatture_insolute_pregresse_fornitori.IMPORTO *10 AS IMPORTO,\n            fatture_insolute_pregresse_fornitori.ID_MOVIMENTO,\n            fatture_insolute_pregresse_fornitori.ID_FORNITORE,\n            'P' as TIPO_RATE\n  FROM fatture_insolute_pregresse_fornitori\n            LEFT OUTER JOIN fornitori ON fornitori.CHIAVE = fatture_insolute_pregresse_fornitori.ID_FORNITORE\nWHERE fatture_insolute_pregresse_fornitori.ID_MOVIMENTO = :CHIAVE\n"
+		},
+		{
+			"Name" : "RateFatturePregresseCorrelateFornitori",
+			"SQL" : "SELECT rate_fatture_passive.CHIAVE,\n            fatture_passive.NUMERO AS NUMERO_FATTURA,\n            rate_fatture_passive.DATA_SCADENZA AS DATA,\n            fatture_passive.RAGIONE_SOCIALE,\n            fatture_passive.ID_FORNITORE,\n            rate_fatture_passive.IMPORTO,\n            rate_fatture_passive.ID_MOVIMENTO,\n            rate_fatture_passive.ID_FATTURA_PASSIVA,\n            rate_fatture_passive.NOTE,\n            'D' as TIPO_RATE\n  FROM rate_fatture_passive\n            JOIN fatture_passive ON fatture_passive.CHIAVE = rate_fatture_passive.ID_FATTURA_PASSIVA\nWHERE rate_fatture_passive.ID_MOVIMENTO = :CHIAVE\n"
+		}
+	],
+	"SelectSQL" : [
+		{
+			"Name" : "SelectContiCasse",
+			"SQL" : "SELECT *\n  FROM conti_correnti_casse\n  {W~ContiCorrenti~ CONTO_CORRENTE = 'T'\n    ~Cassa~ CONTO_CORRENTE = 'F'}\n ORDER BY CONTO_CORRENTE DESC, DESCRIZIONE ASC\n"
+		},
+		{
+			"Name" : "SelectMovimenti",
+			"SQL" : "SELECT *\n  FROM movimenti\nORDER BY DATA DESC, CHIAVE DESC\n"
+		}
+]
+}

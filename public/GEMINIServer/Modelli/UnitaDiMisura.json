@@ -1,0 +1,23 @@
+{
+	"RuoliAbilitati" : "",
+	"SelectSQL" : [
+		{
+			"Name" : "TutteLeUnita",
+			"SQL" : "SELECT *\n  FROM unita_di_misura \n"
+		}
+	],
+	"EditSQL" : [
+		{
+			"Name" : "InserisciUdm",
+			"SQL" : "INSERT INTO unita_di_misura (CHIAVE,DESCRIZIONE)\n     VALUES (:NewKey1, #DESCRIZIONE)\n"
+		},
+		{
+			"Name" : "ModificaUdm",
+			"SQL" : "UPDATE unita_di_misura \n   SET DESCRIZIONE = #DESCRIZIONE\n WHERE CHIAVE = :CHIAVE\n"
+		},
+		{
+			"Name" : "EliminaUdm",
+			"SQL" : "DELETE FROM unita_di_misura WHERE CHIAVE = :CHIAVE\n"
+		}
+]
+}

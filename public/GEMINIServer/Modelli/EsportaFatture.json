@@ -1,0 +1,11 @@
+{
+	"RuoliAbilitati" : "",
+	"SelectSQL" : [
+		{
+			"Name" : "Tutto",
+			"SQL" : "(SELECT fatture.DATA, \n             fatture.CHIAVE,\n             fatture.RAGIONE_SOCIALE, \n             fatture.NUMERO, \n             fatture.DA_BANCO,\n             GET_IMPONIBILE(fatture.CHIAVE) AS IMPORTO,\n       (SELECT COUNT(*)\n          FROM rate_fattura\n         WHERE DATA_PAGAMENTO IS NULL\n           AND ID_MOVIMENTO IS NULL\n           AND ID_FATTURA = fatture.CHIAVE) AS RATE_NON_PAGATE,\n           'F' AS IS_NOTA_DI_CREDITO,\n           'F' AS IS_AUTOFATTURA\n FROM fatture\nWHERE fatture.NUMERO IS NOT NULL\n     AND fatture.INVIATA_ALLO_SDI = 'F')\nUNION\n(SELECT note_di_credito.DATA, \n             note_di_credito.CHIAVE, \n             note_di_credito.RAGIONE_SOCIALE, \n             note_di_credito.NUMERO,\n             0 AS DA_BANCO,\n             GET_IMPONIBILE_NOTE(note_di_credito.CHIAVE) AS IMPORTO, 0 AS RATE_NON_PAGATE, \n             'T' AS IS_NOTA_DI_CREDITO, \n             'F' AS IS_AUTOFATTURA\n FROM note_di_credito\nWHERE note_di_credito.NUMERO IS NOT NULL\n     AND note_di_credito.INVIATA_ALLO_SDI = 'F')\nUNION\n(SELECT autofatture.DATA,\n             autofatture.CHIAVE,  \n             autofatture.RAGIONE_SOCIALE, \n             autofatture.NUMERO,\n             0 AS DA_BANCO,\n             GET_IMPONIBILE_AUTOFATTURE(autofatture.CHIAVE) AS IMPORTO, \n             0 AS RATE_NON_PAGATE, \n             'F' AS IS_NOTA_DI_CREDITO,\n             'T' AS IS_AUTOFATTURA\n FROM autofatture\nWHERE autofatture.NUMERO IS NOT NULL\n     AND autofatture.INVIATA_ALLO_SDI = 'F')\nORDER BY DATA, NUMERO\n"
+		}
+	],
+	"EditSQL" : [
+]
+}

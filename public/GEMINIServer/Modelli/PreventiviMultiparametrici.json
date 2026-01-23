@@ -1,0 +1,209 @@
+{
+	"RuoliAbilitati" : "",
+	"CaricaAllegato" : [
+		{
+			"Name" : "CaricaAllegato",
+			"SQL" : "SELECT *\n  FROM allegati_preventivi_multiparametrici\n WHERE CHIAVE = :CHIAVE\n"
+		}
+	],
+	"EditSQL" : [
+		{
+			"Name" : "Inserisci",
+			"SQL" : "INSERT INTO preventivi_multiparametrici (CHIAVE, NUMERO, ID_CLIENTE, ANNO,\n                     RAGIONE_SOCIALE, INDIRIZZO_FATTURAZIONE, NR_CIVICO_FATTURAZIONE,\n                     COMUNE_FATTURAZIONE, PROVINCIA_FATTURAZIONE, CAP_FATTURAZIONE,\n                     DATA, PARTITA_IVA, CODICE_FISCALE,\n                     COMUNE_DESTINAZIONE, PROVINCIA_DESTINAZIONE, CAP_DESTINAZIONE, NR_CIVICO_DESTINAZIONE,\n                     DESTINAZIONE, INDIRIZZO_DESTINAZIONE,\n                     COND_PAGAMENTO, NOTE, RITENUTA, \n                     ESIGIBILITA_IVA, IBAN, CAUSALE, IS_INVIATO, ID_CONTO_CORRENTE, BANCA, BIC, SWIFT,\n                     COD_ENTE_SDI, PEC, ENTE_PUBBLICO, COD_UFFICIO_DEST, CIG, CUP, CONVENZIONE, VOCE_DI_RIFERIMENTO,\n                     DOCUMENTO_NR, DATA_DOCUMENTO, DOCUMENTO_CORRELATO, NUMERO_REVISIONE, NAZIONE_DESTINAZIONE, \n                     NAZIONE_EM_PIVA, PROGRAMMA_PROSSIMA_VISITA, ID_FILIALE, PROPOSTA_INTERVENTO_IMMEDIATO,\n                     RIFIUTATO, ID_ZONA_SPEDIZIONE, MESE_GENERAZIONE, DATA_CREAZIONE)\n        VALUES (:NewKey1, NEW_NUMERO_PREVENTIVO_MULTI(EXTRACT(YEAR FROM #DATA)), :ID_CLIENTE, :ANNO,\n                     #RAGIONE_SOCIALE, #INDIRIZZO_FATTURAZIONE, #NR_CIVICO_FATTURAZIONE,\n                     #COMUNE_FATTURAZIONE, :PROVINCIA_FATTURAZIONE, #CAP_FATTURAZIONE,\n                     #DATA, #PARTITA_IVA, #CODICE_FISCALE,\n                     #COMUNE_DESTINAZIONE, :PROVINCIA_DESTINAZIONE, #CAP_DESTINAZIONE, #NR_CIVICO_DESTINAZIONE,\n                     #DESTINAZIONE, #INDIRIZZO_DESTINAZIONE,\n                     :COND_PAGAMENTO, #NOTE, :RITENUTA, \n                     #ESIGIBILITA_IVA, #IBAN, :CAUSALE, #IS_INVIATO, :ID_CONTO_CORRENTE, #BANCA, #BIC, #SWIFT,\n                     #COD_ENTE_SDI, #PEC, #ENTE_PUBBLICO, #COD_UFFICIO_DEST, #CIG, #CUP, #CONVENZIONE, #VOCE_DI_RIFERIMENTO,\n                     #DOCUMENTO_NR, #DATA_DOCUMENTO, #DOCUMENTO_CORRELATO, :NUMERO_REVISIONE, :NAZIONE_DESTINAZIONE, \n                     :NAZIONE_EM_PIVA, #PROGRAMMA_PROSSIMA_VISITA, :ID_FILIALE, #PROPOSTA_INTERVENTO_IMMEDIATO,\n                     #RIFIUTATO, :ID_ZONA_SPEDIZIONE, :MESE_GENERAZIONE, #DATA_CREAZIONE)\n"
+		},
+		{
+			"Name" : "Modifica",
+			"SQL" : "UPDATE preventivi_multiparametrici SET\n               ID_CLIENTE = :ID_CLIENTE,\n                       DATA = #DATA, \n               ANNO = :ANNO,\n               RAGIONE_SOCIALE = #RAGIONE_SOCIALE,\n               INDIRIZZO_FATTURAZIONE = #INDIRIZZO_FATTURAZIONE,\n               COMUNE_FATTURAZIONE = #COMUNE_FATTURAZIONE, \n               PROVINCIA_FATTURAZIONE = :PROVINCIA_FATTURAZIONE, \n               CAP_FATTURAZIONE = #CAP_FATTURAZIONE, \n               PARTITA_IVA = #PARTITA_IVA, \n               CODICE_FISCALE = #CODICE_FISCALE,\n               COMUNE_DESTINAZIONE = #COMUNE_DESTINAZIONE, \n               PROVINCIA_DESTINAZIONE = :PROVINCIA_DESTINAZIONE,\n               CAP_DESTINAZIONE = #CAP_DESTINAZIONE, \n               DESTINAZIONE = #DESTINAZIONE, \n               INDIRIZZO_DESTINAZIONE = #INDIRIZZO_DESTINAZIONE,\n               COND_PAGAMENTO = :COND_PAGAMENTO,\n               NOTE = #NOTE,\n               RITENUTA = :RITENUTA,\n               ESIGIBILITA_IVA = #ESIGIBILITA_IVA,\n               IBAN = #IBAN,\n               CAUSALE = :CAUSALE,\n               IS_INVIATO = #IS_INVIATO,\n               ID_CONTO_CORRENTE = :ID_CONTO_CORRENTE, \n               BIC = #BIC,\n               SWIFT = #SWIFT,\n               BANCA = #BANCA,\n               NR_CIVICO_DESTINAZIONE = #NR_CIVICO_DESTINAZIONE,\n               NR_CIVICO_FATTURAZIONE = #NR_CIVICO_FATTURAZIONE,\n               COD_ENTE_SDI = #COD_ENTE_SDI,\n               ENTE_PUBBLICO = #ENTE_PUBBLICO,\n               PEC = #PEC,\n               COD_UFFICIO_DEST = #COD_UFFICIO_DEST,\n               CIG = #CIG, \n               CUP = #CUP, \n               CONVENZIONE = #CONVENZIONE, \n               VOCE_DI_RIFERIMENTO = #VOCE_DI_RIFERIMENTO,\n               DOCUMENTO_NR = #DOCUMENTO_NR, \n               DATA_DOCUMENTO = #DATA_DOCUMENTO, \n               DOCUMENTO_CORRELATO = #DOCUMENTO_CORRELATO,\n               NUMERO_REVISIONE = :NUMERO_REVISIONE,\n               NAZIONE_DESTINAZIONE = :NAZIONE_DESTINAZIONE, \n               NAZIONE_EM_PIVA = :NAZIONE_EM_PIVA,\n               PROGRAMMA_PROSSIMA_VISITA = #PROGRAMMA_PROSSIMA_VISITA,\n               ID_FILIALE = :ID_FILIALE,\n               PROPOSTA_INTERVENTO_IMMEDIATO = #PROPOSTA_INTERVENTO_IMMEDIATO,\n               RIFIUTATO = #RIFIUTATO,\n               ID_ZONA_SPEDIZIONE = :ID_ZONA_SPEDIZIONE\n   WHERE CHIAVE = :CHIAVE\n"
+		},
+		{
+			"Name" : "Elimina",
+			"SQL" : "DELETE FROM preventivi_multiparametrici\n WHERE CHIAVE = :CHIAVE_PREVENTIVO\n"
+		},
+		{
+			"Name" : "InserisciAllegato",
+			"SQL" : "INSERT INTO allegati_preventivi_multiparametrici (CHIAVE, ALLEGATO, ID_PREVENTIVO_MULTI, DESCRIZIONE)\n                      VALUES (:NewKey2, $ALLEGATO, :NewKey1!ID_PREVENTIVO_MULTI, #DESCRIZIONE)\n"
+		},
+		{
+			"Name" : "ModificaAllegato",
+			"SQL" : "UPDATE allegati_preventivi_multiparametrici\n   SET CHIAVE = :CHIAVE,\n       DESCRIZIONE = #DESCRIZIONE,\n       ALLEGATO = $ALLEGATO\n WHERE CHIAVE = :CHIAVE\n"
+		},
+		{
+			"Name" : "EliminaAllegato",
+			"SQL" : "DELETE from allegati_preventivi_multiparametrici\n WHERE CHIAVE = :CHIAVE\n"
+		},
+		{
+			"Name" : "EliminaAllegatoTramitePreventivo",
+			"SQL" : "DELETE from allegati_preventivi_multiparametrici\n WHERE ID_PREVENTIVO_MULTI = :CHIAVE\n"
+		},
+		{
+			"Name" : "InserisciLog",
+			"SQL" : "INSERT INTO log_preventivi_multiparametrici (CHIAVE, ID_PREVENTIVO, DATA, NOTE, ID_UTENTE)\n                            VALUES (:NewKey2, :NewKey1!ID_PREVENTIVO, #DATA, #NOTE, :KeyAccount)\n"
+		},
+		{
+			"Name" : "EliminaLogTramitePreventivo",
+			"SQL" : "DELETE from log_preventivi_multiparametrici\n WHERE ID_PREVENTIVO = :CHIAVE\n"
+		},
+		{
+			"Name" : "DeleteAttrezzatureDaPreventivo",
+			"SQL" : "DELETE FROM preventivi_multi_attrezzature \n          WHERE preventivi_multi_attrezzature.ID_PREVENTIVO_MULTI = :CHIAVE_PREVENTIVO_MULTI\n"
+		},
+		{
+			"Name" : "InserisciAttrezzatureInPreventivo",
+			"SQL" : "INSERT INTO preventivi_multi_attrezzature (ID_ATTREZZATURA, ID_PREVENTIVO_MULTI)\n                                                  VALUES (:ID_ATTREZZATURA, :NewKey1!ID_PREVENTIVO_MULTI)\n"
+		},
+		{
+			"Name" : "EliminaAttrezzatureCollegateAlPreventivo",
+			"SQL" : "DELETE from preventivi_multi_attrezzature\n WHERE ID_PREVENTIVO_MULTI = :CHIAVE\n"
+		},
+		{
+			"Name" : "InserisciSezione",
+			"SQL" : "INSERT INTO preventivi_multi_sezione (CHIAVE, ID_PREVENTIVO_MULTI)\n                                           VALUES (:NewKey2, :NewKey1!ID_PREVENTIVO_MULTI)\n"
+		},
+		{
+			"Name" : "ModificaSezione",
+			"SQL" : ""
+		},
+		{
+			"Name" : "EliminaSezione",
+			"SQL" : "DELETE FROM preventivi_multi_sezione\n          WHERE CHIAVE = :CHIAVE\n"
+		},
+		{
+			"Name" : "InserisciSoluzione",
+			"SQL" : "INSERT INTO preventivi_multi_soluzioni (CHIAVE, ID_SEZIONE, ID_PREVENTIVO_MULTI)\n                                             VALUES (:NewKey3, :NewKey2!ID_SEZIONE, :NewKey1!ID_PREVENTIVO_MULTI)\n"
+		},
+		{
+			"Name" : "ModificaSoluzione",
+			"SQL" : ""
+		},
+		{
+			"Name" : "EliminaSoluzione",
+			"SQL" : "DELETE FROM preventivi_multi_soluzioni\n          WHERE CHIAVE = :CHIAVE\n"
+		},
+		{
+			"Name" : "InserisciVoceSoluzione",
+			"SQL" : "INSERT INTO preventivi_multi_voci_soluzione (CHIAVE, ID_SOLUZIONE, DESCRIZIONE, IMPORTO, QUANTITA,\n                                                                   IVA, SCONTO,UNITA_DI_MISURA, ORDINAMENTO, CODICE_PRODOTTO, NATURA_PAGAMENTO,ID_PRODOTTO,\n                                                                   ID_PREVENTIVO_MULTI)\n                                                     VALUES (:NewKey4, :NewKey3!ID_SOLUZIONE, #DESCRIZIONE, :IMPORTO, :QUANTITA,\n                                                                   :IVA, :SCONTO,#UNITA_DI_MISURA, :ORDINAMENTO, #CODICE_PRODOTTO, :NATURA_PAGAMENTO,:ID_PRODOTTO,\n                                                                   :NewKey1!ID_PREVENTIVO_MULTI)\n"
+		},
+		{
+			"Name" : "ModificaVoceSoluzione",
+			"SQL" : "UPDATE preventivi_multi_voci_soluzione\n      SET DESCRIZIONE = #DESCRIZIONE,\n             IMPORTO      = #IMPORTO,\n             QUANTITA = :QUANTITA,\n             ORDINAMENTO = :ORDINAMENTO,\n             IVA = :IVA,\n             UNITA_DI_MISURA = #UNITA_DI_MISURA,\n             SCONTO = :SCONTO,\n             CODICE_PRODOTTO = #CODICE_PRODOTTO,\n             NATURA_PAGAMENTO = :NATURA_PAGAMENTO,\n             ID_PRODOTTO = :ID_PRODOTTO\n WHERE CHIAVE = :CHIAVE\n\n"
+		},
+		{
+			"Name" : "EliminaVoceSoluzione",
+			"SQL" : "DELETE FROM preventivi_multi_voci_soluzione\n          WHERE CHIAVE = :CHIAVE\n"
+		},
+		{
+			"Name" : "EliminaVociSoluzioniCollegateAlPreventivo",
+			"SQL" : "DELETE from preventivi_multi_voci_soluzione\n WHERE ID_PREVENTIVO_MULTI = :CHIAVE\n"
+		},
+		{
+			"Name" : "EliminaSoluzioniCollegateAlPreventivo",
+			"SQL" : "DELETE from preventivi_multi_soluzioni\n WHERE ID_PREVENTIVO_MULTI = :CHIAVE\n"
+		},
+		{
+			"Name" : "EliminaSezioniCollegateAlPreventivo",
+			"SQL" : "DELETE from preventivi_multi_sezione\n WHERE ID_PREVENTIVO_MULTI = :CHIAVE\n"
+		},
+		{
+			"Name" : "CollegaConfermaAlPreventivo",
+			"SQL" : "UPDATE preventivi_multiparametrici\n      SET ID_PREVENTIVO_CONFERMA = :ID_PREVENTIVO\n  WHERE CHIAVE = :CHIAVE\n"
+		},
+		{
+			"Name" : "InserisciStoricoRevisione",
+			"SQL" : "INSERT INTO preventivi_multiparametrici (CHIAVE, NUMERO, ID_CLIENTE, ANNO,\n                     RAGIONE_SOCIALE, INDIRIZZO_FATTURAZIONE, NR_CIVICO_FATTURAZIONE,\n                     COMUNE_FATTURAZIONE, PROVINCIA_FATTURAZIONE, CAP_FATTURAZIONE,\n                     DATA, PARTITA_IVA, CODICE_FISCALE,\n                     COMUNE_DESTINAZIONE, PROVINCIA_DESTINAZIONE, CAP_DESTINAZIONE, NR_CIVICO_DESTINAZIONE,\n                     DESTINAZIONE, INDIRIZZO_DESTINAZIONE,\n                     COND_PAGAMENTO, NOTE, RITENUTA, \n                     ESIGIBILITA_IVA, IBAN, CAUSALE, IS_INVIATO, ID_CONTO_CORRENTE, BANCA, BIC, SWIFT,\n                     COD_ENTE_SDI, PEC, ENTE_PUBBLICO, COD_UFFICIO_DEST, CIG, CUP, CONVENZIONE, VOCE_DI_RIFERIMENTO,\n                     DOCUMENTO_NR, DATA_DOCUMENTO, DOCUMENTO_CORRELATO, NUMERO_REVISIONE, NAZIONE_DESTINAZIONE, \n                     NAZIONE_EM_PIVA, PROGRAMMA_PROSSIMA_VISITA, ID_FILIALE, PROPOSTA_INTERVENTO_IMMEDIATO,\n                     RIFIUTATO,  PRIMO_PREVENTIVO, ID_ZONA_SPEDIZIONE)\n        VALUES (:NewKey1, :NUMERO, :ID_CLIENTE, :ANNO,\n                     #RAGIONE_SOCIALE, #INDIRIZZO_FATTURAZIONE, #NR_CIVICO_FATTURAZIONE,\n                     #COMUNE_FATTURAZIONE, :PROVINCIA_FATTURAZIONE, #CAP_FATTURAZIONE,\n                     #DATA, #PARTITA_IVA, #CODICE_FISCALE,\n                     #COMUNE_DESTINAZIONE, :PROVINCIA_DESTINAZIONE, #CAP_DESTINAZIONE, #NR_CIVICO_DESTINAZIONE,\n                     #DESTINAZIONE, #INDIRIZZO_DESTINAZIONE,\n                     :COND_PAGAMENTO, #NOTE, :RITENUTA, \n                     #ESIGIBILITA_IVA, #IBAN, :CAUSALE, #IS_INVIATO, :ID_CONTO_CORRENTE, #BANCA, #BIC, #SWIFT,\n                     #COD_ENTE_SDI, #PEC, #ENTE_PUBBLICO, #COD_UFFICIO_DEST, #CIG, #CUP, #CONVENZIONE, #VOCE_DI_RIFERIMENTO,\n                     #DOCUMENTO_NR, #DATA_DOCUMENTO, #DOCUMENTO_CORRELATO, :NUMERO_REVISIONE, :NAZIONE_DESTINAZIONE, \n                     :NAZIONE_EM_PIVA, #PROGRAMMA_PROSSIMA_VISITA, :ID_FILIALE, #PROPOSTA_INTERVENTO_IMMEDIATO,\n                     #RIFIUTATO, :PRIMO_PREVENTIVO, :ID_ZONA_SPEDIZIONE)\n"
+		},
+		{
+			"Name" : "InserisciAllegatoRevisione",
+			"SQL" : "INSERT INTO allegati_preventivi_multiparametrici (CHIAVE, ALLEGATO, ID_PREVENTIVO_MULTI, DESCRIZIONE)\n        SELECT GET_NEW_KEY(), ALLEGATO, :NewKey1!ID_PREVENTIVO_MULTI, DESCRIZIONE\n         FROM allegati_preventivi_multiparametrici \n      WHERE ID_PREVENTIVO_MULTI = :CHIAVE\n"
+		},
+		{
+			"Name" : "UpdateConservaIsInviato",
+			"SQL" : "UPDATE preventivi_multiparametrici SET IS_INVIATO = 'T' WHERE CHIAVE = :CHIAVE\n"
+		},
+		{
+			"Name" : "EliminaAttrezzatureSoluzione",
+			"SQL" : "DELETE FROM preventivi_multi_attrezzature_soluzioni\n          WHERE ID_SOLUZIONE = :ID_SOLUZIONE\n"
+		},
+		{
+			"Name" : "InserisciAttrezzatureSoluzione",
+			"SQL" : "INSERT INTO preventivi_multi_attrezzature_soluzioni(ID_ATTREZZATURA, ID_SOLUZIONE, ID_PREVENTIVO_MULTI)\n                                                  VALUES (:ID_ATTREZZATURA, :NewKey3!ID_SOLUZIONE, :NewKey1!ID_PREVENTIVO_MULTI)\n"
+		},
+		{
+			"Name" : "EliminaAttrezzSoluzioniCollegateAlPreventivo",
+			"SQL" : "DELETE from preventivi_multi_attrezzature_soluzioni\n WHERE ID_PREVENTIVO_MULTI = :CHIAVE\n"
+		}
+	],
+	"FiltroPreventivo" : [
+		{
+			"Name" : "FiltroPreventivo",
+			"SQL" : "SELECT CHIAVE,\n            NUMERO, \n            ANNO, \n            ID_CLIENTE, \n            RAGIONE_SOCIALE,\n            ID_FATTURA,\n            PROGRAMMA_PROSSIMA_VISITA,\n              ID_DDT_ENTRANTI,\n            ID_DDT_USCENTI,\n            ID_PREVENTIVO_CONFERMA\n   FROM preventivi_multiparametrici\n WHERE PRIMO_PREVENTIVO IS NULL\n   {w~NumeroPreventivo~NUMERO = :NumeroPreventivo\n       ~AnnoPreventivo~ANNO = :AnnoPreventivo\n       ~DalNr~NUMERO >= :DalNr\n       ~AlNr~NUMERO <= :AlNr\n       ~Anno1~ANNO >= :Anno1\n       ~Anno2~ANNO <= :Anno2\n       ~DallaData~DATA >= #DallaData\n       ~AllaData~DATA <= #AllaData\n       ~Intestatario~ UPPER(RAGIONE_SOCIALE) LIKE UPPER(#Intestatario)\n       ~Cliente~ ID_CLIENTE = :Cliente\n       ~PartitaIva~ UPPER(PARTITA_IVA) LIKE UPPER(#PartitaIva)\n       ~DaGestire~ RIFIUTATO <> 'T' AND ID_PREVENTIVO_CONFERMA IS NULL\n       ~Confermati~ ID_PREVENTIVO_CONFERMA IS NOT NULL\n       ~Rifiutati~ RIFIUTATO = 'T'}\nORDER BY DATA DESC, NUMERO DESC\nLIMIT :LimitNumRows OFFSET :LimitStart\n"
+		}
+	],
+	"ListaEmailPreventivo" : [
+		{
+			"Name" : "ListaEmailCliente",
+			"SQL" : "SELECT clienti_telefono.EMAIL AS EMAIL_CLIENTI\n  FROM preventivi_multiparametrici\n                               JOIN clienti                    ON clienti.CHIAVE = preventivi_multiparametrici.ID_CLIENTE\n            LEFT OUTER JOIN clienti_telefono       ON clienti.CHIAVE = clienti_telefono.ID_CLIENTE\nWHERE preventivi_multiparametrici.CHIAVE = :CHIAVE\n"
+		},
+		{
+			"Name" : "ListaEmailAmministratore",
+			"SQL" : "SELECT amministratori_telefono.EMAIL AS EMAIL_AMMINISTRATORI\n  FROM preventivi_multiparametrici\n                               JOIN clienti                           ON clienti.CHIAVE = preventivi_multiparametrici.ID_CLIENTE\n            LEFT OUTER JOIN amministratori_telefono ON clienti.ID_AMMINISTRATORE = amministratori_telefono.ID_AMMINISTRATORE\n WHERE preventivi_multiparametrici.CHIAVE = :CHIAVE\n"
+		}
+	],
+	"ListaPreventiviConfermati" : [
+		{
+			"Name" : "ListaPreventiviConfermati",
+			"SQL" : "SELECT preventivi_multiparametrici.CHIAVE, \n            preventivi_multiparametrici.DATA,\n            preventivi_multiparametrici.NUMERO,\n            preventivi_multiparametrici.RAGIONE_SOCIALE,\n            preventivi_multiparametrici.COND_PAGAMENTO,\n            clienti.RAGIONE_SOCIALE AS RAGIONE_SOCIALE_CLIENTE, \n            clienti.CODICE_CLIENTE\n  FROM preventivi _multiparametrici\n            LEFT OUTER JOIN clienti ON clienti.CHIAVE = preventivi_multiparametrici.ID_CLIENTE\n WHERE preventivi_multiparametrici.ID_PREVENTIVO_CONFERMA IS NOT NULL\n     AND preventivi_multiparametrici.ID_CLIENTE = :CHIAVE\n {w~DallaData~preventivi_multiparametrici.DATA >= #DallaData\n     ~AllaData~preventivi_multiparametrici.DATA <= #AllaData}\n ORDER BY DATA DESC\n"
+		}
+	],
+	"ListaVociPreventiviSelezionati" : [
+		{
+			"Name" : "ListaVociPreventiviSelezionati",
+			"SQL" : "SELECT voci_preventivi.*, \n            preventivi.NUMERO, \n            preventivi.DESTINAZIONE, \n            preventivi.DATA AS DATA_PREVENTIVO, \n            preventivi.NUMERO_REVISIONE,\n            preventivi.INDIRIZZO_DESTINAZIONE,\n            preventivi.NR_CIVICO_DESTINAZIONE,\n            preventivi.COMUNE_DESTINAZIONE\n  FROM voci_preventivi\n           LEFT OUTER JOIN preventivi ON preventivi.CHIAVE = voci_preventivi.ID_PREVENTIVO\nWHERE voci_preventivi.ID_PREVENTIVO IN ?ListaCheckati\nORDER BY ID_PREVENTIVO, ORDINAMENTO\n"
+		}
+	],
+	"LsAnnoPreventiviXCliente" : [
+		{
+			"Name" : "LsAnnoPreventivi",
+			"SQL" : "SELECT preventivi_multiparametrici.ANNO AS ANNO_PREVENTIVO\n  FROM preventivi_multiparametrici\nWHERE ID_CLIENTE = :ChiaveCliente\nGROUP BY ANNO_PREVENTIVO\nORDER BY ANNO_PREVENTIVO DESC\n"
+		}
+	],
+	"NuovoNumeroPreventivo" : [
+		{
+			"Name" : "NuovoNumeroPreventivo",
+			"SQL" : "SELECT NEW_NUMERO_PREVENTIVO(:Anno) AS NUOVO_NUMERO\n"
+		}
+	],
+	"RiassuntoPreventiviPerAnno" : [
+		{
+			"Name" : "Riassunto",
+			"SQL" : "SELECT CHIAVE,\n       NUMERO, \n       ANNO, \n       ID_CLIENTE, \n       RAGIONE_SOCIALE,\n       ID_FATTURA,\n       ID_DDT_ENTRANTI,\n       ID_DDT_USCENTI,\n       ID_PREVENTIVO_CONFERMA,\n       RIFIUTATO\n  FROM preventivi_multiparametrici\n  WHERE ID_CLIENTE = :ChiaveCliente\n    AND ANNO = :AnnoPreventivo\n    AND PRIMO_PREVENTIVO IS NULL\n ORDER BY NUMERO DESC\n"
+		}
+	],
+	"SelectDettaglio" : [
+		{
+			"Name" : "Dettaglio",
+			"SQL" : "SELECT preventivi_multiparametrici.*, \n            clienti.BOLLO,\n            fatture.NUMERO AS NUMERO_FATTURA, \n            fatture.ANNO AS ANNO_FATTURA, \n            conti_correnti_casse.IBAN AS IBAN_CONTO,\n            conti_correnti_casse.NR_CONTO, \n            conti_correnti_casse.BANCA AS BANCA_CONTO,\n            conti_correnti_casse.SWIFT AS SWIFT_CONTO,  \n            conti_correnti_casse.BIC AS BIC_CONTO, \n            clienti.NATURA_PAGAMENTO,\n            clienti.IVA_SUGGERITA_CLIENTE,\n            filiali_clienti.NOME AS NOME_FILIALE,\n            preventivi.NUMERO AS NUMERO_CONFERMA,\n            IF(ddt_uscenti.NUMERO_DDT IS NOT NULL, ddt_uscenti.NUMERO_DDT, ddt_entranti.NUMERO_DDT) AS NUMERO_DDT\n  FROM preventivi_multiparametrici\n            LEFT OUTER JOIN fatture ON fatture.CHIAVE = preventivi_multiparametrici.ID_FATTURA\n            LEFT OUTER JOIN conti_correnti_casse ON conti_correnti_casse.CHIAVE = preventivi_multiparametrici.ID_CONTO_CORRENTE\n            LEFT OUTER JOIN clienti ON clienti.CHIAVE = preventivi_multiparametrici.ID_CLIENTE\n            LEFT OUTER JOIN filiali_clienti ON filiali_clienti.CHIAVE = preventivi_multiparametrici.ID_FILIALE\n            LEFT OUTER JOIN ddt_uscenti ON preventivi_multiparametrici.ID_DDT_USCENTI = ddt_uscenti.CHIAVE\n            LEFT OUTER JOIN ddt_entranti ON preventivi_multiparametrici.ID_DDT_ENTRANTI = ddt_entranti.CHIAVE \n            LEFT OUTER JOIN preventivi ON preventivi.CHIAVE = preventivi_multiparametrici.ID_PREVENTIVO_CONFERMA\nWHERE preventivi_multiparametrici.CHIAVE = :CHIAVE\n"
+		},
+		{
+			"Name" : "AllegatiPreventivo",
+			"SQL" : "SELECT CHIAVE, DESCRIZIONE, ID_PREVENTIVO_MULTI, ALLEGATO\n  FROM allegati_preventivi_multiparametrici\n WHERE ID_PREVENTIVO_MULTI = :CHIAVE\n"
+		},
+		{
+			"Name" : "AttrezzaturePreventivo",
+			"SQL" : "SELECT preventivi_multi_attrezzature.ID_ATTREZZATURA AS CHIAVE,\n            attrezzature.FAMIGLIA,\n            attrezzature.PROGRESSIVO,\n            cat_estintori.DESCRIZIONE\n   FROM preventivi_multi_attrezzature\n             JOIN attrezzature ON attrezzature.CHIAVE = preventivi_multi_attrezzature.ID_ATTREZZATURA\n             LEFT OUTER JOIN estintori ON estintori.ID_ATTREZZATURA = attrezzature.CHIAVE\n             LEFT OUTER JOIN cat_estintori ON cat_estintori.CHIAVE = estintori.ID_CAT_ESTINTORE\n WHERE preventivi_multi_attrezzature.ID_PREVENTIVO_MULTI = :CHIAVE\n     AND attrezzature.FAMIGLIA = 'E'\nUNION \nSELECT preventivi_multi_attrezzature.ID_ATTREZZATURA AS CHIAVE,\n            attrezzature.FAMIGLIA,\n            attrezzature.PROGRESSIVO,\n            tipi_idranti.DESCRIZIONE\n   FROM preventivi_multi_attrezzature\n             LEFT OUTER JOIN idranti ON idranti.ID_ATTREZZATURA = preventivi_multi_attrezzature.ID_ATTREZZATURA\n             LEFT OUTER JOIN impianti_idranti ON impianti_idranti.ID_ATTREZZATURA = idranti.ID_IMPIANTO\n             LEFT OUTER JOIN attrezzature ON idranti.ID_ATTREZZATURA = attrezzature.CHIAVE\n             LEFT OUTER JOIN tipi_idranti ON tipi_idranti.CHIAVE = idranti.ID_TIPO_IDRANTE\n WHERE preventivi_multi_attrezzature.ID_PREVENTIVO_MULTI = :CHIAVE\n      AND attrezzature.FAMIGLIA = 'B'\nUNION \nSELECT preventivi_multi_attrezzature.ID_ATTREZZATURA AS CHIAVE,\n            attrezzature.FAMIGLIA,\n            attrezzature.PROGRESSIVO,\n            '' AS DESCRIZIONE  \n   FROM preventivi_multi_attrezzature\n             JOIN attrezzature ON attrezzature.CHIAVE = preventivi_multi_attrezzature.ID_ATTREZZATURA\n             LEFT OUTER JOIN luci_emergenza ON luci_emergenza.ID_ATTREZZATURA = attrezzature.CHIAVE\n WHERE preventivi_multi_attrezzature.ID_PREVENTIVO_MULTI = :CHIAVE\n      AND attrezzature.FAMIGLIA = 'L'\nUNION\nSELECT preventivi_multi_attrezzature.ID_ATTREZZATURA AS CHIAVE,\n            attrezzature.FAMIGLIA,\n            attrezzature.PROGRESSIVO,\n            '' AS DESCRIZIONE  \n   FROM preventivi_multi_attrezzature\n             JOIN attrezzature ON attrezzature.CHIAVE = preventivi_multi_attrezzature.ID_ATTREZZATURA\n             LEFT OUTER JOIN porte_emergenza ON porte_emergenza.ID_ATTREZZATURA = attrezzature.CHIAVE\n WHERE preventivi_multi_attrezzature.ID_PREVENTIVO_MULTI = :CHIAVE\n      AND attrezzature.FAMIGLIA = 'P'\nUNION\nSELECT preventivi_multi_attrezzature.ID_ATTREZZATURA AS CHIAVE,\n            attrezzature.FAMIGLIA,\n            -1 AS PROGRESSIVO,\n            sprinkler.DESCRIZIONE\n   FROM preventivi_multi_attrezzature\n             JOIN attrezzature ON attrezzature.CHIAVE = preventivi_multi_attrezzature.ID_ATTREZZATURA\n             LEFT OUTER JOIN sprinkler ON sprinkler.ID_ATTREZZATURA = attrezzature.CHIAVE\n WHERE preventivi_multi_attrezzature.ID_PREVENTIVO_MULTI = :CHIAVE\n      AND attrezzature.FAMIGLIA = 'S'\nUNION\nSELECT preventivi_multi_attrezzature.ID_ATTREZZATURA AS CHIAVE,\n            attrezzature.FAMIGLIA,\n            -1 AS PROGRESSIVO,\n            evacuatori_fumo_calore.DESCRIZIONE\n   FROM preventivi_multi_attrezzature\n             JOIN attrezzature ON attrezzature.CHIAVE = preventivi_multi_attrezzature.ID_ATTREZZATURA\n             LEFT OUTER JOIN evacuatori_fumo_calore ON evacuatori_fumo_calore.ID_ATTREZZATURA = attrezzature.CHIAVE\n WHERE preventivi_multi_attrezzature.ID_PREVENTIVO_MULTI = :CHIAVE\n      AND attrezzature.FAMIGLIA = 'V'\nUNION\nSELECT preventivi_multi_attrezzature.ID_ATTREZZATURA AS CHIAVE,\n            attrezzature.FAMIGLIA,\n            -1 AS PROGRESSIVO,\n            impianti_evac.DESCRIZIONE\n   FROM preventivi_multi_attrezzature\n             JOIN attrezzature ON attrezzature.CHIAVE = preventivi_multi_attrezzature.ID_ATTREZZATURA\n             LEFT OUTER JOIN impianti_evac ON impianti_evac.ID_ATTREZZATURA = attrezzature.CHIAVE\n WHERE preventivi_multi_attrezzature.ID_PREVENTIVO_MULTI = :CHIAVE\n      AND attrezzature.FAMIGLIA = 'C'\nUNION\nSELECT preventivi_multi_attrezzature.ID_ATTREZZATURA AS CHIAVE,\n            attrezzature.FAMIGLIA,\n            -1 AS PROGRESSIVO,\n            rilevatori_fumo.DESCRIZIONE\n   FROM preventivi_multi_attrezzature\n             JOIN attrezzature ON attrezzature.CHIAVE = preventivi_multi_attrezzature.ID_ATTREZZATURA\n             LEFT OUTER JOIN rilevatori_fumo ON rilevatori_fumo.ID_ATTREZZATURA = attrezzature.CHIAVE\n WHERE preventivi_multi_attrezzature.ID_PREVENTIVO_MULTI = :CHIAVE\n      AND attrezzature.FAMIGLIA = 'F'\nUNION\nSELECT preventivi_multi_attrezzature.ID_ATTREZZATURA AS CHIAVE,\n            attrezzature.FAMIGLIA,\n            -1 AS PROGRESSIVO,\n            gruppi_pressurizzazione.DESCRIZIONE\n   FROM preventivi_multi_attrezzature\n             JOIN attrezzature ON attrezzature.CHIAVE = preventivi_multi_attrezzature.ID_ATTREZZATURA\n             LEFT OUTER JOIN gruppi_pressurizzazione ON gruppi_pressurizzazione.ID_ATTREZZATURA = attrezzature.CHIAVE\n WHERE preventivi_multi_attrezzature.ID_PREVENTIVO_MULTI = :CHIAVE\n      AND attrezzature.FAMIGLIA = 'G'\nORDER BY FAMIGLIA, PROGRESSIVO\n"
+		},
+		{
+			"Name" : "SezioniPreventivo",
+			"SQL" : "SELECT preventivi_multi_sezione.CHIAVE AS CHIAVE_SEZIONE,\n            preventivi_multi_sezione.ID_PREVENTIVO_MULTI,\n            preventivi_multi_soluzioni.CHIAVE AS CHIAVE_SOLUZIONE,\n            preventivi_multi_voci_soluzione.CHIAVE AS CHIAVE_VOCE,\n            preventivi_multi_voci_soluzione.*\n  FROM preventivi_multi_sezione \n            LEFT OUTER JOIN preventivi_multi_soluzioni ON preventivi_multi_soluzioni.ID_SEZIONE = preventivi_multi_sezione.CHIAVE\n            LEFT OUTER JOIN preventivi_multi_voci_soluzione ON preventivi_multi_voci_soluzione.ID_SOLUZIONE = preventivi_multi_soluzioni.CHIAVE\nWHERE preventivi_multi_sezione.ID_PREVENTIVO_MULTI = :CHIAVE\nORDER BY preventivi_multi_sezione.CHIAVE, preventivi_multi_soluzioni.CHIAVE, preventivi_multi_voci_soluzione.ORDINAMENTO \n"
+		},
+		{
+			"Name" : "AltreLavorazioni",
+			"SQL" : "SELECT preventivi_multi_attrezzature_soluzioni.*,\n            attrezzature.FAMIGLIA,\n            attrezzature.PROGRESSIVO,\n            COALESCE(cat_estintori.DESCRIZIONE,\n            tipi_idranti.DESCRIZIONE,\n            sprinkler.DESCRIZIONE,\n            evacuatori_fumo_calore.DESCRIZIONE,\n            impianti_evac.DESCRIZIONE,\n            rilevatori_fumo.DESCRIZIONE,\n            gruppi_pressurizzazione.DESCRIZIONE,\n            '') AS DESCRIZIONE\n  FROM preventivi_multi_attrezzature_soluzioni\n    JOIN attrezzature ON attrezzature.CHIAVE = preventivi_multi_attrezzature_soluzioni.ID_ATTREZZATURA\n    LEFT JOIN estintori ON estintori.ID_ATTREZZATURA = attrezzature.CHIAVE\n    LEFT JOIN cat_estintori ON cat_estintori.CHIAVE = estintori.ID_CAT_ESTINTORE\n    LEFT JOIN idranti ON idranti.ID_ATTREZZATURA = attrezzature.CHIAVE\n    LEFT JOIN tipi_idranti ON tipi_idranti.CHIAVE = idranti.ID_TIPO_IDRANTE\n    LEFT JOIN luci_emergenza ON luci_emergenza.ID_ATTREZZATURA = attrezzature.CHIAVE\n    LEFT JOIN porte_emergenza ON porte_emergenza.ID_ATTREZZATURA = attrezzature.CHIAVE\n    LEFT JOIN sprinkler ON sprinkler.ID_ATTREZZATURA = attrezzature.CHIAVE\n    LEFT JOIN evacuatori_fumo_calore ON evacuatori_fumo_calore.ID_ATTREZZATURA = attrezzature.CHIAVE\n    LEFT JOIN impianti_evac ON impianti_evac.ID_ATTREZZATURA = attrezzature.CHIAVE\n    LEFT JOIN rilevatori_fumo ON rilevatori_fumo.ID_ATTREZZATURA = attrezzature.CHIAVE\n    LEFT JOIN gruppi_pressurizzazione ON gruppi_pressurizzazione.ID_ATTREZZATURA = attrezzature.CHIAVE\n    LEFT JOIN preventivi_multiparametrici ON preventivi_multiparametrici.CHIAVE = preventivi_multi_attrezzature_soluzioni.ID_PREVENTIVO_MULTI\nWHERE preventivi_multiparametrici.CHIAVE = :CHIAVE\nORDER BY attrezzature.FAMIGLIA, attrezzature.PROGRESSIVO\n"
+		}
+	],
+	"SelectRevisione" : [
+		{
+			"Name" : "SelectRevisione",
+			"SQL" : "SELECT CHIAVE, NUMERO_REVISIONE\n   FROM preventivi_multiparametrici\n WHERE NUMERO = :NUMERO\n     AND ANNO = :ANNO\nORDER BY NUMERO_REVISIONE ASC\n"
+		}
+]
+}

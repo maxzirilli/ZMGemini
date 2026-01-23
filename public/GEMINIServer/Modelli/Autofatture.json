@@ -1,0 +1,109 @@
+{
+	"RuoliAbilitati" : "",
+	"CaricaAllegato" : [
+		{
+			"Name" : "CaricaAllegato",
+			"SQL" : "SELECT *\n  FROM allegati_autofatture\n WHERE CHIAVE = :CHIAVE\n"
+		}
+	],
+	"EditSQL" : [
+		{
+			"Name" : "Inserisci",
+			"SQL" : "INSERT INTO autofatture (CHIAVE, ID_FORNITORE, NUMERO,\n                     NUMERO_DEL_FORNITORE, ANNO,\n                     RAGIONE_SOCIALE, INDIRIZZO_FATTURAZIONE, NR_CIVICO_FATTURAZIONE,\n                     COMUNE_FATTURAZIONE, PROVINCIA_FATTURAZIONE, CAP_FATTURAZIONE,\n                     DATA, PARTITA_IVA, CODICE_FISCALE, RITENUTA,\n                     ESIGIBILITA_IVA, CAUSALE,\n                     COD_ENTE_SDI, PEC, ENTE_PUBBLICO, \n                     NAZIONE_EM_PIVA, TIPO_AUTOFATTURA, REGIME_FISCALE, TIPO_RITENUTA)\n             VALUES (:NewKey1, :ID_FORNITORE,  NEW_NUMERO_AUTOFATTURA(EXTRACT(YEAR FROM #DATA)),\n                     #NUMERO_DEL_FORNITORE, EXTRACT(YEAR FROM #DATA),\n                     #RAGIONE_SOCIALE, #INDIRIZZO_FATTURAZIONE, #NR_CIVICO_FATTURAZIONE,\n                     #COMUNE_FATTURAZIONE, :PROVINCIA_FATTURAZIONE, #CAP_FATTURAZIONE,\n                     #DATA, #PARTITA_IVA, #CODICE_FISCALE, :RITENUTA,\n                     #ESIGIBILITA_IVA, :CAUSALE,\n                     #COD_ENTE_SDI, #PEC, #ENTE_PUBBLICO, \n                     :NAZIONE_EM_PIVA, #TIPO_AUTOFATTURA, #REGIME_FISCALE, :TIPO_RITENUTA)\n"
+		},
+		{
+			"Name" : "Modifica",
+			"SQL" : "UPDATE autofatture SET\n               ID_FORNITORE = :ID_FORNITORE,\n               NUMERO_DEL_FORNITORE = #NUMERO_DEL_FORNITORE,\n               DATA = #DATA, \n               RAGIONE_SOCIALE = #RAGIONE_SOCIALE,\n               INDIRIZZO_FATTURAZIONE = #INDIRIZZO_FATTURAZIONE,\n               COMUNE_FATTURAZIONE = #COMUNE_FATTURAZIONE, \n               PROVINCIA_FATTURAZIONE = :PROVINCIA_FATTURAZIONE, \n               CAP_FATTURAZIONE = #CAP_FATTURAZIONE, \n               PARTITA_IVA = #PARTITA_IVA, \n               CODICE_FISCALE = #CODICE_FISCALE,\n               RITENUTA = :RITENUTA,\n               ESIGIBILITA_IVA = #ESIGIBILITA_IVA,\n               CAUSALE = :CAUSALE,\n               NR_CIVICO_FATTURAZIONE = #NR_CIVICO_FATTURAZIONE,\n               COD_ENTE_SDI = #COD_ENTE_SDI,\n               ENTE_PUBBLICO = #ENTE_PUBBLICO,\n               PEC = #PEC,\n               NAZIONE_EM_PIVA = :NAZIONE_EM_PIVA,\n               TIPO_AUTOFATTURA = #TIPO_AUTOFATTURA,\n               REGIME_FISCALE = #REGIME_FISCALE,\n               TIPO_RITENUTA = :TIPO_RITENUTA\n         WHERE CHIAVE = :CHIAVE\n"
+		},
+		{
+			"Name" : "Elimina",
+			"SQL" : "DELETE FROM autofatture \n WHERE CHIAVE = :CHIAVE_AUTOFATTURA;\n"
+		},
+		{
+			"Name" : "InserisciAllegato",
+			"SQL" : "INSERT INTO allegati_autofatture (CHIAVE, ALLEGATO, ID_AUTOFATTURA, DESCRIZIONE)\n                      VALUES (:NewKey2, $ALLEGATO, :NewKey1!ID_AUTOFATTURA, #DESCRIZIONE)\n"
+		},
+		{
+			"Name" : "ModificaAllegato",
+			"SQL" : "UPDATE allegati_autofatture \n   SET CHIAVE = :CHIAVE,\n       DESCRIZIONE = #DESCRIZIONE,\n       ALLEGATO = $ALLEGATO\n WHERE CHIAVE = :CHIAVE\n                    \n"
+		},
+		{
+			"Name" : "EliminaAllegato",
+			"SQL" : "DELETE FROM allegati_autofatture\n WHERE CHIAVE = :CHIAVE\n"
+		},
+		{
+			"Name" : "InserisciVoce",
+			"SQL" : "INSERT INTO voci_autofatture (CHIAVE, ID_AUTOFATTURA, DESCRIZIONE, IMPORTO, QUANTITA,\n                          IVA, IMPORTO_IVATO, SCONTO, UNITA_DI_MISURA, ORDINAMENTO, CODICE_PRODOTTO, NATURA_PAGAMENTO)\n                  VALUES (:NewKey2, :NewKey1!ID_AUTOFATTURA, #DESCRIZIONE, :IMPORTO, :QUANTITA,\n                          :IVA, #IMPORTO_IVATO, :SCONTO, :UNITA_DI_MISURA, :ORDINAMENTO, #CODICE_PRODOTTO, :NATURA_PAGAMENTO)\n"
+		},
+		{
+			"Name" : "ModificaVoce",
+			"SQL" : "UPDATE voci_autofatture\n   SET DESCRIZIONE = #DESCRIZIONE,\n       IMPORTO = #IMPORTO,\n       QUANTITA = :QUANTITA,\n       ORDINAMENTO = :ORDINAMENTO,\n       IVA = :IVA,\n       IMPORTO_IVATO = #IMPORTO_IVATO,\n       SCONTO = :SCONTO,\n       UNITA_DI_MISURA = :UNITA_DI_MISURA,\n       CODICE_PRODOTTO = #CODICE_PRODOTTO,\n       NATURA_PAGAMENTO = :NATURA_PAGAMENTO\n WHERE CHIAVE = :CHIAVE\n"
+		},
+		{
+			"Name" : "EliminaVoce",
+			"SQL" : "DELETE FROM voci_autofatture\n WHERE CHIAVE = :CHIAVE\n"
+		},
+		{
+			"Name" : "InserisciLog",
+			"SQL" : "INSERT INTO log_autofatture (CHIAVE, ID_AUTOFATTURA, DATA, NOTE, ID_UTENTE)\n                            VALUES (:NewKey2, :NewKey1!ID_AUTOFATTURA, #DATA, #NOTE, :KeyAccount)\n"
+		},
+		{
+			"Name" : "EliminaVociTramiteAutoFattura",
+			"SQL" : "DELETE FROM voci_autofatture\n WHERE ID_AUTOFATTURA = :CHIAVE_AUTOFATTURA\n"
+		},
+		{
+			"Name" : "EliminaAllegatiTramiteAutoFattura",
+			"SQL" : "DELETE FROM allegati_autofatture\n WHERE ID_AUTOFATTURA = :CHIAVE_AUTOFATTURA\n"
+		},
+		{
+			"Name" : "EliminaLogTramiteAutoFattura",
+			"SQL" : "DELETE FROM log_autofatture\n WHERE ID_AUTOFATTURA = :CHIAVE_AUTOFATTURA\n"
+		},
+		{
+			"Name" : "CorreggiAutoFattura",
+			"SQL" : "UPDATE autofatture\n   SET INVIATA_ALLO_SDI = 'F'\n WHERE CHIAVE = :CHIAVE\n"
+		}
+	],
+	"LsAnnoAutoFatture" : [
+		{
+			"Name" : "LsAnnoAutoFatture",
+			"SQL" : "SELECT EXTRACT(YEAR FROM DATA) AS ANNO_AUTOFATTURA\n  FROM autofatture\n  WHERE ID_FORNITORE = :ChiaveFornitore\nGROUP BY ANNO_AUTOFATTURA \nORDER BY ANNO_AUTOFATTURA DESC\n"
+		}
+	],
+	"RiassuntoAutoFatturePerAnno" : [
+		{
+			"Name" : "Riassunto",
+			"SQL" : "SELECT CHIAVE,\n            NUMERO, \n            EXTRACT(YEAR FROM DATA) AS ANNO, \n            ID_FORNITORE, \n            RAGIONE_SOCIALE\n  FROM autofatture\n  WHERE ID_FORNITORE = :ChiaveFornitore\n    AND EXTRACT(YEAR FROM DATA) = :AnnoAutoFattura\n"
+		}
+	],
+	"ScaricaFileAutoFattura" : [
+		{
+			"Name" : "ScaricaFileAutoFattura",
+			"SQL" : "SELECT XML_BODY, DATA_INVIO\n  FROM xml_autofatture\nWHERE ID_AUTOFATTURA = :CHIAVE\n     AND RISULTATO IS NULL\n"
+		}
+	],
+	"SelectDettaglio" : [
+		{
+			"Name" : "Dettaglio",
+			"SQL" : "SELECT autofatture.*,\n            fornitori.IVA_FORNITORE\n  FROM autofatture\n            JOIN fornitori ON fornitori.CHIAVE = autofatture.ID_FORNITORE\nWHERE autofatture.CHIAVE = :CHIAVE\n"
+		},
+		{
+			"Name" : "AllegatiAutoFattura",
+			"SQL" : "SELECT CHIAVE, DESCRIZIONE, ID_AUTOFATTURA, ALLEGATO\n  FROM allegati_autofatture\n WHERE ID_AUTOFATTURA = :CHIAVE\n"
+		},
+		{
+			"Name" : "VociAutoFattura",
+			"SQL" : "SELECT *\n  FROM voci_autofatture\n WHERE ID_AUTOFATTURA = :CHIAVE\nORDER BY ORDINAMENTO\n"
+		},
+		{
+			"Name" : "LogAutoFattura",
+			"SQL" : "SELECT log_autofatture.*,\n            utenti.RAGIONE_SOCIALE AS UTENTE\n  FROM log_autofatture\n   LEFT OUTER JOIN utenti ON log_autofatture.ID_UTENTE = utenti.CHIAVE\n WHERE ID_AUTOFATTURA = :CHIAVE\n ORDER BY log_autofatture.DATA DESC\n"
+		}
+	],
+	"SelectSQL" : [
+		{
+			"Name" : "Lista",
+			"SQL" : "SELECT CHIAVE,\n            NUMERO, \n            EXTRACT(YEAR FROM DATA) AS ANNO, \n            ID_FORNITORE, \n            RAGIONE_SOCIALE\n  FROM autofatture\n {W~NumeroFattura~autofatture.NUMERO = :NumeroFattura\n      ~Chiave~autofatture.CHIAVE = :Chiave\n      ~AnnoFattura~autofatture.ANNO = :AnnoFattura\n      ~DalNr~autofatture.NUMERO >= :DalNr\n      ~AlNr~autofatture.NUMERO <= :AlNr\n      ~Anno1~autofatture.ANNO >= :Anno1\n      ~Anno2~autofatture.ANNO <= :Anno2\n      ~DallaData~autofatture.DATA >= #DallaData\n      ~AllaData~autofatture.DATA <= #AllaData\n     \n      ~Intestatario~ autofatture.CHIAVE IN (SELECT autofatture.CHIAVE\n\t                                            FROM autofatture\n\t\t                                          JOIN fornitori ON autofatture.ID_FORNITORE = fornitori.CHIAVE\n \t\t                             WHERE UPPER(CONCAT(fornitori.CODICE_FORNITORE, autofatture.RAGIONE_SOCIALE)) LIKE UPPER (#Intestatario))\n      ~Fornitore~ autofatture.ID_FORNITORE = :Fornitore\n\n      ~DaAssegnare~ autofatture.NUMERO IS NULL\n      ~Assegnata~ autofatture.NUMERO IS NOT NULL\n      ~MeseGenerazione~ autofatture.MESE_GENERAZIONE = :MeseGenerazione\n      ~PartitaIva~ UPPER(autofatture.PARTITA_IVA) LIKE UPPER(#PartitaIva)\n      ~CodiceFiscale~ UPPER(autofatture.CODICE_FISCALE) LIKE UPPER(#CodiceFiscale)\n\n      ~NonInviateSDI~ autofatture.INVIATA_ALLO_SDI = 'F' \n      ~InviateSDI~ autofatture.INVIATA_ALLO_SDI = 'T'}\n                                             \n{O~OrdinaDaFatturare~EXTRACT(YEAR FROM autofatture.DATA), autofatture.NUMERO, autofatture.CHIAVE\n    ~OrdinamentoFatture~autofatture.DATA DESC, autofatture.NUMERO DESC}\n"
+		}
+]
+}

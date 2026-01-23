@@ -1,0 +1,9 @@
+{
+	"RuoliAbilitati" : "A,S",
+	"EditSQL" : [
+		{
+			"Name" : "ResettaPassword",
+			"SQL" : "UPDATE utenti\n     SET PASSWORD = NULL,\n            PRIMO_ACCESSO = 'T'\n WHERE CHIAVE = :CHIAVE\n"
+		}
+]
+}

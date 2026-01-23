@@ -1,0 +1,23 @@
+{
+	"RuoliAbilitati" : "",
+	"EditSQL" : [
+		{
+			"Name" : "InserisciVocePreventivoPredefinita",
+			"SQL" : "INSERT INTO voci_preventivi_predefinite (CHIAVE, DESCRIZIONE)\nVALUES( :NewKey1, #DESCRIZIONE )\n"
+		},
+		{
+			"Name" : "EliminaVocePreventivoPredefinita",
+			"SQL" : "DELETE FROM voci_preventivi_predefinite\nWHERE CHIAVE = :CHIAVE\n"
+		},
+		{
+			"Name" : "ModificaVocePreventivoPredefinta",
+			"SQL" : "UPDATE voci_preventivi_predefinite\nSET DESCRIZIONE = #DESCRIZIONE\nWHERE CHIAVE = :CHIAVE\n"
+		}
+	],
+	"SelectSQL" : [
+		{
+			"Name" : "TutteLeVociPreventiviPredefinite",
+			"SQL" : "SELECT *\nFROM voci_preventivi_predefinite\nORDER BY DESCRIZIONE\n"
+		}
+]
+}

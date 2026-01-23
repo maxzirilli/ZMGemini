@@ -1,0 +1,117 @@
+{
+	"RuoliAbilitati" : "",
+	"EditSQL" : [
+		{
+			"Name" : "Insert",
+			"SQL" : "INSERT INTO prodotti (CHIAVE,DESCRIZIONE, ID_SETTORE, PREZZO_IMPONIBILE,IVA, UNITA_DI_MISURA,\n                                 DATA_ULTIMO_ACQUISTO, PREZZO_ULTIMO_ACQUISTO, QUANTITA_SUGGERITA, PRODOTTO_COMPOSTO)\n             VALUES (:NewKey1,#DESCRIZIONE, :ID_SETTORE, :PREZZO_IMPONIBILE,:IVA, :UNITA_DI_MISURA,\n                          #DATA_ULTIMO_ACQUISTO, :PREZZO_ULTIMO_ACQUISTO, :QUANTITA_SUGGERITA,\n                          #PRODOTTO_COMPOSTO)\n"
+		},
+		{
+			"Name" : "Update",
+			"SQL" : "UPDATE prodotti SET\n             DESCRIZIONE = #DESCRIZIONE,\n             PREZZO_IMPONIBILE = :PREZZO_IMPONIBILE,\n             ID_SETTORE = :ID_SETTORE,\n             IVA = :IVA,\n             UNITA_DI_MISURA = :UNITA_DI_MISURA,\n             DATA_ULTIMO_ACQUISTO = #DATA_ULTIMO_ACQUISTO, \n             PREZZO_ULTIMO_ACQUISTO = :PREZZO_ULTIMO_ACQUISTO,\n             QUANTITA_SUGGERITA = :QUANTITA_SUGGERITA,\n             PRODOTTO_COMPOSTO = #PRODOTTO_COMPOSTO\n WHERE CHIAVE = :CHIAVE\n\n\n"
+		},
+		{
+			"Name" : "Delete",
+			"SQL" : "DELETE FROM prodotti\n WHERE CHIAVE = :CHIAVE\n"
+		},
+		{
+			"Name" : "InsertLogQntMagazzino",
+			"SQL" : "INSERT INTO log_magazzino (CHIAVE,  ID_PRODOTTO, DATA, DESCRIZIONE, QUANTITA)\n                            VALUES (:NewKey2, :NewKey1!ID_PRODOTTO, #DATA, #DESCRIZIONE, :QUANTITA)\n"
+		},
+		{
+			"Name" : "DeleteProdottiMontaggio",
+			"SQL" : "DELETE FROM prodotti_x_montaggio \nWHERE CHIAVE = :CHIAVE\n"
+		},
+		{
+			"Name" : "InsertProdottiMontaggio",
+			"SQL" : "INSERT INTO prodotti_x_montaggio (CHIAVE, ID_MONTAGGIO, QUANTITA, PRODOTTO_SEMPLICE)\n     VALUES (:NewKey2, :NewKey1!ID_MONTAGGIO, :QUANTITA, :PRODOTTO_SEMPLICE)\n"
+		},
+		{
+			"Name" : "UpdateProdottiMontaggio",
+			"SQL" : "UPDATE prodotti_x_montaggio\n     SET QUANTITA = :QUANTITA,\n            PRODOTTO_SEMPLICE = :PRODOTTO_SEMPLICE\nWHERE CHIAVE = :CHIAVE\n"
+		},
+		{
+			"Name" : "DeleteLogProdotti",
+			"SQL" : "DELETE FROM log_magazzino\n WHERE ID_PRODOTTO = :CHIAVE\n"
+		},
+		{
+			"Name" : "UpdateSogliaProdottoDaComunicazioni",
+			"SQL" : "UPDATE qnt_x_magazzino\n     SET SOGLIA_ALLARME = :SOGLIA\nWHERE qnt_x_magazzino.ID_MAGAZZINO = :ID_MAGAZZINO\n     AND qnt_x_magazzino.ID_PRODOTTO = :ID_PRODOTTO\n"
+		},
+		{
+			"Name" : "InsertQntMagazzino",
+			"SQL" : "INSERT INTO qnt_x_magazzino (CHIAVE, ID_PRODOTTO, ID_MAGAZZINO, QUANTITA_MAGAZZINO, SOGLIA_ALLARME)\n             VALUES (:NewKey2, :NewKey1!ID_PRODOTTO, :ID_MAGAZZINO, :QUANTITA_MAGAZZINO, :SOGLIA_ALLARME)\n"
+		},
+		{
+			"Name" : "UpdateQntMagazzino",
+			"SQL" : "UPDATE qnt_x_magazzino \n      SET ID_PRODOTTO = :ID_PRODOTTO, \n             ID_MAGAZZINO = :ID_MAGAZZINO, \n             QUANTITA_MAGAZZINO = :QUANTITA_MAGAZZINO, \n             SOGLIA_ALLARME = :SOGLIA_ALLARME\n WHERE CHIAVE = :CHIAVE\n\n\n"
+		},
+		{
+			"Name" : "DeleteQntMagazzinoProdotti",
+			"SQL" : "DELETE FROM qnt_x_magazzino\nWHERE ID_PRODOTTO = :CHIAVE\n"
+		},
+		{
+			"Name" : "DeleteRecordQntMagazzino",
+			"SQL" : "DELETE FROM qnt_x_magazzino\nWHERE CHIAVE = :CHIAVE\n"
+		}
+	],
+	"ExcelListaProdotti" : [
+		{
+			"Name" : "ExcelListaProdotti",
+			"SQL" : "SELECT \n    prodotti.DESCRIZIONE,\n    prodotti.PREZZO_IMPONIBILE,\n    prodotti.IVA, \n    prodotti.CHIAVE AS CHIAVE_PRODOTTO,\n    prodotti.UNITA_DI_MISURA,\n    prodotti.PRODOTTO_COMPOSTO,\n    prodotti.DATA_ULTIMO_ACQUISTO,\n    prodotti.PREZZO_ULTIMO_ACQUISTO,\n    settori.DESCRIZIONE AS SETTORE,\n    magazzini.CHIAVE AS CHIAVE_MAGAZZINO,\n    magazzini.DESCRIZIONE AS DESCRIZIONE_MAGAZZINO,\n    qnt_x_magazzino.QUANTITA_MAGAZZINO,\n    qnt_x_magazzino.SOGLIA_ALLARME\nFROM prodotti\n    LEFT JOIN settori ON settori.CHIAVE = prodotti.ID_SETTORE\n    LEFT JOIN qnt_x_magazzino ON qnt_x_magazzino.ID_PRODOTTO = prodotti.CHIAVE\n    LEFT JOIN magazzini ON magazzini.CHIAVE = qnt_x_magazzino.ID_MAGAZZINO\nWHERE prodotti.PRODOTTO_COMPOSTO = 'F'\n{w~Settore~prodotti.ID_SETTORE = :Settore\n  ~Descrizione~UPPER(prodotti.DESCRIZIONE) LIKE UPPER(#Descrizione)\n  ~IdMagazzino~ EXISTS (SELECT 1\n                                         FROM qnt_x_magazzino\n                                       WHERE qnt_x_magazzino.ID_MAGAZZINO = :IdMagazzino\n                                            AND qnt_x_magazzino.ID_PRODOTTO = prodotti.CHIAVE\n                                            AND qnt_x_magazzino.QUANTITA_MAGAZZINO <> 0)\n                          AND qnt_x_magazzino.ID_MAGAZZINO = :IdMagazzino\n  ~SoloSottosoglia~ EXISTS (SELECT 1\n                                                FROM qnt_x_magazzino\n                                              WHERE qnt_x_magazzino.QUANTITA_MAGAZZINO < qnt_x_magazzino.SOGLIA_ALLARME\n                                                  AND qnt_x_magazzino.ID_PRODOTTO = prodotti.CHIAVE) }\nORDER BY prodotti.CHIAVE, magazzini.CHIAVE;\n"
+		}
+	],
+	"ListaProdotti" : [
+		{
+			"Name" : "ListaProdotti",
+			"SQL" : "SELECT prodotti.DESCRIZIONE,\n            prodotti.PREZZO_IMPONIBILE,\n            prodotti.IVA, \n            prodotti.CHIAVE, \n            prodotti.UNITA_DI_MISURA,\n            prodotti.PRODOTTO_COMPOSTO,\n            prodotti.DATA_ULTIMO_ACQUISTO,\n            prodotti.PREZZO_ULTIMO_ACQUISTO,\n            settori.DESCRIZIONE AS SETTORE\n  FROM prodotti\n            LEFT OUTER JOIN settori ON settori.CHIAVE = prodotti.ID_SETTORE\n{W~Settore~prodotti.ID_SETTORE = :Settore\n     ~Descrizione~UPPER(prodotti.DESCRIZIONE) LIKE UPPER(#Descrizione)\n     ~IdMagazzino~ EXISTS (SELECT 1\n                                         FROM qnt_x_magazzino\n                                       WHERE qnt_x_magazzino.ID_MAGAZZINO = :IdMagazzino\n                                            AND qnt_x_magazzino.ID_PRODOTTO = prodotti.CHIAVE\n                                            AND qnt_x_magazzino.QUANTITA_MAGAZZINO <> 0)\n     ~SoloSottosoglia~ EXISTS (SELECT 1\n                                                FROM qnt_x_magazzino\n                                              WHERE qnt_x_magazzino.QUANTITA_MAGAZZINO < qnt_x_magazzino.SOGLIA_ALLARME\n                                                  AND qnt_x_magazzino.ID_PRODOTTO = prodotti.CHIAVE) }\n\nLIMIT :LimitNumRows OFFSET :LimitStart\n"
+		}
+	],
+	"ListaProdottiVariazionePrezzo" : [
+		{
+			"Name" : "ListaProdottiVariazionePrezzo",
+			"SQL" : "SELECT prodotti.*,\n            clienti_listino_sconti.TIPO_SCONTO,\n            clienti_listino_sconti.VALORE,\n            settori.DESCRIZIONE AS SETTORE,\n            clienti.SCONTO_GENERALE\n  FROM prodotti\n            LEFT OUTER JOIN settori ON settori.CHIAVE = prodotti.ID_SETTORE\n            LEFT OUTER JOIN clienti_listino_sconti ON (clienti_listino_sconti.ID_PRODOTTO = prodotti.CHIAVE AND \n                                                                          clienti_listino_sconti.ID_CLIENTE = :CHIAVE)\n            LEFT OUTER JOIN clienti ON clienti.CHIAVE = :CHIAVE\n"
+		}
+	],
+	"LsFiltroProdotti" : [
+		{
+			"Name" : "LsFiltroProdotti",
+			"SQL" : ""
+		}
+	],
+	"LsInizialiProdotti" : [
+		{
+			"Name" : "LsInizialiProdotti",
+			"SQL" : "SELECT UPPER(SUBSTRING(DESCRIZIONE,1,1)) AS Iniziale\n  FROM prodotti\n WHERE ID_SETTORE = :ChiaveSettore\nGROUP BY Iniziale\nORDER BY Iniziale\n"
+		}
+	],
+	"LsProdottiXIniziale" : [
+		{
+			"Name" : "LsProdottiXIniziale",
+			"SQL" : "SELECT CHIAVE,\n            DESCRIZIONE,\n            PRODOTTO_COMPOSTO\n  FROM prodotti\n  WHERE UPPER(SUBSTRING(DESCRIZIONE,1,1)) = UPPER(#Iniziale)\n    AND ID_SETTORE = :ChiaveSettore\nORDER BY UPPER(DESCRIZIONE)\n"
+		}
+	],
+	"SelectDettaglio" : [
+		{
+			"Name" : "SelectProdotto",
+			"SQL" : "SELECT *\n  FROM prodotti\n WHERE CHIAVE = :ChiaveProdotto\n"
+		},
+		{
+			"Name" : "LogProdotto",
+			"SQL" : "SELECT *\n   FROM log_magazzino\n WHERE ID_PRODOTTO = :ChiaveProdotto\n ORDER BY log_magazzino.DATA DESC, log_magazzino.CHIAVE DESC\n"
+		},
+		{
+			"Name" : "SelectProdottiMontaggio",
+			"SQL" : "SELECT *\n  FROM prodotti_x_montaggio\n WHERE ID_MONTAGGIO = :ChiaveProdotto\n"
+		},
+		{
+			"Name" : "SelectMagazziniQntProdotti",
+			"SQL" : "SELECT magazzini.DESCRIZIONE,\n            magazzini.CHIAVE,\n            qnt_x_magazzino.QUANTITA_MAGAZZINO,\n            qnt_x_magazzino.SOGLIA_ALLARME,\n            qnt_x_magazzino.CHIAVE AS CHIAVE_QNT\n  FROM magazzini\n   LEFT JOIN qnt_x_magazzino ON qnt_x_magazzino.ID_MAGAZZINO = magazzini.CHIAVE \n                                              AND qnt_x_magazzino.ID_PRODOTTO = :ChiaveProdotto\nORDER BY magazzini.DESCRIZIONE\n"
+		}
+	],
+	"SelectSettori" : [
+		{
+			"Name" : "Settori",
+			"SQL" : "SELECT *\n  FROM settori\n\n"
+		}
+]
+}

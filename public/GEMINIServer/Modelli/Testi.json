@@ -1,0 +1,15 @@
+{
+	"RuoliAbilitati" : "",
+	"EditSQL" : [
+		{
+			"Name" : "ModificaTesti",
+			"SQL" : "UPDATE testi\n      SET DESCRIZIONE_PREZZO_FISSO                         = #DESCRIZIONE_PREZZO_FISSO,\n             DESCRIZIONE_CANONE_ANNUALE                    = #DESCRIZIONE_CANONE_ANNUALE\n             \n"
+		}
+	],
+	"SelectSQL" : [
+		{
+			"Name" : "TuttiTesti",
+			"SQL" : "SELECT *\n  FROM testi\n"
+		}
+]
+}

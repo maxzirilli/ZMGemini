@@ -1,0 +1,111 @@
+{
+	"RuoliAbilitati" : "",
+	"SelectConfigurazioni" : [
+		{
+			"Name" : "Impostazioni",
+			"SQL" : "SELECT * \n  FROM impostazioni\n"
+		},
+		{
+			"Name" : "Province",
+			"SQL" : "SELECT *\n  FROM province\nORDER BY NOME\n"
+		},
+		{
+			"Name" : "Nazioni",
+			"SQL" : "SELECT * \n  FROM nazioni\nORDER BY NOME\n"
+		},
+		{
+			"Name" : "ModalitaPagamenti",
+			"SQL" : "SELECT *\n  FROM mod_pagamento\n"
+		},
+		{
+			"Name" : "CondPagamenti",
+			"SQL" : "SELECT *\n  FROM cond_pagamento\nORDER BY DESCRIZIONE\n"
+		},
+		{
+			"Name" : "Fornitori",
+			"SQL" : "SELECT CHIAVE,RAGIONE_SOCIALE, CODICE_FORNITORE\n FROM fornitori\nORDER BY RAGIONE_SOCIALE\n"
+		},
+		{
+			"Name" : "Clienti",
+			"SQL" : "SELECT CHIAVE,RAGIONE_SOCIALE,CODICE_CLIENTE, ATTIVO\n FROM clienti\nORDER BY RAGIONE_SOCIALE\n"
+		},
+		{
+			"Name" : "CategoriaMovimenti",
+			"SQL" : "SELECT * \n  FROM cat_movimenti\n"
+		},
+		{
+			"Name" : "Causali",
+			"SQL" : "SELECT *\n  FROM causali\n"
+		},
+		{
+			"Name" : "ScissionePagamenti",
+			"SQL" : "SELECT *\n  FROM scissione_dei_pagamenti\n"
+		},
+		{
+			"Name" : "UnitaDiMisura",
+			"SQL" : "SELECT *\n  FROM unita_di_misura\n"
+		},
+		{
+			"Name" : "Amministratori",
+			"SQL" : "SELECT CHIAVE, RAGIONE_SOCIALE\n FROM amministratori\nORDER BY RAGIONE_SOCIALE\n"
+		},
+		{
+			"Name" : "Titoli",
+			"SQL" : "SELECT *\n  FROM titoli\n"
+		},
+		{
+			"Name" : "Zone",
+			"SQL" : "SELECT * \n  FROM zone\nORDER BY DESCRIZIONE\n"
+		},
+		{
+			"Name" : "Prodotti",
+			"SQL" : "SELECT prodotti.*,\n            settori.DESCRIZIONE AS SETTORE,\n            qnt_x_magazzino.QUANTITA_MAGAZZINO\n  FROM prodotti\n            LEFT OUTER JOIN settori ON settori.CHIAVE = prodotti.ID_SETTORE\n            LEFT OUTER JOIN qnt_x_magazzino ON qnt_x_magazzino.ID_PRODOTTO = prodotti.CHIAVE\n"
+		},
+		{
+			"Name" : "Testi",
+			"SQL" : "SELECT *\n  FROM testi\n"
+		},
+		{
+			"Name" : "ContiCasse",
+			"SQL" : "SELECT CHIAVE, \n            BANCA, \n            DESCRIZIONE,\n            NR_CONTO,\n            CONTO_CORRENTE\n  FROM conti_correnti_casse\n ORDER BY CONTO_CORRENTE DESC, DESCRIZIONE ASC\n"
+		},
+		{
+			"Name" : "VociPreventiviPredefinite",
+			"SQL" : "SELECT *\nFROM voci_preventivi_predefinite\n"
+		},
+		{
+			"Name" : "Regioni",
+			"SQL" : "SELECT *\n  FROM regioni\nORDER BY DESCRIZIONE\n"
+		},
+		{
+			"Name" : "ImpostazioniOpenStreetMap",
+			"SQL" : "SELECT *\n  FROM impostazioni_maps\n"
+		},
+		{
+			"Name" : "EmailSegnalazioni",
+			"SQL" : "SELECT *\n  FROM clienti_email_segnalazioni\n"
+		},
+		{
+			"Name" : "CategorieClienti",
+			"SQL" : "SELECT *\n  FROM cat_clienti\n"
+		},
+		{
+			"Name" : "Settori",
+			"SQL" : "SELECT *\nFROM settori\n"
+		},
+		{
+			"Name" : "ClientiNonAttivi",
+			"SQL" : "SELECT CHIAVE,RAGIONE_SOCIALE,CODICE_CLIENTE, ATTIVO\n FROM clienti\nWHERE clienti.ATTIVO <> 'T'\nORDER BY RAGIONE_SOCIALE\n"
+		},
+		{
+			"Name" : "Magazzini",
+			"SQL" : "SELECT * \n  FROM magazzini\n"
+		}
+	],
+	"SelectSQL" : [
+		{
+			"Name" : "UserInformation",
+			"SQL" : "SELECT USERNAME,\n            RAGIONE_SOCIALE,\n            ROLE,\n            EMAIL,\n            IMMAGINE,\n            PRIMO_ACCESSO,\n            ID_CLIENTE,\n            ID_AMMINISTRATORE\n  FROM utenti \nWHERE CHIAVE = :KeyAccount\n"
+		}
+]
+}

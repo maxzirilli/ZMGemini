@@ -1,0 +1,23 @@
+{
+	"RuoliAbilitati" : "",
+	"SelectSQL" : [
+		{
+			"Name" : "Tutto",
+			"SQL" : "SELECT *\n  FROM mod_pagamento\n"
+		}
+	],
+	"EditSQL" : [
+		{
+			"Name" : "Insert",
+			"SQL" : "INSERT INTO mod_pagamento (CHIAVE,DESCRIZIONE)\n     VALUES (:NewKey1,#DESCRIZIONE)\n"
+		},
+		{
+			"Name" : "Delete",
+			"SQL" : "DELETE FROM mod_pagamento WHERE CHIAVE = :CHIAVE\n"
+		},
+		{
+			"Name" : "Update",
+			"SQL" : "UPDATE mod_pagamento \n   SET DESCRIZIONE=#DESCRIZIONE\n WHERE CHIAVE = :CHIAVE\n"
+		}
+]
+}

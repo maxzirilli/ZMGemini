@@ -1,0 +1,101 @@
+{
+	"RuoliAbilitati" : "",
+	"EditSQL" : [
+		{
+			"Name" : "InserisciFornitore",
+			"SQL" : "INSERT INTO fornitori (CHIAVE,RAGIONE_SOCIALE, CODICE_FORNITORE,\n                    PARTITA_IVA,EMITTENTE_PIVA,CODICE_FISCALE,\n                    INDIRIZZO_FATTURAZIONE,NR_CIVICO_FATTURAZIONE,PROVINCIA_FATTURAZIONE,\n                    COMUNE_FATTURAZIONE,CAP_FATTURAZIONE,PRESSO,\n                    INDIRIZZO_SPEDIZIONE,NR_CIVICO_SPEDIZIONE,PROVINCIA_SPEDIZIONE,\n                    COMUNE_SPEDIZIONE,CAP_SPEDIZIONE,NAZIONE_SPEDIZIONE,\n                    BANCA,IBAN, ID_CONTO_CORRENTE, BIC, SWIFT,\n                    PEC, TIPO_AUTOFATTURA, TIPO_RITENUTA, REGIME_FISCALE, RITENUTA,\n                    IVA_FORNITORE)\n             VALUES(:NewKey1,#RAGIONE_SOCIALE, #CODICE_FORNITORE,\n                    #PARTITA_IVA,:EMITTENTE_PIVA,#CODICE_FISCALE,\n                    #INDIRIZZO_FATTURAZIONE,#NR_CIVICO_FATTURAZIONE,:PROVINCIA_FATTURAZIONE,\n                    #COMUNE_FATTURAZIONE,#CAP_FATTURAZIONE,#PRESSO,\n                    #INDIRIZZO_SPEDIZIONE,#NR_CIVICO_SPEDIZIONE,:PROVINCIA_SPEDIZIONE,\n                    #COMUNE_SPEDIZIONE,#CAP_SPEDIZIONE,:NAZIONE_SPEDIZIONE,\n                    #BANCA,#IBAN, :ID_CONTO_CORRENTE, #BIC, #SWIFT,\n                    #PEC, #TIPO_AUTOFATTURA, :TIPO_RITENUTA, #REGIME_FISCALE, :RITENUTA,\n                    :IVA_FORNITORE)\n"
+		},
+		{
+			"Name" : "ModificaFornitore",
+			"SQL" : "UPDATE fornitori SET\n        RAGIONE_SOCIALE = #RAGIONE_SOCIALE,\n        PARTITA_IVA = #PARTITA_IVA,\n        EMITTENTE_PIVA = :EMITTENTE_PIVA,\n        CODICE_FISCALE = #CODICE_FISCALE,\n        INDIRIZZO_FATTURAZIONE = #INDIRIZZO_FATTURAZIONE,\n        NR_CIVICO_FATTURAZIONE = #NR_CIVICO_FATTURAZIONE,\n        PROVINCIA_FATTURAZIONE = :PROVINCIA_FATTURAZIONE,\n        COMUNE_FATTURAZIONE = #COMUNE_FATTURAZIONE,\n        CAP_FATTURAZIONE = #CAP_FATTURAZIONE,\n        PRESSO = #PRESSO,\n        INDIRIZZO_SPEDIZIONE = #INDIRIZZO_SPEDIZIONE,\n        NR_CIVICO_SPEDIZIONE = #NR_CIVICO_SPEDIZIONE,\n        PROVINCIA_SPEDIZIONE = :PROVINCIA_SPEDIZIONE,\n        COMUNE_SPEDIZIONE = #COMUNE_SPEDIZIONE,\n        CAP_SPEDIZIONE = #CAP_SPEDIZIONE,\n        NAZIONE_SPEDIZIONE = :NAZIONE_SPEDIZIONE,\n        BANCA = #BANCA,\n        IBAN = #IBAN,\n        BIC = #BIC,\n        SWIFT = #SWIFT,\n        ID_CONTO_CORRENTE = :ID_CONTO_CORRENTE,\n        PEC = #PEC,\n        CODICE_FORNITORE = #CODICE_FORNITORE,\n        TIPO_AUTOFATTURA = #TIPO_AUTOFATTURA,\n        TIPO_RITENUTA = :TIPO_RITENUTA,\n        REGIME_FISCALE = #REGIME_FISCALE,\n        RITENUTA = :RITENUTA,\n        IVA_FORNITORE = :IVA_FORNITORE\nWHERE CHIAVE = :CHIAVE_FORNITORE\n"
+		},
+		{
+			"Name" : "EliminaFornitore",
+			"SQL" : "DELETE FROM fornitori WHERE CHIAVE = :CHIAVE_FORNITORE\n"
+		},
+		{
+			"Name" : "InsertTelefono",
+			"SQL" : "INSERT INTO fornitori_telefono (CHIAVE, ID_FORNITORE, DESCRIZIONE, TELEFONO,PRINCIPALE, EMAIL)\n                              VALUES(:NewKey2, :NewKey1!ID_FORNITORE, #DESCRIZIONE, #TELEFONO,#PRINCIPALE, #EMAIL)\n"
+		},
+		{
+			"Name" : "UpdateTelefono",
+			"SQL" : "UPDATE fornitori_telefono \n     SET TELEFONO = #TELEFONO,\n            DESCRIZIONE = #DESCRIZIONE,\n            PRINCIPALE = #PRINCIPALE,\n            EMAIL = #EMAIL\nWHERE CHIAVE = :CHIAVE\n"
+		},
+		{
+			"Name" : "DeleteTelefono",
+			"SQL" : "DELETE FROM fornitori_telefono \n  WHERE CHIAVE = :CHIAVE\n"
+		},
+		{
+			"Name" : "InsertUltimoCodiceFornitore",
+			"SQL" : "UPDATE impostazioni\n       SET ULTIMO_CODICE_FORNITORE = #ULTIMO_CODICE_FORNITORE\n"
+		},
+		{
+			"Name" : "EliminaTelefonoTramiteFornitore",
+			"SQL" : "DELETE FROM fornitori_telefono\n WHERE ID_FORNITORE = :CHIAVE_FORNITORE\n"
+		},
+		{
+			"Name" : "NuovoFornitoreImportazione",
+			"SQL" : "INSERT INTO fornitori (CHIAVE,\n                    RAGIONE_SOCIALE, CODICE_FORNITORE,\n                    PARTITA_IVA,EMITTENTE_PIVA,\n                    CODICE_FISCALE, INDIRIZZO_FATTURAZIONE,\n                    NR_CIVICO_FATTURAZIONE,PROVINCIA_FATTURAZIONE,\n                    COMUNE_FATTURAZIONE,CAP_FATTURAZIONE)\n             VALUES(:CHIAVE_FORNITORE,\n                    #RAGIONE_SOCIALE, #CODICE_FORNITORE,\n                    #PARTITA_IVA,(SELECT MAX(CHIAVE) FROM nazioni WHERE SIGLA = #EMITTENTE_PIVA),\n                    #CODICE_FISCALE, #INDIRIZZO_FATTURAZIONE,\n                    #NR_CIVICO_FATTURAZIONE,(SELECT MAX(CHIAVE) FROM province WHERE TARGA = #PROVINCIA_FATTURAZIONE),\n                    #COMUNE_FATTURAZIONE,#CAP_FATTURAZIONE)\n"
+		},
+		{
+			"Name" : "ModificaFornitoreImportazione",
+			"SQL" : "UPDATE fornitori SET\n        RAGIONE_SOCIALE = #RAGIONE_SOCIALE,\n        PARTITA_IVA = #PARTITA_IVA,\n        EMITTENTE_PIVA = (SELECT MAX(CHIAVE) FROM nazioni WHERE SIGLA = #EMITTENTE_PIVA),\n        CODICE_FISCALE = #CODICE_FISCALE,\n        INDIRIZZO_FATTURAZIONE = #INDIRIZZO_FATTURAZIONE,\n        NR_CIVICO_FATTURAZIONE = #NR_CIVICO_FATTURAZIONE,\n        PROVINCIA_FATTURAZIONE = (SELECT MAX(CHIAVE) FROM province WHERE TARGA = #PROVINCIA_FATTURAZIONE),\n        COMUNE_FATTURAZIONE = #COMUNE_FATTURAZIONE,\n        CAP_FATTURAZIONE = #CAP_FATTURAZIONE\nWHERE CHIAVE = :CHIAVE_FORNITORE\n"
+		},
+		{
+			"Name" : "DeleteCodiciFornitore",
+			"SQL" : "DELETE FROM codici_fornitore \nWHERE CHIAVE = :CHIAVE\n"
+		},
+		{
+			"Name" : "InsertCodiciFornitore",
+			"SQL" : "INSERT INTO codici_fornitore (CHIAVE, ID_PRODOTTO, ID_FORNITORE, CODICE_PRODOTTO)\n                              VALUES (:NewKey2, :ID_PRODOTTO, :NewKey1!ID_FORNITORE, #CODICE_PRODOTTO)\n"
+		},
+		{
+			"Name" : "UpdateCodiciFornitore",
+			"SQL" : "UPDATE codici_fornitore\n      SET ID_PRODOTTO = :ID_PRODOTTO,\n             CODICE_PRODOTTO = #CODICE_PRODOTTO\n WHERE CHIAVE = :CHIAVE\n"
+		}
+	],
+	"FindFornitore" : [
+		{
+			"Name" : "ChiaveFornitore",
+			"SQL" : "SELECT CHIAVE\n  FROM fornitori\n {W~PARTITA_IVA~PARTITA_IVA = #PARTITA_IVA~CODICE_FISCALE~CODICE_FISCALE = #CODICE_FISCALE}\n"
+		}
+	],
+	"SelectFornitore" : [
+		{
+			"Name" : "SelectFornitore",
+			"SQL" : "SELECT fornitori.*, \n            conti_correnti_casse.IBAN AS IBAN_CONTO, \n            conti_correnti_casse.NR_CONTO,\n            conti_correnti_casse.BANCA AS BANCA_CONTO,\n            conti_correnti_casse.SWIFT AS SWIFT_CONTO,  \n            conti_correnti_casse.BIC AS BIC_CONTO\n  FROM fornitori\n            LEFT OUTER JOIN conti_correnti_casse ON fornitori.ID_CONTO_CORRENTE = conti_correnti_casse.CHIAVE\nWHERE fornitori.CHIAVE = :CHIAVE\n"
+		},
+		{
+			"Name" : "TelefonoFornitori",
+			"SQL" : "SELECT *\n  FROM fornitori_telefono\n WHERE ID_FORNITORE = :CHIAVE\n"
+		},
+		{
+			"Name" : "SelectCodiciFornitore",
+			"SQL" : "SELECT *\n  FROM codici_fornitore\nWHERE ID_FORNITORE = :CHIAVE\n"
+		}
+	],
+	"SelectIniziali" : [
+		{
+			"Name" : "LsIniziali",
+			"SQL" : "SELECT UPPER(SUBSTRING(RAGIONE_SOCIALE,1,1)) AS Iniziale,\n            CHIAVE,\n            RAGIONE_SOCIALE,\n            ((SELECT EXISTS(SELECT ddt_uscenti.CHIAVE\n                                        FROM ddt_uscenti\n                                      WHERE ddt_uscenti.ID_FORNITORE = fornitori.CHIAVE)) OR\n            (SELECT EXISTS(SELECT ddt_entranti.CHIAVE\n                                        FROM ddt_entranti\n                                      WHERE ddt_entranti.ID_FORNITORE = fornitori.CHIAVE)) OR\n            (SELECT EXISTS(SELECT fatture_passive.CHIAVE\n                                        FROM fatture_passive\n                                      WHERE fatture_passive.ID_FORNITORE = fornitori.CHIAVE)) OR\n            (SELECT EXISTS(SELECT fatture_insolute_pregresse_fornitori.CHIAVE\n                                        FROM fatture_insolute_pregresse_fornitori\n                                      WHERE fatture_insolute_pregresse_fornitori.ID_FORNITORE = fornitori.CHIAVE)) OR\n            (SELECT EXISTS(SELECT autofatture.CHIAVE\n                                        FROM autofatture\n                                      WHERE autofatture.ID_FORNITORE = fornitori.CHIAVE))) AS FORNITORE_CANCELLABILE\n  FROM fornitori\n  {W~RagioneSociale~ (CODICE_FORNITORE IS NOT NULL AND \n                                   UPPER(CONCAT(CODICE_FORNITORE, ' ', RAGIONE_SOCIALE)) LIKE UPPER(#RagioneSociale)) \n                                   OR\n                                  (CODICE_FORNITORE IS NULL AND \n                                   UPPER(RAGIONE_SOCIALE) LIKE UPPER(#RagioneSociale))\n       ~Indirizzo~ UPPER(INDIRIZZO_FATTURAZIONE) LIKE UPPER(#Indirizzo)\n      ~CodiceFornitore~ UPPER(CODICE_FORNITORE) LIKE UPPER(#CodiceFornitore)}\nORDER BY Iniziale\n"
+		}
+	],
+	"SelectSQL" : [
+		{
+			"Name" : "LsFornitoriXIniziale",
+			"SQL" : "SELECT CHIAVE,\n            RAGIONE_SOCIALE,\n            ((SELECT EXISTS(SELECT ddt_uscenti.CHIAVE\n                                        FROM ddt_uscenti\n                                      WHERE ddt_uscenti.ID_FORNITORE = fornitori.CHIAVE)) OR\n            (SELECT EXISTS(SELECT ddt_entranti.CHIAVE\n                                        FROM ddt_entranti\n                                      WHERE ddt_entranti.ID_FORNITORE = fornitori.CHIAVE)) OR\n            (SELECT EXISTS(SELECT fatture_passive.CHIAVE\n                                        FROM fatture_passive\n                                      WHERE fatture_passive.ID_FORNITORE = fornitori.CHIAVE)) OR\n            (SELECT EXISTS(SELECT fatture_insolute_pregresse_fornitori.CHIAVE\n                                        FROM fatture_insolute_pregresse_fornitori\n                                      WHERE fatture_insolute_pregresse_fornitori.ID_FORNITORE = fornitori.CHIAVE)) OR\n            (SELECT EXISTS(SELECT autofatture.CHIAVE\n                                        FROM autofatture\n                                      WHERE autofatture.ID_FORNITORE = fornitori.CHIAVE))) AS FORNITORE_CANCELLABILE\n  FROM fornitori\n  WHERE UPPER(SUBSTRING(RAGIONE_SOCIALE,1,1)) = UPPER(#Iniziale)\n  {w~RagioneSociale~ UPPER(CONCAT(CODICE_FORNITORE, RAGIONE_SOCIALE)) LIKE UPPER(#RagioneSociale)\n      ~Indirizzo~ UPPER(INDIRIZZO_FATTURAZIONE) LIKE UPPER(#Indirizzo)\n      ~CodiceFornitore~ UPPER(CODICE_FORNITORE) LIKE UPPER(#CodiceFornitore)}\nORDER BY UPPER(RAGIONE_SOCIALE)\n"
+		}
+	],
+	"UltimoCodiceFornitore" : [
+		{
+			"Name" : "UltimoCodiceFornitore",
+			"SQL" : "SELECT ULTIMO_CODICE_FORNITORE\n  FROM impostazioni\n"
+		}
+	],
+	"WatchFornitore" : [
+		{
+			"Name" : "WatchFornitore",
+			"SQL" : "SELECT fornitori.*, \n            conti_correnti_casse.IBAN AS IBAN_CONTO, \n            conti_correnti_casse.NR_CONTO,\n            conti_correnti_casse.BANCA AS BANCA_CONTO\n  FROM fornitori\n    LEFT OUTER JOIN conti_correnti_casse ON fornitori.ID_CONTO_CORRENTE = conti_correnti_casse.CHIAVE\nWHERE fornitori.CHIAVE = :CHIAVE\n"
+		}
+]
+}

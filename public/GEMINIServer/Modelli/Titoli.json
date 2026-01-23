@@ -1,0 +1,23 @@
+{
+	"RuoliAbilitati" : "",
+	"SelectSQL" : [
+		{
+			"Name" : "TuttiTitoli",
+			"SQL" : "SELECT *\n  FROM titoli\n"
+		}
+	],
+	"EditSQL" : [
+		{
+			"Name" : "InserisciTitolo",
+			"SQL" : "INSERT INTO titoli (CHIAVE,DESCRIZIONE)\n     VALUES (:NewKey1, #DESCRIZIONE)\n"
+		},
+		{
+			"Name" : "ModificaTitolo",
+			"SQL" : "UPDATE titoli\n   SET DESCRIZIONE = #DESCRIZIONE\n WHERE CHIAVE = :CHIAVE\n"
+		},
+		{
+			"Name" : "EliminaTitolo",
+			"SQL" : "DELETE FROM titoli WHERE CHIAVE = :CHIAVE\n"
+		}
+]
+}

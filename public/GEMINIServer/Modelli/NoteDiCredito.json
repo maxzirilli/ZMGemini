@@ -1,0 +1,157 @@
+{
+	"RuoliAbilitati" : "",
+	"CaricaAllegato" : [
+		{
+			"Name" : "CaricaAllegato",
+			"SQL" : "SELECT *\n  FROM allegati_note_di_credito\n WHERE CHIAVE = :CHIAVE\n"
+		}
+	],
+	"CorrelaFatturaARata" : [
+		{
+			"Name" : "CorrelaFatturaARata",
+			"SQL" : "SELECT fatture.CHIAVE, fatture.NUMERO\n\n  FROM fatture\n\nWHERE fatture.ID_CLIENTE = :CHIAVE_CLIENTE\n    AND EXISTS((SELECT rate_fattura.CHIAVE\n                          FROM rate_fattura\n                        WHERE rate_fattura.DATA_PAGAMENTO IS NULL\n                             AND rate_fattura.ID_MOVIMENTO IS NULL\n                             AND rate_fattura.ID_FATTURA = fatture.CHIAVE))\n"
+		}
+	],
+	"EditSQL" : [
+		{
+			"Name" : "Inserisci",
+			"SQL" : "INSERT INTO note_di_credito (CHIAVE, ID_CLIENTE,\n                     RAGIONE_SOCIALE, INDIRIZZO_FATTURAZIONE, NR_CIVICO_FATTURAZIONE,\n                     COMUNE_FATTURAZIONE, PROVINCIA_FATTURAZIONE, CAP_FATTURAZIONE,\n                     DATA, PARTITA_IVA, CODICE_FISCALE,\n                     COMUNE_DESTINAZIONE, PROVINCIA_DESTINAZIONE, CAP_DESTINAZIONE,\n                     DESTINAZIONE, INDIRIZZO_DESTINAZIONE, NR_CIVICO_DESTINAZIONE,\n                     COND_PAGAMENTO, NOTE, RITENUTA,\n                     ESIGIBILITA_IVA, IBAN, ID_CAUSALE, ID_CONTO_CORRENTE, BANCA, \n                     COD_ENTE_SDI, PEC, ENTE_PUBBLICO, COD_UFFICIO_DEST, NAZIONE_DESTINAZIONE,\n                     NAZIONE_EM_PIVA, BIC, SWIFT,\n                     CUP, CIG, DOCUMENTO_CORRELATO, CONVENZIONE, VOCE_DI_RIFERIMENTO, DOCUMENTO_NR,\n                     DATA_DOCUMENTO, INVIATA_TRAMITE_EMAIL, ID_FATTURA_CREAZIONE)\n             VALUES (:NewKey1, :ID_CLIENTE,\n                     #RAGIONE_SOCIALE, #INDIRIZZO_FATTURAZIONE, #NR_CIVICO_FATTURAZIONE,\n                     #COMUNE_FATTURAZIONE, :PROVINCIA_FATTURAZIONE, #CAP_FATTURAZIONE,\n                     #DATA, #PARTITA_IVA, #CODICE_FISCALE,\n                     #COMUNE_DESTINAZIONE, :PROVINCIA_DESTINAZIONE, #CAP_DESTINAZIONE,\n                     #DESTINAZIONE, #INDIRIZZO_DESTINAZIONE, #NR_CIVICO_DESTINAZIONE,\n                     :COND_PAGAMENTO, #NOTE, :RITENUTA,\n                     #ESIGIBILITA_IVA, #IBAN, :ID_CAUSALE, :ID_CONTO_CORRENTE, #BANCA,\n                     #COD_ENTE_SDI, #PEC, #ENTE_PUBBLICO, #COD_UFFICIO_DEST, :NAZIONE_DESTINAZIONE, \n                     :NAZIONE_EM_PIVA, #BIC, #SWIFT,\n                     #CUP, #CIG, #DOCUMENTO_CORRELATO, #CONVENZIONE, #VOCE_DI_RIFERIMENTO, #DOCUMENTO_NR,\n                     #DATA_DOCUMENTO,  #INVIATA_TRAMITE_EMAIL, :ID_FATTURA_CREAZIONE)\n"
+		},
+		{
+			"Name" : "Modifica",
+			"SQL" : "UPDATE note_di_credito SET\n               ID_CLIENTE = :ID_CLIENTE,\n               DATA = #DATA, \n               RAGIONE_SOCIALE = #RAGIONE_SOCIALE,\n               INDIRIZZO_FATTURAZIONE = #INDIRIZZO_FATTURAZIONE,\n               COMUNE_FATTURAZIONE = #COMUNE_FATTURAZIONE, \n               PROVINCIA_FATTURAZIONE = :PROVINCIA_FATTURAZIONE, \n               CAP_FATTURAZIONE = #CAP_FATTURAZIONE, \n               PARTITA_IVA = #PARTITA_IVA, \n               CODICE_FISCALE = #CODICE_FISCALE,\n               COMUNE_DESTINAZIONE = #COMUNE_DESTINAZIONE, \n               PROVINCIA_DESTINAZIONE = :PROVINCIA_DESTINAZIONE,\n               CAP_DESTINAZIONE = #CAP_DESTINAZIONE, \n               DESTINAZIONE = #DESTINAZIONE, \n               INDIRIZZO_DESTINAZIONE = #INDIRIZZO_DESTINAZIONE,\n               COND_PAGAMENTO = :COND_PAGAMENTO,\n               NOTE = #NOTE,\n               RITENUTA = :RITENUTA,\n               ESIGIBILITA_IVA = #ESIGIBILITA_IVA,\n               IBAN = #IBAN,\n               ID_CAUSALE = :ID_CAUSALE,\n               ID_CONTO_CORRENTE = :ID_CONTO_CORRENTE,\n               BANCA = #BANCA,\n               NR_CIVICO_DESTINAZIONE = #NR_CIVICO_DESTINAZIONE,\n               NR_CIVICO_FATTURAZIONE = #NR_CIVICO_FATTURAZIONE,\n               COD_ENTE_SDI = #COD_ENTE_SDI,\n               ENTE_PUBBLICO = #ENTE_PUBBLICO,\n               PEC = #PEC,\n               COD_UFFICIO_DEST = #COD_UFFICIO_DEST,\n               NAZIONE_DESTINAZIONE = #NAZIONE_DESTINAZIONE, \n               NAZIONE_EM_PIVA = #NAZIONE_EM_PIVA,\n               BIC = #BIC,\n               SWIFT = #SWIFT,\n               CUP = #CUP, \n               CIG = #CIG, \n               DOCUMENTO_CORRELATO = #DOCUMENTO_CORRELATO, \n               CONVENZIONE = #CONVENZIONE,  \n               VOCE_DI_RIFERIMENTO = #VOCE_DI_RIFERIMENTO, \n               DOCUMENTO_NR = #DOCUMENTO_NR,\n               DATA_DOCUMENTO = #DATA_DOCUMENTO,\n               INVIATA_TRAMITE_EMAIL = #INVIATA_TRAMITE_EMAIL,\n               ID_FATTURA_CREAZIONE = :ID_FATTURA_CREAZIONE\n         WHERE CHIAVE = :CHIAVE\n"
+		},
+		{
+			"Name" : "Elimina",
+			"SQL" : "DELETE FROM note_di_credito \n      WHERE CHIAVE = :CHIAVE_NOTA_DI_CREDITO\n"
+		},
+		{
+			"Name" : "InserisciAllegato",
+			"SQL" : "INSERT INTO allegati_note_di_credito (CHIAVE, ALLEGATO, ID_NOTA_DI_CREDITO, DESCRIZIONE)\n                      VALUES (:NewKey2, $ALLEGATO, :NewKey1!ID_NOTA_DI_CREDITO, #DESCRIZIONE)\n"
+		},
+		{
+			"Name" : "ModificaAllegato",
+			"SQL" : "UPDATE allegati_note_di_credito \n   SET CHIAVE = :CHIAVE,\n       DESCRIZIONE = #DESCRIZIONE,\n       ALLEGATO = $ALLEGATO\n WHERE CHIAVE = :CHIAVE\n"
+		},
+		{
+			"Name" : "EliminaAllegato",
+			"SQL" : "DELETE from allegati_note_di_credito\n WHERE CHIAVE = :CHIAVE\n"
+		},
+		{
+			"Name" : "InserisciVoce",
+			"SQL" : "INSERT INTO voci_note_di_credito (CHIAVE, ID_NOTA_DI_CREDITO, DESCRIZIONE, IMPORTO, QUANTITA,\n                          IVA, IMPORTO_IVATO, SCONTO, UNITA_DI_MISURA,ORDINAMENTO, CODICE_PRODOTTO, NATURA_PAGAMENTO)\n                  VALUES (:NewKey2, :NewKey1!ID_NOTA_DI_CREDITO, #DESCRIZIONE, :IMPORTO, :QUANTITA,\n                          :IVA, #IMPORTO_IVATO, :SCONTO, :UNITA_DI_MISURA,:ORDINAMENTO, #CODICE_PRODOTTO, :NATURA_PAGAMENTO)\n"
+		},
+		{
+			"Name" : "ModificaVoce",
+			"SQL" : "UPDATE voci_note_di_credito\n   SET DESCRIZIONE = #DESCRIZIONE,\n       IMPORTO = #IMPORTO,\n       QUANTITA = :QUANTITA,\n       ORDINAMENTO = :ORDINAMENTO,\n       IVA = :IVA,\n       IMPORTO_IVATO = #IMPORTO_IVATO,\n       SCONTO = :SCONTO,\n       UNITA_DI_MISURA = :UNITA_DI_MISURA,\n       CODICE_PRODOTTO = #CODICE_PRODOTTO,\n       NATURA_PAGAMENTO = :NATURA_PAGAMENTO\n WHERE CHIAVE = :CHIAVE\n"
+		},
+		{
+			"Name" : "EliminaVoce",
+			"SQL" : "DELETE from voci_note_di_credito\n WHERE CHIAVE = :CHIAVE\n"
+		},
+		{
+			"Name" : "EliminaVociTramiteNota",
+			"SQL" : "DELETE FROM allegati_note_di_credito\n WHERE ID_NOTA_DI_CREDITO = :CHIAVE_NOTA_DI_CREDITO\n"
+		},
+		{
+			"Name" : "EliminaAllegatiTramiteNota",
+			"SQL" : "DELETE FROM voci_note_di_credito\n WHERE ID_NOTA_DI_CREDITO = :CHIAVE_NOTA_DI_CREDITO\n"
+		},
+		{
+			"Name" : "InserisciLog",
+			"SQL" : "INSERT INTO log_note_di_credito (CHIAVE, ID_NOTA_DI_CREDITO, DATA, NOTE, ID_UTENTE)\n                            VALUES (:NewKey2, :NewKey1!ID_NOTA_DI_CREDITO, #DATA, #NOTE, :KeyAccount)\n"
+		},
+		{
+			"Name" : "EliminaLogTramiteNota",
+			"SQL" : "DELETE FROM log_note_di_credito\n WHERE ID_NOTA_DI_CREDITO = :CHIAVE_NOTA_DI_CREDITO\n"
+		},
+		{
+			"Name" : "CorreggiNota",
+			"SQL" : "UPDATE note_di_credito\n   SET INVIATA_ALLO_SDI = 'F'\n WHERE CHIAVE = :CHIAVE\n"
+		},
+		{
+			"Name" : "EliminaRecordSaldiChiusureAnnuali",
+			"SQL" : "DELETE FROM saldi_chiusure_annuali\n WHERE ID_CLIENTE = :CHIAVE_CLIENTE\n     AND ANNO >= #ANNO\n"
+		},
+		{
+			"Name" : "EliminaRata",
+			"SQL" : "DELETE from rate_note\n WHERE CHIAVE = :CHIAVE\n"
+		},
+		{
+			"Name" : "ModificaRata",
+			"SQL" : "UPDATE rate_note\n   SET DATA = #DATA,\n       DATA_PAGAMENTO = #DATA_PAGAMENTO,\n       NOTE = #NOTE,\n       IMPORTO = :IMPORTO,\n       ID_CONTO_CASSE = :ID_CONTO_CASSE,\n       SCALATA_IN_FATTURA = #SCALATA_IN_FATTURA,\n       ID_FATTURA = :ID_FATTURA\n WHERE CHIAVE = :CHIAVE\n"
+		},
+		{
+			"Name" : "InserisciRata",
+			"SQL" : "INSERT INTO rate_note (CHIAVE, ID_NOTA, DATA, DATA_PAGAMENTO, IMPORTO, NOTE, \n                                       ID_CONTO_CASSE,SCALATA_IN_FATTURA, ID_FATTURA)\n                         VALUES (:NewKey3, :NewKey1!ID_NOTA, #DATA, #DATA_PAGAMENTO, :IMPORTO, #NOTE, \n                                        :ID_CONTO_CASSE, #SCALATA_IN_FATTURA, :ID_FATTURA)\n"
+		},
+		{
+			"Name" : "EliminaFatturaCorrelata",
+			"SQL" : "UPDATE rate_note\n   SET ID_FATTURA = NULL\n WHERE CHIAVE = :CHIAVE\n"
+		},
+		{
+			"Name" : "EliminaRateTramiteNota",
+			"SQL" : "DELETE from rate_note\n   WHERE ID_NOTA = :CHIAVE_NOTA_DI_CREDITO\n"
+		},
+		{
+			"Name" : "EliminaXMLTramiteNota",
+			"SQL" : "DELETE from xml_note_di_credito\n   WHERE ID_NOTA_DI_CREDITO = :CHIAVE_NOTA_DI_CREDITO\n"
+		}
+	],
+	"FiltroNote" : [
+		{
+			"Name" : "FiltroNote",
+			"SQL" : "SELECT CHIAVE,\n       NUMERO, \n       EXTRACT(YEAR FROM DATA) AS ANNO, \n       ID_CLIENTE, \n       RAGIONE_SOCIALE,\n       INVIATA_ALLO_SDI,\n       (SELECT COUNT(*)\n                FROM rate_note\n              WHERE DATA_PAGAMENTO IS NULL\n                  AND ID_FATTURA IS NULL\n                  AND ID_NOTA = note_di_credito.CHIAVE) AS RATE_NON_PAGATE,\n       (SELECT COUNT(*)\n               FROM rate_note\n             WHERE ID_NOTA = note_di_credito.CHIAVE) AS RATE_TOTALI,\n       (EXISTS(SELECT 1\n                            FROM rate_note \n                          WHERE rate_note.DATA_PAGAMENTO IS NULL \n                               AND rate_note.ID_FATTURA IS NULL \n                               AND rate_note.ID_NOTA = note_di_credito.CHIAVE) <> 1)  AS PAGATO\n  FROM note_di_credito\n {W~NumeroNota~NUMERO = :NumeroNota\n      ~AnnoNota~ANNO = :AnnoNota\n      ~DalNr~NUMERO >= :DalNr\n      ~AlNr~NUMERO <= :AlNr\n      ~Anno1~ANNO >= :Anno1\n      ~Anno2~ANNO <= :Anno2\n      ~DallaData~DATA >= #DallaData\n      ~AllaData~DATA <= #AllaData\n      ~DaAssegnare~ NUMERO IS NULL\n      ~Assegnata~ NUMERO IS NOT NULL\n      ~Intestatario~ UPPER(RAGIONE_SOCIALE) LIKE UPPER(#Intestatario)\n      ~Cliente~ ID_CLIENTE = :Cliente\n      ~PartitaIva~ UPPER(PARTITA_IVA) LIKE UPPER(#PartitaIva)\n      ~NonIncassata~ (SELECT COUNT(*)\n                             FROM rate_note\n                             WHERE  (rate_note.DATA_PAGAMENTO IS NULL\n                                             AND rate_note.ID_FATTURA IS NULL)\n                                  AND rate_note.ID_NOTA = note_di_credito.CHIAVE) <> 0\n      ~Incassata~ (SELECT COUNT(*)\n                                FROM rate_note\n                                WHERE (rate_note.DATA_PAGAMENTO IS NULL\n                                             AND rate_note.ID_FATTURA IS NULL)\n                                             AND rate_note.ID_NOTA = note_di_credito.CHIAVE) = 0}\n{O~OrdinaXData~DATA DESC\n    ~OrdinaXNumero~NUMERO DESC}\nLIMIT :LimitNumRows OFFSET :LimitStart\n"
+		}
+	],
+	"ListaEmailNotaDiCredito" : [
+		{
+			"Name" : "ListaEmailCliente",
+			"SQL" : "SELECT clienti_telefono.EMAIL AS EMAIL_CLIENTI\n  FROM note_di_credito\n                               JOIN clienti                    ON clienti.CHIAVE = note_di_credito.ID_CLIENTE\n            LEFT OUTER JOIN clienti_telefono       ON clienti.CHIAVE = clienti_telefono.ID_CLIENTE\nWHERE note_di_credito.CHIAVE = :CHIAVE\n"
+		},
+		{
+			"Name" : "ListaEmailAmministratore",
+			"SQL" : "SELECT amministratori_telefono.EMAIL AS EMAIL_AMMINISTRATORI\n  FROM note_di_credito\n                               JOIN clienti                           ON clienti.CHIAVE = note_di_credito.ID_CLIENTE\n            LEFT OUTER JOIN amministratori_telefono ON clienti.ID_AMMINISTRATORE = amministratori_telefono.ID_AMMINISTRATORE\n WHERE note_di_credito.CHIAVE = :CHIAVE\n"
+		}
+	],
+	"LsAnnoNoteXCliente" : [
+		{
+			"Name" : "LsAnnoNote",
+			"SQL" : "SELECT EXTRACT(YEAR FROM DATA) AS ANNO_NOTA\n  FROM note_di_credito\n  WHERE ID_CLIENTE = :ChiaveCliente\nGROUP BY ANNO_NOTA \nORDER BY ANNO_NOTA DESC\n"
+		}
+	],
+	"RiassuntoNotePerAnno" : [
+		{
+			"Name" : "Riassunto",
+			"SQL" : "SELECT CHIAVE,\n            NUMERO, \n            EXTRACT(YEAR FROM DATA) AS ANNO, \n            ID_CLIENTE, \n            RAGIONE_SOCIALE,\n            INVIATA_ALLO_SDI,\n            (SELECT COUNT(*)\n                FROM rate_note\n              WHERE DATA_PAGAMENTO IS NULL\n                  AND ID_FATTURA IS NULL\n                  AND ID_NOTA = note_di_credito.CHIAVE) AS RATE_NON_PAGATE,\n            (SELECT COUNT(*)\n               FROM rate_note\n             WHERE ID_NOTA = note_di_credito.CHIAVE) AS RATE_TOTALI,\n            (EXISTS(SELECT 1\n                            FROM rate_note\n                          WHERE rate_note.DATA_PAGAMENTO IS NULL \n                               AND rate_note.ID_FATTURA IS NULL \n                               AND rate_note.ID_NOTA = note_di_credito.CHIAVE) <> 1)  AS PAGATO\n  \nFROM note_di_credito\nWHERE ID_CLIENTE = :ChiaveCliente\n    AND EXTRACT(YEAR FROM DATA) = :AnnoNotaDiCredito\n"
+		}
+	],
+	"ScaricaFileNota" : [
+		{
+			"Name" : "ScaricaFileNota",
+			"SQL" : "SELECT XML_BODY, DATA_INVIO\n  FROM xml_note_di_credito\nWHERE ID_NOTA_DI_CREDITO = :CHIAVE\n     AND RISULTATO IS NULL\n"
+		}
+	],
+	"SelectDettaglio" : [
+		{
+			"Name" : "Dettaglio",
+			"SQL" : "SELECT note_di_credito.*,\n            conti_correnti_casse.IBAN AS IBAN_CONTO,\n            conti_correnti_casse.NR_CONTO, conti_correnti_casse.BANCA AS BANCA_CONTO,\n            clienti.IVA_SUGGERITA_CLIENTE,\n            conti_correnti_casse.SWIFT AS SWIFT_CONTO,  \n            conti_correnti_casse.BIC AS BIC_CONTO, \n            clienti.NATURA_PAGAMENTO,\n            fatture.NUMERO AS NUMERO_FATTURA,\n            fatture.ANNO AS ANNO_FATTURA,\n            (SELECT COUNT(*)\n                FROM rate_note\n              WHERE DATA_PAGAMENTO IS NULL\n                  AND ID_FATTURA IS NULL\n                  AND ID_NOTA = note_di_credito.CHIAVE) AS RATE_NON_PAGATE,\n            (SELECT COUNT(*)\n               FROM rate_note\n             WHERE ID_NOTA = note_di_credito.CHIAVE) AS RATE_TOTALI,\n            (EXISTS(SELECT 1\n                            FROM rate_note \n                          WHERE rate_note.DATA_PAGAMENTO IS NULL \n                               AND rate_note.ID_FATTURA IS NULL \n                               AND rate_note.ID_NOTA = note_di_credito.CHIAVE) <> 1)  AS PAGATO\n  FROM note_di_credito\n            LEFT OUTER JOIN conti_correnti_casse ON conti_correnti_casse.CHIAVE = note_di_credito.ID_CONTO_CORRENTE\n            LEFT OUTER JOIN clienti ON clienti.CHIAVE = note_di_credito.ID_CLIENTE\n            LEFT OUTER JOIN fatture ON fatture.CHIAVE = note_di_credito.ID_FATTURA_CREAZIONE\n WHERE note_di_credito.CHIAVE = :CHIAVE\n"
+		},
+		{
+			"Name" : "AllegatiNoteDiCredito",
+			"SQL" : "SELECT CHIAVE, DESCRIZIONE, ID_NOTA_DI_CREDITO, ALLEGATO\n  FROM allegati_note_di_credito\n WHERE ID_NOTA_DI_CREDITO = :CHIAVE\n"
+		},
+		{
+			"Name" : "VociNoteDiCredito",
+			"SQL" : "SELECT *\n  FROM voci_note_di_credito\n WHERE ID_NOTA_DI_CREDITO = :CHIAVE\nORDER BY ORDINAMENTO\n"
+		},
+		{
+			"Name" : "LogNoteDiCredito",
+			"SQL" : "SELECT log_note_di_credito.DATA, log_note_di_credito.NOTE, log_note_di_credito.ID_NOTA_DI_CREDITO, log_note_di_credito.CHIAVE,\n            utenti.RAGIONE_SOCIALE AS UTENTE\n  FROM log_note_di_credito\n   LEFT OUTER JOIN utenti ON log_note_di_credito.ID_UTENTE = utenti.CHIAVE\n WHERE ID_NOTA_DI_CREDITO = :CHIAVE\n ORDER BY log_note_di_credito.DATA DESC\n"
+		},
+		{
+			"Name" : "RateNotaDiCredito",
+			"SQL" : "SELECT rate_note.*, fatture.CHIAVE AS CHIAVE_FATTURA, fatture.NUMERO\n\nFROM rate_note\nLEFT JOIN fatture ON (fatture.CHIAVE = rate_note.ID_FATTURA)\n\nWHERE rate_note.ID_NOTA = :CHIAVE\n"
+		}
+]
+}

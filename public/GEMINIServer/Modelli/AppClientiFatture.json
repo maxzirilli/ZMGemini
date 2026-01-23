@@ -1,0 +1,9 @@
+{
+	"RuoliAbilitati" : "",
+	"Fatture" : [
+		{
+			"Name" : "DatiFattura",
+			"SQL" : "SELECT ANNO,\n            RAGIONE_SOCIALE,\n            NUMERO,\n            DATA,\n            CHIAVE\nFROM fatture\nWHERE ID_CLIENTE = :ID_CLIENTE AND ANNO IS NOT NULL\nORDER BY ANNO DESC,\n                RAGIONE_SOCIALE,\n                NUMERO DESC\n"
+		}
+]
+}

@@ -1,0 +1,23 @@
+{
+	"RuoliAbilitati" : "",
+	"SelectSQL" : [
+		{
+			"Name" : "Tutto",
+			"SQL" : "SELECT *\n  FROM causali\n"
+		}
+	],
+	"EditSQL" : [
+		{
+			"Name" : "Insert",
+			"SQL" : "INSERT INTO causali (CHIAVE,DESCRIZIONE, RIFERIMENTO)\n     VALUES (:NewKey1,#DESCRIZIONE, #RIFERIMENTO)\n"
+		},
+		{
+			"Name" : "Delete",
+			"SQL" : "DELETE FROM causali WHERE CHIAVE = :CHIAVE\n"
+		},
+		{
+			"Name" : "Update",
+			"SQL" : "UPDATE causali\n      SET DESCRIZIONE = #DESCRIZIONE,\n            RIFERIMENTO = #RIFERIMENTO\nWHERE CHIAVE = :CHIAVE\n"
+		}
+]
+}

@@ -1,0 +1,57 @@
+{
+	"RuoliAbilitati" : "",
+	"EditSQL" : [
+		{
+			"Name" : "InsertMovimentiMagazzini",
+			"SQL" : "INSERT INTO movimenti_magazzini (CHIAVE, DATA, ID_MAGAZZINO_CEDENTE, ID_MAGAZZINO_RICEVENTE , DESCRIZIONE)\n                VALUES(:NewKey1, #DATA, :ID_MAGAZZINO_CEDENTE , :ID_MAGAZZINO_RICEVENTE , #DESCRIZIONE)\n"
+		},
+		{
+			"Name" : "UpdateMovimentiMagazzini",
+			"SQL" : "UPDATE movimenti_magazzini SET \n       DATA = #DATA,\n       ID_MAGAZZINO_CEDENTE = :ID_MAGAZZINO_CEDENTE,\n       ID_MAGAZZINO_RICEVENTE = :ID_MAGAZZINO_RICEVENTE,\n       DESCRIZIONE = #DESCRIZIONE\n WHERE CHIAVE = :CHIAVE\n"
+		},
+		{
+			"Name" : "DeleteMovimentoMagazzino",
+			"SQL" : "DELETE FROM movimenti_magazzini WHERE CHIAVE = :CHIAVE_MOVIMENTO_MAGAZZINO\n"
+		},
+		{
+			"Name" : "DeleteMovimentiProdotto",
+			"SQL" : "DELETE FROM prodotti_x_movimenti_magazzini WHERE CHIAVE = :CHIAVE\n"
+		},
+		{
+			"Name" : "InsertMovimentiProdotto",
+			"SQL" : "INSERT INTO prodotti_x_movimenti_magazzini (CHIAVE, ID_MOVIMENTO_MAGAZZINO,\n                                                                      ID_PRODOTTO, QUANTITA_PRODOTTO)\n                VALUES(:NewKey2, :NewKey1!ID_MOVIMENTO_MAGAZZINO, :ID_PRODOTTO , :QUANTITA_PRODOTTO)\n"
+		},
+		{
+			"Name" : "UpdateMovimentiProdotto",
+			"SQL" : "UPDATE prodotti_x_movimenti_magazzini SET \n       ID_PRODOTTO = :ID_PRODOTTO, \n       QUANTITA_PRODOTTO = :QUANTITA_PRODOTTO\n WHERE CHIAVE = :CHIAVE\n"
+		}
+	],
+	"FiltroMovimentiMagazzini" : [
+		{
+			"Name" : "FiltroMovimentiMagazzini",
+			"SQL" : "SELECT DISTINCT movimenti_magazzini.*\n  FROM movimenti_magazzini\n  LEFT OUTER JOIN prodotti_x_movimenti_magazzini ON prodotti_x_movimenti_magazzini.ID_MOVIMENTO_MAGAZZINO  = movimenti_magazzini.CHIAVE\n  LEFT OUTER JOIN prodotti            ON prodotti.CHIAVE  = prodotti_x_movimenti_magazzini.ID_PRODOTTO\n  {W~DallaData~movimenti_magazzini.DATA >= #DallaData\n      ~AllaData~movimenti_magazzini.DATA <= #AllaData\n     ~DescrizioneProdotto~UPPER(prodotti.DESCRIZIONE) LIKE UPPER(#DescrizioneProdotto)}\nORDER BY movimenti_magazzini.DATA DESC, movimenti_magazzini.CHIAVE DESC\nLIMIT :LimitNumRows OFFSET :LimitStart\n\n"
+		}
+	],
+	"ListaProdottiMagazzino" : [
+		{
+			"Name" : "ListaProdottiMagazzino",
+			"SQL" : "SELECT prodotti.*,\n            qnt_x_magazzino.QUANTITA_MAGAZZINO\n  FROM prodotti\n            LEFT OUTER JOIN qnt_x_magazzino ON qnt_x_magazzino.ID_PRODOTTO = prodotti.CHIAVE\nWHERE qnt_x_magazzino.ID_MAGAZZINO = :CHIAVE\n"
+		}
+	],
+	"SelectDettaglioMovimentiMagazzini" : [
+		{
+			"Name" : "SelectMovimentiMagazzini",
+			"SQL" : "SELECT *\n  FROM movimenti_magazzini\nWHERE CHIAVE = :CHIAVE\n"
+		},
+		{
+			"Name" : "SelectPodottiMovimentatiMagazzini",
+			"SQL" : "               SELECT prodotti_x_movimenti_magazzini.CHIAVE,\n                           prodotti_x_movimenti_magazzini.QUANTITA_PRODOTTO,\n                           prodotti_x_movimenti_magazzini.ID_PRODOTTO,\n                           prodotti.DESCRIZIONE\n                 FROM prodotti_x_movimenti_magazzini\nLEFT OUTER JOIN movimenti_magazzini ON movimenti_magazzini.CHIAVE = prodotti_x_movimenti_magazzini.ID_MOVIMENTO_MAGAZZINO\nLEFT OUTER JOIN prodotti            ON prodotti.CHIAVE            = prodotti_x_movimenti_magazzini.ID_PRODOTTO\nWHERE movimenti_magazzini.CHIAVE = :CHIAVE\n"
+		}
+	],
+	"SelectSQL" : [
+		{
+			"Name" : "Tutto",
+			"SQL" : "SELECT *\n  FROM movimenti_magazzini\n"
+		}
+]
+}

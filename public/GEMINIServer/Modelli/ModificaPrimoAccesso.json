@@ -1,0 +1,9 @@
+{
+	"RuoliAbilitati" : "",
+	"EditSQL" : [
+		{
+			"Name" : "ModificaPrimoAccesso",
+			"SQL" : "UPDATE utenti SET PRIMO_ACCESSO = 'F'\nWHERE CHIAVE = :KeyAccount\n"
+		}
+]
+}

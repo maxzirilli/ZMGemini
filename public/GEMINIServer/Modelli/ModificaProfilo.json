@@ -1,0 +1,9 @@
+{
+	"RuoliAbilitati" : "",
+	"EditSQL" : [
+		{
+			"Name" : "ModificaProfilo",
+			"SQL" : "UPDATE utenti\nSET RAGIONE_SOCIALE = #RagioneSociale,\n    EMAIL = #EMail,\n    IMMAGINE = #Immagine\nWHERE USERNAME = #UserName\n"
+		}
+]
+}

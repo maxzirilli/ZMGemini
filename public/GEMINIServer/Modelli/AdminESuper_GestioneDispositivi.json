@@ -1,0 +1,17 @@
+{
+	"RuoliAbilitati" : "A,S",
+	"SelectSQL" : [
+	],
+	"EditSQL" : [
+		{
+			"Name" : "ModificaBloccoDispositivo",
+			"SQL" : "UPDATE identificativi_dispositivi\n      SET BLOCCATO = #BLOCCATO\n WHERE IDENTIFICATIVO = :IDENTIFICATIVO\n"
+		}
+	],
+	"ListaDispositivi" : [
+		{
+			"Name" : "Lista",
+			"SQL" : "SELECT identificativi_dispositivi.*,\n            utenti.USERNAME,\n            utenti.RAGIONE_SOCIALE,\n            utenti.IMMAGINE\n  FROM identificativi_dispositivi\n            LEFT OUTER JOIN utenti ON utenti.CHIAVE = identificativi_dispositivi.ID_TECNICO\n"
+		}
+]
+}

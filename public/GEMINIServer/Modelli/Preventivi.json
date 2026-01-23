@@ -1,0 +1,175 @@
+{
+	"RuoliAbilitati" : "",
+	"CaricaAllegato" : [
+		{
+			"Name" : "CaricaAllegato",
+			"SQL" : "SELECT *\n  FROM allegati_preventivi\n WHERE CHIAVE = :CHIAVE\n"
+		}
+	],
+	"EditSQL" : [
+		{
+			"Name" : "Inserisci",
+			"SQL" : "INSERT INTO preventivi (CHIAVE, NUMERO, ID_CLIENTE, ANNO,\n                     RAGIONE_SOCIALE, INDIRIZZO_FATTURAZIONE, NR_CIVICO_FATTURAZIONE,\n                     COMUNE_FATTURAZIONE, PROVINCIA_FATTURAZIONE, CAP_FATTURAZIONE,\n                     DATA, PARTITA_IVA, CODICE_FISCALE,\n                     COMUNE_DESTINAZIONE, PROVINCIA_DESTINAZIONE, CAP_DESTINAZIONE, NR_CIVICO_DESTINAZIONE,\n                     DESTINAZIONE, INDIRIZZO_DESTINAZIONE,\n                     COND_PAGAMENTO, NOTE, RITENUTA, \n                     ESIGIBILITA_IVA, IBAN, CAUSALE, IS_INVIATO, ID_CONTO_CORRENTE, BANCA, BIC, SWIFT,\n                     COD_ENTE_SDI, PEC, ENTE_PUBBLICO, COD_UFFICIO_DEST, CIG, CUP, CONVENZIONE, VOCE_DI_RIFERIMENTO,\n                     DOCUMENTO_NR, DATA_DOCUMENTO, DOCUMENTO_CORRELATO, NUMERO_REVISIONE, NAZIONE_DESTINAZIONE, \n                     NAZIONE_EM_PIVA, PROGRAMMA_PROSSIMA_VISITA, ID_FILIALE,ID_ZONA_SPEDIZIONE)\n        VALUES (:NewKey1, NEW_NUMERO_PREVENTIVO(EXTRACT(YEAR FROM #DATA)), :ID_CLIENTE, EXTRACT(YEAR FROM #DATA),\n                     #RAGIONE_SOCIALE, #INDIRIZZO_FATTURAZIONE, #NR_CIVICO_FATTURAZIONE,\n                     #COMUNE_FATTURAZIONE, :PROVINCIA_FATTURAZIONE, #CAP_FATTURAZIONE,\n                     #DATA, #PARTITA_IVA, #CODICE_FISCALE,\n                     #COMUNE_DESTINAZIONE, :PROVINCIA_DESTINAZIONE, #CAP_DESTINAZIONE, #NR_CIVICO_DESTINAZIONE,\n                     #DESTINAZIONE, #INDIRIZZO_DESTINAZIONE,\n                     :COND_PAGAMENTO, #NOTE, :RITENUTA, \n                     #ESIGIBILITA_IVA, #IBAN, :CAUSALE, #IS_INVIATO, :ID_CONTO_CORRENTE, #BANCA, #BIC, #SWIFT,\n                     #COD_ENTE_SDI, #PEC, #ENTE_PUBBLICO, #COD_UFFICIO_DEST, #CIG, #CUP, #CONVENZIONE, #VOCE_DI_RIFERIMENTO,\n                     #DOCUMENTO_NR, #DATA_DOCUMENTO, #DOCUMENTO_CORRELATO, :NUMERO_REVISIONE, :NAZIONE_DESTINAZIONE, \n                     :NAZIONE_EM_PIVA, #PROGRAMMA_PROSSIMA_VISITA, :ID_FILIALE,:ID_ZONA_SPEDIZIONE)\n"
+		},
+		{
+			"Name" : "Modifica",
+			"SQL" : "UPDATE preventivi SET\n               ID_CLIENTE = :ID_CLIENTE,\n               DATA = #DATA, \n               ANNO = EXTRACT(YEAR FROM #DATA),\n               RAGIONE_SOCIALE = #RAGIONE_SOCIALE,\n               INDIRIZZO_FATTURAZIONE = #INDIRIZZO_FATTURAZIONE,\n               COMUNE_FATTURAZIONE = #COMUNE_FATTURAZIONE, \n               PROVINCIA_FATTURAZIONE = :PROVINCIA_FATTURAZIONE, \n               CAP_FATTURAZIONE = #CAP_FATTURAZIONE, \n               PARTITA_IVA = #PARTITA_IVA, \n               CODICE_FISCALE = #CODICE_FISCALE,\n               COMUNE_DESTINAZIONE = #COMUNE_DESTINAZIONE, \n               PROVINCIA_DESTINAZIONE = :PROVINCIA_DESTINAZIONE,\n               CAP_DESTINAZIONE = #CAP_DESTINAZIONE, \n               DESTINAZIONE = #DESTINAZIONE, \n               INDIRIZZO_DESTINAZIONE = #INDIRIZZO_DESTINAZIONE,\n               COND_PAGAMENTO = :COND_PAGAMENTO,\n               NOTE = #NOTE,\n               RITENUTA = :RITENUTA,\n               ESIGIBILITA_IVA = #ESIGIBILITA_IVA,\n               IBAN = #IBAN,\n               CAUSALE = :CAUSALE,\n               IS_INVIATO = #IS_INVIATO,\n               ID_CONTO_CORRENTE = :ID_CONTO_CORRENTE, \n               BIC = #BIC,\n               SWIFT = #SWIFT,\n               BANCA = #BANCA,\n               NR_CIVICO_DESTINAZIONE = #NR_CIVICO_DESTINAZIONE,\n               NR_CIVICO_FATTURAZIONE = #NR_CIVICO_FATTURAZIONE,\n               COD_ENTE_SDI = #COD_ENTE_SDI,\n               ENTE_PUBBLICO = #ENTE_PUBBLICO,\n               PEC = #PEC,\n               COD_UFFICIO_DEST = #COD_UFFICIO_DEST,\n               CIG = #CIG, \n               CUP = #CUP, \n               CONVENZIONE = #CONVENZIONE, \n               VOCE_DI_RIFERIMENTO = #VOCE_DI_RIFERIMENTO,\n               DOCUMENTO_NR = #DOCUMENTO_NR, \n               DATA_DOCUMENTO = #DATA_DOCUMENTO, \n               DOCUMENTO_CORRELATO = #DOCUMENTO_CORRELATO,\n               NUMERO_REVISIONE = :NUMERO_REVISIONE,\n               NAZIONE_DESTINAZIONE = :NAZIONE_DESTINAZIONE, \n               NAZIONE_EM_PIVA = :NAZIONE_EM_PIVA,\n               PROGRAMMA_PROSSIMA_VISITA = #PROGRAMMA_PROSSIMA_VISITA,\n               ID_FILIALE = :ID_FILIALE,\n               ID_ZONA_SPEDIZIONE = :ID_ZONA_SPEDIZIONE\n         WHERE CHIAVE = :CHIAVE\n"
+		},
+		{
+			"Name" : "Elimina",
+			"SQL" : "DELETE FROM preventivi\n WHERE CHIAVE = :CHIAVE_PREVENTIVO\n"
+		},
+		{
+			"Name" : "InserisciAllegato",
+			"SQL" : "INSERT INTO allegati_preventivi (CHIAVE, ALLEGATO, ID_PREVENTIVO, DESCRIZIONE)\n                      VALUES (:NewKey2, $ALLEGATO, :NewKey1!ID_PREVENTIVO, #DESCRIZIONE)\n"
+		},
+		{
+			"Name" : "ModificaAllegato",
+			"SQL" : "UPDATE allegati_preventivi \n   SET CHIAVE = :CHIAVE,\n       DESCRIZIONE = #DESCRIZIONE,\n       ALLEGATO = $ALLEGATO\n WHERE CHIAVE = :CHIAVE\n"
+		},
+		{
+			"Name" : "EliminaAllegato",
+			"SQL" : "DELETE from allegati_preventivi\n WHERE CHIAVE = :CHIAVE\n"
+		},
+		{
+			"Name" : "InserisciVoce",
+			"SQL" : "INSERT INTO voci_preventivi (CHIAVE, ID_PREVENTIVO, DESCRIZIONE, IMPORTO, QUANTITA,\n                          IVA, IMPORTO_IVATO, SCONTO,UNITA_DI_MISURA, ORDINAMENTO, CODICE_PRODOTTO, NATURA_PAGAMENTO,ID_PRODOTTO)\n                  VALUES (:NewKey2, :NewKey1!ID_PREVENTIVO, #DESCRIZIONE, :IMPORTO, :QUANTITA,\n                          :IVA, #IMPORTO_IVATO, :SCONTO,#UNITA_DI_MISURA, :ORDINAMENTO, #CODICE_PRODOTTO, :NATURA_PAGAMENTO,:ID_PRODOTTO)\n"
+		},
+		{
+			"Name" : "ModificaVoce",
+			"SQL" : "UPDATE voci_preventivi\n   SET DESCRIZIONE = #DESCRIZIONE,\n       IMPORTO = #IMPORTO,\n       QUANTITA = :QUANTITA,\n       ORDINAMENTO = :ORDINAMENTO,\n       IVA = :IVA,\n       IMPORTO_IVATO = #IMPORTO_IVATO,\n       UNITA_DI_MISURA = #UNITA_DI_MISURA,\n       SCONTO = :SCONTO,\n       CODICE_PRODOTTO = #CODICE_PRODOTTO,\n       NATURA_PAGAMENTO = :NATURA_PAGAMENTO,\n       ID_PRODOTTO = :ID_PRODOTTO\n WHERE CHIAVE = :CHIAVE\n"
+		},
+		{
+			"Name" : "EliminaVoce",
+			"SQL" : "DELETE from voci_preventivi\n WHERE CHIAVE = :CHIAVE\n"
+		},
+		{
+			"Name" : "EliminaVoceTramitePreventivo",
+			"SQL" : "DELETE from voci_preventivi\n WHERE ID_PREVENTIVO = :CHIAVE\n"
+		},
+		{
+			"Name" : "EliminaAllegatoTramitePreventivo",
+			"SQL" : "DELETE from allegati_preventivi\n WHERE ID_PREVENTIVO = :CHIAVE\n"
+		},
+		{
+			"Name" : "InserisciLog",
+			"SQL" : "INSERT INTO log_preventivi (CHIAVE, ID_PREVENTIVO, DATA, NOTE, ID_UTENTE)\n                            VALUES (:NewKey2, :NewKey1!ID_PREVENTIVO, #DATA, #NOTE, :KeyAccount)\n"
+		},
+		{
+			"Name" : "EliminaLogTramitePreventivo",
+			"SQL" : "DELETE from log_preventivi\n WHERE ID_PREVENTIVO = :CHIAVE\n"
+		},
+		{
+			"Name" : "DeleteAttrezzatureDaPreventivo",
+			"SQL" : "DELETE FROM preventivi_attrezzature \n          WHERE preventivi_attrezzature.ID_PREVENTIVO = :CHIAVE_PREVENTIVO\n"
+		},
+		{
+			"Name" : "InserisciAttrezzatureInPreventivo",
+			"SQL" : "INSERT INTO preventivi_attrezzature (ID_ATTREZZATURA, ID_PREVENTIVO)\n                                         VALUES (:ID_ATTREZZATURA, :NewKey1!ID_PREVENTIVO)\n"
+		},
+		{
+			"Name" : "EliminaAttrezzatureCollegateAlPreventivo",
+			"SQL" : "DELETE from preventivi_attrezzature\n WHERE ID_PREVENTIVO = :CHIAVE\n"
+		},
+		{
+			"Name" : "EliminaCollegamentiAiPreventiviMultiparametrici",
+			"SQL" : "UPDATE preventivi_multiparametrici\n     SET ID_PREVENTIVO_CONFERMA = NULL\n WHERE ID_PREVENTIVO_CONFERMA = :CHIAVE\n"
+		},
+		{
+			"Name" : "CollegaConfermaAlPreventivo",
+			"SQL" : "UPDATE preventivi_multiparametrici\n     SET ID_PREVENTIVO_CONFERMA = :NewKey1,\n            PRIMO_PREVENTIVO = NULL\n WHERE CHIAVE = :ID_PREVENTIVO_MULTI\n"
+		},
+		{
+			"Name" : "ModificaPrimoPreventivo",
+			"SQL" : "UPDATE preventivi_multiparametrici\n      SET PRIMO_PREVENTIVO = :CHIAVE_PREVENTIVO\n WHERE CHIAVE = :PRIMO_PREVENTIVO\n       OR PRIMO_PREVENTIVO = :PRIMO_PREVENTIVO\n"
+		},
+		{
+			"Name" : "EliminaAttrezzAltreLavorazioni",
+			"SQL" : "DELETE FROM preventivi_attrezzature_soluzioni\n          WHERE preventivi_attrezzature_soluzioni.ID_PREVENTIVO = :ID_PREVENTIVO\n"
+		},
+		{
+			"Name" : "InserisciElaborazioneAttrezzatura",
+			"SQL" : "INSERT INTO attrezzature_altre_lavorazioni (CHIAVE, ID_CONFERMA, ID_ATTREZZATURA, DESCRIZIONE_LAVORAZIONE)\n                                                   VALUES (:NewKey1, :ID_CONFERMA, :ID_ATTREZZATURA, #DESCRIZIONE_LAVORAZIONE)\n"
+		},
+		{
+			"Name" : "InserisciAttrezzAltreLavorazioni",
+			"SQL" : "INSERT INTO preventivi_attrezzature_soluzioni (CHIAVE, ID_ATTREZZATURA, ID_PREVENTIVO, DESCRIZIONE_LAVORAZIONE)\n                                         VALUES (:NewKey2, :ID_ATTREZZATURA, :NewKey1!ID_PREVENTIVO, #DESCRIZIONE_LAVORAZIONE)\n"
+		}
+	],
+	"FiltroPreventivo" : [
+		{
+			"Name" : "FiltroPreventivo",
+			"SQL" : "SELECT CHIAVE,\n       NUMERO, \n       EXTRACT(YEAR FROM DATA) AS ANNO, \n       ID_CLIENTE, \n       RAGIONE_SOCIALE,\n       ID_FATTURA,\n       PROGRAMMA_PROSSIMA_VISITA,\n       ID_DDT_ENTRANTI,\n       ID_DDT_USCENTI\n    FROM preventivi\n {W~NumeroPreventivo~NUMERO = :NumeroPreventivo\n      ~AnnoPreventivo~ANNO = :AnnoPreventivo\n     ~DalNr~NUMERO >= :DalNr\n     ~AlNr~NUMERO <= :AlNr\n     ~Anno1~ANNO >= :Anno1\n     ~Anno2~ANNO <= :Anno2\n     ~DallaData~DATA >= #DallaData\n     ~AllaData~DATA <= #AllaData\n     ~Intestatario~ UPPER(RAGIONE_SOCIALE) LIKE UPPER(#Intestatario)\n     ~Cliente~ ID_CLIENTE = :Cliente\n     ~PartitaIva~ UPPER(PARTITA_IVA) LIKE UPPER(#PartitaIva)\n      ~StatoConfermaDOrdineGestite~ PROGRAMMA_PROSSIMA_VISITA = 'T' OR\n                                            ID_FATTURA IS NOT NULL OR\n                                            ID_DDT_USCENTI IS NOT NULL OR\n                                            ID_DDT_ENTRANTI IS NOT NULL\n    ~StatoConfermaDOrdineNonGestite~ PROGRAMMA_PROSSIMA_VISITA = 'F' AND\n                                                            ID_FATTURA IS NULL AND\n                                                            ID_DDT_USCENTI IS NULL AND\n                                                            ID_DDT_ENTRANTI IS NULL}\nORDER BY DATA DESC, NUMERO DESC\nLIMIT :LimitNumRows OFFSET :LimitStart\n"
+		}
+	],
+	"ListaEmailPreventivo" : [
+		{
+			"Name" : "ListaEmailCliente",
+			"SQL" : "SELECT clienti_telefono.EMAIL AS EMAIL_CLIENTI\n  FROM preventivi\n                               JOIN clienti                    ON clienti.CHIAVE = preventivi.ID_CLIENTE\n            LEFT OUTER JOIN clienti_telefono       ON clienti.CHIAVE = clienti_telefono.ID_CLIENTE\nWHERE preventivi.CHIAVE = :CHIAVE\n"
+		},
+		{
+			"Name" : "ListaEmailAmministratore",
+			"SQL" : "SELECT amministratori_telefono.EMAIL AS EMAIL_AMMINISTRATORI\n  FROM preventivi\n                               JOIN clienti                           ON clienti.CHIAVE = preventivi.ID_CLIENTE\n            LEFT OUTER JOIN amministratori_telefono ON clienti.ID_AMMINISTRATORE = amministratori_telefono.ID_AMMINISTRATORE\n WHERE preventivi.CHIAVE = :CHIAVE\n"
+		}
+	],
+	"ListaPreventiviConfermati" : [
+		{
+			"Name" : "ListaPreventiviConfermati",
+			"SQL" : "SELECT preventivi.CHIAVE, \n            preventivi.DATA,\n            preventivi.NUMERO,\n            preventivi.RAGIONE_SOCIALE,\n            preventivi.COND_PAGAMENTO,\n            clienti.RAGIONE_SOCIALE AS RAGIONE_SOCIALE_CLIENTE, \n            clienti.CODICE_CLIENTE\n  FROM preventivi \n            LEFT OUTER JOIN clienti ON clienti.CHIAVE = preventivi.ID_CLIENTE\n WHERE preventivi.ID_CLIENTE = :CHIAVE\n {w~DallaData~preventivi.DATA >= #DallaData\n     ~AllaData~preventivi.DATA <= #AllaData}\n ORDER BY DATA DESC\n"
+		}
+	],
+	"ListaVociPreventiviSelezionati" : [
+		{
+			"Name" : "ListaVociPreventiviSelezionati",
+			"SQL" : "SELECT voci_preventivi.*, \n            preventivi.NUMERO, \n            preventivi.DESTINAZIONE, \n            preventivi.DATA AS DATA_PREVENTIVO, \n            preventivi.NUMERO_REVISIONE,\n            preventivi.INDIRIZZO_DESTINAZIONE,\n            preventivi.NR_CIVICO_DESTINAZIONE,\n            preventivi.COMUNE_DESTINAZIONE\n  FROM voci_preventivi\n           LEFT OUTER JOIN preventivi ON preventivi.CHIAVE = voci_preventivi.ID_PREVENTIVO\nWHERE voci_preventivi.ID_PREVENTIVO IN ?ListaCheckati\nORDER BY ID_PREVENTIVO, ORDINAMENTO\n"
+		}
+	],
+	"LsAnnoConfermeXCliente" : [
+		{
+			"Name" : "LsAnnoConferme",
+			"SQL" : "SELECT EXTRACT(YEAR FROM DATA) AS ANNO\n  FROM preventivi\nWHERE ID_CLIENTE = :ChiaveCliente\nGROUP BY EXTRACT(YEAR FROM DATA)\nORDER BY EXTRACT(YEAR FROM DATA) DESC\n"
+		}
+	],
+	"LsAnnoPreventiviXCliente" : [
+		{
+			"Name" : "LsAnnoPreventivi",
+			"SQL" : "SELECT EXTRACT(YEAR FROM DATA) AS ANNO_PREVENTIVO\n  FROM preventivi\nWHERE ID_CLIENTE = :ChiaveCliente\nGROUP BY ANNO_PREVENTIVO \nORDER BY ANNO_PREVENTIVO DESC\n"
+		}
+	],
+	"NuovoNumeroPreventivo" : [
+		{
+			"Name" : "NuovoNumeroPreventivo",
+			"SQL" : "SELECT NEW_NUMERO_PREVENTIVO(:Anno) AS NUOVO_NUMERO\n"
+		}
+	],
+	"RiassuntoConfermePerAnno" : [
+		{
+			"Name" : "Riassunto",
+			"SQL" : "SELECT CHIAVE,\n       NUMERO, \n       EXTRACT(YEAR FROM DATA) AS ANNO, \n       ID_CLIENTE, \n       RAGIONE_SOCIALE,\n       ID_FATTURA,\n       ID_DDT_ENTRANTI,\n       ID_DDT_USCENTI\n  FROM preventivi\n  WHERE ID_CLIENTE = :ChiaveCliente\n    AND EXTRACT(YEAR FROM DATA) = :AnnoConferma\n ORDER BY NUMERO DESC\n"
+		}
+	],
+	"RiassuntoPreventiviPerAnno" : [
+		{
+			"Name" : "Riassunto",
+			"SQL" : "SELECT CHIAVE,\n       NUMERO, \n       EXTRACT(YEAR FROM DATA) AS ANNO, \n       ID_CLIENTE, \n       RAGIONE_SOCIALE,\n       ID_FATTURA,\n       ID_DDT_ENTRANTI,\n       ID_DDT_USCENTI\n  FROM preventivi\n  WHERE ID_CLIENTE = :ChiaveCliente\n    AND EXTRACT(YEAR FROM DATA) = :AnnoPreventivo\n ORDER BY NUMERO DESC\n"
+		}
+	],
+	"SelectDettaglio" : [
+		{
+			"Name" : "Dettaglio",
+			"SQL" : "SELECT preventivi.*, \n            clienti.BOLLO,\n            fatture.NUMERO AS NUMERO_FATTURA, \n            fatture.ANNO AS ANNO_FATTURA, \n            conti_correnti_casse.IBAN AS IBAN_CONTO,\n            conti_correnti_casse.NR_CONTO, \n            conti_correnti_casse.BANCA AS BANCA_CONTO,\n            conti_correnti_casse.SWIFT AS SWIFT_CONTO,  \n            conti_correnti_casse.BIC AS BIC_CONTO, \n            clienti.NATURA_PAGAMENTO,\n            clienti.IVA_SUGGERITA_CLIENTE,\n            filiali_clienti.NOME AS NOME_FILIALE,\n            preventivi_multiparametrici.NUMERO AS NUMERO_PREVENTIVO,\n            preventivi_multiparametrici.ANNO AS ANNO_PREVENTIVO,\n            IF(ddt_uscenti.NUMERO_DDT IS NOT NULL, ddt_uscenti.NUMERO_DDT, ddt_entranti.NUMERO_DDT) AS NUMERO_DDT\n  FROM preventivi\n            LEFT OUTER JOIN fatture ON fatture.CHIAVE = preventivi.ID_FATTURA\n            LEFT OUTER JOIN conti_correnti_casse ON conti_correnti_casse.CHIAVE = preventivi.ID_CONTO_CORRENTE\n            LEFT OUTER JOIN clienti ON clienti.CHIAVE = preventivi.ID_CLIENTE\n            LEFT OUTER JOIN filiali_clienti ON filiali_clienti.CHIAVE = preventivi.ID_FILIALE\n            LEFT OUTER JOIN ddt_uscenti ON preventivi.ID_DDT_USCENTI = ddt_uscenti.CHIAVE\n            LEFT OUTER JOIN ddt_entranti ON preventivi.ID_DDT_ENTRANTI = ddt_entranti.CHIAVE \n            LEFT OUTER JOIN preventivi_multiparametrici ON preventivi_multiparametrici.ID_PREVENTIVO_CONFERMA = preventivi.CHIAVE\nWHERE preventivi.CHIAVE = :CHIAVE\n"
+		},
+		{
+			"Name" : "AllegatiPreventivo",
+			"SQL" : "SELECT CHIAVE, DESCRIZIONE, ID_PREVENTIVO, ALLEGATO\n  FROM allegati_preventivi\n WHERE ID_PREVENTIVO = :CHIAVE\n"
+		},
+		{
+			"Name" : "VociPreventivo",
+			"SQL" : "SELECT *\n  FROM voci_preventivi\n WHERE ID_PREVENTIVO = :CHIAVE\nORDER BY ORDINAMENTO\n"
+		},
+		{
+			"Name" : "LogPreventivo",
+			"SQL" : "SELECT log_preventivi.DATA, log_preventivi.NOTE, log_preventivi.ID_PREVENTIVO, log_preventivi.CHIAVE,\n            utenti.RAGIONE_SOCIALE AS UTENTE\n  FROM log_preventivi\n   LEFT OUTER JOIN utenti ON log_preventivi.ID_UTENTE = utenti.CHIAVE\n WHERE ID_PREVENTIVO = :CHIAVE\n ORDER BY log_preventivi.DATA DESC\n"
+		}
+]
+}

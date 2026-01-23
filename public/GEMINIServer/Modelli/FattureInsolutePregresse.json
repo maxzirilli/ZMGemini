@@ -1,0 +1,43 @@
+{
+	"RuoliAbilitati" : "",
+	"EditSQL" : [
+		{
+			"Name" : "InserisciInsoluto",
+			"SQL" : "INSERT INTO fatture_insolute_pregresse (CHIAVE, DATA, NUMERO, ID_CLIENTE, IMPORTO, \n                                                             DATA_PAGAMENTO, ID_CONTO_PAGAMENTO, NOTE,\n                                                             NO_PRIMA_NOTA)\n                                               VALUES (:NewKey1, #DATA, :NUMERO, :ID_CLIENTE, :IMPORTO, \n                                                            #DATA_PAGAMENTO, :ID_CONTO_PAGAMENTO, #NOTE,\n                                                            #NO_PRIMA_NOTA)\n"
+		},
+		{
+			"Name" : "EliminaInsoluto",
+			"SQL" : "DELETE FROM fatture_insolute_pregresse WHERE CHIAVE = :CHIAVE\n"
+		},
+		{
+			"Name" : "ModificaInsoluto",
+			"SQL" : "UPDATE fatture_insolute_pregresse SET\n            NUMERO = :NUMERO,\n            DATA = #DATA,\n            IMPORTO = :IMPORTO,\n            DATA_PAGAMENTO = #DATA_PAGAMENTO, \n            ID_CONTO_PAGAMENTO = :ID_CONTO_PAGAMENTO,\n            NOTE = #NOTE,\n            NO_PRIMA_NOTA = #NO_PRIMA_NOTA\n WHERE CHIAVE = :CHIAVE\n"
+		},
+		{
+			"Name" : "EliminaRecordSaldiChiusureAnnuali",
+			"SQL" : "DELETE FROM saldi_chiusure_annuali\n WHERE ID_CLIENTE = :CHIAVE_CLIENTE\n     AND ANNO >= #ANNO\n"
+		},
+		{
+			"Name" : "InserisciAllegato",
+			"SQL" : "UPDATE fatture_insolute_pregresse\n     SET ALLEGATO = $ALLEGATO\n WHERE CHIAVE = :CHIAVE\n"
+		},
+		{
+			"Name" : "EliminaAllegato",
+			"SQL" : "UPDATE fatture_insolute_pregresse\n     SET ALLEGATO = $ALLEGATO\n WHERE CHIAVE = :CHIAVE\n"
+		},
+		{
+			"Name" : "ModificaAllegato",
+			"SQL" : "UPDATE fatture_insolute_pregresse\n     SET ALLEGATO = $ALLEGATO\n WHERE CHIAVE = :CHIAVE\n"
+		},
+		{
+			"Name" : "InserisciInsolutoPiuAllegato",
+			"SQL" : "INSERT INTO fatture_insolute_pregresse (CHIAVE, DATA, NUMERO, ID_CLIENTE, IMPORTO, \n                                                             DATA_PAGAMENTO, ID_CONTO_PAGAMENTO, NOTE,\n                                                             NO_PRIMA_NOTA, ALLEGATO)\n                                               VALUES (:NewKey1, #DATA, :NUMERO, :ID_CLIENTE, :IMPORTO, \n                                                            #DATA_PAGAMENTO, :ID_CONTO_PAGAMENTO, #NOTE,\n                                                            #NO_PRIMA_NOTA, $ALLEGATO)\n"
+		}
+	],
+	"SelectSQL" : [
+		{
+			"Name" : "SelectInsolutiCliente",
+			"SQL" : "SELECT fatture_insolute_pregresse.*,\n            movimenti.DATA AS DATA_MOVIMENTO,\n            fatture_insolute_pregresse.ALLEGATO\n  FROM fatture_insolute_pregresse\n            LEFT OUTER JOIN movimenti ON movimenti.CHIAVE = fatture_insolute_pregresse.ID_MOVIMENTO\n WHERE fatture_insolute_pregresse.ID_CLIENTE = :CHIAVE\n ORDER BY DATA\n"
+		}
+]
+}

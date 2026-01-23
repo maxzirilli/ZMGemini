@@ -1,0 +1,223 @@
+{
+	"RuoliAbilitati" : "",
+	"CaricaFattura" : [
+		{
+			"Name" : "CaricaFattura",
+			"SQL" : "SELECT *\n  FROM allegati_fatture_passive\n WHERE CHIAVE = :CHIAVE\n"
+		}
+	],
+	"EditSQL" : [
+		{
+			"Name" : "Inserisci",
+			"SQL" : "INSERT INTO fatture_passive (CHIAVE, NUMERO, ID_FORNITORE, ANNO, RAGIONE_SOCIALE, CODICE_FISCALE, NR_CIVICO_FATTURAZIONE,\n                                           OGGETTO, INDIRIZZO_FATTURAZIONE, PROVINCIA_FATTURAZIONE, COMUNE_FATTURAZIONE,\n                                           CAP_FATTURAZIONE, DATA, PARTITA_IVA, TOTALE_FATTURA,\n                                           IBAN, IS_FATTURA, NAZIONE_EM_PIVA, RICEVUTA, ID_MAGAZZINO)\n                      VALUES (:NewKey1,  #NUMERO, :ID_FORNITORE,\n                                    EXTRACT(YEAR FROM #DATA),  #RAGIONE_SOCIALE, #CODICE_FISCALE, #NR_CIVICO_FATTURAZIONE,\n                                   #OGGETTO, #INDIRIZZO_FATTURAZIONE, :PROVINCIA_FATTURAZIONE, #COMUNE_FATTURAZIONE,\n                                   #CAP_FATTURAZIONE, #DATA, #PARTITA_IVA, :TOTALE_FATTURA,\n                                   #IBAN, #IS_FATTURA, :NAZIONE_EM_PIVA, #RICEVUTA, :ID_MAGAZZINO)\n"
+		},
+		{
+			"Name" : "Modifica",
+			"SQL" : "UPDATE fatture_passive SET \n               ID_FORNITORE = :ID_FORNITORE,\n               NUMERO = #NUMERO,\n               DATA = #DATA,\n               RAGIONE_SOCIALE = #RAGIONE_SOCIALE,\n               INDIRIZZO_FATTURAZIONE = #INDIRIZZO_FATTURAZIONE,\n               COMUNE_FATTURAZIONE = #COMUNE_FATTURAZIONE, \n               PROVINCIA_FATTURAZIONE = :PROVINCIA_FATTURAZIONE, \n               CAP_FATTURAZIONE = #CAP_FATTURAZIONE, \n               PARTITA_IVA = #PARTITA_IVA, \n               CODICE_FISCALE = #CODICE_FISCALE,\n               TOTALE_FATTURA = :TOTALE_FATTURA,\n               IBAN = #IBAN,\n               OGGETTO = #OGGETTO,\n               IS_FATTURA = #IS_FATTURA,\n               NR_CIVICO_FATTURAZIONE = #NR_CIVICO_FATTURAZIONE,\n               NAZIONE_EM_PIVA = :NAZIONE_EM_PIVA,\n               RICEVUTA = #RICEVUTA,\n               ID_MAGAZZINO = :ID_MAGAZZINO\n         WHERE CHIAVE = :CHIAVE\n"
+		},
+		{
+			"Name" : "Elimina",
+			"SQL" : "DELETE FROM fatture_passive \n WHERE CHIAVE = :CHIAVE_FATTURA_PASSIVA;\n"
+		},
+		{
+			"Name" : "InserisciAllegato",
+			"SQL" : "INSERT INTO allegati_fatture_passive (CHIAVE, ALLEGATO, ID_FATTURA_PASSIVA, DESCRIZIONE)\n                      VALUES (:NewKey2, $ALLEGATO, :NewKey1!ID_FATTURA_PASSIVA, #DESCRIZIONE)\n"
+		},
+		{
+			"Name" : "ModificaAllegato",
+			"SQL" : "UPDATE allegati_fatture_passive \n   SET DESCRIZIONE = #DESCRIZIONE,\n       ALLEGATO = $ALLEGATO\n WHERE CHIAVE = :CHIAVE\n"
+		},
+		{
+			"Name" : "EliminaAllegato",
+			"SQL" : "DELETE FROM allegati_fatture_passive\n WHERE CHIAVE = :CHIAVE\n"
+		},
+		{
+			"Name" : "InserisciVoceFatturaPassiva",
+			"SQL" : "INSERT INTO voci_fatture_passive (CHIAVE,ID_FATTURA_PASSIVA, NUMERO_LINEA, QUANTITA, BENE_SERVIZIO, PREZZO,\n                                  SCONTO1, SCONTO2, SCONTO3, TOTALE, IVA, CODICE_ARTICOLO, ID_PRODOTTO)\n                          VALUES (:NewKey2,:NewKey1!CHIAVE_FATTURA_PASSIVA, :NUMERO_LINEA, :QUANTITA, \n                                  #BENE_SERVIZIO, :PREZZO, :SCONTO1,:SCONTO2,:SCONTO3, :TOTALE, :IVA, #CODICE_ARTICOLO, :ID_PRODOTTO)\n"
+		},
+		{
+			"Name" : "ModificaVoceFatturaPassiva",
+			"SQL" : "UPDATE voci_fatture_passive\n   SET NUMERO_LINEA = :NUMERO_LINEA,\n       QUANTITA = :QUANTITA,\n       BENE_SERVIZIO = #BENE_SERVIZIO,\n       PREZZO = :PREZZO,\n       SCONTO1 = :SCONTO1,\n       SCONTO2 = :SCONTO2,\n       SCONTO3 = :SCONTO3,\n       TOTALE = :TOTALE,\n       IVA = :IVA,\n       CODICE_ARTICOLO = #CODICE_ARTICOLO\nWHERE CHIAVE = :CHIAVE\n"
+		},
+		{
+			"Name" : "EliminaVoceFatturaPassiva",
+			"SQL" : "DELETE FROM voci_fatture_passive\n WHERE CHIAVE = :CHIAVE\n"
+		},
+		{
+			"Name" : "EliminaAllegatiTramiteFatturaPassiva",
+			"SQL" : "DELETE FROM allegati_fatture_passive\n  WHERE ID_FATTURA_PASSIVA = :CHIAVE_FATTURA_PASSIVA\n"
+		},
+		{
+			"Name" : "EliminaVociTramiteFatturaPassiva",
+			"SQL" : "DELETE FROM voci_fatture_passive\n  WHERE ID_FATTURA_PASSIVA = :CHIAVE_FATTURA_PASSIVA\n"
+		},
+		{
+			"Name" : "InserisciRateFatturaPassiva",
+			"SQL" : "INSERT INTO rate_fatture_passive (CHIAVE,ID_FATTURA_PASSIVA, DATA_SCADENZA, IMPORTO,NOTE, DATA_PAGAMENTO,\n                                                    ID_MOD_PAGAMENTO, ID_CONTO_CASSA, NO_PRIMA_NOTA)\n                          VALUES (:NewKey2,:NewKey1!CHIAVE_FATTURA_PASSIVA, #DATA_SCADENZA, :IMPORTO,#NOTE, #DATA_PAGAMENTO,\n                                        :ID_MOD_PAGAMENTO, :ID_CONTO_CASSA, #NO_PRIMA_NOTA)\n"
+		},
+		{
+			"Name" : "ModificaRateFatturaPassiva",
+			"SQL" : "UPDATE rate_fatture_passive\n   SET DATA_SCADENZA = #DATA_SCADENZA,\n          IMPORTO = :IMPORTO,\n          DATA_PAGAMENTO = #DATA_PAGAMENTO,\n          ID_MOD_PAGAMENTO = :ID_MOD_PAGAMENTO,\n          ID_CONTO_CASSA = :ID_CONTO_CASSA,\n          NO_PRIMA_NOTA = #NO_PRIMA_NOTA,\n          NOTE = #NOTE\nWHERE CHIAVE = :CHIAVE\n"
+		},
+		{
+			"Name" : "EliminaRateFatturaPassiva",
+			"SQL" : "DELETE FROM rate_fatture_passive\n WHERE CHIAVE = :CHIAVE\n"
+		},
+		{
+			"Name" : "InserisciRitenute",
+			"SQL" : "INSERT INTO ritenute_fatture_passive (CHIAVE, ID_FATTURA_PASSIVA, TIPO, ALIQUOTA, IMPORTO)\n                                           VALUES (:NewKey2,:NewKey1!CHIAVE_FATTURA_PASSIVA, :TIPO, :ALIQUOTA, :IMPORTO)\n"
+		},
+		{
+			"Name" : "ModificaRitenute",
+			"SQL" : "UPDATE ritenute_fatture_passive\n   SET TIPO = :TIPO,\n          ALIQUOTA = :ALIQUOTA,\n          IMPORTO = :IMPORTO\nWHERE CHIAVE = :CHIAVE\n"
+		},
+		{
+			"Name" : "EliminaRitenute",
+			"SQL" : "DELETE FROM ritenute_fatture_passive\n WHERE CHIAVE = :CHIAVE\n"
+		},
+		{
+			"Name" : "InserisciCassePrevidenziali",
+			"SQL" : "INSERT INTO casse_previdenziali_fatt_pass (CHIAVE, ID_FATTURA_PASSIVA, TIPO, ALIQUOTA, IMPORTO, IMPOSTA)\n                                                   VALUES (:NewKey2,:NewKey1!CHIAVE_FATTURA_PASSIVA, :TIPO, :ALIQUOTA, :IMPORTO, :IMPOSTA)\n"
+		},
+		{
+			"Name" : "ModificaCassePrevidenziali",
+			"SQL" : "UPDATE casse_previdenziali_fatt_pass\n   SET TIPO = :TIPO,\n          ALIQUOTA = :ALIQUOTA,\n          IMPORTO = :IMPORTO,\n          IMPOSTA = :IMPOSTA\nWHERE CHIAVE = :CHIAVE\n"
+		},
+		{
+			"Name" : "EliminaCassePrevidenziali",
+			"SQL" : "DELETE FROM casse_previdenziali_fatt_pass\n WHERE CHIAVE = :CHIAVE\n"
+		},
+		{
+			"Name" : "InserisciRiepiloghiAliquote",
+			"SQL" : "INSERT INTO riepiloghi_fatture_passive (CHIAVE, ID_FATTURA_PASSIVA, ARROTONDAMENTO, IMPONIBILE, IMPOSTA, IVA)\n                                             VALUES (:NewKey2,:NewKey1!CHIAVE_FATTURA_PASSIVA, :ARROTONDAMENTO, :IMPONIBILE, :IMPOSTA, :IVA)\n"
+		},
+		{
+			"Name" : "ModificaRiepiloghiAliquote",
+			"SQL" : "UPDATE riepiloghi_fatture_passive\n   SET ARROTONDAMENTO = :ARROTONDAMENTO,\n          IMPONIBILE = :IMPONIBILE,\n          IMPOSTA = :IMPOSTA,\n          IVA = :IVA\nWHERE CHIAVE = :CHIAVE\n"
+		},
+		{
+			"Name" : "EliminaRiepiloghiAliquote",
+			"SQL" : "DELETE FROM riepiloghi_fatture_passive\n WHERE CHIAVE = :CHIAVE\n"
+		},
+		{
+			"Name" : "EliminaRateTramiteFatturaPassiva",
+			"SQL" : "DELETE FROM rate_fatture_passive\n  WHERE ID_FATTURA_PASSIVA = :CHIAVE_FATTURA_PASSIVA\n"
+		},
+		{
+			"Name" : "EliminaAliquoteTramiteFatturaPassiva",
+			"SQL" : "DELETE FROM riepiloghi_fatture_passive\n  WHERE ID_FATTURA_PASSIVA = :CHIAVE_FATTURA_PASSIVA\n"
+		},
+		{
+			"Name" : "EliminaCassePrevTramiteFattPassiva",
+			"SQL" : "DELETE FROM casse_previdenziali_fatt_pass\n  WHERE ID_FATTURA_PASSIVA = :CHIAVE_FATTURA_PASSIVA\n"
+		},
+		{
+			"Name" : "EliminaRitenuteTramiteFatturaPassiva",
+			"SQL" : "DELETE FROM ritenute_fatture_passive\n  WHERE ID_FATTURA_PASSIVA = :CHIAVE_FATTURA_PASSIVA\n"
+		},
+		{
+			"Name" : "ModificaDaImportazione",
+			"SQL" : "UPDATE fatture_passive SET \n               ID_FORNITORE = :ID_FORNITORE,\n               NUMERO = #NUMERO,\n               DATA = #DATA,\n               RAGIONE_SOCIALE = #RAGIONE_SOCIALE,\n               INDIRIZZO_FATTURAZIONE = #INDIRIZZO_FATTURAZIONE,\n               COMUNE_FATTURAZIONE = #COMUNE_FATTURAZIONE, \n               PROVINCIA_FATTURAZIONE = (SELECT MAX(CHIAVE) FROM province WHERE TARGA = #PROVINCIA_FATTURAZIONE), \n               CAP_FATTURAZIONE = #CAP_FATTURAZIONE, \n               PARTITA_IVA = #PARTITA_IVA, \n               CODICE_FISCALE = #CODICE_FISCALE,\n               TOTALE_FATTURA = :TOTALE_FATTURA,\n               OGGETTO = #OGGETTO,\n               IS_FATTURA = #IS_FATTURA,\n               NR_CIVICO_FATTURAZIONE = #NR_CIVICO_FATTURAZIONE,\n               NAZIONE_EM_PIVA = (SELECT MAX(CHIAVE) FROM nazioni WHERE SIGLA = #NAZIONE_EM_PIVA)\n         WHERE CHIAVE = :CHIAVE_FATTURA\n"
+		},
+		{
+			"Name" : "InserisciDaImportazione",
+			"SQL" : "INSERT INTO fatture_passive (CHIAVE, NUMERO, ID_FORNITORE, ANNO, RAGIONE_SOCIALE, CODICE_FISCALE, NR_CIVICO_FATTURAZIONE,\n                                           OGGETTO, INDIRIZZO_FATTURAZIONE, PROVINCIA_FATTURAZIONE, COMUNE_FATTURAZIONE,\n                                           CAP_FATTURAZIONE, DATA, PARTITA_IVA,  TOTALE_FATTURA,\n                                           IS_FATTURA, NAZIONE_EM_PIVA)\n                      VALUES (:CHIAVE_FATTURA,  #NUMERO, :ID_FORNITORE,\n                                    EXTRACT(YEAR FROM #DATA),  #RAGIONE_SOCIALE, #CODICE_FISCALE, #NR_CIVICO_FATTURAZIONE,\n                                   #OGGETTO, #INDIRIZZO_FATTURAZIONE, (SELECT MAX(CHIAVE) FROM province WHERE TARGA = #PROVINCIA_FATTURAZIONE), #COMUNE_FATTURAZIONE,\n                                   #CAP_FATTURAZIONE, #DATA, #PARTITA_IVA,  :TOTALE_FATTURA,\n                                   #IS_FATTURA, (SELECT MAX(CHIAVE) FROM nazioni WHERE SIGLA = #NAZIONE_EM_PIVA))\n"
+		},
+		{
+			"Name" : "EliminaFatturePassiveImportate",
+			"SQL" : "DELETE FROM fatture_passive_importate\nWHERE ID_FATTURA_PASSIVA = :ID_FATTURA_PASSIVA\n"
+		},
+		{
+			"Name" : "EliminaRecordSaldiChiusureAnnuali",
+			"SQL" : "DELETE FROM saldi_chiusure_annuali\n WHERE ID_FORNITORE = :CHIAVE_FORNITORE\n     AND ANNO >= #ANNO\n"
+		},
+		{
+			"Name" : "ModificaProdottoVoceFatturaPassiva",
+			"SQL" : "UPDATE voci_fatture_passive\n   SET ID_PRODOTTO = :ID_PRODOTTO\nWHERE CODICE_ARTICOLO = #CODICE_PRODOTTO  \n    AND EXISTS (SELECT 1\n                             FROM fatture_passive\n                           WHERE fatture_passive.CHIAVE = :ID_FATTURA_PASSIVA\n                               AND fatture_passive.ID_FORNITORE = :ID_FORNITORE)\n"
+		},
+		{
+			"Name" : "InserisciCodiciFornitore",
+			"SQL" : "REPLACE INTO codici_fornitore (CHIAVE, ID_PRODOTTO, ID_FORNITORE, CODICE_PRODOTTO)\n          VALUES (:NewKey1, :ID_PRODOTTO, :ID_FORNITORE, #CODICE_PRODOTTO)\n"
+		},
+		{
+			"Name" : "InserisciXmlFatturaPassiva",
+			"SQL" : "INSERT INTO fatture_passive_importate (NOME_FILE, ID_FATTURA_PASSIVA, ALLEGATO_XML) \n                                              VALUES (#NOME_FILE, #ID_FATTURA_PASSIVA, $ALLEGATO_XML) \n"
+		},
+		{
+			"Name" : "ModificaGestioneVoceFatturaPassiva",
+			"SQL" : "UPDATE voci_fatture_passive\n   SET GESTITO = #GESTITO\nWHERE CHIAVE = :CHIAVE\n"
+		}
+	],
+	"FiltroDocumentiPassivi" : [
+		{
+			"Name" : "DocumentiPassivi",
+			"SQL" : "SELECT CHIAVE,\n            NUMERO, \n            EXTRACT(YEAR FROM DATA) AS ANNO, \n            ID_FORNITORE, \n            RAGIONE_SOCIALE,\n            IS_FATTURA,\n            TOTALE_FATTURA,\n\n            (SELECT COUNT(*)\n             FROM rate_fatture_passive\n             WHERE DATA_PAGAMENTO IS NULL\n             AND ID_MOVIMENTO IS NULL\n             AND ID_FATTURA_PASSIVA = fatture_passive.CHIAVE)         AS RATE_NON_PAGATE,\n\n            (SELECT COUNT(*)\n             FROM rate_fatture_passive\n             WHERE ID_FATTURA_PASSIVA = fatture_passive.CHIAVE)    AS RATE_TOTALI,\n\n            (SELECT SUM(IMPORTO)\n             FROM rate_fatture_passive\n             WHERE ID_FATTURA_PASSIVA = fatture_passive.CHIAVE)    AS TOTALE_RATE\n\n  FROM fatture_passive\n {W~DallaData~DATA >= #DallaData\n      ~AllaData~DATA <= #AllaData\n      ~ScadenzaDal~ CHIAVE IN (SELECT ID_FATTURA_PASSIVA\n                                                 FROM rate_fatture_passive\n                                               WHERE DATA_SCADENZA >= #ScadenzaDal)\n      ~ScadenzaAl~ CHIAVE IN (SELECT ID_FATTURA_PASSIVA\n                                               FROM rate_fatture_passive\n                                             WHERE DATA_SCADENZA <= #ScadenzaAl)\n      ~PagataDal~ CHIAVE IN (SELECT ID_FATTURA_PASSIVA\n                                             FROM rate_fatture_passive\n                                           WHERE DATA_PAGAMENTO IS NOT NULL\n\t\t                    AND DATA_PAGAMENTO >= #PagataDal)\n      ~PagataAl~ CHIAVE IN (SELECT ID_FATTURA_PASSIVA\n                                             FROM rate_fatture_passive\n                                           WHERE DATA_PAGAMENTO IS NOT NULL\n\t\t                    AND DATA_PAGAMENTO <= #PagataAl\n      ~Importo~ TOTALE_FATTURA = :Importo\n      ~Fornitore~ ID_FORNITORE = :Fornitore\n      ~Fatture~IS_FATTURA = 'T'\n      ~Note~IS_FATTURA = 'F'}\n ORDER BY DATA DESC\nLIMIT :LimitNumRows OFFSET :LimitStart\n"
+		}
+	],
+	"GestioneFatturePassive" : [
+		{
+			"Name" : "SelectFatturePassiveDaGestire",
+			"SQL" : "SELECT fatture_passive.CHIAVE                AS CHIAVE_FATTURA_PASSIVA,\n            fatture_passive.NUMERO,\n            fatture_passive.DATA,                   \n            fatture_passive.ID_FORNITORE,\n            fornitori.RAGIONE_SOCIALE          AS RAGIONE_SOCIALE_FORNITORE,\n            voci_fatture_passive.CHIAVE         AS CHIAVE_VOCE_FATTURA_PASSIVA,\n            voci_fatture_passive.ID_FATTURA_PASSIVA,\n            voci_fatture_passive.CODICE_ARTICOLO,\n            voci_fatture_passive.BENE_SERVIZIO,\n            voci_fatture_passive.ID_PRODOTTO,\n            voci_fatture_passive.GESTITO,\n            codici_fornitore.CODICE_PRODOTTO,\n            codici_fornitore.ID_PRODOTTO AS PRODOTTO_FORNITORE\n  FROM fatture_passive\n                       JOIN fornitori                   ON fornitori.CHIAVE = fatture_passive.ID_FORNITORE\n                       JOIN voci_fatture_passive ON voci_fatture_passive.ID_FATTURA_PASSIVA = fatture_passive.CHIAVE\n                       LEFT JOIN codici_fornitore       ON codici_fornitore.ID_FORNITORE = fatture_passive.ID_FORNITORE \n\t\t\t\tAND codici_fornitore.CODICE_PRODOTTO = voci_fatture_passive.CODICE_ARTICOLO\n {W~DallaData~fatture_passive.DATA >= #DallaData\n     ~AllaData~fatture_passive.DATA <= #AllaData\n     ~Fornitore~fatture_passive.ID_FORNITORE = #Fornitore }\nORDER BY DATA DESC\n"
+		}
+	],
+	"LsAnniFatturePassiveXFornitore" : [
+		{
+			"Name" : "LsAnnoFatturePassive",
+			"SQL" : "SELECT EXTRACT(YEAR FROM DATA) AS ANNO_FATTURA_PASSIVA\n  FROM fatture_passive\n  WHERE ID_FORNITORE = :ChiaveFornitore\n       AND IS_FATTURA = 'T'\nGROUP BY ANNO_FATTURA_PASSIVA \nORDER BY ANNO_FATTURA_PASSIVA DESC\n"
+		}
+	],
+	"LsAnniNoteDiCredito" : [
+		{
+			"Name" : "LsAnnoNoteDiCredito",
+			"SQL" : "SELECT EXTRACT(YEAR FROM DATA) AS ANNO_FATTURA_PASSIVA\n  FROM fatture_passive\n  WHERE ID_FORNITORE = :ChiaveFornitore\n       AND IS_FATTURA = 'F'\nGROUP BY ANNO_FATTURA_PASSIVA \nORDER BY ANNO_FATTURA_PASSIVA DESC\n"
+		}
+	],
+	"RiassuntoFatturePassivePerAnno" : [
+		{
+			"Name" : "Riassunto",
+			"SQL" : "SELECT CHIAVE,\n       NUMERO, \n       EXTRACT(YEAR FROM DATA) AS ANNO, \n       ID_FORNITORE, \n       RAGIONE_SOCIALE,\n       IS_FATTURA,\n  (SELECT COUNT(*)\n      FROM rate_fatture_passive\n    WHERE DATA_PAGAMENTO IS NULL  \n       AND ID_MOVIMENTO IS NULL\n       AND ID_FATTURA_PASSIVA = fatture_passive.CHIAVE) AS RATE_NON_PAGATE,\n   (SELECT COUNT(*)\n       FROM rate_fatture_passive\n     WHERE ID_FATTURA_PASSIVA = fatture_passive.CHIAVE) AS RATE_TOTALI,   \n   (SELECT SUM(IMPORTO)\n       FROM rate_fatture_passive\n     WHERE ID_FATTURA_PASSIVA = fatture_passive.CHIAVE) AS TOTALE_RATE,\n    TOTALE_FATTURA\n  FROM fatture_passive\n  WHERE ID_FORNITORE = :ChiaveFornitore\n       AND IS_FATTURA = 'T'\n    AND EXTRACT(YEAR FROM DATA) = :AnnoFatturaPassiva\nORDER BY DATA DESC\n"
+		}
+	],
+	"RiassuntoNoteDiCreditoPerAnno" : [
+		{
+			"Name" : "Riassunto",
+			"SQL" : "SELECT CHIAVE,\n       NUMERO, \n       EXTRACT(YEAR FROM DATA) AS ANNO, \n       ID_FORNITORE, \n       RAGIONE_SOCIALE,\n       IS_FATTURA,\n       TOTALE_FATTURA,\n   (SELECT COUNT(*)\n      FROM rate_fatture_passive\n    WHERE DATA_PAGAMENTO IS NULL  \n       AND ID_MOVIMENTO IS NULL\n       AND ID_FATTURA_PASSIVA = fatture_passive.CHIAVE) AS RATE_NON_PAGATE,\n   (SELECT COUNT(*)\n       FROM rate_fatture_passive\n      WHERE ID_FATTURA_PASSIVA = fatture_passive.CHIAVE) AS RATE_TOTALI,   \n   (SELECT SUM(IMPORTO)\n       FROM rate_fatture_passive\n     WHERE ID_FATTURA_PASSIVA = fatture_passive.CHIAVE) AS TOTALE_RATE\n  FROM fatture_passive\n  WHERE ID_FORNITORE = :ChiaveFornitore\n       AND IS_FATTURA = 'F'\n    AND EXTRACT(YEAR FROM DATA) = :AnnoFatturaPassiva\nORDER BY DATA DESC\n"
+		}
+	],
+	"SelectDettaglio" : [
+		{
+			"Name" : "Dettaglio",
+			"SQL" : "SELECT *,\n  (SELECT COUNT(*)\n     FROM rate_fatture_passive\n   WHERE DATA_PAGAMENTO IS NULL  \n     AND ID_MOVIMENTO IS NULL\n     AND ID_FATTURA_PASSIVA = fatture_passive.CHIAVE) AS RATE_NON_PAGATE,\n  (SELECT COUNT(*)\n     FROM rate_fatture_passive\n    WHERE ID_FATTURA_PASSIVA = fatture_passive.CHIAVE) AS RATE_TOTALI,   \n  (SELECT SUM(IMPORTO)\n     FROM rate_fatture_passive\n    WHERE ID_FATTURA_PASSIVA = fatture_passive.CHIAVE) AS TOTALE_RATE\nFROM fatture_passive \nWHERE CHIAVE = :CHIAVE\n"
+		},
+		{
+			"Name" : "AllegatiFatturaPassiva",
+			"SQL" : "SELECT CHIAVE, DESCRIZIONE, ID_FATTURA_PASSIVA, ALLEGATO\n  FROM allegati_fatture_passive\n WHERE ID_FATTURA_PASSIVA = :ChiaveFatturaPassiva\n"
+		},
+		{
+			"Name" : "VociFatturaPassiva",
+			"SQL" : "SELECT * \n  FROM voci_fatture_passive\n WHERE ID_FATTURA_PASSIVA = :CHIAVE\nORDER BY NUMERO_LINEA\n"
+		},
+		{
+			"Name" : "RateFatturaPassiva",
+			"SQL" : "SELECT rate_fatture_passive.*,\n            movimenti.DATA AS DATA_MOVIMENTO\n  FROM rate_fatture_passive\n            LEFT OUTER JOIN movimenti ON movimenti.CHIAVE = rate_fatture_passive.ID_MOVIMENTO\n WHERE rate_fatture_passive.ID_FATTURA_PASSIVA = :CHIAVE\n"
+		},
+		{
+			"Name" : "RiepiloghiFatturaPassiva",
+			"SQL" : "SELECT * \n  FROM riepiloghi_fatture_passive\n WHERE ID_FATTURA_PASSIVA = :CHIAVE\n"
+		},
+		{
+			"Name" : "CassePrevidenzialiFattPass",
+			"SQL" : "SELECT * \n  FROM casse_previdenziali_fatt_pass\n WHERE ID_FATTURA_PASSIVA = :CHIAVE\n"
+		},
+		{
+			"Name" : "RitenuteFatturaPassiva",
+			"SQL" : "SELECT * \n  FROM ritenute_fatture_passive\n WHERE ID_FATTURA_PASSIVA = :CHIAVE\n"
+		}
+	],
+	"SelectSQL" : [
+		{
+			"Name" : "SelectFatturePassive",
+			"SQL" : "SELECT *\nFROM fatture_passive\nORDER BY DATA DESC\n"
+		}
+]
+}

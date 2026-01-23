@@ -1,0 +1,61 @@
+{
+	"RuoliAbilitati" : "A",
+	"SelectSQL" : [
+		{
+			"Name" : "ListaMessaggi",
+			"SQL" : "SELECT *\nFROM messaggi\n"
+		},
+		{
+			"Name" : "ListaAllegati",
+			"SQL" : "SELECT *\nFROM allegati_messaggio\n"
+		}
+	],
+	"EditSQL" : [
+		{
+			"Name" : "InsertMessaggio",
+			"SQL" : "INSERT INTO messaggi(CHIAVE, TITOLO, TESTO, IMMAGINE)\n              VALUES(:NewKey1, #Titolo, #Testo, #Immagine)\n"
+		},
+		{
+			"Name" : "InsertAllegato",
+			"SQL" : "INSERT INTO allegati_messaggio(CHIAVE, ID_MESSAGGIO, ALLEGATO, NOME_FILE, TIPO, DESCRIZIONE)\n              VALUES(:NewKey2, :NewKey1, #Allegato, #Nome_File, #Tipo, #Descrizione)\n"
+		},
+		{
+			"Name" : "EditMessaggio",
+			"SQL" : "UPDATE messaggi SET\n       TITOLO = #Titolo,\n       IMMAGINE = #Immagine,\n       TESTO = #Testo     \nWHERE CHIAVE = :Chiave\n"
+		},
+		{
+			"Name" : "EditAllegato",
+			"SQL" : "UPDATE allegati_messaggio SET DESCRIZIONE = #Descrizione\nWHERE CHIAVE = :Allegato\n"
+		},
+		{
+			"Name" : "DeleteMessaggio",
+			"SQL" : "DELETE FROM messaggi\nWHERE messaggi.CHIAVE = :Chiave\n"
+		},
+		{
+			"Name" : "DeleteAllegato",
+			"SQL" : "DELETE FROM allegati_messaggio WHERE allegati_messaggio.CHIAVE = :Allegato\n"
+		},
+		{
+			"Name" : "DeleteLetti",
+			"SQL" : "DELETE FROM utente_messaggio_letto\nWHERE ID_MESSAGGIO = :Chiave\n"
+		},
+		{
+			"Name" : "InsertAllegato2",
+			"SQL" : "INSERT INTO allegati_messaggio(CHIAVE, ID_MESSAGGIO, ALLEGATO, NOME_FILE, TIPO, DESCRIZIONE)\n              VALUES(:NewKey2, :Messaggio, #Allegato, #Nome_File, #Tipo, #Descrizione)\n"
+		},
+		{
+			"Name" : "DeleteAllegati",
+			"SQL" : "DELETE FROM allegati_messaggio\nWHERE ID_MESSAGGIO = :Chiave\n"
+		}
+	],
+	"SelectDettaglio" : [
+		{
+			"Name" : "Dettaglio",
+			"SQL" : "SELECT * FROM messaggi\nWHERE CHIAVE = :Chiave\n"
+		},
+		{
+			"Name" : "DettaglioAllegati",
+			"SQL" : "SELECT * FROM allegati_messaggio\nWHERE ID_MESSAGGIO = :Chiave\n"
+		}
+]
+}

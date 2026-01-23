@@ -1,0 +1,23 @@
+{
+	"RuoliAbilitati" : "",
+	"EditSQL" : [
+		{
+			"Name" : "InserisciCatCliente",
+			"SQL" : "INSERT INTO cat_clienti (CHIAVE,DESCRIZIONE)\n                       VALUES (:NewKey1, #DESCRIZIONE)\n"
+		},
+		{
+			"Name" : "EliminaCatCliente",
+			"SQL" : "DELETE FROM cat_clienti WHERE CHIAVE = :CHIAVE\n"
+		},
+		{
+			"Name" : "ModificaCatCliente",
+			"SQL" : "UPDATE cat_clienti\n   SET DESCRIZIONE = #DESCRIZIONE\n WHERE CHIAVE = :CHIAVE\n"
+		}
+	],
+	"SelectSQL" : [
+		{
+			"Name" : "TutteLeCategorie",
+			"SQL" : "SELECT *\n  FROM cat_clienti\n"
+		}
+]
+}

@@ -1,0 +1,29 @@
+{
+	"RuoliAbilitati" : "",
+	"EditSQL" : [
+		{
+			"Name" : "Insert",
+			"SQL" : "INSERT INTO magazzini (CHIAVE,DESCRIZIONE)\n     VALUES (:NewKey1,#DESCRIZIONE)\n"
+		},
+		{
+			"Name" : "Update",
+			"SQL" : "UPDATE magazzini\n   SET DESCRIZIONE=#DESCRIZIONE\n WHERE CHIAVE = :CHIAVE\n"
+		},
+		{
+			"Name" : "Delete",
+			"SQL" : "DELETE FROM magazzini WHERE CHIAVE = :CHIAVE\n"
+		}
+	],
+	"LsMagazziniProdotti" : [
+		{
+			"Name" : "LsMagazziniProdotti",
+			"SQL" : "SELECT magazzini.CHIAVE,\n            magazzini.DESCRIZIONE AS DESCRIZIONE_MAGAZZINO,\n            prodotti.DESCRIZIONE AS DESCRIZIONE_PRODOTTO,\n            COALESCE(qnt_x_magazzino.QUANTITA_MAGAZZINO, 0) AS QUANTITA_MAGAZZINO,\n            prodotti.CHIAVE AS CHIAVE_PRODOTTO\nFROM magazzini\n            LEFT OUTER JOIN qnt_x_magazzino ON qnt_x_magazzino.ID_MAGAZZINO = magazzini.CHIAVE\n            LEFT OUTER JOIN prodotti ON prodotti.CHIAVE = qnt_x_magazzino.ID_PRODOTTO\n\n{W~NomeProdotto~UPPER(prodotti.DESCRIZIONE) LIKE #NomeProdotto\n     ~NomeMagazzino~magazzini.CHIAVE LIKE :NomeMagazzino }\n\n ORDER BY magazzini.DESCRIZIONE, prodotti.DESCRIZIONE\n\n            \n            \n            \n"
+		}
+	],
+	"SelectSQL" : [
+		{
+			"Name" : "Tutto",
+			"SQL" : "SELECT *\n  FROM magazzini\n"
+		}
+]
+}

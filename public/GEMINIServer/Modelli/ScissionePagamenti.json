@@ -1,0 +1,23 @@
+{
+	"RuoliAbilitati" : "",
+	"SelectSQL" : [
+		{
+			"Name" : "Tutto",
+			"SQL" : "SELECT *\n  FROM scissione_dei_pagamenti\n"
+		}
+	],
+	"EditSQL" : [
+		{
+			"Name" : "Insert",
+			"SQL" : "INSERT INTO scissione_dei_pagamenti (CHIAVE,DESCRIZIONE)\n     VALUES (:NewKey1,#DESCRIZIONE)\n"
+		},
+		{
+			"Name" : "Delete",
+			"SQL" : "DELETE FROM scissione_dei_pagamenti WHERE CHIAVE = :CHIAVE\n"
+		},
+		{
+			"Name" : "Update",
+			"SQL" : "UPDATE scissione_dei_pagamenti\n   SET DESCRIZIONE=#DESCRIZIONE\n WHERE CHIAVE = :CHIAVE\n"
+		}
+]
+}

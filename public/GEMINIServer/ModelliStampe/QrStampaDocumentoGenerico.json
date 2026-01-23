@@ -1,0 +1,151 @@
+{
+	"Bands" : [
+		{
+			"Name" : "BAND_INTESTAZIONE",
+			"Objects" : [
+				{
+					"TypeObject" : "TQRLabel",
+					"Angle" : "0",
+					"Name" : "DENOMINAZIONE_SOCIETA",
+					"Hidden" : false,
+					"SizeValues" : "(60.476190476190480000,837.217261904762000000,37.797619047619050000,1039.434523809524000000)",
+					"Alignment" : "taLeftJustify",
+					"AutoSize" : "False",
+					"Caption" : "DENOMINAZIONE_SOCIETA",
+					"Color" : "White",
+					"FontColor" : "WindowText",
+					"FontName" : "Times New Roman",
+					"FontStyle" : "[fsBold]",
+					"Transparent" : "False",
+					"WordWrap" : "True",
+					"FontSize" : "14"
+				},
+				{
+					"TypeObject" : "TQRMemo",
+					"Name" : "INTESTAZIONE_SOCIETA",
+					"Hidden" : false,
+					"SizeValues" : "(257.023809523809500000,837.217261904762000000,113.392857142857100000,1039.434523809524000000)",
+					"Alignment" : "taLeftJustify",
+					"AutoSize" : "False",
+					"Color" : "White",
+					"LinesStrings" : "(1,2,3,4,5,6)",
+					"Transparent" : "False",
+					"WordWrap" : "True",
+					"FontSize" : "10"
+				},
+				{
+					"TypeObject" : "TQRImage",
+					"Name" : "QR_LOGO",
+					"Hidden" : false,
+					"SizeValues" : "(349.627976190476200000,20.788690476190480000,32.127976190476190000,803.199404761904800000)",
+					"ImageStyle" : "imgStandard",
+					"TableInfoNumCols" : "3",
+					"TableInfoNumRows" : "10",
+					"TableInfoRowHeaderCount" : "1",
+					"TableInfoColHeaderCount" : "0",
+					"TableFontHeaderColor" : "WindowText",
+					"TableFontHeaderName" : "Tahoma",
+					"TableFontHeaderStyle" : "[]",
+					"TableFontHeaderSize" : "0",
+					"TableFontColor" : "WindowText",
+					"TableFontName" : "Tahoma",
+					"TableFontStyle" : "[]",
+					"TableFontSize" : "0"
+				}
+			],
+			"FrameColor" : "Black",
+			"FrameDrawTop" : "False",
+			"FrameDrawBottom" : "False",
+			"FrameDrawLeft" : "False",
+			"FrameDrawRight" : "False",
+			"Color" : "White",
+			"ForceNewPage" : "False",
+			"SizeValues" : "(415.773809523809600000,1899.330357142857000000)",
+			"BandType" : "rbPageHeader"
+		},
+		{
+			"Name" : "BAND_OGGETTO",
+			"Objects" : [
+				{
+					"TypeObject" : "TQRMemo",
+					"Name" : "DESCRIZIONE",
+					"Hidden" : false,
+					"SizeValues" : "(58.586309523809540000,103.943452380952400000,170.089285714285700000,1704.672619047619000000)",
+					"Alignment" : "taLeftJustify",
+					"AutoSize" : "False",
+					"Color" : "White",
+					"FontColor" : "WindowText",
+					"FontName" : "Times New Roman",
+					"FontStyle" : "[]",
+					"LinesStrings" : "(0,2,3,4,5,6)",
+					"Transparent" : "False",
+					"WordWrap" : "True",
+					"FontSize" : "14"
+				},
+				{
+					"TypeObject" : "TQRLabel",
+					"Angle" : "0",
+					"Name" : "LB_TITOLO",
+					"Hidden" : false,
+					"SizeValues" : "(58.586309523809540000,103.943452380952400000,51.026785714285720000,1704.672619047619000000)",
+					"Alignment" : "taCenter",
+					"AutoSize" : "False",
+					"Caption" : "LB_TITOLO_DOCUMENTO",
+					"Color" : "White",
+					"FontColor" : "WindowText",
+					"FontName" : "Times New Roman",
+					"FontStyle" : "[fsBold]",
+					"Transparent" : "True",
+					"WordWrap" : "True",
+					"FontSize" : "14"
+				}
+			],
+			"FrameColor" : "Black",
+			"FrameDrawTop" : "False",
+			"FrameDrawBottom" : "False",
+			"FrameDrawLeft" : "False",
+			"FrameDrawRight" : "False",
+			"Color" : "White",
+			"ForceNewPage" : "False",
+			"SizeValues" : "(952.500000000000000000,1899.330357142857000000)",
+			"BandType" : "rbSummary"
+		}
+	],
+	"FrameColor" : "Black",
+	"FrameDrawTop" : "False",
+	"FrameDrawBottom" : "False",
+	"FrameDrawLeft" : "False",
+	"FrameDrawRight" : "False",
+	"PageOrientation" : "poPortrait",
+	"PagePaperSize" : "A4",
+	"PageValues" : "(100.000000000000000000,2970.000000000000000000,100.000000000000000000,2100.000000000000000000,100.000000000000000000,100.000000000000000000,0.000000000000000000)",
+	"Fonts" : [
+		{
+			"FontName" : "Times New Roman",
+			"FontStyle" : "n",
+			"FontFile" : "times.ttf",
+			"FontType" : "TrueTypeUnicode"
+		},
+		{
+			"FontName" : "Times New Roman",
+			"FontStyle" : "i",
+			"FontFile" : "timesi.ttf",
+			"FontType" : "TrueTypeUnicode"
+		},
+		{
+			"FontName" : "Times New Roman",
+			"FontStyle" : "I",
+			"FontFile" : "timesbi.ttf",
+			"FontType" : "TrueTypeUnicode"
+		},
+		{
+			"FontName" : "Times New Roman",
+			"FontStyle" : "b",
+			"FontFile" : "timesbd.ttf",
+			"FontType" : "TrueTypeUnicode"
+		}
+	],
+	"FontName" : "Times New Roman",
+	"FontSize" : "10",
+	"FontStyle" : "[]"
+}

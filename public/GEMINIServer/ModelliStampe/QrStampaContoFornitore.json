@@ -1,0 +1,475 @@
+{
+	"Bands" : [
+		{
+			"Name" : "BAND_INTESTAZIONE",
+			"Objects" : [
+				{
+					"TypeObject" : "TQRLabel",
+					"Name" : "DENOMINAZIONE_SOCIETA",
+					"SizeValues" : "(60.476190476190480000,837.217261904762000000,37.797619047619050000,1039.434523809524000000)",
+					"Alignment" : "taLeftJustify",
+					"AutoSize" : "False",
+					"Caption" : "DENOMINAZIONE_SOCIETA",
+					"Color" : "White",
+					"FontColor" : "WindowText",
+					"FontName" : "Times New Roman",
+					"FontStyle" : "[fsBold]",
+					"Transparent" : "False",
+					"WordWrap" : "True",
+					"FontSize" : "14"
+				},
+				{
+					"TypeObject" : "TQRMemo",
+					"Name" : "INTESTAZIONE_SOCIETA",
+					"SizeValues" : "(257.023809523809500000,837.217261904762000000,113.392857142857100000,1039.434523809524000000)",
+					"Alignment" : "taLeftJustify",
+					"AutoSize" : "False",
+					"Color" : "White",
+					"LinesStrings" : "(1,2,3,4,5,6')",
+					"Transparent" : "False",
+					"WordWrap" : "True",
+					"FontSize" : "10"
+				},
+				{
+					"TypeObject" : "TQRImage",
+					"Name" : "QR_LOGO",
+					"SizeValues" : "(349.627976190476200000,20.788690476190480000,32.127976190476190000,803.199404761904800000)"
+				},
+				{
+					"TypeObject" : "TQRShape",
+					"Name" : "QRShape42",
+					"SizeValues" : "(213.556547619047600000,20.788690476190480000,393.095238095238100000,1855.863095238095000000)",
+					"Shape" : "qrsRectangle"
+				},
+				{
+					"TypeObject" : "TQRMemo",
+					"Name" : "DESTINATARIO",
+					"SizeValues" : "(147.410714285714300000,39.687500000000000000,410.104166666666800000,1821.845238095238000000)",
+					"Alignment" : "taLeftJustify",
+					"AutoSize" : "False",
+					"Color" : "White",
+					"Transparent" : "False",
+					"WordWrap" : "True",
+					"FontSize" : "10"
+				},
+				{
+					"TypeObject" : "TQRLabel",
+					"Name" : "LB_NOME_CAUSALE",
+					"SizeValues" : "(41.577380952380950000,20.788690476190480000,689.806547619047700000,1870.982142857143000000)",
+					"Alignment" : "taCenter",
+					"AutoSize" : "False",
+					"Caption" : "Data fattura",
+					"Color" : "White",
+					"FontColor" : "WindowText",
+					"FontName" : "Times New Roman",
+					"FontStyle" : "[]",
+					"Transparent" : "False",
+					"WordWrap" : "True",
+					"FontSize" : "10"
+				},
+				{
+					"TypeObject" : "TQRLabel",
+					"Name" : "QRLabel2",
+					"SizeValues" : "(58.586309523809540000,20.788690476190480000,617.991071428571400000,1870.982142857143000000)",
+					"Alignment" : "taCenter",
+					"AutoSize" : "False",
+					"Caption" : "CONTO FORNITORE",
+					"Color" : "White",
+					"FontColor" : "WindowText",
+					"FontName" : "Times New Roman",
+					"FontStyle" : "[fsBold]",
+					"Transparent" : "False",
+					"WordWrap" : "True",
+					"FontSize" : "14"
+				}
+			],
+			"FrameColor" : "Black",
+			"FrameDrawTop" : "False",
+			"FrameDrawBottom" : "False",
+			"FrameDrawLeft" : "False",
+			"FrameDrawRight" : "False",
+			"Color" : "White",
+			"ForceNewPage" : "False",
+			"SizeValues" : "(740.833333333333400000,1899.330357142857000000)",
+			"BandType" : "rbPageHeader"
+		},
+		{
+			"Name" : "BAND_SUMMARY",
+			"BandType" : "rbSubDetail",
+			"Objects" : [
+				{
+					"TypeObject" : "TQRShape",
+					"Name" : "QRShape4",
+					"SizeValues" : "(47.247023809523810000,1664.985119047619000000,0.000000000000000000,26.458333333333340000)",
+					"Shape" : "qrsVertLine"
+				},
+				{
+					"TypeObject" : "TQRShape",
+					"Name" : "QRShape6",
+					"SizeValues" : "(47.247023809523810000,1447.648809523810000000,0.000000000000000000,26.458333333333340000)",
+					"Shape" : "qrsVertLine"
+				},
+				{
+					"TypeObject" : "TQRShape",
+					"Name" : "QRShape3",
+					"SizeValues" : "(47.247023809523810000,1228.422619047619000000,0.000000000000000000,26.458333333333340000)",
+					"Shape" : "qrsVertLine"
+				},
+				{
+					"TypeObject" : "TQRShape",
+					"Name" : "QRShape2",
+					"SizeValues" : "(47.247023809523810000,313.720238095238100000,0.000000000000000000,26.458333333333340000)",
+					"Shape" : "qrsVertLine"
+				},
+				{
+					"TypeObject" : "TQRShape",
+					"Name" : "QRShape1",
+					"SizeValues" : "(47.247023809523810000,179.538690476190500000,0.000000000000000000,26.458333333333340000)",
+					"Shape" : "qrsVertLine"
+				},
+				{
+					"TypeObject" : "TQRLabel",
+					"Name" : "QRLabel1",
+					"SizeValues" : "(41.577380952380950000,3.779761904761905000,1.889880952380953000,185.208333333333300000)",
+					"Alignment" : "taCenter",
+					"AutoSize" : "False",
+					"Caption" : "DATA",
+					"Color" : "#D0E9FF",
+					"FontColor" : "WindowText",
+					"FontName" : "Times New Roman",
+					"FontStyle" : "[fsBold]",
+					"Transparent" : "False",
+					"WordWrap" : "True",
+					"FontSize" : "10"
+				},
+				{
+					"TypeObject" : "TQRLabel",
+					"Name" : "QRLabel5",
+					"SizeValues" : "(41.577380952380950000,196.547619047619100000,1.889880952380953000,126.622023809523800000)",
+					"Alignment" : "taCenter",
+					"AutoSize" : "False",
+					"Caption" : "N.",
+					"Color" : "#D0E9FF",
+					"FontColor" : "WindowText",
+					"FontName" : "Times New Roman",
+					"FontStyle" : "[fsBold]",
+					"Transparent" : "False",
+					"WordWrap" : "True",
+					"FontSize" : "10"
+				},
+				{
+					"TypeObject" : "TQRLabel",
+					"Name" : "QRLabel6",
+					"SizeValues" : "(41.577380952380950000,330.729166666666700000,1.889880952380953000,905.252976190476300000)",
+					"Alignment" : "taCenter",
+					"AutoSize" : "False",
+					"Caption" : "DESCRIZIONE",
+					"Color" : "#D0E9FF",
+					"FontColor" : "WindowText",
+					"FontName" : "Times New Roman",
+					"FontStyle" : "[fsBold]",
+					"Transparent" : "False",
+					"WordWrap" : "True",
+					"FontSize" : "10"
+				},
+				{
+					"TypeObject" : "TQRLabel",
+					"Name" : "QRLabel8",
+					"SizeValues" : "(41.577380952380950000,1681.994047619048000000,1.889880952380953000,209.776785714285700000)",
+					"Alignment" : "taRightJustify",
+					"AutoSize" : "False",
+					"Caption" : "SALDO",
+					"Color" : "#D0E9FF",
+					"FontColor" : "WindowText",
+					"FontName" : "Times New Roman",
+					"FontStyle" : "[fsBold]",
+					"Transparent" : "False",
+					"WordWrap" : "True",
+					"FontSize" : "10"
+				},
+				{
+					"TypeObject" : "TQRLabel",
+					"Name" : "QRLabel7",
+					"SizeValues" : "(41.577380952380950000,1466.547619047619000000,1.889880952380953000,209.776785714285700000)",
+					"Alignment" : "taRightJustify",
+					"AutoSize" : "False",
+					"Caption" : "AVERE",
+					"Color" : "#D0E9FF",
+					"FontColor" : "WindowText",
+					"FontName" : "Times New Roman",
+					"FontStyle" : "[fsBold]",
+					"Transparent" : "False",
+					"WordWrap" : "True",
+					"FontSize" : "10"
+				},
+				{
+					"TypeObject" : "TQRLabel",
+					"Name" : "QRLabel9",
+					"SizeValues" : "(41.577380952380950000,1247.321428571429000000,1.889880952380953000,209.776785714285700000)",
+					"Alignment" : "taRightJustify",
+					"AutoSize" : "False",
+					"Caption" : "DARE",
+					"Color" : "#D0E9FF",
+					"FontColor" : "WindowText",
+					"FontName" : "Times New Roman",
+					"FontStyle" : "[fsBold]",
+					"Transparent" : "False",
+					"WordWrap" : "True",
+					"FontSize" : "10"
+				}
+			],
+			"FrameColor" : "Black",
+			"FrameDrawTop" : "True",
+			"FrameDrawBottom" : "True",
+			"FrameDrawLeft" : "True",
+			"FrameDrawRight" : "True",
+			"Color" : "White",
+			"ForceNewPage" : "False",
+			"SizeValues" : "(45.357142857142850000,1899.330357142857000000)",
+			"FooterBand" : "BAND_FOOTER",
+			"ChildBand" : {
+				"Name" : "BAND_ELENCO_FATTURE",
+				"BandType" : "rbChildBand",
+				"Objects" : [
+					{
+						"TypeObject" : "TQRLabel",
+						"Name" : "LB_DATA_DOCUMENTO",
+						"SizeValues" : "(41.577380952380950000,-1.889880952380953000,3.779761904761905000,185.208333333333300000)",
+						"Alignment" : "taCenter",
+						"AutoSize" : "False",
+						"Caption" : "Data fattura",
+						"Color" : "White",
+						"FontColor" : "WindowText",
+						"FontName" : "Times New Roman",
+						"FontStyle" : "[]",
+						"Transparent" : "False",
+						"WordWrap" : "True",
+						"FontSize" : "10"
+					},
+					{
+						"TypeObject" : "TQRLabel",
+						"Name" : "LB_SALDO",
+						"SizeValues" : "(41.577380952380950000,1683.883928571429000000,3.779761904761905000,207.886904761904800000)",
+						"Alignment" : "taRightJustify",
+						"AutoSize" : "False",
+						"Caption" : "Totale da pagare",
+						"Color" : "White",
+						"FontColor" : "WindowText",
+						"FontName" : "Times New Roman",
+						"FontStyle" : "[]",
+						"Transparent" : "False",
+						"WordWrap" : "True",
+						"FontSize" : "10"
+					},
+					{
+						"TypeObject" : "TQRShape",
+						"Name" : "QRShape7",
+						"SizeValues" : "(47.247023809523810000,179.538690476190500000,0.000000000000000000,26.458333333333340000)",
+						"Shape" : "qrsBandHeight"
+					},
+					{
+						"TypeObject" : "TQRShape",
+						"Name" : "QRShape8",
+						"SizeValues" : "(47.247023809523810000,313.720238095238100000,0.000000000000000000,26.458333333333340000)",
+						"Shape" : "qrsBandHeight"
+					},
+					{
+						"TypeObject" : "TQRShape",
+						"Name" : "QRShape9",
+						"SizeValues" : "(47.247023809523810000,1228.422619047619000000,0.000000000000000000,26.458333333333340000)",
+						"Shape" : "qrsBandHeight"
+					},
+					{
+						"TypeObject" : "TQRShape",
+						"Name" : "QRShape10",
+						"SizeValues" : "(47.247023809523810000,1447.648809523810000000,0.000000000000000000,26.458333333333340000)",
+						"Shape" : "qrsBandHeight"
+					},
+					{
+						"TypeObject" : "TQRShape",
+						"Name" : "QRShape11",
+						"SizeValues" : "(47.247023809523810000,1664.985119047619000000,0.000000000000000000,26.458333333333340000)",
+						"Shape" : "qrsBandHeight"
+					},
+					{
+						"TypeObject" : "TQRLabel",
+						"Name" : "LB_AVERE",
+						"SizeValues" : "(41.577380952380950000,1466.547619047619000000,3.779761904761905000,205.997023809523800000)",
+						"Alignment" : "taRightJustify",
+						"AutoSize" : "False",
+						"Caption" : "Totale da pagare",
+						"Color" : "White",
+						"FontColor" : "WindowText",
+						"FontName" : "Times New Roman",
+						"FontStyle" : "[]",
+						"Transparent" : "False",
+						"WordWrap" : "True",
+						"FontSize" : "10"
+					},
+					{
+						"TypeObject" : "TQRLabel",
+						"Name" : "LB_DARE",
+						"SizeValues" : "(41.577380952380950000,1247.321428571429000000,3.779761904761905000,209.776785714285700000)",
+						"Alignment" : "taRightJustify",
+						"AutoSize" : "False",
+						"Caption" : "Totale da pagare",
+						"Color" : "White",
+						"FontColor" : "WindowText",
+						"FontName" : "Times New Roman",
+						"FontStyle" : "[]",
+						"Transparent" : "False",
+						"WordWrap" : "True",
+						"FontSize" : "10"
+					},
+					{
+						"TypeObject" : "TQRMemo",
+						"Name" : "LB_NUMERO_DOCUMENTO",
+						"SizeValues" : "(41.577380952380950000,196.547619047619100000,3.779761904761905000,126.622023809523800000)",
+						"Alignment" : "taLeftJustify",
+						"AutoSize" : "False",
+						"Color" : "White",
+						"Transparent" : "False",
+						"WordWrap" : "True",
+						"FontSize" : "10"
+					},
+					{
+						"TypeObject" : "TQRMemo",
+						"Name" : "LB_DESCRIZIONE_DOCUMENTO",
+						"SizeValues" : "(41.577380952380950000,334.508928571428500000,3.779761904761905000,901.473214285714300000)",
+						"Alignment" : "taLeftJustify",
+						"AutoSize" : "False",
+						"Color" : "White",
+						"Transparent" : "False",
+						"WordWrap" : "True",
+						"FontSize" : "10"
+					}
+				],
+				"FrameColor" : "Black",
+				"FrameDrawTop" : "True",
+				"FrameDrawBottom" : "True",
+				"FrameDrawLeft" : "True",
+				"FrameDrawRight" : "True",
+				"Color" : "White",
+				"ForceNewPage" : "False",
+				"SizeValues" : "(45.357142857142850000,1899.330357142857000000)",
+				"ParentBand" : "BAND_SUMMARY"
+			}
+		},
+		{
+			"Name" : "BAND_FOOTER",
+			"Objects" : [
+				{
+					"TypeObject" : "TQRLabel",
+					"Name" : "QRLabel10",
+					"SizeValues" : "(51.026785714285720000,1118.809523809524000000,24.568452380952380000,117.172619047619100000)",
+					"Alignment" : "taLeftJustify",
+					"AutoSize" : "True",
+					"Caption" : "Totali:",
+					"Color" : "White",
+					"FontColor" : "WindowText",
+					"FontName" : "Times New Roman",
+					"FontStyle" : "[fsBold]",
+					"Transparent" : "False",
+					"WordWrap" : "True",
+					"FontSize" : "11"
+				},
+				{
+					"TypeObject" : "TQRLabel",
+					"Name" : "LB_TOTALE_DARE",
+					"SizeValues" : "(51.026785714285720000,1247.321428571429000000,24.568452380952380000,207.886904761904800000)",
+					"Alignment" : "taRightJustify",
+					"AutoSize" : "False",
+					"Caption" : "99999.99",
+					"Color" : "White",
+					"FontColor" : "WindowText",
+					"FontName" : "Times New Roman",
+					"FontStyle" : "[fsBold]",
+					"Transparent" : "False",
+					"WordWrap" : "True",
+					"FontSize" : "11"
+				},
+				{
+					"TypeObject" : "TQRLabel",
+					"Name" : "LB_TOTALE_AVERE",
+					"SizeValues" : "(51.026785714285720000,1466.547619047619000000,24.568452380952380000,205.997023809523800000)",
+					"Alignment" : "taRightJustify",
+					"AutoSize" : "False",
+					"Caption" : "99999.99",
+					"Color" : "White",
+					"FontColor" : "WindowText",
+					"FontName" : "Times New Roman",
+					"FontStyle" : "[fsBold]",
+					"Transparent" : "False",
+					"WordWrap" : "True",
+					"FontSize" : "11"
+				},
+				{
+					"TypeObject" : "TQRLabel",
+					"Name" : "LB_TOTALE_SALDO",
+					"SizeValues" : "(51.026785714285720000,1683.883928571429000000,24.568452380952380000,207.886904761904800000)",
+					"Alignment" : "taRightJustify",
+					"AutoSize" : "False",
+					"Caption" : "99999.99",
+					"Color" : "White",
+					"FontColor" : "WindowText",
+					"FontName" : "Times New Roman",
+					"FontStyle" : "[fsBold]",
+					"Transparent" : "False",
+					"WordWrap" : "True",
+					"FontSize" : "11"
+				}
+			],
+			"FrameColor" : "Black",
+			"FrameDrawTop" : "False",
+			"FrameDrawBottom" : "False",
+			"FrameDrawLeft" : "False",
+			"FrameDrawRight" : "False",
+			"Color" : "White",
+			"ForceNewPage" : "False",
+			"SizeValues" : "(83.154761904761910000,1899.330357142857000000)",
+			"BandType" : "rbGroupFooter"
+		}
+	],
+	"FrameColor" : "Black",
+	"FrameDrawTop" : "False",
+	"FrameDrawBottom" : "False",
+	"FrameDrawLeft" : "False",
+	"FrameDrawRight" : "False",
+	"PageOrientation" : "poPortrait",
+	"PagePaperSize" : "A4",
+	"PageValues" : "(100.000000000000000000,2970.000000000000000000,100.000000000000000000,2100.000000000000000000,100.000000000000000000,100.000000000000000000,0.000000000000000000)",
+	"FrameColor" : "Black",
+	"FrameDrawTop" : "False",
+	"FrameDrawBottom" : "False",
+	"FrameDrawLeft" : "False",
+	"FrameDrawRight" : "False",
+	"Fonts" : [
+		{
+			"FontName" : "Times New Roman",
+			"FontStyle" : "n",
+			"FontFile" : "times.ttf",
+			"FontType" : "TrueTypeUnicode"
+		},
+		{
+			"FontName" : "Times New Roman",
+			"FontStyle" : "i",
+			"FontFile" : "timesi.ttf",
+			"FontType" : "TrueTypeUnicode"
+		},
+		{
+			"FontName" : "Times New Roman",
+			"FontStyle" : "I",
+			"FontFile" : "timesbi.ttf",
+			"FontType" : "TrueTypeUnicode"
+		},
+		{
+			"FontName" : "Times New Roman",
+			"FontStyle" : "b",
+			"FontFile" : "timesbd.ttf",
+			"FontType" : "TrueTypeUnicode"
+		}
+	],
+	"FontName" : "Times New Roman",
+	"FontSize" : "10",
+	"FontStyle" : "[]"
+}

@@ -1,0 +1,29 @@
+{
+	"RuoliAbilitati" : "S",
+	"SelectSQL" : [
+		{
+			"Name" : "Lista",
+			"SQL" : "SELECT CHIAVE,USERNAME,RAGIONE_SOCIALE,EMAIL,ROLE,IMMAGINE\n  FROM utenti\n WHERE ELIMINATO = 0\n   AND ROLE <> 'A'\n   AND ROLE <> 'T'\n"
+		}
+	],
+	"SelectDettaglio" : [
+		{
+			"Name" : "Dettaglio",
+			"SQL" : "SELECT USERNAME,RAGIONE_SOCIALE,EMAIL,ROLE,IMMAGINE\n  FROM utenti\nWHERE CHIAVE = :CHIAVE\n  AND ROLE <> 'A'\n"
+		}
+	],
+	"EditSQL" : [
+		{
+			"Name" : "Insert",
+			"SQL" : "INSERT INTO utenti(CHIAVE,USERNAME,RAGIONE_SOCIALE,EMAIL,ROLE,IMMAGINE)\n       VALUES(:NewKey1,#USERNAME,#RAGIONE_SOCIALE,#EMAIL,#ROLE,#IMMAGINE)\n"
+		},
+		{
+			"Name" : "Update",
+			"SQL" : "UPDATE utenti SET\n       RAGIONE_SOCIALE = #RAGIONE_SOCIALE,\n       IMMAGINE = #IMMAGINE,\n       USERNAME = #USERNAME,\n       EMAIL = #EMAIL,\n       ROLE = #ROLE        \nWHERE CHIAVE = :CHIAVE\n  AND ROLE <> 'A'\n"
+		},
+		{
+			"Name" : "Delete",
+			"SQL" : "UPDATE utenti SET\n              ELIMINATO = '1'\n WHERE CHIAVE = :CHIAVE\n AND ROLE <> 'A'\n"
+		}
+]
+}

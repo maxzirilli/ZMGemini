@@ -1,0 +1,6 @@
+{
+  "URL_SERVER"         : "http://localhost/Gemini/",
+  "URL_WEBAPP"         : "http://localhost:8080/#/Login",
+  "DEVELOPER_MODE"     : true,
+  "MILLISECONDI_PER_POPUP_CARICAMENTO_ALBERO" : 100
+}

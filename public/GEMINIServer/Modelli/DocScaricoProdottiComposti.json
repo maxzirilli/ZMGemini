@@ -1,0 +1,71 @@
+{
+	"RuoliAbilitati" : "",
+	"EditSQL" : [
+		{
+			"Name" : "InserisciVoce",
+			"SQL" : "INSERT INTO voci_doc_scarico_prodotti_composti (CHIAVE, ID_DOCUMENTO, DESCRIZIONE, QUANTITA,\n                                              UNITA_DI_MISURA, ORDINAMENTO, IMPORTO, IVA, SCONTO, ID_PRODOTTO)\n                  VALUES (:NewKey2, :NewKey1!ID_DOCUMENTO, #DESCRIZIONE, :QUANTITA,\n                               :UNITA_DI_MISURA, #ORDINAMENTO, :IMPORTO, :IVA, :SCONTO, :ID_PRODOTTO)\n"
+		},
+		{
+			"Name" : "ModificaVoce",
+			"SQL" : "UPDATE voci_doc_scarico_prodotti_composti\n      SET DESCRIZIONE = #DESCRIZIONE,\n             QUANTITA = :QUANTITA,\n             ORDINAMENTO = :ORDINAMENTO,\n             UNITA_DI_MISURA = :UNITA_DI_MISURA,\n             IMPORTO = :IMPORTO,\n             IVA = :IVA,\n             SCONTO = :SCONTO\n WHERE CHIAVE = :CHIAVE\n"
+		},
+		{
+			"Name" : "EliminaVoceTramiteDocScaricoProdotti",
+			"SQL" : "DELETE FROM voci_doc_scarico_prodotti_composti\n WHERE CHIAVE = :CHIAVE_DOCUMENTO\n"
+		},
+		{
+			"Name" : "Inserisci",
+			"SQL" : "INSERT INTO doc_scarico_prodotti_composti(CHIAVE, NUMERO_DOCUMENTO, ANNO_DOCUMENTO,\n                     DATA_DOCUMENTO,NOTE, ID_MAGAZZINO)\n             VALUES (:NewKey1, NEW_NUMERO_DOC(EXTRACT(YEAR FROM #DATA_DOCUMENTO)), EXTRACT(YEAR FROM #DATA_DOCUMENTO),\n                     #DATA_DOCUMENTO,#NOTE,:ID_MAGAZZINO)\n\n\n"
+		},
+		{
+			"Name" : "Modifica",
+			"SQL" : "UPDATE doc_scarico_prodotti_composti SET\n                   NUMERO_DOCUMENTO = :NUMERO_DOCUMENTO,\n                   DATA_DOCUMENTO = #DATA_DOCUMENTO,\n                   NOTE = #NOTE,\n                   ID_MAGAZZINO = :ID_MAGAZZINO\n             WHERE CHIAVE = :CHIAVE\n"
+		},
+		{
+			"Name" : "InserisciAllegato",
+			"SQL" : "INSERT INTO allegati_doc_scarico_prod_composti(CHIAVE, ALLEGATO, ID_DOCUMENTO, DESCRIZIONE)\n                      VALUES (:NewKey2, $ALLEGATO, :NewKey1!ID_DOCUEMENTO, #DESCRIZIONE)\n"
+		},
+		{
+			"Name" : "ModificaAllegato",
+			"SQL" : "UPDATE allegati_doc_scarico_prod_composti\n   SET CHIAVE = :CHIAVE,\n       DESCRIZIONE = #DESCRIZIONE,\n       ALLEGATO = $ALLEGATO\n WHERE CHIAVE = :CHIAVE\n"
+		},
+		{
+			"Name" : "EliminaAllegatoTramiteDocScaricoProdotti",
+			"SQL" : "DELETE from allegati_doc_scarico_prod_composti\n WHERE CHIAVE = :CHIAVE_DOCUMENTO\n"
+		},
+		{
+			"Name" : "Elimina",
+			"SQL" : "DELETE FROM doc_scarico_prodotti_composti \nWHERE CHIAVE = :CHIAVE_DOCUMENTO\n"
+		},
+		{
+			"Name" : "EliminaVoce",
+			"SQL" : "DELETE FROM voci_doc_scarico_prodotti_composti\nWHERE CHIAVE = :CHIAVE\n"
+		}
+	],
+	"FiltroDoc" : [
+		{
+			"Name" : "FiltroDoc",
+			"SQL" : "SELECT CHIAVE,\n            NUMERO_DOCUMENTO, \n            ANNO_DOCUMENTO\n  FROM doc_scarico_prodotti_composti\n  {W~NumeroDocumento~NUMERO_DOCUMENTO = :NumeroDocumento\n      ~AnnoDocumento~ANNO_DOCUMENTO = :AnnoDocumento\n      ~DalNr~NUMERO_DOCUMENTO >= :DalNr\n      ~AlNr~NUMERO_DOCUMENTO <= :AlNr\n      ~Anno1~ANNO_DOCUMENTO  >= :Anno1\n      ~Anno2~ANNO_DOCUMENTO  <= :Anno2\n      ~DallaData~DATA_DOCUMENTO  >= #DallaData\n      ~AllaData~DATA_DOCUMENTO  <= #AllaData}\n{O~OrdinaXData~ANNO_DOCUMENTO  DESC\n    ~OrdinaXNumero~ANNO_DOCUMENTO  DESC, NUMERO_DOCUMENTO DESC}\nLIMIT :LimitNumRows OFFSET :LimitStart\n"
+		}
+	],
+	"ListaProdottiMagazzino" : [
+		{
+			"Name" : "SelectProdottiMagazzino",
+			"SQL" : "SELECT prodotti.DESCRIZIONE,\n            prodotti.PREZZO_IMPONIBILE,\n            prodotti.IVA, \n            prodotti.CHIAVE, \n            prodotti.UNITA_DI_MISURA,\n            prodotti.PRODOTTO_COMPOSTO,\n            prodotti.DATA_ULTIMO_ACQUISTO,\n            prodotti.PREZZO_ULTIMO_ACQUISTO,\n            settori.DESCRIZIONE AS SETTORE,\n            COALESCE(qnt_x_magazzino.QUANTITA_MAGAZZINO, 0) AS QUANTITA_MAGAZZINO,\n            qnt_x_magazzino.ID_MAGAZZINO\n            FROM prodotti\n            LEFT OUTER JOIN settori ON settori.CHIAVE = prodotti.ID_SETTORE\n            LEFT OUTER JOIN qnt_x_magazzino ON qnt_x_magazzino.ID_PRODOTTO = prodotti.CHIAVE\n       \n"
+		}
+	],
+	"SelectDettaglio" : [
+		{
+			"Name" : "AllegatiDoc",
+			"SQL" : "SELECT CHIAVE, DESCRIZIONE, ID_DOCUMENTO, ALLEGATO\n  FROM allegati_doc_scarico_prod_composti\n WHERE ID_DOCUMENTO = :ChiaveDocumento\n"
+		},
+		{
+			"Name" : "Dettaglio",
+			"SQL" : "SELECT doc_scarico_prodotti_composti.*\n  FROM doc_scarico_prodotti_composti\n WHERE doc_scarico_prodotti_composti.CHIAVE = :CHIAVE\n"
+		},
+		{
+			"Name" : "VociDocumento",
+			"SQL" : "SELECT *\n  FROM voci_doc_scarico_prodotti_composti\n WHERE ID_DOCUMENTO = :ChiaveDocumento\n"
+		}
+]
+}

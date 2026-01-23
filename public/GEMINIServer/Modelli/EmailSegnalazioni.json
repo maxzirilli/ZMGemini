@@ -1,0 +1,23 @@
+{
+	"RuoliAbilitati" : "",
+	"EditSQL" : [
+		{
+			"Name" : "InserisciEmail",
+			"SQL" : "INSERT INTO clienti_email_segnalazioni (CHIAVE, EMAIL)\n     VALUES (:NewKey1, #EMAIL)\n"
+		},
+		{
+			"Name" : "ModificaEmail",
+			"SQL" : "UPDATE clienti_email_segnalazioni\n   SET EMAIL = #EMAIL\n WHERE CHIAVE = :CHIAVE\n"
+		},
+		{
+			"Name" : "EliminaEmail",
+			"SQL" : "DELETE FROM clienti_email_segnalazioni WHERE CHIAVE = :CHIAVE\n"
+		}
+	],
+	"SelectSQL" : [
+		{
+			"Name" : "TutteLeEmail",
+			"SQL" : "SELECT *\n  FROM clienti_email_segnalazioni\n"
+		}
+]
+}

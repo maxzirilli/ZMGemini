@@ -1,0 +1,23 @@
+Elenco automatismi magazzino
+
+La variazione della quantità del prodotto a magazzino avviene quando:
+
+• si cambia lo stato da annullato a non annullato e viceversa di :
+  ◦ ddt_uscenti
+• si cambia lo stato da accompagnatoria  a non accompagnatoria e viceversa di :
+  ◦ fatture
+• si modificano (insert, update, delete) :
+  ◦ le forniture di un rapporto d’intervento
+  ◦ le voci dei ddt uscenti
+  ◦ le voci dei ddt entranti
+  ◦ le voci di una fattura di accompagnatoria
+  ◦ le voci delle fatture passive 
+  
+  
+  
+- E' presente una checkbox nel menu "config pannello amm." che decide se trattare i rapporti di intervento come DDT
+
+
+- Per le fatture passive importate, se il software ha la corrispondenza con i codici del fornitore, 
+  all’inserimento delle voci delle fatture passive verrà individuato l’id_prodotto corrispondente al codice del fornitore e 
+  quindi all’inserimento della voce verrà aumentato il magazzino.

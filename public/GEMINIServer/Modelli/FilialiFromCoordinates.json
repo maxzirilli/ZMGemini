@@ -1,0 +1,9 @@
+{
+	"RuoliAbilitati" : "",
+	"FindFiliali" : [
+		{
+			"Name" : "FindFilialiInBoundingBox",
+			"SQL" : "SELECT CHIAVE,                        \n            NOME,\n            INDIRIZZO,\n            LAT_IND,\n            LONG_IND\nFROM filiali_clienti\nWHERE LAT_IND > :Latitudine1\n    AND LAT_IND <  :Latitudine2\n    AND LONG_IND > :Longitudine1\n    AND LONG_IND < :Longitudine2\n"
+		}
+]
+}

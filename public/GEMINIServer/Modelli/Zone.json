@@ -1,0 +1,23 @@
+{
+	"RuoliAbilitati" : "",
+	"SelectSQL" : [
+		{
+			"Name" : "Tutto",
+			"SQL" : "SELECT * \n  FROM zone\n"
+		}
+	],
+	"EditSQL" : [
+		{
+			"Name" : "Insert",
+			"SQL" : "INSERT INTO zone (CHIAVE,DESCRIZIONE, IS_ZTL)\n     VALUES (:NewKey1,#DESCRIZIONE, #IS_ZTL)\n"
+		},
+		{
+			"Name" : "Delete",
+			"SQL" : "DELETE FROM zone WHERE CHIAVE = :CHIAVE\n"
+		},
+		{
+			"Name" : "Update",
+			"SQL" : "UPDATE zone\n   SET DESCRIZIONE=#DESCRIZIONE,\n          IS_ZTL = #IS_ZTL\n WHERE CHIAVE = :CHIAVE\n"
+		}
+]
+}
