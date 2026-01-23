@@ -59,7 +59,7 @@
 		},
 		{
 			"Name" : "Prodotti",
-			"SQL" : "SELECT prodotti.*,\n            settori.DESCRIZIONE AS SETTORE,\n            qnt_x_magazzino.QUANTITA_MAGAZZINO\n  FROM prodotti\n            LEFT OUTER JOIN settori ON settori.CHIAVE = prodotti.ID_SETTORE\n            LEFT OUTER JOIN qnt_x_magazzino ON qnt_x_magazzino.ID_PRODOTTO = prodotti.CHIAVE\n"
+			"SQL" : "SELECT prodotti.*,\n            settori.DESCRIZIONE AS SETTORE,\n            qnt_x_magazzino.QUANTITA_MAGAZZINO,\n            qnt_x_magazzino.ID_MAGAZZINO\n  FROM prodotti\n            LEFT OUTER JOIN settori ON settori.CHIAVE = prodotti.ID_SETTORE\n            LEFT OUTER JOIN qnt_x_magazzino ON qnt_x_magazzino.ID_PRODOTTO = prodotti.CHIAVE\n"
 		},
 		{
 			"Name" : "Testi",

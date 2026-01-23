@@ -341,6 +341,7 @@
                                     NomeCampoDocumento="ID_DDT"
                                     :IsSchedaDDT="true"
                                     @onChange="OnVociDocumentoDiTrasportoChange"
+                                    :IdMagazzino="SchedaDocumentoDiTrasporto.Dati.ID_MAGAZZINO"
                                     :IdCliente="SchedaDocumentoDiTrasporto.Dati.ID_CLIENTE"
                                     :ReadOnly="SchedaDocumentoDiTrasporto.Dati.ID_FATTURA != -1"/>    
     </div>

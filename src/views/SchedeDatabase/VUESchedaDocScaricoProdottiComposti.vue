@@ -81,6 +81,7 @@
         :SchedaVociDocumentiNonEconomici="SchedaDocScaricoProdottiComposti.SchedaVociDocScaricoProdottiComposti"
         NomeCampoDocumento="ID_DOCUMENTO"
         :IsSchedaScaricoProdotti="true"
+        :IdMagazzino="SchedaDocScaricoProdottiComposti.Dati.ID_MAGAZZINO"
         @onChange="OnVociDocScaricoProdottiCompostiChange"/>    
      </div>
 

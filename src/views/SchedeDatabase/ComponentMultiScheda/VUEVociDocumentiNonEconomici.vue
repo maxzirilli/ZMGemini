@@ -533,7 +533,7 @@ export default {
     }
   },
 
-  props : ['SchedaVociDocumentiNonEconomici','NomeCampoDocumento', 'IsSchedaDDT', 'IsSchedaDDTentrante','IsSchedaScaricoProdotti', 'IdCliente', 'ReadOnly'],
+  props : ['SchedaVociDocumentiNonEconomici','NomeCampoDocumento', 'IsSchedaDDT', 'IsSchedaDDTentrante','IsSchedaScaricoProdotti', 'IdCliente', 'ReadOnly','IdMagazzino'],
   
   computed :
   {
@@ -672,9 +672,14 @@ export default {
       }
       if(this.IsSchedaDDT)
       {
+        if(!this.IdMagazzino)
+        {
+            SystemInformation.HandleError('Nessun magazzino selezionato per il DDT.')
+            return
+        }
         this.ListaProdotti   = null
         
-        SystemInformation.AdvQuery.GetSQL('Magazzino',{CHIAVE : this.ID_CLIENTE}, 
+        SystemInformation.AdvQuery.GetSQL('Magazzino',{CHIAVE : this.ID_CLIENTE , ID_MAGAZZINO: this.IdMagazzino}, 
                                           function (Results) 
                                           {
                                             let ArrayInfo = SystemInformation.AdvQuery.FindResults(Results, "ListaProdottiVariazionePrezzo");
@@ -715,8 +720,14 @@ export default {
       }
       if(this.IsSchedaScaricoProdotti)
       {
-         this.ListaProdotti = SystemInformation.GetProdottiComposti()
-         Self.PopupLsProdotti = true
+        if(!this.IdMagazzino)
+          {
+              SystemInformation.HandleError('Nessun magazzino selezionato per scarico prodotti.')
+              return
+          }
+  
+          this.ListaProdotti = SystemInformation.GetProdottiCompostiXMagazzino(this.IdMagazzino)
+          Self.PopupLsProdotti = true
       }
     },
 

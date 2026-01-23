@@ -69,7 +69,7 @@
 	"ListaProdottiVariazionePrezzo" : [
 		{
 			"Name" : "ListaProdottiVariazionePrezzo",
-			"SQL" : "SELECT prodotti.*,\n            clienti_listino_sconti.TIPO_SCONTO,\n            clienti_listino_sconti.VALORE,\n            settori.DESCRIZIONE AS SETTORE,\n            clienti.SCONTO_GENERALE\n  FROM prodotti\n            LEFT OUTER JOIN settori ON settori.CHIAVE = prodotti.ID_SETTORE\n            LEFT OUTER JOIN clienti_listino_sconti ON (clienti_listino_sconti.ID_PRODOTTO = prodotti.CHIAVE AND \n                                                                          clienti_listino_sconti.ID_CLIENTE = :CHIAVE)\n            LEFT OUTER JOIN clienti ON clienti.CHIAVE = :CHIAVE\n"
+			"SQL" : "SELECT prodotti.*,\n            clienti_listino_sconti.TIPO_SCONTO,\n            clienti_listino_sconti.VALORE,\n            settori.DESCRIZIONE AS SETTORE,\n            clienti.SCONTO_GENERALE,\n            qnt_x_magazzino.ID_MAGAZZINO\n  FROM prodotti\n            LEFT OUTER JOIN settori ON settori.CHIAVE = prodotti.ID_SETTORE\n            LEFT OUTER JOIN clienti_listino_sconti ON (clienti_listino_sconti.ID_PRODOTTO = prodotti.CHIAVE AND \n                                                                          clienti_listino_sconti.ID_CLIENTE = :CHIAVE)\n            LEFT OUTER JOIN clienti ON clienti.CHIAVE = :CHIAVE\n            INNER JOIN qnt_x_magazzino on qnt_x_magazzino.ID_PRODOTTO = prodotti.CHIAVE\n            AND qnt_x_magazzino.ID_MAGAZZINO = :ID_MAGAZZINO\n"
 		}
 	],
 	"LsFiltroProdotti" : [

@@ -693,18 +693,23 @@ class TSystemInformation
     return Result
   }
 
-  GetProdottiComposti()
+  GetProdottiCompostiXMagazzino(IdMagazzino)
   {
-    let Result = []
-    let LSTuttiProdotti = []
-    LSTuttiProdotti = this.Configurazioni.Prodotti
+    var ListaProdottiComposti = []
+    var TuttiProdotti = this.Configurazioni.Prodotti
 
-    for(let i = 0; i < LSTuttiProdotti.length; i++)
+    for(var i = 0; i < TuttiProdotti.length; i++)
     {
-      if(LSTuttiProdotti[i].PRODOTTO_COMPOSTO != 'F')
-        Result.push(LSTuttiProdotti[i])
+        var ProdottoCorrente = TuttiProdotti[i]
+
+        if(ProdottoCorrente.PRODOTTO_COMPOSTO != 'F')
+        {
+            if(ProdottoCorrente.ID_MAGAZZINO != undefined && ProdottoCorrente.ID_MAGAZZINO == IdMagazzino)
+                ListaProdottiComposti.push(ProdottoCorrente)
+        }
     }
-    return Result
+
+    return ListaProdottiComposti
   }
 
   GetRagioneSocialeCliente(IdCliente)
