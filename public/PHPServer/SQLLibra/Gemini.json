@@ -5744,15 +5744,6 @@
                     "SQLAfterAddedColumn": null
                 },
                 {
-                    "Nome": "ID_RAPPORTO_CREAZIONE",
-                    "IsNullable": true,
-                    "DataType": "int",
-                    "AutoIncrement": false,
-                    "Commento": "",
-                    "DefaultValue": null,
-                    "SQLAfterAddedColumn": null
-                },
-                {
                     "Nome": "APERTO_DOMENICA",
                     "IsNullable": true,
                     "DataType": "enum('T','F')",
@@ -5827,12 +5818,6 @@
                     "Campo": "ID_FILIALE",
                     "RefTable": "filiali_clienti",
                     "RefField": "CHIAVE"
-                },
-                {
-                    "Nome": "FK_ORARI_ID_RAPPORTO",
-                    "Campo": "ID_RAPPORTO_CREAZIONE",
-                    "RefTable": "rapporti_intervento",
-                    "RefField": "CHIAVE"
                 }
             ],
             "UniqueKeys": [],
@@ -5898,15 +5883,6 @@
                 },
                 {
                     "Nome": "TELEFONO_PER_AVVISO",
-                    "IsNullable": true,
-                    "DataType": "enum('T','F')",
-                    "AutoIncrement": false,
-                    "Commento": "",
-                    "DefaultValue": "F",
-                    "SQLAfterAddedColumn": null
-                },
-                {
-                    "Nome": "PER_RAPPORTI",
                     "IsNullable": true,
                     "DataType": "enum('T','F')",
                     "AutoIncrement": false,
@@ -7305,15 +7281,6 @@
             "Nome": "incassi_confermati",
             "Campi": [
                 {
-                    "Nome": "ID_RAPPORTO",
-                    "IsNullable": false,
-                    "DataType": "int",
-                    "AutoIncrement": false,
-                    "Commento": "",
-                    "DefaultValue": null,
-                    "SQLAfterAddedColumn": null
-                },
-                {
                     "Nome": "ID_FATTURA",
                     "IsNullable": false,
                     "DataType": "int",
@@ -7325,7 +7292,6 @@
             ],
             "PrimaryKey": {
                 "Campi": [
-                    "ID_RAPPORTO",
                     "ID_FATTURA"
                 ]
             },
@@ -7334,12 +7300,6 @@
                     "Nome": "FK_INC_CONF_FATTURA",
                     "Campo": "ID_FATTURA",
                     "RefTable": "fatture",
-                    "RefField": "CHIAVE"
-                },
-                {
-                    "Nome": "FK_INC_CONF_RAPPORTO",
-                    "Campo": "ID_RAPPORTO",
-                    "RefTable": "rapporti_intervento",
                     "RefField": "CHIAVE"
                 }
             ],
@@ -7683,15 +7643,6 @@
                 {
                     "Nome": "CHIAVE",
                     "IsNullable": false,
-                    "DataType": "int",
-                    "AutoIncrement": false,
-                    "Commento": "",
-                    "DefaultValue": null,
-                    "SQLAfterAddedColumn": null
-                },
-                {
-                    "Nome": "ID_CONTRATTO",
-                    "IsNullable": true,
                     "DataType": "int",
                     "AutoIncrement": false,
                     "Commento": "",
@@ -9148,15 +9099,6 @@
                     "SQLAfterAddedColumn": null
                 },
                 {
-                    "Nome": "ID_CONTRATTO",
-                    "IsNullable": true,
-                    "DataType": "int",
-                    "AutoIncrement": false,
-                    "Commento": "",
-                    "DefaultValue": null,
-                    "SQLAfterAddedColumn": null
-                },
-                {
                     "Nome": "ANNO",
                     "IsNullable": true,
                     "DataType": "int",
@@ -9967,15 +9909,6 @@
                 },
                 {
                     "Nome": "ID_CLIENTE",
-                    "IsNullable": true,
-                    "DataType": "int",
-                    "AutoIncrement": false,
-                    "Commento": "",
-                    "DefaultValue": null,
-                    "SQLAfterAddedColumn": null
-                },
-                {
-                    "Nome": "ID_CONTRATTO",
                     "IsNullable": true,
                     "DataType": "int",
                     "AutoIncrement": false,
@@ -11756,72 +11689,6 @@
                     "Nome": "FK_SALDI_CHIUSURE_ID_FORNITORE",
                     "Campo": "ID_FORNITORE",
                     "RefTable": "fornitori",
-                    "RefField": "CHIAVE"
-                }
-            ],
-            "UniqueKeys": [],
-            "Indexes": [],
-            "Triggers": []
-        },
-        {
-            "Nome": "scadenzario",
-            "Campi": [
-                {
-                    "Nome": "CHIAVE",
-                    "IsNullable": false,
-                    "DataType": "int",
-                    "AutoIncrement": false,
-                    "Commento": "",
-                    "DefaultValue": null,
-                    "SQLAfterAddedColumn": null
-                },
-                {
-                    "Nome": "DATA",
-                    "IsNullable": false,
-                    "DataType": "date",
-                    "AutoIncrement": false,
-                    "Commento": "",
-                    "DefaultValue": null,
-                    "SQLAfterAddedColumn": null
-                },
-                {
-                    "Nome": "DESCRIZIONE",
-                    "IsNullable": false,
-                    "DataType": "varchar(255)",
-                    "AutoIncrement": false,
-                    "Commento": "",
-                    "DefaultValue": "",
-                    "SQLAfterAddedColumn": null
-                },
-                {
-                    "Nome": "GESTITO",
-                    "IsNullable": false,
-                    "DataType": "enum('T','F')",
-                    "AutoIncrement": false,
-                    "Commento": "",
-                    "DefaultValue": "F",
-                    "SQLAfterAddedColumn": null
-                },
-                {
-                    "Nome": "ID_RAPPORTO",
-                    "IsNullable": true,
-                    "DataType": "int",
-                    "AutoIncrement": false,
-                    "Commento": "",
-                    "DefaultValue": null,
-                    "SQLAfterAddedColumn": null
-                }
-            ],
-            "PrimaryKey": {
-                "Campi": [
-                    "CHIAVE"
-                ]
-            },
-            "ForeignKeys": [
-                {
-                    "Nome": "FK1_ID_RAPPORTO",
-                    "Campo": "ID_RAPPORTO",
-                    "RefTable": "rapporti_intervento",
                     "RefField": "CHIAVE"
                 }
             ],
