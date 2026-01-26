@@ -2234,7 +2234,7 @@
           <button style="float:right;margin-right:15px;width:5%;min-width: 100px" @click="FiltraDati" class="btn btn-info">[F2] Cerca</button>
           <div class="btn-group open" style="float:right;margin-right:5px">
 
-            <img src="@/assets/images/Stampa.png" style="margin-top:-8px;cursor:pointer" @click="OnClickStampa(false,false,false, false,false,true, false)">
+            <!-- <img src="@/assets/images/Stampa.png" style="margin-top:-8px;cursor:pointer" @click="OnClickStampa(false,false,false, false,false,true, false)">
               <ul v-if="MenuStampa.length != 0" class="dropdown-menu" style="width:200%">
                 <li v-for="(AMenu,index) in MenuStampa" :Key="index">
                   <a v-if="AMenu.Caption != ''" @click="OnNextMenuStampa(AMenu)">
@@ -2249,7 +2249,7 @@
                 <li>
                   <a @click="MenuStampa = []">Chiudi</a>
                 </li>
-              </ul>
+              </ul> -->
           </div>
         </div>
      </div>
