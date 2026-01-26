@@ -148,7 +148,7 @@ export const DASHBOARD_FILTER_TYPES =
     Conferme                   : 'Conferme',
     Preventivi                 : 'Preventivi',
     MovimentiMagazzini         : 'Movimenti Magazzini',
-    DocScaricoProdottiComposti : 'DocScaricoProdottiComposti',
+    DocScaricoProdottiComposti : 'Doc scarico prod composti',
     Magazzini                  : 'Magazzini'
 }
 export const PRIORITA_URGENZA    = {

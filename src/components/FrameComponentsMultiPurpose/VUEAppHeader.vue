@@ -5,7 +5,7 @@
         <i class="fa fa-bars"></i>
       </a>
       <a href="#" class="navbar-brand" data-toggle="fullscreen">
-        <img src="../../assets/images/LogoGemini.png" class="m-r-sm" style="font-size:24px;margin-right:3px">&nbsp;&nbsp;GEMINI
+        <img src="../../assets/images/LogoGemini2.png" class="m-r-sm" style="font-size:24px;margin-right:3px">&nbsp;&nbsp;GEMINI
       </a>
       <a class="btn btn-link visible-xs" data-toggle="dropdown" data-target=".nav-user">
         <i class="fa fa-cog"></i>
@@ -155,13 +155,13 @@
                             <tr v-if="ListaStatusGDPR.length == 0">
                               <td colspan="9">Nessuna richiesta di dati presente</td>
                             </tr>
-                            <tr v-for="Dati in ListaStatusGDPR" :key="Dati.DATA_RICHIESTA" style="font-size:15px">
+                            <!-- <tr v-for="Dati in ListaStatusGDPR" :key="Dati.DATA_RICHIESTA" style="font-size:15px">
                               <td> {{ Dati.DATA_RICHIESTA }} </td>
                               <td v-if="Dati.STATO_DOWNLOAD == StatoDownloadGDPR.Pronto">
                                 <button @click="OnClickScaricaZip(Dati)" class="btn btn-success" style="min-width: 100px">Scarica file zip</button>
                               </td>
                               <td v-else> In elaborazione </td>
-                            </tr>
+                            </tr> -->
                           </tbody>
                         </table>
                       </div>
@@ -181,8 +181,7 @@
 
 <script>
 import { SystemInformation,
-         RUOLI,
-         STATO_DOWNLOAD_GDPR } from '@/SystemInformation';
+         RUOLI} from '@/SystemInformation';
 import { TZImageFunct } from '../../../../../../../..\\Librerie\\VUE\\ZImageFunct.js'
 import VUEModal from '@/components/Slots/VUEModal.vue';
 import { TZStringConvFunct } from '../../../../../../../../Librerie/VUE/ZStringConvFunct.js'
@@ -207,7 +206,7 @@ export default
               PresenzaFileGiàScaricato    : false,
               PopupConfermaRichiestaDati  : false,
               Ruoli                       : RUOLI,
-              StatoDownloadGDPR           : STATO_DOWNLOAD_GDPR,
+              // StatoDownloadGDPR           : STATO_DOWNLOAD_GDPR,
               ListaStatusGDPR             : [],
               UserInformationEdit         : {},
               Password                    : {},

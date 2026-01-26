@@ -141,7 +141,7 @@
           <div class="modal-content" style="background:#d0e9ff">
             <div style="background-color:#68b6be" class="modal-header">
               <h4 class="modal-title" style="color:#d0e9ff;" id="myModalLabel">
-              <img src="../../../assets/images/LogoGemini.png" style="height:20px;float:left" class="m-r-sm">
+              <img src="../../../assets/images/LogoGemini2.png" style="height:20px;float:left" class="m-r-sm">
               Gemini - Info Prodotto 
               <button style="float:right;margin-top:-5px" class="btn btn-sm btn-icon btn-info" @click="PopupDettaglioProdotto = !PopupDettaglioProdotto">
                 <i class="fa fa-times"></i>

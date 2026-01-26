@@ -4,7 +4,7 @@
       <!-- Logo -->
       <div class="navbar-header" style="margin-left: -25%;">
         <a href="#" class="navbar-brand" style="display: inline-flex; align-items: center;">
-          <img src="../../assets/images/LogoGemini.png" style="height: 40px; margin-left: 10px;">
+          <img src="../../assets/images/LogoGemini2.png" style="height: 40px; margin-left: 10px;">
           <span class="logo-gemini">GEMINI</span>
         </a>
       </div>

@@ -5,9 +5,9 @@
         <li v-for="ATab in Tabs.Tabs" :key="ATab.Id" :class="{ active: ATab.Id == Tabs.ActiveTab }">
           <a @click="Tabs.ActiveTab = ATab.Id">
             {{ ATab.Caption }}
-            <img v-if="ATab.Id == 'Documento di scarico'" 
+            <!-- <img v-if="ATab.Id == 'VociProdotti'" 
                  src="@/assets/images/IconeAlbero/DDT2.png" 
-                 style="width:35px;height:35px;float:left;margin-top:-9px">  
+                 style="width:35px;height:35px;float:left;margin-top:-9px">   -->
           </a>
         </li>
       </ul>
@@ -15,11 +15,10 @@
 
     <div style="height:5px;"></div>
 
-    <!-- Documento di scarico prodotti composti -->
-    <div v-if="Tabs.ActiveTab == 'Documento di scarico'">
-      <div class="ZMNuovaRigaScheda" style="height:10px">&nbsp;</div>
+      <!-- Voci Prodotti -->
+      <div v-if="Tabs.ActiveTab == 'VociProdotti'">
 
-      <div class="col-md-6" style="float:right">
+        <div class="col-md-6" style="float:right">
         <div style="float:right;margin-left:10px;width:30%">
           <text style="font-weight:bold;">Data</text>
           <input type="date" id="input-data" 
@@ -30,18 +29,19 @@
                  class="ZMFormLabelError">Campo obbligatorio</label>
         </div>
 
-        <div style="float:right;width:30%" v-if="SchedaDocScaricoProdottiComposti.Dati.NUMERO_DOCUMENTO != -1">
+        <div style="float:right;width:30%" 
+             v-if="SchedaDocScaricoProdottiComposti.Dati.NUMERO_DOCUMENTO != -1">
           <text style="float:left;font-weight:bold;padding-right:10%">D.D.T. n.</text>
           <div style="clear:both"></div>
           <label style="float:left;font-size:15px;width:151px;height:34px;padding-top:6px;padding-left:14px;" 
-                 class="ZMLabel">{{ SchedaDocScaricoProdottiComposti.Dati.NUMERO_DOCUMENTO }}</label>
+                 class="ZMLabel">
+            {{ SchedaDocScaricoProdottiComposti.Dati.NUMERO_DOCUMENTO }}
+          </label>
         </div>
-      </div>
+       </div>
 
-    </div>
+       <div style="clear:both"></div>
 
-      <!-- Voci Prodotti -->
-      <div v-if="Tabs.ActiveTab == 'VociProdotti'">
         <div style="clear:both"></div>
 
         <div class="ZMSeparatoreScheda" style="margin-top:5px">
@@ -99,7 +99,7 @@
 
 <script>
 import { TSchedaGenerica } from '../../../../../../../../Librerie/VUE/ZSchedaGenerica.js'
-import { SystemInformation, RUOLI} from '@/SystemInformation.js'
+import { SystemInformation, RUOLI, DASHBOARD_FILTER_TYPES} from '@/SystemInformation.js'
 import VUEVociDocumentiNonEconomici, {TSchedaVociDocumentiNonEconomici} from '@/views/SchedeDatabase/ComponentMultiScheda/VUEVociDocumentiNonEconomici.vue';
 import VUEAllegati, { TSchedaAllegati } from '../../components/VUEAllegati.vue';
 import { TZDateFunct } from '../../../../../../../../Librerie/VUE/ZDateFunct.js'
@@ -306,9 +306,18 @@ export class TSchedaDocScaricoProdottiComposti extends TSchedaGenerica
   }
 
   GetImageIndex()
-    {
+  {
       return 'Conferma.png'
-    }
+  }
+
+
+  GetFiltriAbilitati(OnSuccess)
+  {
+    OnSuccess([{
+                Name : DASHBOARD_FILTER_TYPES.DocScaricoProdottiComposti,
+                Positions : []
+            }])   
+  }  
 
   DatiStampabili()
   {
@@ -348,12 +357,12 @@ export default
               ListaMagazzini      : SystemInformation.Configurazioni.Magazzini,
               
               Tabs                : {
-                                       ActiveTab : 'Documento di scarico',
+                                       ActiveTab : 'VociProdotti',
                                        Tabs      : [
-                                                     {
-                                                       Caption : 'Documento di scarico prodotti composti',
-                                                       Id      : 'Documento di scarico'
-                                                     },
+                                                    //  {
+                                                    //    Caption : 'Documento di scarico prodotti composti',
+                                                    //    Id      : 'Documento di scarico'
+                                                    //  },
                                                      {
                                                        Caption : 'Voci prodotti e info',
                                                        Id      : 'VociProdotti'
@@ -398,7 +407,7 @@ export default
     
    beforeMount() 
    {
-     this.ActiveTab = 'Documento di scarico'
+     this.ActiveTab = 'VociProdotti'
    },
 
 }

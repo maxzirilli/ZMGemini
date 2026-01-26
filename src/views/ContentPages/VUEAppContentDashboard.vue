@@ -488,13 +488,18 @@
       <div style="width: 40%; display: flex; justify-content: flex-end; align-items: center; gap: 15px; float: right">
         
         <div style="max-width: 500px; display: flex; justify-content: flex-end; flex-wrap: wrap">
-          <button class="btn btn-s-md btn-default btn-rounded btn-xs" style="width: 10%" @click="OnClickNuovoClienteRapido">Cliente</button>
+          <!-- <button class="btn btn-s-md btn-default btn-rounded btn-xs" style="width: 10%" @click="OnClickNuovoClienteRapido">Cliente</button> -->
+          <button class="btn btn-s-md btn-default btn-rounded btn-xs" style="width: 10%" @click="OnClickNuovoFornitoreRapido">Fornitore</button>
           <button class="btn btn-s-md btn-default btn-rounded btn-xs" style="width: 10%" @click="OnClickNuovoProdottoRapido">Prodotto</button>
-          <button class="btn btn-s-md btn-default btn-rounded btn-xs" style="width: 10%" @click="OnClickNuovoAmministratoreRapido">Amministratore</button>
-          <button class="btn btn-s-md btn-default btn-rounded btn-xs" style="width: 10%" @click="OnClickNuovoPreventivoMultiRapido">Preventivo</button>
-          <button class="btn btn-s-md btn-default btn-rounded btn-xs" style="width: 10%" @click="OnClickNuovoMovimentoRapido">Movimento</button>
-          <button class="btn btn-s-md btn-default btn-rounded btn-xs" style="width: 10%" @click="OnClickNuovaFatturaRapido">Fattura</button>
-          <button class="btn btn-s-md btn-default btn-rounded btn-xs" style="width: 10%" @click="OnClickNuovaFatturaDaBancoRapido">Fatt. da banco</button>
+          <button class="btn btn-s-md btn-default btn-rounded btn-xs" style="width: 10%" @click="OnClickNuovoDDTEntranteRapido">DDT entrante</button>
+          <button class="btn btn-s-md btn-default btn-rounded btn-xs" style="width: 10%" @click="OnClickNuovoDDTRapido">DDT</button>
+          <button class="btn btn-s-md btn-default btn-rounded btn-xs" style="width: 10%" @click="OnClickNuovoDocScaricoProdCompostiRapido">Doc prodotti</button>
+          <button class="btn btn-s-md btn-default btn-rounded btn-xs" style="width: 10%" @click="OnClickNuovoMovimentoMagazzinoRapido">Mov magazzino</button>
+          <!-- <button class="btn btn-s-md btn-default btn-rounded btn-xs" style="width: 10%" @click="OnClickNuovoAmministratoreRapido">Amministratore</button> -->
+          <!-- <button class="btn btn-s-md btn-default btn-rounded btn-xs" style="width: 10%" @click="OnClickNuovoPreventivoMultiRapido">Preventivo</button> -->
+          <!-- <button class="btn btn-s-md btn-default btn-rounded btn-xs" style="width: 10%" @click="OnClickNuovoMovimentoRapido">Movimento</button> -->
+          <!-- <button class="btn btn-s-md btn-default btn-rounded btn-xs" style="width: 10%" @click="OnClickNuovaFatturaRapido">Fattura</button> -->
+          <!-- <button class="btn btn-s-md btn-default btn-rounded btn-xs" style="width: 10%" @click="OnClickNuovaFatturaDaBancoRapido">Fatt. da banco</button> -->
         </div>
 
 
@@ -2142,7 +2147,7 @@
      </div>
 
     <!-- Filtro doc prodotti -->
-    <div v-if="!DatiInModifica && CurrentFilter.GetFilterId() == 'DocScaricoProdottiComposti'" 
+    <div v-if="!DatiInModifica && CurrentFilter.GetFilterId() == 'Doc scarico prod composti'" 
          class="breadcrumb no-border no-radius b-b b-light pull-in" style="padding-bottom:2px; overflow:auto;">
     
       <!-- Filtri a sinistra -->
@@ -2296,8 +2301,8 @@
                               @onClickNuovaFatturaDaBanco="OnClickNuovaFatturaDaBancoDaSchedaCliente"
                               @onClickNuovoDDT="OnClickNuovoDDTDaSchedaCliente"
                               @onClickNuovoDDTEntrante="OnClickNuovoDDTEntranteDaSchedaCliente"/>
-            <VUESchedaAmministratore v-if="TipoSchedaSelezionata == 'TSchedaAmministratore'" 
-                              :SchedaAmministratore="SchedaSelezionata" />   
+            <!-- <VUESchedaAmministratore v-if="TipoSchedaSelezionata == 'TSchedaAmministratore'" 
+                              :SchedaAmministratore="SchedaSelezionata" />    -->
             <VUESchedaFattura v-if="TipoSchedaSelezionata == 'TSchedaFattura'" 
                               :SchedaFattura="SchedaSelezionata" 
                               @onChangeNodiAlbero="OnChangeNodiAlbero"
@@ -2383,7 +2388,7 @@ import {
           SystemInformation,
           TIPO_COMUNICAZIONI,
         } from '@/SystemInformation';
-import VUESchedaAmministratore, { TSchedaAmministratore } from '@/views/SchedeDatabase/VUESchedaAmministratore.vue';
+// import VUESchedaAmministratore, { TSchedaAmministratore } from '@/views/SchedeDatabase/VUESchedaAmministratore.vue';
 import VUESchedaCliente, { TSchedaCliente } from '@/views/SchedeDatabase/VUESchedaCliente.vue';
 import VUESchedaDocumentoDiTrasporto, { TSchedaDocumentoDiTrasporto } from '@/views/SchedeDatabase/VUESchedaDocumentoDiTrasporto.vue';
 import VUESchedaDocumentoDiTrasportoEntrante, { TSchedaDocumentoDiTrasportoEntrante } from '@/views/SchedeDatabase/VUESchedaDocumentoDiTrasportoEntrante.vue';
@@ -2429,7 +2434,7 @@ export default
                   VUESchedaDocumentoDiTrasporto,
                   VUESchedaDocumentoDiTrasportoEntrante,
                   VUESchedaDocScaricoProdottiComposti,
-                  VUESchedaAmministratore,
+                  // VUESchedaAmministratore,
                   // VUESchedaContoCorrente,
                   VUESchedaMovimento,
                   VUESchedaMovimentiMagazzini,
@@ -3100,9 +3105,15 @@ export default
        
       },
 
-      OnClickNuovoClienteRapido()
+      // OnClickNuovoClienteRapido()
+      // {
+      //   this.SchedaSelezionata = new TSchedaCliente(SystemInformation.AdvQuery);
+      //   this.SchedaSelezionata.Nuovo();
+      // },
+
+      OnClickNuovoFornitoreRapido()
       {
-        this.SchedaSelezionata = new TSchedaCliente(SystemInformation.AdvQuery);
+        this.SchedaSelezionata = new TSchedaFornitore(SystemInformation.AdvQuery);
         this.SchedaSelezionata.Nuovo();
       },
 
@@ -3112,49 +3123,73 @@ export default
         this.SchedaSelezionata.Nuovo();
       },
 
-      OnClickNuovoMovimentoFromFattureInsolute(Dati)
+      OnClickNuovoDDTEntranteRapido()
       {
-        this.SchedaSelezionata = new TSchedaMovimento(SystemInformation.AdvQuery);
-        this.SchedaSelezionata.Nuovo();
-        this.SchedaSelezionata.AssignDati(Dati)
-      },
-
-      OnClickNuovoAmministratoreRapido()
-      {
-        this.SchedaSelezionata = new TSchedaAmministratore(SystemInformation.AdvQuery);
+        this.SchedaSelezionata = new TSchedaDocumentoDiTrasportoEntrante(SystemInformation.AdvQuery);
         this.SchedaSelezionata.Nuovo();
       },
 
-      OnClickNuovoPreventivoMultiRapido()
+      OnClickNuovoDDTRapido()
       {
-        this.SchedaSelezionata = new TSchedaPreventivoMultiparametrico(SystemInformation.AdvQuery);
+        this.SchedaSelezionata = new TSchedaDocumentoDiTrasporto(SystemInformation.AdvQuery);
         this.SchedaSelezionata.Nuovo();
       },
 
-      OnClickNuovoPreventivoRapido()
+      OnClickNuovoDocScaricoProdCompostiRapido()
       {
-        this.SchedaSelezionata = new TSchedaPreventivo(SystemInformation.AdvQuery);
+        this.SchedaSelezionata = new TSchedaDocScaricoProdottiComposti(SystemInformation.AdvQuery);
         this.SchedaSelezionata.Nuovo();
       },
 
-      OnClickNuovaFatturaDaBancoRapido()
+      OnClickNuovoMovimentoMagazzinoRapido()
       {
-        this.SchedaSelezionata = new TSchedaFattura(SystemInformation.AdvQuery);
+        this.SchedaSelezionata = new TSchedaMovimentiMagazzini(SystemInformation.AdvQuery);
         this.SchedaSelezionata.Nuovo();
-        this.SchedaSelezionata.FatturaDaBanco()
-      },
+      },  
 
-      OnClickNuovoMovimentoRapido()
-      {
-        this.SchedaSelezionata = new TSchedaMovimento(SystemInformation.AdvQuery);
-        this.SchedaSelezionata.Nuovo();
-      },
+      // OnClickNuovoMovimentoFromFattureInsolute(Dati)
+      // {
+      //   this.SchedaSelezionata = new TSchedaMovimento(SystemInformation.AdvQuery);
+      //   this.SchedaSelezionata.Nuovo();
+      //   this.SchedaSelezionata.AssignDati(Dati)
+      // },
 
-      OnClickNuovaFatturaRapido()
-      {
-        this.SchedaSelezionata = new TSchedaFattura(SystemInformation.AdvQuery);
-        this.SchedaSelezionata.Nuovo();
-      },
+      // OnClickNuovoAmministratoreRapido()
+      // {
+      //   this.SchedaSelezionata = new TSchedaAmministratore(SystemInformation.AdvQuery);
+      //   this.SchedaSelezionata.Nuovo();
+      // },
+
+      // OnClickNuovoPreventivoMultiRapido()
+      // {
+      //   this.SchedaSelezionata = new TSchedaPreventivoMultiparametrico(SystemInformation.AdvQuery);
+      //   this.SchedaSelezionata.Nuovo();
+      // },
+
+      // OnClickNuovoPreventivoRapido()
+      // {
+      //   this.SchedaSelezionata = new TSchedaPreventivo(SystemInformation.AdvQuery);
+      //   this.SchedaSelezionata.Nuovo();
+      // },
+
+      // OnClickNuovaFatturaDaBancoRapido()
+      // {
+      //   this.SchedaSelezionata = new TSchedaFattura(SystemInformation.AdvQuery);
+      //   this.SchedaSelezionata.Nuovo();
+      //   this.SchedaSelezionata.FatturaDaBanco()
+      // },
+
+      // OnClickNuovoMovimentoRapido()
+      // {
+      //   this.SchedaSelezionata = new TSchedaMovimento(SystemInformation.AdvQuery);
+      //   this.SchedaSelezionata.Nuovo();
+      // },
+
+      // OnClickNuovaFatturaRapido()
+      // {
+      //   this.SchedaSelezionata = new TSchedaFattura(SystemInformation.AdvQuery);
+      //   this.SchedaSelezionata.Nuovo();
+      // },
 
       KeyDownF2(event)
       {
@@ -3948,11 +3983,13 @@ export default
 
       OnClickGoToPositionAlbero(Filtro)
       {
+
         var Self = this
         this.ClearFiltriPerNome(Filtro[0].Name)
         var FiltroSelezionato = Filtro.find(function(Filtro)
         {
           return Self.CurrentFilter.GetFilterId() == Filtro.Name
+          
         }) 
         if(FiltroSelezionato == undefined)
         {
@@ -4237,6 +4274,7 @@ export default
       
       FiltraDati(GoToPosition,AfterEndFilter)
       { 
+
         var Self = this;
 
         if(Self.FilterFattura.Conformita != 'Tutte')
@@ -5351,7 +5389,7 @@ export default
                                               break;        
             case 'Movimenti'                : Result = 46
                                               break;
-            case 'Doc scarico prodotti composti'                : Result = 50
+            case 'Doc scarico prod composti'                : Result = 50
                                               break;
             default                         : Result = 120
                                               break;
