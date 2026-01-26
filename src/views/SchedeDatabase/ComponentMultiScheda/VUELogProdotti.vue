@@ -23,10 +23,10 @@
           <div class="col-md-4" style="font-size: 13px">
             <p style="white-space: pre">{{ SingoloLog.Dati.Descrizione }}</p>
           </div>
-          <div v-if="SingoloLog.Dati.Quantita > 0" class="col-md-4" style="font-size: 13px; margin-left: 5%;">
+          <div v-if="SingoloLog.Dati.Quantita > 0" class="col-md-4" style="font-size: 13px; padding-left: 20%;">
             <p style="white-space: pre">+{{ SingoloLog.Dati.Quantita }}</p>
           </div>
-          <div v-else class="col-md-4" style="font-size: 13px; margin-left: 5%;">
+          <div v-else class="col-md-4" style="font-size: 13px; padding-left: 20%;">
             <p style="white-space: pre">{{ SingoloLog.Dati.Quantita }}</p>
           </div>
       </div>
