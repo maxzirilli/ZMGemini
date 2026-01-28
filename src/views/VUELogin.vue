@@ -22,10 +22,10 @@
            </template>
          </VUEModal> 
         <div class="panel-body wrapper-lg">
-          <div class="form-group">
+          <!-- <div class="form-group">
             <label class="control-label">Partita IVA</label>
             <input type="text" placeholder="Partita IVA" style="height:40px;text-transform: none!important" v-model="PartitaIVA" class="form-control ZMFormRegister">
-          </div>
+          </div> -->
           <div class="form-group">
             <label class="control-label">Utente</label>
             <input type="text" placeholder="UserName" style="height:40px;text-transform: none!important" v-model="UserName" class="form-control ZMFormRegister">
@@ -64,7 +64,7 @@ export default
      return { 
                UserName    : '',
                Password    : '',
-               PartitaIVA  : '',
+              //  PartitaIVA  : '',
                Ricordami   : true,
                RecuperoPsw : false,
                NomeUtente  : ''
@@ -88,12 +88,12 @@ export default
                                              if(TokenRememberMe == undefined)
                                              {
                                                 localStorage.removeItem(LOCALSTORAGE.TokenRememberMe);
-                                                localStorage.removeItem(LOCALSTORAGE.TokenPartitaIVA);
+                                                // localStorage.removeItem(LOCALSTORAGE.TokenPartitaIVA);
                                              }
                                              else 
                                              {
                                                localStorage.setItem(LOCALSTORAGE.TokenRememberMe, TokenRememberMe);
-                                               localStorage.setItem(LOCALSTORAGE.TokenPartitaIVA, Self.PartitaIVA);
+                                              //  localStorage.setItem(LOCALSTORAGE.TokenPartitaIVA, Self.PartitaIVA);
                                              }
                                              SystemInformation.GetUserInformation(function()
                                              {
@@ -119,8 +119,8 @@ export default
                                            function(HTTPError,SubHTTPError)
                                            {
                                              SystemInformation.HandleError(HTTPError,SubHTTPError);
-                                           },
-                                           this.PartitaIVA);
+                                           });
+                                          //  this.PartitaIVA);
        },
 
        AnnullaRecupero()
