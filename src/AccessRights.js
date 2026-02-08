@@ -16,11 +16,6 @@ export class TAccessRights
   }
 
 
-  VisibilitaSolleciti()
-  {
-    return this.NoteInstallazioni.Cliente == CLIENTI.ZMSoftware
-  }
-
   VisibilitaAbilitazionePatentini()
   {
     return (this.NoteInstallazioni.Cliente == CLIENTI.ZMSoftware)
@@ -102,11 +97,6 @@ export class TAccessRights
     return (this.NoteInstallazioni.Cliente == CLIENTI.ZMSoftware)
   }
 
-  VisibilitaAssociazioneCodiciFornitoriConProdottiMagazzino()
-  {
-    return this.NoteInstallazioni.Cliente == CLIENTI.ZMSoftware
-  }
-  
   VisibilitaNotaDiDebito()
   {
     return this.NoteInstallazioni.Cliente == CLIENTI.ZMSoftware

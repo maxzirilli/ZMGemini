@@ -3,11 +3,11 @@
 	"EditSQL" : [
 		{
 			"Name" : "Inserisci",
-			"SQL" : "INSERT INTO ddt_uscenti (CHIAVE, NUMERO_DDT, ID_CLIENTE, ID_FORNITORE, ANNO_DDT,STATO_DDT,\n                     RAGIONE_SOCIALE, INDIRIZZO_FATTURAZIONE, CODICE_FISCALE,  NR_CIVICO_FATTURAZIONE,\n                     COMUNE_FATTURAZIONE, PROVINCIA_FATTURAZIONE, CAP_FATTURAZIONE,\n                     DATA_DDT, TRASPORTO_A_MEZZO, CAUSALE, ASPETTO_BENI, NUMERO_COLLI,\n                     COMUNE_DESTINAZIONE, PROVINCIA_DESTINAZIONE, CAP_DESTINAZIONE, NR_CIVICO_DESTINAZIONE,\n                     INDIRIZZO_DESTINAZIONE, PORTO, ORA_INIZIO,\n                     DATA_INIZIO, NOTE, FILIALE, DESTINAZIONE,\n                     PARTITA_IVA, PESO, NAZIONE_DESTINAZIONE, NAZIONE_EM_PIVA,\n                     STATO_DESTINAZIONE, NON_FATTURARE, ID_MAGAZZINO)\n             VALUES (:NewKey1, NEW_NUMERO_DDT(EXTRACT(YEAR FROM #DATA_DDT)), :ID_CLIENTE, :ID_FORNITORE, EXTRACT(YEAR FROM #DATA_DDT),\n                     #STATO_DDT,#RAGIONE_SOCIALE, #INDIRIZZO_FATTURAZIONE, #CODICE_FISCALE, #NR_CIVICO_FATTURAZIONE,\n                     #COMUNE_FATTURAZIONE, :PROVINCIA_FATTURAZIONE, #CAP_FATTURAZIONE,\n                     #DATA_DDT, #TRASPORTO_A_MEZZO, :CAUSALE, #ASPETTO_BENI, :NUMERO_COLLI,\n                     #COMUNE_DESTINAZIONE, :PROVINCIA_DESTINAZIONE, #CAP_DESTINAZIONE, #NR_CIVICO_DESTINAZIONE,\n                     #INDIRIZZO_DESTINAZIONE, #PORTO, #ORA_INIZIO,\n                     #DATA_INIZIO, #NOTE, :FILIALE, #DESTINAZIONE,\n                     #PARTITA_IVA, #PESO, :NAZIONE_DESTINAZIONE, :NAZIONE_EM_PIVA,\n                     #STATO_DESTINAZIONE, #NON_FATTURARE, :ID_MAGAZZINO)\n"
+			"SQL" : "INSERT INTO ddt_uscenti (CHIAVE, NUMERO_DDT, ID_ANAGRAFICA, ANNO_DDT,STATO_DDT,\n                     RAGIONE_SOCIALE, INDIRIZZO_FATTURAZIONE, CODICE_FISCALE,  NR_CIVICO_FATTURAZIONE,\n                     COMUNE_FATTURAZIONE, PROVINCIA_FATTURAZIONE, CAP_FATTURAZIONE,\n                     DATA_DDT, TRASPORTO_A_MEZZO, CAUSALE, ASPETTO_BENI, NUMERO_COLLI,\n                     COMUNE_DESTINAZIONE, PROVINCIA_DESTINAZIONE, CAP_DESTINAZIONE, NR_CIVICO_DESTINAZIONE,\n                     INDIRIZZO_DESTINAZIONE, PORTO, ORA_INIZIO,\n                     DATA_INIZIO, NOTE, FILIALE, DESTINAZIONE,\n                     PARTITA_IVA, PESO, NAZIONE_DESTINAZIONE, NAZIONE_EM_PIVA,\n                     STATO_DESTINAZIONE, NON_FATTURARE, ID_MAGAZZINO)\n             VALUES (:NewKey1, NEW_NUMERO_DDT(EXTRACT(YEAR FROM #DATA_DDT)), :ID_ANAGRAFICA, EXTRACT(YEAR FROM #DATA_DDT),\n                     #STATO_DDT,#RAGIONE_SOCIALE, #INDIRIZZO_FATTURAZIONE, #CODICE_FISCALE, #NR_CIVICO_FATTURAZIONE,\n                     #COMUNE_FATTURAZIONE, :PROVINCIA_FATTURAZIONE, #CAP_FATTURAZIONE,\n                     #DATA_DDT, #TRASPORTO_A_MEZZO, :CAUSALE, #ASPETTO_BENI, :NUMERO_COLLI,\n                     #COMUNE_DESTINAZIONE, :PROVINCIA_DESTINAZIONE, #CAP_DESTINAZIONE, #NR_CIVICO_DESTINAZIONE,\n                     #INDIRIZZO_DESTINAZIONE, #PORTO, #ORA_INIZIO,\n                     #DATA_INIZIO, #NOTE, :FILIALE, #DESTINAZIONE,\n                     #PARTITA_IVA, #PESO, :NAZIONE_DESTINAZIONE, :NAZIONE_EM_PIVA,\n                     #STATO_DESTINAZIONE, #NON_FATTURARE, :ID_MAGAZZINO)\n"
 		},
 		{
 			"Name" : "Modifica",
-			"SQL" : "UPDATE ddt_uscenti SET\n                   NUMERO_DDT = :NUMERO_DDT,\n                   ID_CLIENTE = :ID_CLIENTE,\n                   ID_FORNITORE = :ID_FORNITORE,\n                   ANNO_DDT = EXTRACT(YEAR FROM #DATA_DDT),\n                   STATO_DDT = #STATO_DDT,\n                   RAGIONE_SOCIALE = #RAGIONE_SOCIALE,\n                   INDIRIZZO_FATTURAZIONE = #INDIRIZZO_FATTURAZIONE,\n                   COMUNE_FATTURAZIONE = #COMUNE_FATTURAZIONE,\n                   PROVINCIA_FATTURAZIONE = :PROVINCIA_FATTURAZIONE,\n                   CAP_FATTURAZIONE = #CAP_FATTURAZIONE,\n                   DATA_DDT = #DATA_DDT,\n                   TRASPORTO_A_MEZZO = #TRASPORTO_A_MEZZO,\n                   CAUSALE = :CAUSALE,\n                   ASPETTO_BENI = #ASPETTO_BENI,\n                   NUMERO_COLLI = :NUMERO_COLLI,\n                   PORTO = #PORTO,\n                   ORA_INIZIO = #ORA_INIZIO,\n                   DATA_INIZIO = #DATA_INIZIO,\n                   NOTE = #NOTE,\n                   INDIRIZZO_DESTINAZIONE = #INDIRIZZO_DESTINAZIONE,\n                   DESTINAZIONE = #DESTINAZIONE,\n                   COMUNE_DESTINAZIONE = #COMUNE_DESTINAZIONE,\n                   PROVINCIA_DESTINAZIONE = #PROVINCIA_DESTINAZIONE,\n                   CAP_DESTINAZIONE = #CAP_DESTINAZIONE,\n                   FILIALE = :FILIALE,\n                   PARTITA_IVA = #PARTITA_IVA,\n                   CODICE_FISCALE = #CODICE_FISCALE,\n                   PESO = #PESO,\n                   STATO_DESTINAZIONE = #STATO_DESTINAZIONE,\n                   NON_FATTURARE = #NON_FATTURARE,\n                   NR_CIVICO_DESTINAZIONE = #NR_CIVICO_DESTINAZIONE,\n                   NR_CIVICO_FATTURAZIONE = #NR_CIVICO_FATTURAZIONE,\n                   NAZIONE_DESTINAZIONE = :NAZIONE_DESTINAZIONE,\n                   NAZIONE_EM_PIVA = :NAZIONE_EM_PIVA,\n                   ID_MAGAZZINO = :ID_MAGAZZINO\n             WHERE CHIAVE = :CHIAVE\n"
+			"SQL" : "UPDATE ddt_uscenti SET\n                   NUMERO_DDT = :NUMERO_DDT,\n                   ID_ANAGRAFICA = :ID_ANAGRAFICA,\n                   ANNO_DDT = EXTRACT(YEAR FROM #DATA_DDT),\n                   STATO_DDT = #STATO_DDT,\n                   RAGIONE_SOCIALE = #RAGIONE_SOCIALE,\n                   INDIRIZZO_FATTURAZIONE = #INDIRIZZO_FATTURAZIONE,\n                   COMUNE_FATTURAZIONE = #COMUNE_FATTURAZIONE,\n                   PROVINCIA_FATTURAZIONE = :PROVINCIA_FATTURAZIONE,\n                   CAP_FATTURAZIONE = #CAP_FATTURAZIONE,\n                   DATA_DDT = #DATA_DDT,\n                   TRASPORTO_A_MEZZO = #TRASPORTO_A_MEZZO,\n                   CAUSALE = :CAUSALE,\n                   ASPETTO_BENI = #ASPETTO_BENI,\n                   NUMERO_COLLI = :NUMERO_COLLI,\n                   PORTO = #PORTO,\n                   ORA_INIZIO = #ORA_INIZIO,\n                   DATA_INIZIO = #DATA_INIZIO,\n                   NOTE = #NOTE,\n                   INDIRIZZO_DESTINAZIONE = #INDIRIZZO_DESTINAZIONE,\n                   DESTINAZIONE = #DESTINAZIONE,\n                   COMUNE_DESTINAZIONE = #COMUNE_DESTINAZIONE,\n                   PROVINCIA_DESTINAZIONE = #PROVINCIA_DESTINAZIONE,\n                   CAP_DESTINAZIONE = #CAP_DESTINAZIONE,\n                   FILIALE = :FILIALE,\n                   PARTITA_IVA = #PARTITA_IVA,\n                   CODICE_FISCALE = #CODICE_FISCALE,\n                   PESO = #PESO,\n                   STATO_DESTINAZIONE = #STATO_DESTINAZIONE,\n                   NON_FATTURARE = #NON_FATTURARE,\n                   NR_CIVICO_DESTINAZIONE = #NR_CIVICO_DESTINAZIONE,\n                   NR_CIVICO_FATTURAZIONE = #NR_CIVICO_FATTURAZIONE,\n                   NAZIONE_DESTINAZIONE = :NAZIONE_DESTINAZIONE,\n                   NAZIONE_EM_PIVA = :NAZIONE_EM_PIVA,\n                   ID_MAGAZZINO = :ID_MAGAZZINO\n             WHERE CHIAVE = :CHIAVE\n"
 		},
 		{
 			"Name" : "Elimina",
@@ -65,13 +65,13 @@
 	"FiltroDDT" : [
 		{
 			"Name" : "FiltroDDT",
-			"SQL" : "SELECT CHIAVE,\n            NUMERO_DDT, \n            ANNO_DDT, \n            ID_CLIENTE,\n            ID_FORNITORE, \n            STATO_DDT,\n            RAGIONE_SOCIALE,\n            ID_FATTURA\n  FROM ddt_uscenti\n  {W~NumeroDDT~NUMERO_DDT = :NumeroDDT\n      ~AnnoDDT~ANNO_DDT = :AnnoDDT\n      ~DalNr~NUMERO_DDT >= :DalNr\n      ~AlNr~NUMERO_DDT <= :AlNr\n      ~Anno1~ANNO_DDT >= :Anno1\n      ~Anno2~ANNO_DDT <= :Anno2\n      ~DallaData~DATA_DDT >= #DallaData\n      ~AllaData~DATA_DDT <= #AllaData\n      ~StatoDDT~ STATO_DDT = #StatoDDT\n      ~Intestatario~ UPPER(RAGIONE_SOCIALE) LIKE UPPER(#Intestatario)\n      ~PartitaIva~ UPPER(PARTITA_IVA) LIKE UPPER(#PartitaIva)\n      ~Cliente~ ID_CLIENTE = :Cliente}\n{O~OrdinaXData~ANNO_DDT DESC\n    ~OrdinaXNumero~ANNO_DDT DESC, NUMERO_DDT DESC}\nLIMIT :LimitNumRows OFFSET :LimitStart\n"
+			"SQL" : "SELECT CHIAVE,\n            NUMERO_DDT, \n            ANNO_DDT, \n            ID_ANAGRAFICA,\n            STATO_DDT,\n            RAGIONE_SOCIALE,\n            ID_FATTURA\n  FROM ddt_uscenti\n  {W~NumeroDDT~NUMERO_DDT = :NumeroDDT\n      ~AnnoDDT~ANNO_DDT = :AnnoDDT\n      ~DalNr~NUMERO_DDT >= :DalNr\n      ~AlNr~NUMERO_DDT <= :AlNr\n      ~Anno1~ANNO_DDT >= :Anno1\n      ~Anno2~ANNO_DDT <= :Anno2\n      ~DallaData~DATA_DDT >= #DallaData\n      ~AllaData~DATA_DDT <= #AllaData\n      ~StatoDDT~ STATO_DDT = #StatoDDT\n      ~Intestatario~ UPPER(RAGIONE_SOCIALE) LIKE UPPER(#Intestatario)\n      ~PartitaIva~ UPPER(PARTITA_IVA) LIKE UPPER(#PartitaIva)\n      ~Cliente~ ID_ANAGRAFICA = :Cliente}\n{O~OrdinaXData~ANNO_DDT DESC\n    ~OrdinaXNumero~ANNO_DDT DESC, NUMERO_DDT DESC}\nLIMIT :LimitNumRows OFFSET :LimitStart\n"
 		}
 	],
 	"ListaDDTVoci" : [
 		{
 			"Name" : "ListaDDTVoci",
-			"SQL" : "SELECT ddt_uscenti.CHIAVE, \n            ddt_uscenti.DATA_DDT, \n            ddt_uscenti.NUMERO_DDT, \n            ddt_uscenti.RAGIONE_SOCIALE,\n            clienti.RAGIONE_SOCIALE AS RAGIONE_SOCIALE_CLIENTE, \n            clienti.CODICE_CLIENTE\n  FROM ddt_uscenti\n            LEFT OUTER JOIN clienti ON clienti.CHIAVE = ddt_uscenti.ID_CLIENTE\n WHERE ddt_uscenti.ID_CLIENTE = :CHIAVE\n     AND ddt_uscenti.ID_FATTURA IS NULL\n {w~DallaData~DATA_DDT >= #DallaData\n     ~AllaData~DATA_DDT <= #AllaData}\n  ORDER BY ddt_uscenti.DATA_DDT DESC\n"
+			"SQL" : "SELECT ddt_uscenti.CHIAVE, \n            ddt_uscenti.DATA_DDT, \n            ddt_uscenti.NUMERO_DDT, \n            ddt_uscenti.RAGIONE_SOCIALE,\n            anagrafiche.RAGIONE_SOCIALE AS RAGIONE_SOCIALE_CLIENTE, \n            anagrafiche.CODICE\n  FROM ddt_uscenti\n            LEFT OUTER JOIN anagrafiche ON anagrafiche.CHIAVE = ddt_uscenti.ID_ANAGRAFICA\n WHERE ddt_uscenti.ID_CLIENTE = :CHIAVE\n     AND ddt_uscenti.ID_FATTURA IS NULL\n {w~DallaData~DATA_DDT >= #DallaData\n     ~AllaData~DATA_DDT <= #AllaData}\n  ORDER BY ddt_uscenti.DATA_DDT DESC\n"
 		}
 	],
 	"ListaVociDDTSelezionati" : [
@@ -83,31 +83,31 @@
 	"LsAnnoDDTXCliente" : [
 		{
 			"Name" : "LsAnnoDDT",
-			"SQL" : "SELECT ddt_uscenti.ANNO_DDT\n  FROM ddt_uscenti\n  WHERE ddt_uscenti.ID_CLIENTE = :ChiaveCliente\n    AND ddt_uscenti.ID_FORNITORE IS NULL\nGROUP BY ddt_uscenti.ANNO_DDT \nORDER BY ANNO_DDT DESC\n"
+			"SQL" : "SELECT ddt_uscenti.ANNO_DDT\n  FROM ddt_uscenti\n  WHERE ddt_uscenti.ID_ANAGRAFICA = :ChiaveCliente\nGROUP BY ddt_uscenti.ANNO_DDT \nORDER BY ANNO_DDT DESC\n"
 		}
 	],
 	"LsAnnoDDTXFornitore" : [
 		{
 			"Name" : "LsAnnoDDT",
-			"SQL" : "SELECT EXTRACT(YEAR FROM DATA_DDT) AS ANNO_DDT\n  FROM ddt_uscenti\n  WHERE ID_FORNITORE = :ChiaveFornitore\n    AND ID_CLIENTE IS NULL\nGROUP BY EXTRACT(YEAR FROM DATA_DDT) \nORDER BY EXTRACT(YEAR FROM DATA_DDT) DESC\n"
+			"SQL" : "SELECT EXTRACT(YEAR FROM DATA_DDT) AS ANNO_DDT\n  FROM ddt_uscenti\n  WHERE ID_ANAGRAFICA = :ChiaveFornitore\nGROUP BY EXTRACT(YEAR FROM DATA_DDT) \nORDER BY EXTRACT(YEAR FROM DATA_DDT) DESC\n"
 		}
 	],
 	"RiassuntoDDTPerAnno" : [
 		{
 			"Name" : "RiassuntoPerCliente",
-			"SQL" : "SELECT CHIAVE,\n            NUMERO_DDT, \n            ANNO_DDT, \n            ID_CLIENTE,\n            ID_FORNITORE, \n            STATO_DDT,\n            RAGIONE_SOCIALE,\n            ID_FATTURA\n  FROM ddt_uscenti\n  WHERE ID_CLIENTE = :ChiaveCliente\n      AND ANNO_DDT = :AnnoDDT\n      AND ID_CLIENTE IS NOT NULL\n      AND ID_FORNITORE IS NULL\nORDER BY ANNO_DDT DESC\n"
+			"SQL" : "SELECT CHIAVE,\n            NUMERO_DDT, \n            ANNO_DDT, \n            ID_ANAGRAFICA, \n            STATO_DDT,\n            RAGIONE_SOCIALE,\n            ID_FATTURA\n  FROM ddt_uscenti\n  WHERE ID_ANAGRAFICA = :ChiaveCliente\n      AND ANNO_DDT = :AnnoDDT\nORDER BY ANNO_DDT DESC\n"
 		}
 	],
 	"RiassuntoDDTPerAnnoFornitore" : [
 		{
 			"Name" : "RiassuntoPerFornitore",
-			"SQL" : "SELECT CHIAVE,\n       NUMERO_DDT, \n       ANNO_DDT, \n       ID_CLIENTE,\n       ID_FORNITORE, \n       STATO_DDT,\n       RAGIONE_SOCIALE,\n       ID_FATTURA\n  FROM ddt_uscenti\n  WHERE ID_FORNITORE = :ChiaveFornitore\n    AND ANNO_DDT = :AnnoDDT\n    AND ID_CLIENTE IS NULL\n    AND ID_FORNITORE IS NOT NULL\n"
+			"SQL" : "SELECT CHIAVE,\n       NUMERO_DDT, \n       ANNO_DDT, \n       ID_ANAGRAFICA,\n       STATO_DDT,\n       RAGIONE_SOCIALE,\n       ID_FATTURA\n  FROM ddt_uscenti\n  WHERE ID_ANAGRAFICA = :ChiaveFornitore\n    AND ANNO_DDT = :AnnoDDT\n"
 		}
 	],
 	"SelectDettaglio" : [
 		{
 			"Name" : "Dettaglio",
-			"SQL" : "SELECT ddt_uscenti.*,\n            fatture.NUMERO AS NUMERO_FATTURA,\n            fatture.CHIAVE AS CHIAVE_FATTURA\n  FROM ddt_uscenti\n            LEFT OUTER JOIN fatture ON fatture.CHIAVE = ddt_uscenti.ID_FATTURA\n WHERE ddt_uscenti.CHIAVE = :CHIAVE\n"
+			"SQL" : "SELECT ddt_uscenti.*,\n            fatture.NUMERO AS NUMERO_FATTURA,\n            fatture.CHIAVE AS CHIAVE_FATTURA,\n            anagrafiche.IS_CLIENTE,\n            anagrafiche.IS_FORNITORE\n  FROM ddt_uscenti\n            LEFT OUTER JOIN fatture ON fatture.CHIAVE = ddt_uscenti.ID_FATTURA\n            LEFT OUTER JOIN anagrafiche ON anagrafiche.CHIAVE = ddt_uscenti.ID_ANAGRAFICA\n WHERE ddt_uscenti.CHIAVE = :CHIAVE\n"
 		},
 		{
 			"Name" : "AllegatiDDT",
@@ -125,7 +125,7 @@
 	"SelectSQL" : [
 		{
 			"Name" : "LsDDT",
-			"SQL" : "SELECT *\n  FROM ddt_uscenti\n WHERE ID_CLIENTE = :ChiaveCliente\n"
+			"SQL" : "SELECT *\n  FROM ddt_uscenti\n WHERE ID_ANAGRAFICA = :ChiaveCliente\n"
 		}
 ]
 }

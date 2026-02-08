@@ -95,7 +95,6 @@
 
   <VUEModalInvioEmail :AttivazionePopup="PopupInviaEmail" 
                       :OggettoEmail="OggettoEmail"
-                      :ListaEmailAmministratore="SchedaPreventivo.ListaEmailAmm"
                       :ListaEmailCliente="SchedaPreventivo.ListaEmailCliente"
                       @onClickChiudiModal="AnnullaInvia"
                       @onClickConfermaModal="ConfermaInvia">
@@ -1352,8 +1351,7 @@ export class TSchedaPreventivoMultiparametrico extends TSchedaGenerica
                                           function(Results)
                                           {
                                             let ArrayEmailCliente = SystemInformation.AdvQuery.FindResults(Results,"ListaEmailCliente");
-                                            let ArrayEmailAmm     = SystemInformation.AdvQuery.FindResults(Results,"ListaEmailAmministratore");
-                                            if(ArrayEmailCliente != undefined && ArrayEmailAmm != undefined)
+                                            if(ArrayEmailCliente != undefined)
                                             {
                                               if(ArrayEmailCliente.length != 0)
                                                 ArrayEmailCliente.forEach(function(Email)
@@ -1361,13 +1359,6 @@ export class TSchedaPreventivoMultiparametrico extends TSchedaGenerica
                                                   if(Email.EMAIL_CLIENTI)
                                                     Self.ListaEmailCliente += Email.EMAIL_CLIENTI + '; '
                                                 })
-                                              if(ArrayEmailAmm.length != 0)
-                                                ArrayEmailAmm.forEach(function(Email)
-                                                {
-                                                  if(Email.EMAIL_AMMINISTRATORI)
-                                                    Self.ListaEmailAmm += Email.EMAIL_AMMINISTRATORI + '; '
-                                                })
-                                              Self.ListaEmailAmm     = Self.ListaEmailAmm.substring(0, Self.ListaEmailAmm.length - 2)
                                               Self.ListaEmailCliente = Self.ListaEmailCliente.substring(0, Self.ListaEmailCliente.length - 2)
                                               OnSuccess()
                                             }

@@ -204,12 +204,12 @@
             $SQLBody = "SELECT fatture_passive.*, 
                                province.TARGA AS TARGA_PROVINCIA_FATTURAZIONE, 
                                nazioni.SIGLA AS SIGLIA_NAZIONE_EM_PIVA,
-                               fornitori.BANCA,
-                               fornitori.CODICE_FORNITORE
+                               anagrafiche.BANCA,
+                               anagrafiche.CODICE
                           FROM fatture_passive
                                LEFT OUTER JOIN province ON province.CHIAVE = fatture_passive.PROVINCIA_FATTURAZIONE
                                LEFT OUTER JOIN nazioni  ON nazioni.CHIAVE = fatture_passive.NAZIONE_EM_PIVA
-                               LEFT OUTER JOIN fornitori  ON fornitori.CHIAVE = fatture_passive.ID_FORNITORE
+                               LEFT OUTER JOIN anagrafiche  ON anagrafiche.CHIAVE = fatture_passive.ID_FORNITORE
 
                          WHERE fatture_passive.CHIAVE = $ChiaveFatturaPassiva";
 

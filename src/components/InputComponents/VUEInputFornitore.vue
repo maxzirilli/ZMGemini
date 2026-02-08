@@ -50,8 +50,8 @@ import Autocomplete from '../../../../../../../../Librerie/VUE/ZAutocomplete.vue
         {
           this.Fornitori.forEach(function(Fornitore)
           { 
-            if(Fornitore.CODICE_FORNITORE != null && Fornitore.CODICE_FORNITORE != '')
-              Fornitore.IDENTIFICATIVO = Fornitore.CODICE_FORNITORE + ' - ' + Fornitore.RAGIONE_SOCIALE 
+            if(Fornitore.CODICE != null && Fornitore.CODICE != '')
+              Fornitore.IDENTIFICATIVO = Fornitore.CODICE + ' - ' + Fornitore.RAGIONE_SOCIALE 
             else Fornitore.IDENTIFICATIVO = Fornitore.RAGIONE_SOCIALE
           })
           return this.Fornitori

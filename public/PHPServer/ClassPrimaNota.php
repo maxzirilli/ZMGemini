@@ -51,13 +51,12 @@
                               cat_movimenti.DESCRIZIONE AS CATEGORIA_MOVIMENTO,
                               '' AS DATA_DOCUMENTO,
                               '' AS NOTE,
-                              COALESCE(clienti.CODICE_CLIENTE, fornitori.CODICE_FORNITORE, '') AS CODICE,
-                              COALESCE(clienti.RAGIONE_SOCIALE, fornitori.RAGIONE_SOCIALE) AS RAGIONE_SOCIALE_MOVIM_INFORMALE,
+                              COALESCE(anagrafiche.CODICE, anagrafiche.CODICE, '') AS CODICE,
+                              COALESCE(anagrafiche.RAGIONE_SOCIALE, anagrafiche.RAGIONE_SOCIALE) AS RAGIONE_SOCIALE_MOVIM_INFORMALE,
                               NULL as IS_NON_SCARICATA 
                          FROM movimenti
-                              LEFT OUTER JOIN cat_movimenti ON cat_movimenti.CHIAVE   = movimenti.ID_CATEGORIA_MOVIMENTO
-                              LEFT OUTER JOIN clienti 		  ON movimenti.ID_CLIENTE 	= clienti.CHIAVE
-                              LEFT OUTER JOIN fornitori		  ON movimenti.ID_FORNITORE = fornitori.CHIAVE
+                              LEFT OUTER JOIN cat_movimenti ON cat_movimenti.CHIAVE     = movimenti.ID_CATEGORIA_MOVIMENTO
+                              LEFT OUTER JOIN anagrafiche   ON movimenti.ID_ANAGRAFICA 	= anagrafiche.CHIAVE
                         WHERE movimenti.DATA >= " . $this->FPrepareParameterValue($DallaData,'#') . "        
                           AND movimenti.DATA <= " . $this->FPrepareParameterValue($AllaData,'#') . "        
                           AND movimenti.CONTO_CORRENTE_PRELIEVO IS NOT NULL
@@ -72,13 +71,12 @@
                               cat_movimenti.DESCRIZIONE AS CATEGORIA_MOVIMENTO,
                               '' AS DATA_DOCUMENTO,
                               '' AS NOTE,
-                              COALESCE(clienti.CODICE_CLIENTE, fornitori.CODICE_FORNITORE, '') AS CODICE,
-                              COALESCE(clienti.RAGIONE_SOCIALE, fornitori.RAGIONE_SOCIALE) AS RAGIONE_SOCIALE_MOVIM_INFORMALE,
+                              COALESCE(anagrafiche.CODICE, anagrafiche.CODICE, '') AS CODICE,
+                              COALESCE(anagrafiche.RAGIONE_SOCIALE, anagrafiche.RAGIONE_SOCIALE) AS RAGIONE_SOCIALE_MOVIM_INFORMALE,
                               NULL as IS_NON_SCARICATA
                          FROM movimenti
-                              LEFT OUTER JOIN cat_movimenti ON  cat_movimenti.CHIAVE  = movimenti.ID_CATEGORIA_MOVIMENTO
-                              LEFT OUTER JOIN clienti 		  ON movimenti.ID_CLIENTE 	= clienti.CHIAVE
-                              LEFT OUTER JOIN fornitori		  ON movimenti.ID_FORNITORE = fornitori.CHIAVE
+                              LEFT OUTER JOIN cat_movimenti ON  cat_movimenti.CHIAVE    = movimenti.ID_CATEGORIA_MOVIMENTO
+                              LEFT OUTER JOIN anagrafiche 	ON movimenti.ID_ANAGRAFICA 	= anagrafiche.CHIAVE
                         WHERE movimenti.DATA >= " . $this->FPrepareParameterValue($DallaData,'#') . "        
                           AND movimenti.DATA <= " . $this->FPrepareParameterValue($AllaData,'#') . "        
                           AND movimenti.CONTO_CORRENTE_VERSAMENTO IS NOT NULL
@@ -96,13 +94,13 @@
                                 '' AS CATEGORIA_MOVIMENTO,
                                 fatture.DATA AS DATA_DOCUMENTO,
                                 rate_fattura.NOTE,
-                                clienti.CODICE_CLIENTE AS CODICE,
+                                anagrafiche.CODICE AS CODICE,
                                 NULL as RAGIONE_SOCIALE_MOVIM_INFORMALE,
                                 rate_fattura.IS_NON_SCARICATA
-                           FROM rate_fattura,fatture,clienti
+                           FROM rate_fattura,fatture,anagrafiche
                           WHERE fatture.CHIAVE = rate_fattura.ID_FATTURA 
                             AND fatture.NUMERO IS NOT NULL
-                            AND clienti.CHIAVE = fatture.ID_CLIENTE
+                            AND anagrafiche.CHIAVE = fatture.ID_CLIENTE
                             AND rate_fattura.DATA_PAGAMENTO IS NOT NULL
                             AND rate_fattura.DATA_PAGAMENTO >= " . $this->FPrepareParameterValue($DallaData,'#') . "        
                             AND rate_fattura.DATA_PAGAMENTO <= " . $this->FPrepareParameterValue($AllaData,'#') . "        
@@ -120,19 +118,19 @@
                                 '' AS CATEGORIA_MOVIMENTO,
                                 fatture_passive.DATA AS DATA_DOCUMENTO,
                                 rate_fatture_passive.NOTE,
-                                fornitori.CODICE_FORNITORE AS CODICE,
+                                anagrafiche.CODICE AS CODICE,
                                 NULL AS RAGIONE_SOCIALE_MOVIM_INFORMALE,
                                 NULL as IS_NON_SCARICATA
-                           FROM rate_fatture_passive,fatture_passive,fornitori
+                           FROM rate_fatture_passive,fatture_passive,anagrafiche
                           WHERE rate_fatture_passive.ID_FATTURA_PASSIVA = fatture_passive.CHIAVE
-                            AND fornitori.CHIAVE = fatture_passive.ID_FORNITORE
+                            AND anagrafiche.CHIAVE = fatture_passive.ID_FORNITORE
                             AND rate_fatture_passive.DATA_PAGAMENTO IS NOT NULL
                             AND rate_fatture_passive.NO_PRIMA_NOTA = 'F'
                             AND rate_fatture_passive.DATA_PAGAMENTO >= " . $this->FPrepareParameterValue($DallaData,'#') . "        
                             AND rate_fatture_passive.DATA_PAGAMENTO <= " . $this->FPrepareParameterValue($AllaData,'#') . "        
                             AND rate_fatture_passive.ID_CONTO_CASSA IS NOT NULL
                         UNION
-                         SELECT CONCAT('Fatt. pregressa ', fatture_insolute_pregresse.NUMERO, ' - ', clienti.RAGIONE_SOCIALE) AS DESCRIZIONE,
+                         SELECT CONCAT('Fatt. pregressa ', fatture_insolute_pregresse.NUMERO, ' - ', anagrafiche.RAGIONE_SOCIALE) AS DESCRIZIONE,
                                 fatture_insolute_pregresse.DATA_PAGAMENTO AS DATA,
                                 fatture_insolute_pregresse.CHIAVE,
                                 fatture_insolute_pregresse.IMPORTO,
@@ -141,17 +139,17 @@
                                 '' AS CATEGORIA_MOVIMENTO,
                                 fatture_insolute_pregresse.DATA AS DATA_DOCUMENTO,
                                 fatture_insolute_pregresse.NOTE,
-                                clienti.CODICE_CLIENTE AS CODICE,
+                                anagrafiche.CODICE AS CODICE,
                                 NULL AS RAGIONE_SOCIALE_MOVIM_INFORMALE,
                                 NULL as IS_NON_SCARICATA
-                           FROM fatture_insolute_pregresse, clienti
-                          WHERE clienti.CHIAVE = fatture_insolute_pregresse.ID_CLIENTE
+                           FROM fatture_insolute_pregresse, anagrafiche
+                          WHERE anagrafiche.CHIAVE = fatture_insolute_pregresse.ID_CLIENTE
                             AND fatture_insolute_pregresse.DATA_PAGAMENTO IS NOT NULL
                             AND fatture_insolute_pregresse.NO_PRIMA_NOTA = 'F'
                             AND fatture_insolute_pregresse.DATA_PAGAMENTO >= " . $this->FPrepareParameterValue($DallaData,'#') . "        
                             AND fatture_insolute_pregresse.DATA_PAGAMENTO <= " . $this->FPrepareParameterValue($AllaData,'#') . "
                         UNION
-                         SELECT CONCAT('Fatt. pregr. fornitore ', fatture_insolute_pregresse_fornitori.NUMERO, ' - ', fornitori.RAGIONE_SOCIALE) AS DESCRIZIONE,
+                         SELECT CONCAT('Fatt. pregr. fornitore ', fatture_insolute_pregresse_fornitori.NUMERO, ' - ', anagrafiche.RAGIONE_SOCIALE) AS DESCRIZIONE,
                                 fatture_insolute_pregresse_fornitori.DATA_PAGAMENTO AS DATA,
                                 fatture_insolute_pregresse_fornitori.CHIAVE,
                                 fatture_insolute_pregresse_fornitori.IMPORTO * -1 AS IMPORTO,
@@ -160,11 +158,11 @@
                                 '' AS CATEGORIA_MOVIMENTO,
                                 fatture_insolute_pregresse_fornitori.DATA AS DATA_DOCUMENTO,
                                 fatture_insolute_pregresse_fornitori.NOTE,
-                                fornitori.CODICE_FORNITORE AS CODICE,
+                                anagrafiche.CODICE AS CODICE,
                                 NULL AS RAGIONE_SOCIALE_MOVIM_INFORMALE,
                                 NULL as IS_NON_SCARICATA
-                           FROM fatture_insolute_pregresse_fornitori, fornitori
-                          WHERE fornitori.CHIAVE = fatture_insolute_pregresse_fornitori.ID_FORNITORE
+                           FROM fatture_insolute_pregresse_fornitori, anagrafiche
+                          WHERE anagrafiche.CHIAVE = fatture_insolute_pregresse_fornitori.ID_FORNITORE
                             AND fatture_insolute_pregresse_fornitori.NO_PRIMA_NOTA = 'F'
                             AND fatture_insolute_pregresse_fornitori.DATA_PAGAMENTO IS NOT NULL
                             AND fatture_insolute_pregresse_fornitori.DATA_PAGAMENTO >= " . $this->FPrepareParameterValue($DallaData,'#') . "        
@@ -440,7 +438,7 @@
               $SQLBody = "SELECT CONCAT((IF(note_di_credito.NUMERO IS NOT NULL,
                                  CONCAT('Nota di credito. nr. ',note_di_credito.NUMERO,' - ',note_di_credito.ANNO, ' - '),
                                  CONCAT('Avviso nota nr. ', note_di_credito.CHIAVE, ' - '))),
-                                 clienti.RAGIONE_SOCIALE) AS DESCRIZIONE,
+                                 anagrafiche.RAGIONE_SOCIALE) AS DESCRIZIONE,
                                  rate_note.DATA_PAGAMENTO AS DATA_PAGAMENTO_RATA,
                                  rate_note.DATA AS DATA_RATA_NOTA,
                                  rate_note.IMPORTO / 100 AS IMPORTO,
@@ -449,10 +447,10 @@
                                  '' AS CATEGORIA_MOVIMENTO,
                                  note_di_credito.DATA AS DATA_DOCUMENTO,
                                  rate_note.NOTE AS NOTE,
-                                 clienti.CODICE_CLIENTE AS CODICE,
+                                 anagrafiche.CODICE AS CODICE,
                                  note_di_credito.CHIAVE AS CHIAVE_NOTA
                             FROM note_di_credito
-                            JOIN clienti ON (clienti.CHIAVE = note_di_credito.ID_CLIENTE)
+                            JOIN anagrafiche ON (anagrafiche.CHIAVE = note_di_credito.ID_CLIENTE)
                             JOIN rate_note ON (rate_note.ID_NOTA = note_di_credito.CHIAVE)
                            WHERE note_di_credito.NUMERO IS NOT NULL
                              AND rate_note.SCALATA_IN_FATTURA  <> 'T' 

@@ -77,12 +77,10 @@ export default
        return {
                   SideMenu                            : SideMenu,
                   MenuLaterale                        : false,
-                  VisualizzaSolleciti                 : SystemInformation.AccessRights.VisibilitaSolleciti(),
                   VisibilitaGestoreMailSolleciti      : SystemInformation.AccessRights.VisibilitaGestoreMailSolleciti(),
                   VisibilitaCategorieClienti          : SystemInformation.AccessRights.VisibilitaCategorieClienti(),
                   VisibilitaLogAzioniUtenti           : SystemInformation.AccessRights.VisibilitaLogAzioniUtenti(),
                   VisualizzaEsitoSorveglianza         : SystemInformation.AccessRights.VisualizzaEsitoSorveglianza(),
-                  VisibilitaAssociazioneCodiciFornitoriConProdottiMagazzino : SystemInformation.AccessRights.VisibilitaAssociazioneCodiciFornitoriConProdottiMagazzino(),
               }
     },
 
@@ -180,8 +178,6 @@ export default
                                       IconCfgShrinked : "fa-angle-down"
                                     });
                                     
-            if(this.VisibilitaAssociazioneCodiciFornitoriConProdottiMagazzino)
-            {
               AMenu2 = AMenu.AddChild("Gestione fatture passive",
                               { 
                                 IdMenu          : TIdSideMenu.GESTORE_FATTURE_PASSIVE, 
@@ -189,10 +185,7 @@ export default
                                 IconCfgExpanded : "fa-angle-up", 
                                 IconCfgShrinked : "fa-angle-down"
                               });
-            }
-
-            if(this.VisualizzaSolleciti)
-            {
+                              
               AMenu2 = AMenu.AddChild("Solleciti",
                                       { 
                                         IdMenu          : TIdSideMenu.SOLLECITI, 
@@ -200,7 +193,6 @@ export default
                                         IconCfgExpanded : "fa-angle-up", 
                                         IconCfgShrinked : "fa-angle-down"
                                       });
-            }
                                               
             AMenu2 = AMenu.AddChild("Log email inviate",
                                     { 

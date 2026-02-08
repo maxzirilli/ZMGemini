@@ -152,11 +152,11 @@
                                      cond_pagamento.DESCRIZIONE AS COND_PAGAMENTO_DESCRIZIONE, 
                                      conti_correnti_casse.BANCA AS BANCA_CONTO_CORRENTE,
                                      conti_correnti_casse.IBAN AS IBAN_CONTO_CORRENTE,
-                                     clienti.CODICE_CLIENTE
+                                     anagrafiche.CODICE
                                 FROM preventivi_multiparametrici
                                 LEFT OUTER JOIN province ON province.CHIAVE = preventivi_multiparametrici.PROVINCIA_FATTURAZIONE
                                 LEFT OUTER JOIN nazioni ON nazioni.CHIAVE = preventivi_multiparametrici.NAZIONE_EM_PIVA
-                                LEFT OUTER JOIN clienti  ON clienti.CHIAVE = preventivi_multiparametrici.ID_CLIENTE
+                                LEFT OUTER JOIN anagrafiche  ON anagrafiche.CHIAVE = preventivi_multiparametrici.ID_CLIENTE
                                 LEFT OUTER JOIN conti_correnti_casse ON conti_correnti_casse.CHIAVE = preventivi_multiparametrici.ID_CONTO_CORRENTE
                           LEFT OUTER JOIN cond_pagamento ON cond_pagamento.CHIAVE = preventivi_multiparametrici.COND_PAGAMENTO
                                WHERE preventivi_multiparametrici.CHIAVE = $ChiavePreventivo";
@@ -165,7 +165,7 @@
                   {
                     while($Row = $Query->fetch(PDO::FETCH_ASSOC))
                     {  
-                      $DatiIntestazione->INTESTATARIO = array( 'CODICE CLIENTE: ' . $Row['CODICE_CLIENTE'], 
+                      $DatiIntestazione->INTESTATARIO = array( 'CODICE CLIENTE: ' . $Row['CODICE'], 
                                                                $Row['RAGIONE_SOCIALE'], 
                                                                $Row['INDIRIZZO_FATTURAZIONE'] . ' ' . $Row['NR_CIVICO_FATTURAZIONE'], 
                                                                $Row['CAP_FATTURAZIONE'] . ' ' . $Row['COMUNE_FATTURAZIONE'] . (isset($Row['TARGA_PROVINCIA_FATTURAZIONE'])? ' (' . $Row['TARGA_PROVINCIA_FATTURAZIONE'] . ')' : ''),

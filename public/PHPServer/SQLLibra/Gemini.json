@@ -291,7 +291,7 @@
                 {
                     "Nome": "FK1_ALLEGATI_CLIENTI_ID_CLIENTE",
                     "Campo": "ID_CLIENTE",
-                    "RefTable": "clienti",
+                    "RefTable": "anagrafiche",
                     "RefField": "CHIAVE"
                 }
             ],

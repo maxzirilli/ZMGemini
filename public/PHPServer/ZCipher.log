@@ -1,0 +1,77 @@
+[05-Feb-2026 17:24:56 Europe/Rome] PHP Fatal error:  Uncaught ArgumentCountError: define() expects at least 2 arguments, 1 given in D:\GoogleDrive\Lavoro\Progetti\ZMSoftware\Gemini\Software\Gemini\public\PHPServer\ConfigDefinitions.php:36
+Stack trace:
+#0 D:\GoogleDrive\Lavoro\Progetti\ZMSoftware\Gemini\Software\Gemini\public\PHPServer\ConfigDefinitions.php(36): define('ADV_LOG_ALL_QUE...')
+#1 D:\GoogleDrive\Lavoro\Progetti\ZMSoftware\Gemini\Software\Gemini\public\PHPServer\Configurations.php(9): include_once('D:\\GoogleDrive\\...')
+#2 D:\GoogleDrive\Lavoro\Progetti\ZMSoftware\Gemini\Software\Gemini\public\PHPServer\LoginWithToken.php(2): include_once('D:\\GoogleDrive\\...')
+#3 {main}
+  thrown in D:\GoogleDrive\Lavoro\Progetti\ZMSoftware\Gemini\Software\Gemini\public\PHPServer\ConfigDefinitions.php on line 36
+[05-Feb-2026 17:25:03 Europe/Rome] PHP Fatal error:  Uncaught ArgumentCountError: define() expects at least 2 arguments, 1 given in D:\GoogleDrive\Lavoro\Progetti\ZMSoftware\Gemini\Software\Gemini\public\PHPServer\ConfigDefinitions.php:36
+Stack trace:
+#0 D:\GoogleDrive\Lavoro\Progetti\ZMSoftware\Gemini\Software\Gemini\public\PHPServer\ConfigDefinitions.php(36): define('ADV_LOG_ALL_QUE...')
+#1 D:\GoogleDrive\Lavoro\Progetti\ZMSoftware\Gemini\Software\Gemini\public\PHPServer\Configurations.php(9): include_once('D:\\GoogleDrive\\...')
+#2 D:\GoogleDrive\Lavoro\Progetti\ZMSoftware\Gemini\Software\Gemini\public\PHPServer\LoginWithToken.php(2): include_once('D:\\GoogleDrive\\...')
+#3 {main}
+  thrown in D:\GoogleDrive\Lavoro\Progetti\ZMSoftware\Gemini\Software\Gemini\public\PHPServer\ConfigDefinitions.php on line 36
+[05-Feb-2026 17:25:06 Europe/Rome] PHP Fatal error:  Uncaught ArgumentCountError: define() expects at least 2 arguments, 1 given in D:\GoogleDrive\Lavoro\Progetti\ZMSoftware\Gemini\Software\Gemini\public\PHPServer\ConfigDefinitions.php:36
+Stack trace:
+#0 D:\GoogleDrive\Lavoro\Progetti\ZMSoftware\Gemini\Software\Gemini\public\PHPServer\ConfigDefinitions.php(36): define('ADV_LOG_ALL_QUE...')
+#1 D:\GoogleDrive\Lavoro\Progetti\ZMSoftware\Gemini\Software\Gemini\public\PHPServer\Configurations.php(9): include_once('D:\\GoogleDrive\\...')
+#2 D:\GoogleDrive\Lavoro\Progetti\ZMSoftware\Gemini\Software\Gemini\public\PHPServer\LoginWithToken.php(2): include_once('D:\\GoogleDrive\\...')
+#3 {main}
+  thrown in D:\GoogleDrive\Lavoro\Progetti\ZMSoftware\Gemini\Software\Gemini\public\PHPServer\ConfigDefinitions.php on line 36
+[05-Feb-2026 17:25:09 Europe/Rome] PHP Fatal error:  Uncaught ArgumentCountError: define() expects at least 2 arguments, 1 given in D:\GoogleDrive\Lavoro\Progetti\ZMSoftware\Gemini\Software\Gemini\public\PHPServer\ConfigDefinitions.php:36
+Stack trace:
+#0 D:\GoogleDrive\Lavoro\Progetti\ZMSoftware\Gemini\Software\Gemini\public\PHPServer\ConfigDefinitions.php(36): define('ADV_LOG_ALL_QUE...')
+#1 D:\GoogleDrive\Lavoro\Progetti\ZMSoftware\Gemini\Software\Gemini\public\PHPServer\Configurations.php(9): include_once('D:\\GoogleDrive\\...')
+#2 D:\GoogleDrive\Lavoro\Progetti\ZMSoftware\Gemini\Software\Gemini\public\PHPServer\LoginWithToken.php(2): include_once('D:\\GoogleDrive\\...')
+#3 {main}
+  thrown in D:\GoogleDrive\Lavoro\Progetti\ZMSoftware\Gemini\Software\Gemini\public\PHPServer\ConfigDefinitions.php on line 36
+[05-Feb-2026 17:25:13 Europe/Rome] PHP Fatal error:  Uncaught ArgumentCountError: define() expects at least 2 arguments, 1 given in D:\GoogleDrive\Lavoro\Progetti\ZMSoftware\Gemini\Software\Gemini\public\PHPServer\ConfigDefinitions.php:36
+Stack trace:
+#0 D:\GoogleDrive\Lavoro\Progetti\ZMSoftware\Gemini\Software\Gemini\public\PHPServer\ConfigDefinitions.php(36): define('ADV_LOG_ALL_QUE...')
+#1 D:\GoogleDrive\Lavoro\Progetti\ZMSoftware\Gemini\Software\Gemini\public\PHPServer\Configurations.php(9): include_once('D:\\GoogleDrive\\...')
+#2 D:\GoogleDrive\Lavoro\Progetti\ZMSoftware\Gemini\Software\Gemini\public\PHPServer\LoginWithToken.php(2): include_once('D:\\GoogleDrive\\...')
+#3 {main}
+  thrown in D:\GoogleDrive\Lavoro\Progetti\ZMSoftware\Gemini\Software\Gemini\public\PHPServer\ConfigDefinitions.php on line 36
+[05-Feb-2026 17:25:16 Europe/Rome] PHP Fatal error:  Uncaught ArgumentCountError: define() expects at least 2 arguments, 1 given in D:\GoogleDrive\Lavoro\Progetti\ZMSoftware\Gemini\Software\Gemini\public\PHPServer\ConfigDefinitions.php:36
+Stack trace:
+#0 D:\GoogleDrive\Lavoro\Progetti\ZMSoftware\Gemini\Software\Gemini\public\PHPServer\ConfigDefinitions.php(36): define('ADV_LOG_ALL_QUE...')
+#1 D:\GoogleDrive\Lavoro\Progetti\ZMSoftware\Gemini\Software\Gemini\public\PHPServer\Configurations.php(9): include_once('D:\\GoogleDrive\\...')
+#2 D:\GoogleDrive\Lavoro\Progetti\ZMSoftware\Gemini\Software\Gemini\public\PHPServer\LoginWithToken.php(2): include_once('D:\\GoogleDrive\\...')
+#3 {main}
+  thrown in D:\GoogleDrive\Lavoro\Progetti\ZMSoftware\Gemini\Software\Gemini\public\PHPServer\ConfigDefinitions.php on line 36
+[05-Feb-2026 17:25:20 Europe/Rome] PHP Fatal error:  Uncaught ArgumentCountError: define() expects at least 2 arguments, 1 given in D:\GoogleDrive\Lavoro\Progetti\ZMSoftware\Gemini\Software\Gemini\public\PHPServer\ConfigDefinitions.php:36
+Stack trace:
+#0 D:\GoogleDrive\Lavoro\Progetti\ZMSoftware\Gemini\Software\Gemini\public\PHPServer\ConfigDefinitions.php(36): define('ADV_LOG_ALL_QUE...')
+#1 D:\GoogleDrive\Lavoro\Progetti\ZMSoftware\Gemini\Software\Gemini\public\PHPServer\Configurations.php(9): include_once('D:\\GoogleDrive\\...')
+#2 D:\GoogleDrive\Lavoro\Progetti\ZMSoftware\Gemini\Software\Gemini\public\PHPServer\LoginWithToken.php(2): include_once('D:\\GoogleDrive\\...')
+#3 {main}
+  thrown in D:\GoogleDrive\Lavoro\Progetti\ZMSoftware\Gemini\Software\Gemini\public\PHPServer\ConfigDefinitions.php on line 36
+[05-Feb-2026 17:25:21 Europe/Rome] PHP Fatal error:  Uncaught ArgumentCountError: define() expects at least 2 arguments, 1 given in D:\GoogleDrive\Lavoro\Progetti\ZMSoftware\Gemini\Software\Gemini\public\PHPServer\ConfigDefinitions.php:36
+Stack trace:
+#0 D:\GoogleDrive\Lavoro\Progetti\ZMSoftware\Gemini\Software\Gemini\public\PHPServer\ConfigDefinitions.php(36): define('ADV_LOG_ALL_QUE...')
+#1 D:\GoogleDrive\Lavoro\Progetti\ZMSoftware\Gemini\Software\Gemini\public\PHPServer\Configurations.php(9): include_once('D:\\GoogleDrive\\...')
+#2 D:\GoogleDrive\Lavoro\Progetti\ZMSoftware\Gemini\Software\Gemini\public\PHPServer\LoginWithToken.php(2): include_once('D:\\GoogleDrive\\...')
+#3 {main}
+  thrown in D:\GoogleDrive\Lavoro\Progetti\ZMSoftware\Gemini\Software\Gemini\public\PHPServer\ConfigDefinitions.php on line 36
+[05-Feb-2026 17:25:24 Europe/Rome] PHP Fatal error:  Uncaught ArgumentCountError: define() expects at least 2 arguments, 1 given in D:\GoogleDrive\Lavoro\Progetti\ZMSoftware\Gemini\Software\Gemini\public\PHPServer\ConfigDefinitions.php:36
+Stack trace:
+#0 D:\GoogleDrive\Lavoro\Progetti\ZMSoftware\Gemini\Software\Gemini\public\PHPServer\ConfigDefinitions.php(36): define('ADV_LOG_ALL_QUE...')
+#1 D:\GoogleDrive\Lavoro\Progetti\ZMSoftware\Gemini\Software\Gemini\public\PHPServer\Configurations.php(9): include_once('D:\\GoogleDrive\\...')
+#2 D:\GoogleDrive\Lavoro\Progetti\ZMSoftware\Gemini\Software\Gemini\public\PHPServer\LoginWithToken.php(2): include_once('D:\\GoogleDrive\\...')
+#3 {main}
+  thrown in D:\GoogleDrive\Lavoro\Progetti\ZMSoftware\Gemini\Software\Gemini\public\PHPServer\ConfigDefinitions.php on line 36
+[05-Feb-2026 17:25:27 Europe/Rome] PHP Fatal error:  Uncaught ArgumentCountError: define() expects at least 2 arguments, 1 given in D:\GoogleDrive\Lavoro\Progetti\ZMSoftware\Gemini\Software\Gemini\public\PHPServer\ConfigDefinitions.php:36
+Stack trace:
+#0 D:\GoogleDrive\Lavoro\Progetti\ZMSoftware\Gemini\Software\Gemini\public\PHPServer\ConfigDefinitions.php(36): define('ADV_LOG_ALL_QUE...')
+#1 D:\GoogleDrive\Lavoro\Progetti\ZMSoftware\Gemini\Software\Gemini\public\PHPServer\Configurations.php(9): include_once('D:\\GoogleDrive\\...')
+#2 D:\GoogleDrive\Lavoro\Progetti\ZMSoftware\Gemini\Software\Gemini\public\PHPServer\LoginWithToken.php(2): include_once('D:\\GoogleDrive\\...')
+#3 {main}
+  thrown in D:\GoogleDrive\Lavoro\Progetti\ZMSoftware\Gemini\Software\Gemini\public\PHPServer\ConfigDefinitions.php on line 36
+[05-Feb-2026 17:25:29 Europe/Rome] PHP Fatal error:  Uncaught ArgumentCountError: define() expects at least 2 arguments, 1 given in D:\GoogleDrive\Lavoro\Progetti\ZMSoftware\Gemini\Software\Gemini\public\PHPServer\ConfigDefinitions.php:36
+Stack trace:
+#0 D:\GoogleDrive\Lavoro\Progetti\ZMSoftware\Gemini\Software\Gemini\public\PHPServer\ConfigDefinitions.php(36): define('ADV_LOG_ALL_QUE...')
+#1 D:\GoogleDrive\Lavoro\Progetti\ZMSoftware\Gemini\Software\Gemini\public\PHPServer\Configurations.php(9): include_once('D:\\GoogleDrive\\...')
+#2 D:\GoogleDrive\Lavoro\Progetti\ZMSoftware\Gemini\Software\Gemini\public\PHPServer\LoginWithToken.php(2): include_once('D:\\GoogleDrive\\...')
+#3 {main}
+  thrown in D:\GoogleDrive\Lavoro\Progetti\ZMSoftware\Gemini\Software\Gemini\public\PHPServer\ConfigDefinitions.php on line 36

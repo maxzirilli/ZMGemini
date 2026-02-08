@@ -617,7 +617,6 @@ export default
                                             function (Results) 
                                             {
                                               let ArrayInfo = SystemInformation.AdvQuery.FindResults(Results, "ListaProdottiMagazzino");
-                                              //  console.log(ArrayInfo)
                                                if (ArrayInfo != undefined) 
                                               {
                                                 Self.ListaProdotti = ArrayInfo

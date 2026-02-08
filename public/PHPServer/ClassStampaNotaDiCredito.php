@@ -152,12 +152,12 @@
                             conti_correnti_casse.BANCA AS BANCA_CONTO_CORRENTE,
                             conti_correnti_casse.IBAN AS IBAN_CONTO_CORRENTE,
                             causali.DESCRIZIONE AS DESCRIZIONE_CAUSALE,
-                            clienti.CODICE_CLIENTE
+                            anagrafiche.CODICE
                        FROM note_di_credito
                             LEFT OUTER JOIN province ON province.CHIAVE = note_di_credito.PROVINCIA_FATTURAZIONE
                             LEFT OUTER JOIN nazioni ON nazioni.CHIAVE = note_di_credito.NAZIONE_EM_PIVA
                             LEFT OUTER JOIN conti_correnti_casse ON conti_correnti_casse.CHIAVE = note_di_credito.ID_CONTO_CORRENTE
-                            LEFT OUTER JOIN clienti  ON clienti.CHIAVE = note_di_credito.ID_CLIENTE
+                            LEFT OUTER JOIN anagrafiche  ON anagrafiche.CHIAVE = note_di_credito.ID_CLIENTE
                             LEFT OUTER JOIN cond_pagamento ON cond_pagamento.CHIAVE = note_di_credito.COND_PAGAMENTO
                             LEFT OUTER JOIN causali ON causali.CHIAVE = note_di_credito.ID_CAUSALE
                       WHERE note_di_credito.CHIAVE = $ChiaveNota";
@@ -166,7 +166,7 @@
                 {
                   while($Row = $Query->fetch(PDO::FETCH_ASSOC))
                   {  
-                    $DatiIntestazione->INTESTATARIO = array( 'CODICE CLIENTE: ' . $Row['CODICE_CLIENTE'], 
+                    $DatiIntestazione->INTESTATARIO = array( 'CODICE CLIENTE: ' . $Row['CODICE'], 
                                                              $Row['RAGIONE_SOCIALE'], 
                                                              $Row['INDIRIZZO_FATTURAZIONE'] . ' ' . $Row['NR_CIVICO_FATTURAZIONE'], 
                                                              $Row['CAP_FATTURAZIONE'] . ' ' . $Row['COMUNE_FATTURAZIONE'] . ' (' . $Row['TARGA_PROVINCIA_FATTURAZIONE'] . ')',

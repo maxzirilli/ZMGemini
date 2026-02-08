@@ -10,7 +10,6 @@
     protected $FMailSystemAdministrator = '';
     protected $TipoDocumento;
     protected $IdCliente = null;
-    protected $IdAmministratore = null;
 
     function __construct($ScriptEsterno = false)
     {
@@ -29,12 +28,11 @@
       $Oggetto             = $this->FPrepareParameterValue($Oggetto,'#');
       $TipoDocumento       = $this->FPrepareParameterValue($this->TipoDocumento,'#');
       $IdCliente           = isset($this->IdCliente)?        $this->FPrepareParameterValue($this->IdCliente,':') : null;
-      $IdAmministratore    = isset($this->IdAmministratore)? $this->FPrepareParameterValue($this->IdAmministratore,':') : null;
       $CorpoMessaggio      = $this->FPrepareParameterValue($CorpoMessaggio,'#');
       
       $NuovaChiaveLog      = $this->FGetNewKey($PDODBase, GEN_CHIAVI);
       
-      $SQLBody = "INSERT INTO " . TABLE_LOG_EMAIL . " (CHIAVE, DESTINATARIO,MITTENTE, CC, CCN, OGGETTO, CORPO_EMAIL, TIPO_DOCUMENTO, DATA_INSERIMENTO, ERRORE_INVIO_EMAIL, ID_CLIENTE, ID_AMMINISTRATORE)
+      $SQLBody = "INSERT INTO " . TABLE_LOG_EMAIL . " (CHIAVE, DESTINATARIO,MITTENTE, CC, CCN, OGGETTO, CORPO_EMAIL, TIPO_DOCUMENTO, DATA_INSERIMENTO, ERRORE_INVIO_EMAIL, ID_CLIENTE)
                   VALUES (" . $NuovaChiaveLog . ", " . 
                               $Destinatari . ", " . 
                               $MailMittente . ", " . 
@@ -45,9 +43,7 @@
                               (isset($TipoDocumento) && $TipoDocumento != ''? $TipoDocumento : 'NULL') . 
                               ", CURRENT_TIMESTAMP(), " . 
                               $Errore . "," .
-                              (isset($IdCliente) && $IdCliente != 0? $IdCliente : 'NULL') . "," .
-                              (isset($IdAmministratore) && $IdAmministratore != 0? $IdAmministratore : 'NULL') .
-                              ")";
+                              (isset($IdCliente) && $IdCliente != 0? $IdCliente : 'NULL') .")";
 
       try
       {

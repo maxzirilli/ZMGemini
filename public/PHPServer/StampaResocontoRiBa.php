@@ -101,7 +101,7 @@
                                           fatture.CHIAVE,
                                           fatture.ID_CLIENTE,
                                           fatture.DA_BANCO,
-                                          clienti.CODICE_CLIENTE,
+                                          anagrafiche.CODICE,
                                           fatture.BANCA,
                                           fatture.IBAN                    AS IBAN_FATTURA,
                                           rate_fattura.NOTE,
@@ -110,7 +110,7 @@
                                           rate_fattura.DATA_PAGAMENTO     AS DATA_RATA,
                                           cond_pagamento.RICEVUTA_BANCARIA
                                      FROM fatture 
-                                                     JOIN clienti        ON clienti.CHIAVE = fatture.ID_CLIENTE
+                                                     JOIN anagrafiche        ON anagrafiche.CHIAVE = fatture.ID_CLIENTE
                                           LEFT OUTER JOIN rate_fattura   ON rate_fattura.ID_FATTURA = fatture.CHIAVE' . $QueryPart[count($QueryPart) - 1];
             $QueryDatiResoconto = explode('LIMIT', $QueryDatiResoconto)[0];
             

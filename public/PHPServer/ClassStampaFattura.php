@@ -194,12 +194,12 @@
                                conti_correnti_casse.BANCA AS BANCA_CONTO_CORRENTE,
                                conti_correnti_casse.IBAN AS IBAN_CONTO_CORRENTE, 
                                causali.DESCRIZIONE AS DESCRIZIONE_CAUSALE,
-                               clienti.CODICE_CLIENTE
+                               anagrafiche.CODICE
                           FROM fatture
                                LEFT OUTER JOIN province ON province.CHIAVE = fatture.PROVINCIA_FATTURAZIONE
                                LEFT OUTER JOIN nazioni  ON nazioni.CHIAVE = fatture.NAZIONE_EM_PIVA
                                LEFT OUTER JOIN causali  ON causali.CHIAVE = fatture.CAUSALE
-                               LEFT OUTER JOIN clienti  ON clienti.CHIAVE = fatture.ID_CLIENTE
+                               LEFT OUTER JOIN anagrafiche  ON anagrafiche.CHIAVE = fatture.ID_CLIENTE
                                LEFT OUTER JOIN conti_correnti_casse ON conti_correnti_casse.CHIAVE = fatture.ID_CONTO_CORRENTE
                                LEFT OUTER JOIN cond_pagamento ON cond_pagamento.CHIAVE = fatture.COND_PAGAMENTO
                          WHERE fatture.CHIAVE = $ChiaveFattura";
@@ -210,7 +210,7 @@
               {
                 while($Row = $Query->fetch(PDO::FETCH_ASSOC))
                 {  
-                  $DatiIntestazione->INTESTATARIO = array( 'CODICE CLIENTE: ' . $Row['CODICE_CLIENTE'], 
+                  $DatiIntestazione->INTESTATARIO = array( 'CODICE CLIENTE: ' . $Row['CODICE'], 
                                                           $Row['RAGIONE_SOCIALE'], 
                                                           $Row['INDIRIZZO_FATTURAZIONE'] . ' ' . $Row['NR_CIVICO_FATTURAZIONE'], 
                                                           $Row['CAP_FATTURAZIONE'] . ' ' . $Row['COMUNE_FATTURAZIONE'] . (isset($Row['TARGA_PROVINCIA_DESTINAZIONE'])? ' (' . $Row['TARGA_PROVINCIA_FATTURAZIONE'] . ')' : ''),
@@ -597,8 +597,6 @@
 
               if(isset($Parametri->IdCliente))
                 $this->IdCliente = $Parametri->IdCliente;
-              if(isset($Parametri->IdAmministratore))
-                $this->IdAmministratore = $Parametri->IdAmministratore;
 
               $Errore = '';
               $JSONAnswer->Risposta = 'MAIL_INVIATA';

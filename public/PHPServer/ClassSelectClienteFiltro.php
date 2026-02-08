@@ -20,9 +20,7 @@
             public $Iniziale             = null;
             public $CHIAVE               = null;
             public $RAGIONE_SOCIALE      = null;
-            public $ID_AMMINISTRATORE    = null;
             public $ATTIVO               = null;
-            public $IS_A_CONDOMINIO      = null;
             public $CLIENTE_CANCELLABILE = null;
             public $PASSATA_AD_AVVOCATO  = null;
       }
@@ -89,7 +87,7 @@
                   $ListaRitenutePagateClienti = array();
                   $ListaRitenuteClienti = array();
 
-                  $QueryPart = explode('FROM clienti',
+                  $QueryPart = explode('FROM anagrafiche',
                                        $this->FGetQueryCompiled($PDODBase,
                                                                 'Clienti', 
                                                                 'SelectClientiXFiltro',
@@ -99,8 +97,8 @@
                   $QueryRitenute = 'SELECT * 
                                       FROM ritenute_cliente 
                                      WHERE ritenute_cliente.ANNO = ' . $this->Parametri->AnnoRitenuta .'
-                                       AND ritenute_cliente.ID_CLIENTE IN ( SELECT clienti.CHIAVE 
-												      FROM clienti ' . $QueryPart[count($QueryPart) - 1] . ')
+                                       AND ritenute_cliente.ID_CLIENTE IN ( SELECT anagrafiche.CHIAVE 
+												      FROM anagrafiche ' . $QueryPart[count($QueryPart) - 1] . ')
                                      ORDER BY ID_CLIENTE';
 
 
@@ -122,7 +120,7 @@
                         array_push($ObjectCliente->Ritenute, $OggettoRitenuta);
                     }
 
-                  $QueryClienti = 'SELECT clienti.CHIAVE FROM clienti' . $QueryPart[count($QueryPart) - 1];                  
+                  $QueryClienti = 'SELECT anagrafiche.CHIAVE FROM anagrafiche' . $QueryPart[count($QueryPart) - 1];                  
                   
                   $ListaRitenuteClienti = TSystemInformation::GetRitenutaClienteXAnno($PDODBase,$QueryClienti,$this->Parametri->AnnoRitenuta);
                   

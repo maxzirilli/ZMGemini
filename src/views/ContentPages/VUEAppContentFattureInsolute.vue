@@ -46,14 +46,13 @@
       <div class="panel-heading" style="min-height:50px; display: flex; align-items: center; cursor:pointer;" @click="OnClickEspandiPagina(Cliente)">
         <div style="width:3%;margin-top:5px">
           <a>
-            <img v-if="Cliente.IsACondominio" src="../../assets/images/IconeAlbero/Condominio2.png" style="width:25px;height:25px;float:left;margin-top:-3px;margin-right:2px">
-            <img v-else src="../../assets/images/IconeAlbero/Cliente2.png" style="width:25px;height:25px;float:left;margin-top:-3px;margin-right:2px">
+            <img src="../../assets/images/IconeAlbero/Cliente2.png" style="width:25px;height:25px;float:left;margin-top:-3px;margin-right:2px">
           </a>
         </div>
         <div style="width: 32%; margin-top: -2px;">
           <div style="width: 60%; height: 100%; cursor: pointer; font-weight: initial; font-size: 12px; float:left"></div>
           <b>{{Cliente.CodiceCliente + ' - ' + Cliente.RagioneSociale }}<br/></b>
-          <text>{{ Cliente.IsACondominio ? 'Condominio ' : 'Privato ' }}</text>
+          <text>{{ 'Privato ' }}</text>
         </div>
         <div style="height:5px;clear:both;">&nbsp;</div>
       </div>
@@ -162,11 +161,8 @@ export default
       return TZDateFunct.FormatDateTime('dd/mm/yyyy', new Date(Date.parse(Data)));
     },
 
-    CalcolaDataScadenzaFattura(Cliente, Fattura)
+    CalcolaDataScadenzaFattura(Fattura)
     {
-      if(Cliente.IsACondominio)
-        return TZDateFunct.SumMonth(new Date(Date.parse(Fattura.Data)), SystemInformation.Configurazioni.Impostazioni.NUMERO_MESI_PER_FATTURE_INSOLUTE_PER_CONDOMINI);
-      else
         return TZDateFunct.SumMonth(new Date(Date.parse(Fattura.Data)), SystemInformation.Configurazioni.Impostazioni.NUMERO_MESI_PER_FATTURE_INSOLUTE_PER_PRIVATI);
     },
 
@@ -211,9 +207,8 @@ export default
                                           {
                                             ObjectCliente = {
                                                               Chiave            : TSchedaGenerica.DisponiFromInteger(Cliente.CHIAVE),
-                                                              CodiceCliente     : TSchedaGenerica.DisponiFromInteger(Cliente.CODICE_CLIENTE),
+                                                              CodiceCliente     : TSchedaGenerica.DisponiFromInteger(Cliente.CODICE),
                                                               RagioneSociale    : TSchedaGenerica.DisponiFromString(Cliente.RAGIONE_SOCIALE),
-                                                              IsACondominio     : TSchedaGenerica.DisponiFromBoolean(Cliente.IS_A_CONDOMINIO),
                                                               Grafica           : {
                                                                                     ClienteEspanso  : false,
                                                                                     ClienteVisibile : true,

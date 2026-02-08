@@ -80,7 +80,7 @@
 					"SizeValues" : "(58.586309523809540000,20.788690476190480000,791.860119047619200000,1870.982142857143000000)",
 					"Alignment" : "taCenter",
 					"AutoSize" : "False",
-					"Caption" : "CONTO CLIENTE",
+					"Caption" : "CONTO",
 					"Color" : "White",
 					"FontColor" : "WindowText",
 					"FontName" : "Times New Roman",

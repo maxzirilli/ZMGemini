@@ -477,11 +477,6 @@
             <button style="float:right;margin-right:2px;width:15%;min-width: 125px" @click="ControlloPresenzaComunicazioni()" class="btn btn-info">Down. comunic.</button>
           </div>
 
-          <!-- BOTTONE DI PROVA  -->
-          <div v-if="DeveloperMode && UserInformation.Ruolo == Ruoli.Amministratore" style="float:left;width:7%;display: flex; justify-content: center; margin-left:1.25%">  
-            <button style="float:right;margin-right:5px;width:5%;min-width: 80px" @click="OnClickBottoneDiProva" class="btn btn-info">Prova</button>
-          </div>
-          
         </div>
       </div>
     
@@ -495,7 +490,6 @@
           <button class="btn btn-s-md btn-default btn-rounded btn-xs" style="width: 10%" @click="OnClickNuovoDDTRapido">DDT</button>
           <button class="btn btn-s-md btn-default btn-rounded btn-xs" style="width: 10%" @click="OnClickNuovoDocScaricoProdCompostiRapido">Doc prodotti</button>
           <button class="btn btn-s-md btn-default btn-rounded btn-xs" style="width: 10%" @click="OnClickNuovoMovimentoMagazzinoRapido">Mov magazzino</button>
-          <!-- <button class="btn btn-s-md btn-default btn-rounded btn-xs" style="width: 10%" @click="OnClickNuovoAmministratoreRapido">Amministratore</button> -->
           <!-- <button class="btn btn-s-md btn-default btn-rounded btn-xs" style="width: 10%" @click="OnClickNuovoPreventivoMultiRapido">Preventivo</button> -->
           <!-- <button class="btn btn-s-md btn-default btn-rounded btn-xs" style="width: 10%" @click="OnClickNuovoMovimentoRapido">Movimento</button> -->
           <!-- <button class="btn btn-s-md btn-default btn-rounded btn-xs" style="width: 10%" @click="OnClickNuovaFatturaRapido">Fattura</button> -->
@@ -523,13 +517,13 @@
           <input type="text" class="form-control" v-model="FilterCliente.Cliente" />
          </div> 
          <!-- Filtro Partita IVA-->
-         <div style="float: left;font-size:14px;padding-top: 5px;width:10%;text-align: right; padding-right: 15px;">
+         <div style="float: left;font-size:14px;padding-top: 5px;width:8%;text-align: right; padding-right: 15px;">
           <label>Partita IVA</label>
          </div>
          <div style="float:left;width:11%;">
           <input type="text" class="form-control" v-model="FilterCliente.PartitaIva" />
          </div> 
-         <div style="float: left;font-size:14px;padding-top: 5px;width:7%;text-align: right; padding-right: 15px;">
+         <div style="float: left;font-size:14px;padding-top: 5px;width:8%;text-align: right; padding-right: 15px;">
           <label>Cod. fiscale</label>
          </div>
          <div style="float:left;width:11%">
@@ -541,26 +535,10 @@
          <div style="float:left;width:11%;">
           <input type="text" class="form-control" v-model="FilterCliente.IndirizzoFatturazione" />
          </div>
-         <!-- <div style="float: left;font-size:14px;padding-top: 5px;width:8%;text-align: right; padding-right: 15px;">
-          <label style="margin-bottom: 0px;">Ind. filiale</label>
-         </div>
-         <div style="float:left;width:11%;">
-          <input type="text" class="form-control" v-model="FilterCliente.IndirizzoFiliale" />
-         </div> -->
        </div>
 
        <div class="col-md-2" style="display: flex; justify-content: flex-end; align-items: flex-start; gap: 10px">
 
-       
-        <!-- <button style="float:right;width:45%" v-if="!EspandiRicercheCliente" class="btn btn-sm btn-default" data-toggle="class:show" @click="OnClickEspandiRicercheCliente">
-          <i class="fa fa-sort-down text"></i>
-          <span class="text"> Espandi</span>
-        </button>
-    
-        <button style="float:right;width:45%" v-else class="btn btn-sm btn-default" data-toggle="class:show" @click="OnClickEspandiRicercheCliente">
-          <i class="fa fa-sort-up text"/>
-          <span class="text"> Riduci</span>
-        </button> -->
           <div class="btn-group open" style="margin-right:5px">
             <img v-if="ExcelRiassuntoClienti" src="@/assets/images/MenuExcel.png" style="margin-top:-8px;cursor:pointer;" @click="OnClickStampaXML()">
               <ul v-if="DropdownMenuXML.length != 0" class="dropdown-menu" style="width:200%">
@@ -629,30 +607,6 @@
             <input type="number" min="1900" max="2099" step="1" class="form-control" v-model="FilterCliente.AnnoRitenuta"/>
          </div> 
 
-         <!-- //filtro amministratori presenti -->
-         <div style="float: left;font-size:14px;padding-top: 5px;width:10%;text-align: right; padding-right: 15px;">
-            <label style="margin-bottom: 0px;">Amministratore</label>
-         </div>
-         <div style="float:left;width:11%;">
-          <select style="float:left;width:100%;margin-right:5px" class="form-control" v-model="FilterCliente.PresenzaAmministratori">
-            <option value="Tutti">Tutti</option>
-            <option value="Presenti">Presente</option>           
-            <option value="NonPresenti">Non presente</option>           
-          </select>
-         </div>
-
-         <!-- //filtro condomini -->
-         <div style="float: left;font-size:14px;padding-top: 5px;width:7%;text-align: right; padding-right: 15px;">
-            <label style="margin-bottom: 0px">Tipo clien.</label>
-         </div>
-         <div style="float:left;width:11%;">
-          <select style="float:left;width:100%;margin-right:5px" class="form-control" v-model="FilterCliente.Condomini">
-            <option value="Tutti">Tutti</option>
-            <option value="Condomini">Solo condomini</option>           
-            <option value="Clienti">Solo clienti</option>           
-          </select>
-         </div>
-
          <div style="float: left;font-size:14px;padding-top: 5px;width:8%;text-align: right; padding-right: 15px;">
             <label style="margin-bottom: 0px;">Stato cliente</label>
          </div>
@@ -663,16 +617,15 @@
             <option value="NonAttivi">Non attivi</option>           
           </select>
          </div> 
-       </div>
+     
 
-       <div class="col-md-2" style="padding-left:0px">&nbsp;
-         <div style="float: left;font-size:14px;padding-top: 5px;text-align: right; padding-right: 15px;">
+         <div style="float: left;font-size:14px;width:8%;padding-top: 5px;text-align: right; padding-right: 10px;">
           <label style="margin-bottom: 0px;">Ind. filiale</label>
          </div>
-         <div style="float:left;width:40%;">
+         <div style="float:left;width:11%;">
           <input type="text" class="form-control" v-model="FilterCliente.IndirizzoFiliale" />
          </div>
-       </div>
+      </div>
 
 
        <div class="ZMSeparatoreFiltri" >&nbsp;</div>
@@ -690,10 +643,7 @@
           <div style="float:left;width:11%;">
             <VUEInputProvince v-model="FilterCliente.Provincia" emptyElement="true"/>
           </div>
-       </div>
 
-       <div class="ZMSeparatoreFiltri" >&nbsp;</div>
-       <div class="col-md-10" style="padding:0px;">
          <div style="float: left;font-size:14px;padding-top: 5px;width:8%;text-align: right; padding-right: 15px;">
             <label style="margin-bottom: 0px">Zona filiale</label>
           </div>
@@ -704,40 +654,6 @@
 
        <div class="ZMSeparatoreFiltri">&nbsp;</div>
 
-     </div>
-
-     <div v-if="!DatiInModifica && CurrentFilter.GetFilterId() == 'Amministratori'" class="breadcrumb no-border no-radius b-b b-light pull-in" style="height:50px;">
-       <div class="col-md-10">
-          <!-- Filtro Ragione sociale-->
-          <div style="float:left;font-size:14px;padding-top: 5px;width:10%">
-          <label>Ragione sociale&nbsp;&nbsp;&nbsp;</label>
-         </div>
-         <div style="float:left;width:20%">
-          <input type="text" class="form-control" v-model="FilterAmministratore.RagioneSociale" />
-         </div> 
-         <!-- Filtro indirizzo-->
-         <div style="float: left;font-size:14px;padding-top: 5px;margin-left:10px;margin-right:10px;width:10%">
-          <label>Indirizzo&nbsp;&nbsp;&nbsp;</label>
-         </div>
-         <div style="float:left;width:20%">
-          <input type="text" class="form-control" v-model="FilterAmministratore.Indirizzo" />
-         </div> 
-       </div>
-
-       <div class="col-md-2" style="display: flex; justify-content: flex-end; align-items: flex-start; gap: 10px">
-        <button style="float:right; width:45%" @click="FiltraDati" class="btn btn-info">[F2] Cerca</button>
-
-        <!-- <button style="float:right;width:45%" v-if="!EspandiRicercheCliente" class="btn btn-sm btn-default" data-toggle="class:show" @click="OnClickEspandiRicercheCliente">
-          <i class="fa fa-sort-down text"></i>
-          <span class="text">Espandi</span>
-        </button>
-    
-        <button style="float:right;width:45%" v-else class="btn btn-sm btn-default" data-toggle="class:show" @click="OnClickEspandiRicercheCliente">
-          <i class="fa fa-sort-up text"/>
-          <span class="text">Riduci</span>
-        </button> -->
-       </div>
-       <div class="ZMSeparatoreFiltri">&nbsp;</div>
      </div>
 
      <VUESchedaFiliali v-if="!DatiInModifica && CurrentFilter.GetFilterId() == 'Filiali'"/>
@@ -1900,7 +1816,7 @@
        </div>
 
        <div class="col-md-2" style="display: flex; justify-content: flex-end; align-items: flex-start; gap: 10px">
-       <div class="btn-group open" style="float:right;margin-right:5px">
+       <!-- <div class="btn-group open" style="float:right;margin-right:5px">
           <img src="@/assets/images/Stampa.png" style="margin-top:-8px;cursor:pointer" @click="OnClickStampa(false,false,false, false,false,false, true)">
           <ul v-if="MenuStampa.length != 0" class="dropdown-menu" style="width:200%">
             <li v-for="(AMenu,index) in MenuStampa" :Key="index">
@@ -1917,7 +1833,7 @@
               <a @click="MenuStampa = []">Chiudi</a>
             </li>
           </ul>
-       </div>
+       </div> -->
 
        <button style="float:right; width:45%" @click="FiltraDati" class="btn btn-info">[F2] Cerca</button>
 
@@ -2193,7 +2109,9 @@
             <label>Descrizione</label>
           </div>
           <div style="float:left;width:11%">
-            <input type="text" class="form-control" v-model="FilterProdotto.Descrizione" />
+            <!-- <input type="text" class="form-control" v-model="FilterProdotto.Descrizione" />
+              -->
+            <VUEInputProdotti v-model="FilterProdotto.Descrizione"></VUEInputProdotti>
           </div> 
           <div>
             <!-- Filtro Settore-->
@@ -2301,8 +2219,6 @@
                               @onClickNuovaFatturaDaBanco="OnClickNuovaFatturaDaBancoDaSchedaCliente"
                               @onClickNuovoDDT="OnClickNuovoDDTDaSchedaCliente"
                               @onClickNuovoDDTEntrante="OnClickNuovoDDTEntranteDaSchedaCliente"/>
-            <!-- <VUESchedaAmministratore v-if="TipoSchedaSelezionata == 'TSchedaAmministratore'" 
-                              :SchedaAmministratore="SchedaSelezionata" />    -->
             <VUESchedaFattura v-if="TipoSchedaSelezionata == 'TSchedaFattura'" 
                               :SchedaFattura="SchedaSelezionata" 
                               @onChangeNodiAlbero="OnChangeNodiAlbero"
@@ -2329,8 +2245,8 @@
                               @onClickNuovaFattura="CreazioneFatturaTramiteDDTEntrante"/> 
               <VUESchedaDocScaricoProdottiComposti v-if="TipoSchedaSelezionata == 'TSchedaDocScaricoProdottiComposti'" 
                               :SchedaDocScaricoProdottiComposti ="SchedaSelezionata"/>
-              <!-- <VUESchedaContoCorrente v-if="TipoSchedaSelezionata == 'TSchedaContoCorrente'" 
-                              :SchedaContoCorrente="SchedaSelezionata" />  -->
+              <VUESchedaContoCorrente v-if="TipoSchedaSelezionata == 'TSchedaContoCorrente'" 
+                              :SchedaContoCorrente="SchedaSelezionata" /> 
               <VUESchedaMovimento v-if="TipoSchedaSelezionata == 'TSchedaMovimento'" 
                               :SchedaMovimento="SchedaSelezionata" />
               <VUESchedaFatturaPassiva v-if="TipoSchedaSelezionata == 'TSchedaFatturaPassiva'" 
@@ -2339,8 +2255,8 @@
                               :SchedaMovimentiMagazzini="SchedaSelezionata" />
               <VUESchedaProdotto v-if="TipoSchedaSelezionata == 'TSchedaProdotto'" 
                               :SchedaProdotto="SchedaSelezionata" /> 
-              <!-- <VUESchedaAutoFattura v-if="TipoSchedaSelezionata == 'TSchedaAutoFattura'" 
-                              :SchedaAutoFattura="SchedaSelezionata" />  -->
+              <VUESchedaAutoFattura v-if="TipoSchedaSelezionata == 'TSchedaAutoFattura'" 
+                              :SchedaAutoFattura="SchedaSelezionata" /> 
               <VUESchedaFattureInsolutePregresse v-if="TipoSchedaSelezionata == 'TSchedaFattureInsolutePregresse'" 
                               :SchedaFattureInsolutePregresse="SchedaSelezionata"
                               @onClickNuovoMovimentoFromFattureInsolute="OnClickNuovoMovimentoFromFattureInsolute"/>     
@@ -2357,11 +2273,11 @@ import VUEInputFornitore from '@/components/InputComponents/VUEInputFornitore.vu
 import VUEInputProvince from '@/components/InputComponents/VUEInputProvince.vue';
 import VUEInputRegioni from '@/components/InputComponents/VUEInputRegioni.vue';
 import VUEInputZone from '@/components/InputComponents/VUEInputZone.vue';
+import VUEInputProdotti from '@/components/InputComponents/VUEInputProdotti.vue';
 import VUEModal from '@/components/Slots/VUEModal.vue';
 import VUEConfirm from '@/components/VUEConfirm.vue';
 import VUETreeViewLevel from '@/components/VUETreeViewLevel.vue';
 import {
-          TFilterAmministratore,
           TFilterAutofattura,
           TFilterCliente,
           TFilterConferme,
@@ -2388,7 +2304,6 @@ import {
           SystemInformation,
           TIPO_COMUNICAZIONI,
         } from '@/SystemInformation';
-// import VUESchedaAmministratore, { TSchedaAmministratore } from '@/views/SchedeDatabase/VUESchedaAmministratore.vue';
 import VUESchedaCliente, { TSchedaCliente } from '@/views/SchedeDatabase/VUESchedaCliente.vue';
 import VUESchedaDocumentoDiTrasporto, { TSchedaDocumentoDiTrasporto } from '@/views/SchedeDatabase/VUESchedaDocumentoDiTrasporto.vue';
 import VUESchedaDocumentoDiTrasportoEntrante, { TSchedaDocumentoDiTrasportoEntrante } from '@/views/SchedeDatabase/VUESchedaDocumentoDiTrasportoEntrante.vue';
@@ -2404,8 +2319,8 @@ import { TZDateFunct } from '../../../../../../../../Librerie/VUE/ZDateFunct';
 import { TSchedaGenerica } from '../../../../../../../../Librerie/VUE/ZSchedaGenerica.js';
 import { TZStringConvFunct } from '../../../../../../../../Librerie/VUE/ZStringConvFunct.js';
 import { TZTree } from '../../../../../../../../Librerie/VUE/ZTreeObjects';
-// import VUESchedaAutoFattura from '../SchedeDatabase/VUESchedaAutoFattura.vue';
-// import VUESchedaContoCorrente from '../SchedeDatabase/VUESchedaContoCorrente.vue';
+import VUESchedaAutoFattura,{ TSchedaAutoFattura } from '../SchedeDatabase/VUESchedaAutoFattura.vue';
+import VUESchedaContoCorrente, {TSchedaContoCorrente} from '../SchedeDatabase/VUESchedaContoCorrente.vue';
 import VUESchedaFatturaPassiva, { TSchedaFatturaPassiva } from '../SchedeDatabase/VUESchedaFatturaPassiva.vue';
 import VUESchedaMovimentiMagazzini, { TSchedaMovimentiMagazzini } from '../SchedeDatabase/VUESchedaMovimentiMagazzini.vue';
 import VUESchedaFattureInsolutePregresse from '../SchedeDatabase/VUESchedaFattureInsolutePregresse.vue';
@@ -2434,8 +2349,7 @@ export default
                   VUESchedaDocumentoDiTrasporto,
                   VUESchedaDocumentoDiTrasportoEntrante,
                   VUESchedaDocScaricoProdottiComposti,
-                  // VUESchedaAmministratore,
-                  // VUESchedaContoCorrente,
+                  VUESchedaContoCorrente,
                   VUESchedaMovimento,
                   VUESchedaMovimentiMagazzini,
                   VUESchedaFatturaPassiva,
@@ -2444,9 +2358,10 @@ export default
                   VUESchedaProdotto,
                   VUESchedaPrimaNota,
                   VUEConfirm,
-                  // VUESchedaAutoFattura,
+                  VUESchedaAutoFattura,
                   VUEInputClienti,
                   VUEInputFornitore,
+                  VUEInputProdotti,
                   VUEModal,
                   VUESchedaFattureInsolutePregresse,
                   VUESchedaFattureInsolutePregresseFornitori,
@@ -2514,7 +2429,6 @@ export default
                         FilterProdotto                                            : new TFilterProdotto(),
                         FilterMovimento                                           : new TFilterMovimento(),
                         FilterDDT                                                 : new TFilterDDT(),
-                        FilterAmministratore                                      : new TFilterAmministratore(),
                         FilterFornitore                                           : new TFilterFornitore(),
                         FilterPrimaNota                                           : new TFilterPrimaNota(),
                         FilterFiliale                                             : new TFilterFiliale(),
@@ -2662,10 +2576,6 @@ export default
               Caption     : Modello.FilterCliente.GetDescrizione(),
               Filter      : Modello.FilterCliente,
             },
-            // {
-            //   Caption     : Modello.FilterAmministratore.GetDescrizione(),
-            //   Filter      : Modello.FilterAmministratore,
-            // },
             {
               Caption : ""
             },
@@ -2673,14 +2583,14 @@ export default
               Caption     : Modello.FilterFornitore.GetDescrizione(),
               Filter      : Modello.FilterFornitore,
             },
-            // {
-            //   Caption     : Modello.FilterMovimentoConto.GetDescrizione(),
-            //   Filter      : Modello.FilterMovimentoConto,
-            // },
-            // {
-            //   Caption     : Modello.FilterPrimaNota.GetDescrizione(),
-            //   Filter      : Modello.FilterPrimaNota,
-            // },
+            {
+              Caption     : Modello.FilterMovimentoConto.GetDescrizione(),
+              Filter      : Modello.FilterMovimentoConto,
+            },
+            {
+              Caption     : Modello.FilterPrimaNota.GetDescrizione(),
+              Filter      : Modello.FilterPrimaNota,
+            },
             {
               Caption : ""
             },
@@ -2699,48 +2609,48 @@ export default
             {
               Caption: "Ricerche",
               SubMenu: [
-                    // {
-                    //     Caption     : Modello.FilterFattura.GetDescrizione(),
-                    //     Filter      : Modello.FilterFattura,
-                    // },
-                    // {
-                    //     Caption     : Modello.FilterNota.GetDescrizione(),
-                    //     Filter      : Modello.FilterNota,
-                    // },
-                    // {
-                    //     Caption     : Modello.FilterConferma.GetDescrizione(),
-                    //     Filter      : Modello.FilterConferma,
-                    // },
-                    // {
-                    //     Caption     : Modello.FilterPreventivo.GetDescrizione(),
-                    //     Filter      : Modello.FilterPreventivo,
-                    // },
-                    // {
-                    //     Caption     : Modello.FilterFatturaPassiva.GetDescrizione(),
-                    //     Filter      : Modello.FilterFatturaPassiva,
-                    // },
-                    // {
-                    //     Caption     : Modello.FilterNotaDiCreditoPassiva.GetDescrizione(),
-                    //     Filter      : Modello.FilterNotaDiCreditoPassiva,
-                    // },
-                    // {
-                    //     Caption     : Modello.FilterAutofattura.GetDescrizione(),
-                    //     Filter      : Modello.FilterAutofattura,
-                    // },
-                    // {
-                    //     Caption     : "",
-                    // },
-                    // {
-                    //     Caption     : "",
-                    // },
-                    // {
-                    //     Caption     : Modello.FilterMovimento.GetDescrizione(),
-                    //     Filter      : Modello.FilterMovimento,
-                    // },
-                       {
-                          Caption     : Modello.FilterMovimentiMagazzini.GetDescrizione(),
-                          Filter      : Modello.FilterMovimentiMagazzini,
-                       }
+                    {
+                        Caption     : Modello.FilterFattura.GetDescrizione(),
+                        Filter      : Modello.FilterFattura,
+                    },
+                    {
+                        Caption     : Modello.FilterNota.GetDescrizione(),
+                        Filter      : Modello.FilterNota,
+                    },
+                    {
+                        Caption     : Modello.FilterConferma.GetDescrizione(),
+                        Filter      : Modello.FilterConferma,
+                    },
+                    {
+                        Caption     : Modello.FilterPreventivo.GetDescrizione(),
+                        Filter      : Modello.FilterPreventivo,
+                    },
+                    {
+                        Caption     : Modello.FilterFatturaPassiva.GetDescrizione(),
+                        Filter      : Modello.FilterFatturaPassiva,
+                    },
+                    {
+                        Caption     : Modello.FilterNotaDiCreditoPassiva.GetDescrizione(),
+                        Filter      : Modello.FilterNotaDiCreditoPassiva,
+                    },
+                    {
+                        Caption     : Modello.FilterAutofattura.GetDescrizione(),
+                        Filter      : Modello.FilterAutofattura,
+                    },
+                    {
+                        Caption     : "",
+                    },
+                    {
+                        Caption     : "",
+                    },
+                    {
+                        Caption     : Modello.FilterMovimento.GetDescrizione(),
+                        Filter      : Modello.FilterMovimento,
+                    },
+                    {
+                       Caption     : Modello.FilterMovimentiMagazzini.GetDescrizione(),
+                       Filter      : Modello.FilterMovimentiMagazzini,
+                    }
               ]
             }
           ]
@@ -2771,44 +2681,41 @@ export default
                                       });
            
           Modello.MenuFilterRicerche = [
-            // {
-            //     Caption     : Modello.FilterFattura.GetDescrizione(),
-            //     Filter      : Modello.FilterFattura,
-            // },
-            // {
-            //     Caption     : Modello.FilterNota.GetDescrizione(),
-            //     Filter      : Modello.FilterNota,
-            // },
-            // {
-            //     Caption     : Modello.FilterConferma.GetDescrizione(),
-            //     Filter      : Modello.FilterConferma,
-            // },
-            // {
-            //     Caption     : Modello.FilterPreventivo.GetDescrizione(),
-            //     Filter      : Modello.FilterPreventivo,
-            // },
-            // {
-            //     Caption     : Modello.FilterFatturaPassiva.GetDescrizione(),
-            //     Filter      : Modello.FilterFatturaPassiva,
-            // },
-            // {
-            //     Caption     : Modello.FilterNotaDiCreditoPassiva.GetDescrizione(),
-            //     Filter      : Modello.FilterNotaDiCreditoPassiva,
-            // },
-            // {
-            //     Caption     : Modello.FilterAutofattura.GetDescrizione(),
-            //     Filter      : Modello.FilterAutofattura,
-            // },
-            // {
-            //     Caption     : "",
-            // },
-            // {
-            //     Caption     : "",
-            // },
-            // {
-            //     Caption     : Modello.FilterMovimento.GetDescrizione(),
-            //     Filter      : Modello.FilterMovimento,
-            // }
+            {
+                Caption     : Modello.FilterFattura.GetDescrizione(),
+                Filter      : Modello.FilterFattura,
+            },
+            {
+                Caption     : Modello.FilterNota.GetDescrizione(),
+                Filter      : Modello.FilterNota,
+            },
+            {
+                Caption     : Modello.FilterConferma.GetDescrizione(),
+                Filter      : Modello.FilterConferma,
+            },
+            {
+                Caption     : Modello.FilterPreventivo.GetDescrizione(),
+                Filter      : Modello.FilterPreventivo,
+            },
+            {
+                Caption     : Modello.FilterFatturaPassiva.GetDescrizione(),
+                Filter      : Modello.FilterFatturaPassiva,
+            },
+            {
+                Caption     : Modello.FilterNotaDiCreditoPassiva.GetDescrizione(),
+                Filter      : Modello.FilterNotaDiCreditoPassiva,
+            },
+            {
+                Caption     : Modello.FilterAutofattura.GetDescrizione(),
+                Filter      : Modello.FilterAutofattura,
+            },
+            {
+                Caption     : "",
+            },
+            {
+                Caption     : Modello.FilterMovimento.GetDescrizione(),
+                Filter      : Modello.FilterMovimento,
+            }
           ]
           
             Modello.MenuFilterRicerche.push({
@@ -2900,7 +2807,7 @@ export default
 
             const Cliente = 
                   {
-                    CODICE_CLIENTE         : Riga[0] != null ? Riga[0].toString() : "",
+                    CODICE         : Riga[0] != null ? Riga[0].toString() : "",
                     // VsRif                  : Riga[1] != null ? Riga[1].toString() : "",
                     RAGIONE_SOCIALE        : Riga[2] || "",
                     // Nome                   : Riga[3]  || "",
@@ -2937,7 +2844,7 @@ export default
                                                             Query     : "InserisciClientiTramiteXLS",
                                                             Parametri:  {
                                                                           CHIAVE                 : undefined,
-                                                                          CODICE_CLIENTE         : TSchedaGenerica.PrepareForRecordString(Cliente.CODICE_CLIENTE),
+                                                                          CODICE         : TSchedaGenerica.PrepareForRecordString(Cliente.CODICE),
                                                                           RAGIONE_SOCIALE        : TSchedaGenerica.PrepareForRecordString(Cliente.RAGIONE_SOCIALE),
                                                                           COMUNE_FATTURAZIONE    : TSchedaGenerica.PrepareForRecordString(Cliente.COMUNE_FATTURAZIONE),
                                                                           INDIRIZZO_FATTURAZIONE : TSchedaGenerica.PrepareForRecordString(Cliente.INDIRIZZO_FATTURAZIONE),
@@ -3154,11 +3061,6 @@ export default
       //   this.SchedaSelezionata.AssignDati(Dati)
       // },
 
-      // OnClickNuovoAmministratoreRapido()
-      // {
-      //   this.SchedaSelezionata = new TSchedaAmministratore(SystemInformation.AdvQuery);
-      //   this.SchedaSelezionata.Nuovo();
-      // },
 
       // OnClickNuovoPreventivoMultiRapido()
       // {
@@ -3935,6 +3837,130 @@ export default
 
       },
 
+       OnClickEsportaClientiExcel()
+      {
+        this.PopupAttesaCalcolo = true
+        var Self = this
+        SystemInformation.AdvQuery.ExecuteExternalScript('EsportazioneClientiExcel',
+        this.FilterCliente.GetParametriXCliente(),
+        function(Results)
+        {
+          let ArrayInfo = Results.ListaClienti
+          if(ArrayInfo != undefined)
+          {
+            const wb = XLSX.utils.book_new();
+            let ArrayContenitore = []
+            let Row = 
+              [
+                { v: "Regione", t: "s", s: { font: { bold: true, name: 'Liberation Sans', sz: 10, Width: 10 }}},
+                { v: "Provincia", t: "s", s: { font: { bold: true, name: 'Liberation Sans', sz: 10, Width: 10 }}},
+                { v: "Comune", t: "s", s: { font: { bold: true, name: 'Liberation Sans', sz: 10  }}},
+                { v: "Indirizzo", t: "s", s: { font: { bold: true, name: 'Liberation Sans', sz: 10  }}},
+                { v: "Nr. civico", t: "s", s: { font: { bold: true, name: 'Liberation Sans', sz: 10  }}},
+                { v: "CAP", t: "s", s: { font: { bold: true, name: 'Liberation Sans', sz: 10  }}},
+                { v: "Clienti", t: "s", s: { font: { bold: true, name: 'Liberation Sans', sz: 10  }}},
+                { v: "Categoria", t: "s", s: { font: { bold: true, name: 'Liberation Sans', sz: 10  }}},
+              ];
+
+            ArrayContenitore.push(Row)
+
+            let RowDivisore = 
+            [
+              { v: '', t: "s", s: {font: {name: 'Liberation Sans', sz: 10 }}},
+            ];
+
+            let LastRegione   = -1
+            ArrayInfo.forEach(function(ARecord)
+            {
+                if(LastRegione != -1 && LastRegione != ARecord.REGIONE)
+                {
+                  ArrayContenitore.push(RowDivisore)
+                  ArrayContenitore.push(RowDivisore)
+                }
+                let RowRegione = 
+                [
+                  { v: ARecord.REGIONE, t: "s", s: {font: {bold: true,name: 'Liberation Sans', sz: 10  }}},
+                  { v: ARecord.PROVINCIA, t: "s", s: {font: {bold: true,name: 'Liberation Sans', sz: 10  }}},
+                  { v: ARecord.COMUNE, t: "s", s: {font: {name: 'Liberation Sans', sz: 10  }}},
+                  { v: ARecord.INDIRIZZO, t: "s", s: {font: {name: 'Liberation Sans', sz: 10  }}},
+                  { v: ARecord.NR_CIVICO, t: "s", s: {font: {name: 'Liberation Sans', sz: 10  }}},
+                  { v: ARecord.CAP, t: "s", s: {font: {name: 'Liberation Sans', sz: 10  }}},
+                  { v: ARecord.RAGIONE_SOCIALE, t: "s", s: {font: {name: 'Liberation Sans', sz: 10  }}},
+                  { v: ARecord.CATEGORIA != null? ARecord.CATEGORIA : "PRIVATO", t: "s", s: {font: {name: 'Liberation Sans', sz: 10  }}},
+                ];
+
+                ArrayContenitore.push(RowRegione)
+                LastRegione   = ARecord.REGIONE
+
+            });
+            ArrayContenitore.push([
+                                    { v: '', t: "s", s: {font: {name: 'Liberation Sans', sz: 10 }}},
+                                 ])
+
+
+            let ArrayTotali = [
+                                    { v: '', t: "s", s: {name: 'Liberation Sans', sz: 10 }},
+                                    { v: '', t: "s", s: {name: 'Liberation Sans', sz: 10  }},
+                                    { v: '', t: "s", s: {name: 'Liberation Sans', sz: 10  }},
+                                    { v: '', t: "s", s: {name: 'Liberation Sans', sz: 10  }},
+                                    { v: '', t: "s", s: {name: 'Liberation Sans', sz: 10  }},
+                                    { v: '', t: "s", s: {name: 'Liberation Sans', sz: 10  }},
+                                    { v: '', t: "s", s: {name: 'Liberation Sans', sz: 10  }},
+                                    { v: "Totale:", t: "s", s: { font: { bold: true, name: 'Liberation Sans', sz: 10  }}},
+                               ]
+            
+            ArrayContenitore.push(ArrayTotali)
+
+            // STEP 3: Create worksheet with rows; Add worksheet to workbook
+            const ws = XLSX.utils.aoa_to_sheet(ArrayContenitore);
+            XLSX.utils.book_append_sheet(wb, ws, "readme demo");
+
+            var wscols = [
+                            {wch:12},
+                            {wch:12},
+                            {wch:25},
+                            {wch:30},
+                            {wch:12},
+                            {wch:12},
+                            {wch:35},
+                            {wch:20}
+                          ];
+                          
+            ws['!cols'] = wscols;
+
+            // STEP 4: Write Excel file to browser
+            XLSX.writeFile(wb, "EsportazioneClienti.xlsx");
+            Self.PopupAttesaCalcolo = false
+
+          }
+          else SystemInformation.HandleError('Impossibile ottenere la lista dei clienti da esportare');
+        },
+        function(HTTPError,SubHTTPError,Response)
+        {
+          SystemInformation.HandleError(HTTPError,SubHTTPError,Response);
+          Self.PopupAttesaCalcolo = false
+        },
+        'EsportazioneFileExcel')
+
+        // const wb = XLSX.utils.book_new();
+
+        // // STEP 2: Create data rows and styles
+        // let row = 
+        // [
+        //   { v: "Courier: 24", t: "s", s: { font: { name: "Courier", sz: 24 } } },
+        //   { v: "bold & color", t: "s", s: { font: { bold: true, color: { rgb: "FF0000" } } } },
+        //   { v: "fill: color", t: "s", s: { fill: { fgColor: { rgb: "E9E9E9" } } } },
+        //   { v: "line\nbreak", t: "s", s: { alignment: { wrapText: true } } },
+        // ];
+
+        // // STEP 3: Create worksheet with rows; Add worksheet to workbook
+        // const ws = XLSX.utils.aoa_to_sheet([row,['a']]);
+        // XLSX.utils.book_append_sheet(wb, ws, "readme demo");
+
+        // // STEP 4: Write Excel file to browser
+        // XLSX.writeFile(wb, "xlsx-js-style-demo.xlsx");
+      },
+
       OnClickNuovaFatturaDaSchedaCliente(SchedaCliente)
       {
         this.SchedaSelezionata = new TSchedaFattura(SystemInformation.AdvQuery);
@@ -4138,8 +4164,6 @@ export default
           case DASHBOARD_FILTER_TYPES.Clienti        : this.FilterCliente.ClearFilterCliente()
                                                        break;
           case DASHBOARD_FILTER_TYPES.Fornitore      : this.FilterFornitore.ClearFilterFornitore()
-                                                       break;
-          case DASHBOARD_FILTER_TYPES.Amministratori : this.FilterAmministratore.ClearFilterAmministratore()
                                                        break;
           default                                    : break;
         }
@@ -4420,14 +4444,6 @@ export default
                                 Self.SchedaSelezionata.Nuovo();
                               }
                           },
-                          // {
-                          //     Caption: this.FilterAmministratore.GetDescrizione(),
-                          //     OnClick: function () 
-                          //     {
-                          //         Self.SchedaSelezionata = new TSchedaAmministratore(SystemInformation.AdvQuery);
-                          //         Self.SchedaSelezionata.Nuovo(); 
-                          //     }
-                          // },
                           {
                               Caption: this.FilterFornitore.GetDescrizione(),
                               OnClick: function () 
@@ -4438,109 +4454,109 @@ export default
                           },
                       ]
                   },
-                  //   {
-                  //     Caption: "Contabilità",
-                  //     SubMenu: [
+                    {
+                      Caption: "Contabilità",
+                      SubMenu: [
                           
-                  //         {
-                  //           Caption: "Fatture",
-                  //           SubMenu: [
-                  //               {
-                  //                   Caption: this.FilterFattura.GetDescrizione(),
-                  //                   OnClick: function () 
-                  //                   {
-                  //                     Self.SchedaSelezionata = new TSchedaFattura(SystemInformation.AdvQuery);
-                  //                     Self.SchedaSelezionata.Nuovo();
-                  //                   }
+                          {
+                            Caption: "Fatture",
+                            SubMenu: [
+                                {
+                                    Caption: this.FilterFattura.GetDescrizione(),
+                                    OnClick: function () 
+                                    {
+                                      Self.SchedaSelezionata = new TSchedaFattura(SystemInformation.AdvQuery);
+                                      Self.SchedaSelezionata.Nuovo();
+                                    }
                                 
-                  //               },
-                  //               {
-                  //                   Caption: "Fattura da banco",
-                  //                   OnClick: function () 
-                  //                   {
-                  //                     Self.SchedaSelezionata = new TSchedaFattura(SystemInformation.AdvQuery);
-                  //                     Self.SchedaSelezionata.Nuovo();
-                  //                     Self.SchedaSelezionata.FatturaDaBanco()
-                  //                   }
+                                },
+                                {
+                                    Caption: "Fattura da banco",
+                                    OnClick: function () 
+                                    {
+                                      Self.SchedaSelezionata = new TSchedaFattura(SystemInformation.AdvQuery);
+                                      Self.SchedaSelezionata.Nuovo();
+                                      Self.SchedaSelezionata.FatturaDaBanco()
+                                    }
                                 
-                  //               },
-                  //           ]       
-                  //         },
-                  //         {
-                  //             Caption: this.FilterFatturaPassiva.GetDescrizione(),                                
-                  //             OnClick: function () 
-                  //             {
-                  //               Self.SchedaSelezionata = new TSchedaFatturaPassiva(SystemInformation.AdvQuery);
-                  //               Self.SchedaSelezionata.Nuovo();
-                  //             }
-                  //         },
-                  //         {
-                  //             Caption: this.FilterNotaDiCreditoPassiva.GetDescrizione(),                                
-                  //             OnClick: function () 
-                  //             {
-                  //               Self.SchedaSelezionata = new TSchedaFatturaPassiva(SystemInformation.AdvQuery);
-                  //               Self.SchedaSelezionata.Nuovo();
-                  //             }
-                  //         },
-                  //         {
-                  //             Caption: this.FilterNota.GetDescrizione(),
-                  //             OnClick: function ()
-                  //             {
-                  //               Self.SchedaSelezionata = new TSchedaNotaDiCredito(SystemInformation.AdvQuery);
-                  //               Self.SchedaSelezionata.Nuovo(); 
-                  //             }
-                  //         },
-                  //         {
-                  //             Caption: this.FilterConferma.GetDescrizione(),
-                  //             OnClick: function () 
-                  //             {
-                  //               Self.SchedaSelezionata = new TSchedaPreventivo(SystemInformation.AdvQuery);
-                  //               Self.SchedaSelezionata.Nuovo();
-                  //             }
-                  //         },
-                  //         {
-                  //             Caption: "Preventivi",
-                  //             OnClick: function () 
-                  //             {
-                  //               Self.SchedaSelezionata = new TSchedaPreventivoMultiparametrico(SystemInformation.AdvQuery);
-                  //               Self.SchedaSelezionata.Nuovo();
-                  //             }
-                  //         },
-                  //         {
-                  //           Caption : ""
-                  //         },
-                  //         {
-                  //             Caption: "Autofatture",
-                  //             OnClick: function () 
-                  //             {
-                  //               Self.SchedaSelezionata = new TSchedaAutoFattura(SystemInformation.AdvQuery);
-                  //               Self.SchedaSelezionata.Nuovo();
-                  //             }
-                  //         },
-                  //     ]
-                  // },
-                  // {
-                  //     Caption: "Movimenti/Conti",
-                  //     SubMenu: [
-                  //         {
-                  //             Caption: this.FilterMovimento.GetDescrizione(),
-                  //             OnClick: function () 
-                  //             {
-                  //                 Self.SchedaSelezionata = new TSchedaMovimento(SystemInformation.AdvQuery);
-                  //                 Self.SchedaSelezionata.Nuovo();
-                  //             }
-                  //         },
-                  //         {
-                  //             Caption: 'Conti Correnti/Casse',
-                  //             OnClick: function () 
-                  //             {
-                  //                 Self.SchedaSelezionata = new TSchedaContoCorrente(SystemInformation.AdvQuery);
-                  //                 Self.SchedaSelezionata.Nuovo();
-                  //             }
-                  //         },
+                                },
+                            ]       
+                          },
+                          {
+                              Caption: this.FilterFatturaPassiva.GetDescrizione(),                                
+                              OnClick: function () 
+                              {
+                                Self.SchedaSelezionata = new TSchedaFatturaPassiva(SystemInformation.AdvQuery);
+                                Self.SchedaSelezionata.Nuovo();
+                              }
+                          },
+                          {
+                              Caption: this.FilterNotaDiCreditoPassiva.GetDescrizione(),                                
+                              OnClick: function () 
+                              {
+                                Self.SchedaSelezionata = new TSchedaFatturaPassiva(SystemInformation.AdvQuery);
+                                Self.SchedaSelezionata.Nuovo();
+                              }
+                          },
+                          {
+                              Caption: this.FilterNota.GetDescrizione(),
+                              OnClick: function ()
+                              {
+                                Self.SchedaSelezionata = new TSchedaNotaDiCredito(SystemInformation.AdvQuery);
+                                Self.SchedaSelezionata.Nuovo(); 
+                              }
+                          },
+                          {
+                              Caption: this.FilterConferma.GetDescrizione(),
+                              OnClick: function () 
+                              {
+                                Self.SchedaSelezionata = new TSchedaPreventivo(SystemInformation.AdvQuery);
+                                Self.SchedaSelezionata.Nuovo();
+                              }
+                          },
+                          {
+                              Caption: "Preventivi",
+                              OnClick: function () 
+                              {
+                                Self.SchedaSelezionata = new TSchedaPreventivoMultiparametrico(SystemInformation.AdvQuery);
+                                Self.SchedaSelezionata.Nuovo();
+                              }
+                          },
+                          {
+                            Caption : ""
+                          },
+                          {
+                              Caption: "Autofatture",
+                              OnClick: function () 
+                              {
+                                Self.SchedaSelezionata = new TSchedaAutoFattura(SystemInformation.AdvQuery);
+                                Self.SchedaSelezionata.Nuovo();
+                              }
+                          },
+                      ]
+                  },
+                  {
+                      Caption: "Movimenti/Conti",
+                      SubMenu: [
+                          {
+                              Caption: this.FilterMovimento.GetDescrizione(),
+                              OnClick: function () 
+                              {
+                                  Self.SchedaSelezionata = new TSchedaMovimento(SystemInformation.AdvQuery);
+                                  Self.SchedaSelezionata.Nuovo();
+                              }
+                          },
+                          {
+                              Caption: 'Conti Correnti/Casse',
+                              OnClick: function () 
+                              {
+                                  Self.SchedaSelezionata = new TSchedaContoCorrente(SystemInformation.AdvQuery);
+                                  Self.SchedaSelezionata.Nuovo();
+                              }
+                          },
                           
-                  //       ]
-                  // },
+                        ]
+                  },
                   {
                       Caption: this.FilterProdotto.GetDescrizione(),
                       OnClick: function () 
@@ -4817,73 +4833,6 @@ export default
         this.HandleAnagraficheCliente()
       },
 
-      GestisciModificaAmministratore(Chiave, RagioneSociale, ChiaveCliente, Dati)
-      {
-        this.RecordDaEliminareDopoIlControlloAnagrafica = {}
-        this.RecordDaEliminareDopoIlControlloAnagrafica.CHIAVE = Chiave
-
-        if(Dati.ModificataAnagrafica)
-        {
-          let OggettoPopup = {}
-
-          if(Dati.IsNuovoAmministratore)
-          {
-            OggettoPopup.IsNuovoAmministratore    = true
-            OggettoPopup.NuoviRecapiti            = Dati.NuoviRecapiti
-          }
-          if(Dati.IsCambiatoAmministratore)
-            OggettoPopup.IsCambiatoAmministratore = true
-            
-          OggettoPopup.VecchiaAnagrafica = Dati.VecchiaAnagrafica
-          OggettoPopup.NuovaAnagrafica   = Dati.NuovaAnagrafica
-          OggettoPopup.ChiaveCliente     = ChiaveCliente
-          OggettoPopup.IsAnagrafica      = true
-          OggettoPopup.OrariModificati   = Dati.OrariModificati
-
-          this.ListaAnagraficheDaModificare.push(OggettoPopup)
-        }
-        
-        if(Dati.ModificatiRecapiti && !Dati.IsNuovoAmministratore)
-        {
-          let Self = this
-          Dati.NuoviRecapiti.forEach(function(Recapito)
-          {
-            if(Recapito.Chiave < 0)
-            {
-              let OggettoPopup = {}
-              OggettoPopup.IsNuovoRecapito      = true
-              OggettoPopup.ChiaveAmm            = Dati.VecchiaAnagrafica.CHIAVE
-              OggettoPopup.NuovoRecapito        = Recapito
-              OggettoPopup.AppartenenzaRecapito = RagioneSociale
-              OggettoPopup.ChiaveCliente        = ChiaveCliente
-              Self.ListaAnagraficheDaModificare.push(OggettoPopup)
-            }
-            else if(Recapito.Eliminato)
-            {
-              let OggettoPopup = {}
-              OggettoPopup.IsRecapitoEliminato  = true
-              OggettoPopup.NuovoRecapito        = Recapito
-              OggettoPopup.AppartenenzaRecapito = RagioneSociale
-              OggettoPopup.ChiaveCliente        = ChiaveCliente
-              Self.ListaAnagraficheDaModificare.push(OggettoPopup)    
-            }
-            else if(Recapito.RecapitoModificato)
-            {
-              let OggettoPopup = {}
-              OggettoPopup.IsRecapitoModificato = true
-              OggettoPopup.ChiaveAmm            = Dati.VecchiaAnagrafica.CHIAVE
-              OggettoPopup.VecchioRecapito      = Self.GetVecchioRecapito(Recapito.Chiave, Dati.VecchiRecapiti)
-              OggettoPopup.NuovoRecapito        = Recapito
-              OggettoPopup.AppartenenzaRecapito = RagioneSociale
-              OggettoPopup.ChiaveCliente        = ChiaveCliente
-              Self.ListaAnagraficheDaModificare.push(OggettoPopup)
-            }
-          })
-        }
-
-        this.HandleAnagraficheAmm()
-      },
-
       GestisciModificaFiliale(Chiave, RagioneSociale, Dati)
       {
         this.RecordDaEliminareDopoIlControlloAnagrafica = {}
@@ -5136,17 +5085,16 @@ export default
         var Self = this
         var ObjQuery = { Operazioni : [] };
 
-        if (Log.ID_CLIENTE != null && Log.ID_AMMINISTRATORE != null)
+        if (Log.ID_CLIENTE != null)
         {
           Log.ID_CLIENTE = null;
         }
 
         var Parametri = {
                           Username          : Log.USERNAME,
-                          RagioneSociale    : Log.NOME_CLIENTE || Log.NOME_AMMINISTRATORE,
+                          RagioneSociale    : Log.NOME_CLIENTE,
                           Email             : Log.USERNAME,
                           IdCliente         : Log.ID_CLIENTE,
-                          IdAmministratore  : Log.ID_AMMINISTRATORE,
                           Password          : Log.Password
                         }
 
@@ -5354,8 +5302,6 @@ export default
           switch(this.CurrentFilter)
           {
             case 'Clienti'                  : this.EspandiRicercheCliente?              Result = 86 : Result = 76
-                                              break;
-            case 'Amministratori'           : Result = 50
                                               break;
             case 'Fornitori'                : Result = 50
                                               break;

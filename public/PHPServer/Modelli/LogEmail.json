@@ -24,12 +24,6 @@
 			"SQL" : "SELECT *\n  FROM allegati_log_email\nWHERE ID_LOG_EMAIL = :CHIAVE\n"
 		}
 	],
-	"SelectListaEventiSollecitiAmministratore" : [
-		{
-			"Name" : "Lista",
-			"SQL" : "SELECT *\n   FROM log_solleciti\n WHERE log_solleciti.ID_AMMINISTRATORE = :ID_AMMINISTRATORE\n"
-		}
-	],
 	"SelectListaEventiSollecitiCliente" : [
 		{
 			"Name" : "Lista",
@@ -39,7 +33,7 @@
 	"SelectSQL" : [
 		{
 			"Name" : "ListaLogEmail",
-			"SQL" : "SELECT TIPO_DOCUMENTO,\n            CC,\n            CCN,\n            DESTINATARIO,\n            MITTENTE,\n            CHIAVE,\n            DATA_INSERIMENTO,\n            ERRORE_INVIO_EMAIL,\n            OGGETTO,\n            CORPO_EMAIL,\n            ID_CLIENTE,\n            ID_AMMINISTRATORE\n  FROM log_email\n {W~Fatture~ TIPO_DOCUMENTO = 'F'\n      ~Preventivi~ TIPO_DOCUMENTO = 'M'\n      ~Conferme~ TIPO_DOCUMENTO = 'P'\n      ~Note~ TIPO_DOCUMENTO = 'N'\n   ~Successo~ (ERRORE_INVIO_EMAIL IS NULL OR ERRORE_INVIO_EMAIL = '')\n      ~Errore~ (ERRORE_INVIO_EMAIL IS NOT NULL AND ERRORE_INVIO_EMAIL <> '')\n      ~Email~ (UPPER(CC) LIKE UPPER(#Email) OR\n                    UPPER(CCN) LIKE UPPER(#Email) OR\n                    UPPER(DESTINATARIO) LIKE UPPER(#Email) OR\n                    UPPER(MITTENTE) LIKE UPPER(#Email))\n      ~CorpoEmail~ (UPPER(CORPO_EMAIL) LIKE UPPER(#CorpoEmail))\n      ~DataDal~ (DATE(DATA_INSERIMENTO) >= #DataDal)\n      ~DataAl~ (DATE(DATA_INSERIMENTO) <= #DataAl)}\nORDER BY DATA_INSERIMENTO DESC\n"
+			"SQL" : "SELECT TIPO_DOCUMENTO,\n            CC,\n            CCN,\n            DESTINATARIO,\n            MITTENTE,\n            CHIAVE,\n            DATA_INSERIMENTO,\n            ERRORE_INVIO_EMAIL,\n            OGGETTO,\n            CORPO_EMAIL,\n            ID_CLIENTE\n  FROM log_email\n {W~Fatture~ TIPO_DOCUMENTO = 'F'\n      ~Preventivi~ TIPO_DOCUMENTO = 'M'\n      ~Conferme~ TIPO_DOCUMENTO = 'P'\n      ~Note~ TIPO_DOCUMENTO = 'N'\n   ~Successo~ (ERRORE_INVIO_EMAIL IS NULL OR ERRORE_INVIO_EMAIL = '')\n      ~Errore~ (ERRORE_INVIO_EMAIL IS NOT NULL AND ERRORE_INVIO_EMAIL <> '')\n      ~Email~ (UPPER(CC) LIKE UPPER(#Email) OR\n                    UPPER(CCN) LIKE UPPER(#Email) OR\n                    UPPER(DESTINATARIO) LIKE UPPER(#Email) OR\n                    UPPER(MITTENTE) LIKE UPPER(#Email))\n      ~CorpoEmail~ (UPPER(CORPO_EMAIL) LIKE UPPER(#CorpoEmail))\n      ~DataDal~ (DATE(DATA_INSERIMENTO) >= #DataDal)\n      ~DataAl~ (DATE(DATA_INSERIMENTO) <= #DataAl)}\nORDER BY DATA_INSERIMENTO DESC\n"
 		}
 ]
 }

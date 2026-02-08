@@ -112,7 +112,6 @@ export default
               PopupCambiaPagina      : false,
               LasciaPagina           : false,
               PaginaInEditing        : false,
-              VisualizzaSolleciti    : SystemInformation.AccessRights.VisibilitaSolleciti(),
               InvioManualeCheck      : TSchedaGenerica.DisponiFromBoolean(SystemInformation.Configurazioni.Impostazioni.ESPORTAZIONE_MANUALE_FATTURE),
               Pages                  : {
                                           Dashboard                 : false,

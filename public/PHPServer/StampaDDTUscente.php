@@ -100,14 +100,14 @@
                             nazioni.SIGLA AS SIGLIA_NAZIONE_EM_PIVA,
                             (SELECT TARGA FROM province WHERE ddt_uscenti.PROVINCIA_DESTINAZIONE = province.CHIAVE) AS TARGA_PROVINCIA_DESTINAZIONE,
                             causali.DESCRIZIONE AS DESCRIZIONE_CAUSALE,
-                            clienti.CODICE_CLIENTE,
-                            fornitori.CODICE_FORNITORE
+                            anagrafiche.CODICE,
+                            anagrafiche.CODICE
                        FROM ddt_uscenti
                             LEFT OUTER JOIN province  ON province.CHIAVE = ddt_uscenti.PROVINCIA_FATTURAZIONE
                             LEFT OUTER JOIN nazioni   ON nazioni.CHIAVE = ddt_uscenti.NAZIONE_EM_PIVA
                             LEFT OUTER JOIN causali   ON causali.CHIAVE = ddt_uscenti.CAUSALE
-                            LEFT OUTER JOIN clienti   ON clienti.CHIAVE = ddt_uscenti.ID_CLIENTE
-                            LEFT OUTER JOIN fornitori ON fornitori.CHIAVE = ddt_uscenti.ID_FORNITORE
+                            LEFT OUTER JOIN anagrafiche   ON anagrafiche.CHIAVE = ddt_uscenti.ID_CLIENTE
+                            LEFT OUTER JOIN anagrafiche ON anagrafiche.CHIAVE = ddt_uscenti.ID_FORNITORE
                       WHERE ddt_uscenti.CHIAVE = $ChiaveDDT";
 
                 if($Query = $PDODBase->query($SQLBody))
@@ -119,10 +119,10 @@
                                                              $Row['CAP_FATTURAZIONE'] . ' ' . $Row['COMUNE_FATTURAZIONE'] . ' (' . $Row['TARGA_PROVINCIA_FATTURAZIONE'] . ')',
                                                              'P.IVA: ' . $Row['PARTITA_IVA'] . ' C.F. ' . $Row['CODICE_FISCALE']);
                     
-                    if(isset($Row['CODICE_CLIENTE']) && $Row['CODICE_CLIENTE'] != '')
-                      array_unshift($DatiIntestazione->INTESTATARIO, 'CODICE CLIENTE: ' . $Row['CODICE_CLIENTE']);
-                    if(isset($Row['CODICE_FORNITORE']) && $Row['CODICE_FORNITORE'] != '')
-                      array_unshift($DatiIntestazione->INTESTATARIO, 'CODICE FORNITORE: ' . $Row['CODICE_FORNITORE']);
+                    if(isset($Row['CODICE']) && $Row['CODICE'] != '')
+                      array_unshift($DatiIntestazione->INTESTATARIO, 'CODICE CLIENTE: ' . $Row['CODICE']);
+                    if(isset($Row['CODICE']) && $Row['CODICE'] != '')
+                      array_unshift($DatiIntestazione->INTESTATARIO, 'CODICE FORNITORE: ' . $Row['CODICE']);
 
                     $DatiIntestazione->DESTINATARIO = array( $Row['DESTINAZIONE'],
                                                              $Row['INDIRIZZO_DESTINAZIONE'] . ' ' . $Row['NR_CIVICO_DESTINAZIONE'],

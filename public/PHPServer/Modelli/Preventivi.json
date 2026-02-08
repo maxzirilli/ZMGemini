@@ -105,17 +105,13 @@
 	"ListaEmailPreventivo" : [
 		{
 			"Name" : "ListaEmailCliente",
-			"SQL" : "SELECT clienti_telefono.EMAIL AS EMAIL_CLIENTI\n  FROM preventivi\n                               JOIN clienti                    ON clienti.CHIAVE = preventivi.ID_CLIENTE\n            LEFT OUTER JOIN clienti_telefono       ON clienti.CHIAVE = clienti_telefono.ID_CLIENTE\nWHERE preventivi.CHIAVE = :CHIAVE\n"
-		},
-		{
-			"Name" : "ListaEmailAmministratore",
-			"SQL" : "SELECT amministratori_telefono.EMAIL AS EMAIL_AMMINISTRATORI\n  FROM preventivi\n                               JOIN clienti                           ON clienti.CHIAVE = preventivi.ID_CLIENTE\n            LEFT OUTER JOIN amministratori_telefono ON clienti.ID_AMMINISTRATORE = amministratori_telefono.ID_AMMINISTRATORE\n WHERE preventivi.CHIAVE = :CHIAVE\n"
+			"SQL" : "SELECT clienti_telefono.EMAIL AS EMAIL_CLIENTI\n  FROM preventivi\n                               JOIN anagrafiche                    ON anagrafiche.CHIAVE = preventivi.ID_CLIENTE\n            LEFT OUTER JOIN clienti_telefono       ON anagrafiche.CHIAVE = clienti_telefono.ID_CLIENTE\nWHERE preventivi.CHIAVE = :CHIAVE\n"
 		}
 	],
 	"ListaPreventiviConfermati" : [
 		{
 			"Name" : "ListaPreventiviConfermati",
-			"SQL" : "SELECT preventivi.CHIAVE, \n            preventivi.DATA,\n            preventivi.NUMERO,\n            preventivi.RAGIONE_SOCIALE,\n            preventivi.COND_PAGAMENTO,\n            clienti.RAGIONE_SOCIALE AS RAGIONE_SOCIALE_CLIENTE, \n            clienti.CODICE_CLIENTE\n  FROM preventivi \n            LEFT OUTER JOIN clienti ON clienti.CHIAVE = preventivi.ID_CLIENTE\n WHERE preventivi.ID_CLIENTE = :CHIAVE\n {w~DallaData~preventivi.DATA >= #DallaData\n     ~AllaData~preventivi.DATA <= #AllaData}\n ORDER BY DATA DESC\n"
+			"SQL" : "SELECT preventivi.CHIAVE, \n            preventivi.DATA,\n            preventivi.NUMERO,\n            preventivi.RAGIONE_SOCIALE,\n            preventivi.COND_PAGAMENTO,\n            anagrafiche.RAGIONE_SOCIALE AS RAGIONE_SOCIALE_CLIENTE, \n            anagrafiche.CODICE\n  FROM preventivi \n            LEFT OUTER JOIN anagrafiche ON anagrafiche.CHIAVE = preventivi.ID_CLIENTE\n WHERE preventivi.ID_CLIENTE = :CHIAVE\n {w~DallaData~preventivi.DATA >= #DallaData\n     ~AllaData~preventivi.DATA <= #AllaData}\n ORDER BY DATA DESC\n"
 		}
 	],
 	"ListaVociPreventiviSelezionati" : [
@@ -157,7 +153,7 @@
 	"SelectDettaglio" : [
 		{
 			"Name" : "Dettaglio",
-			"SQL" : "SELECT preventivi.*, \n            clienti.BOLLO,\n            fatture.NUMERO AS NUMERO_FATTURA, \n            fatture.ANNO AS ANNO_FATTURA, \n            conti_correnti_casse.IBAN AS IBAN_CONTO,\n            conti_correnti_casse.NR_CONTO, \n            conti_correnti_casse.BANCA AS BANCA_CONTO,\n            conti_correnti_casse.SWIFT AS SWIFT_CONTO,  \n            conti_correnti_casse.BIC AS BIC_CONTO, \n            clienti.NATURA_PAGAMENTO,\n            clienti.IVA_SUGGERITA_CLIENTE,\n            filiali_clienti.NOME AS NOME_FILIALE,\n            preventivi_multiparametrici.NUMERO AS NUMERO_PREVENTIVO,\n            preventivi_multiparametrici.ANNO AS ANNO_PREVENTIVO,\n            IF(ddt_uscenti.NUMERO_DDT IS NOT NULL, ddt_uscenti.NUMERO_DDT, ddt_entranti.NUMERO_DDT) AS NUMERO_DDT\n  FROM preventivi\n            LEFT OUTER JOIN fatture ON fatture.CHIAVE = preventivi.ID_FATTURA\n            LEFT OUTER JOIN conti_correnti_casse ON conti_correnti_casse.CHIAVE = preventivi.ID_CONTO_CORRENTE\n            LEFT OUTER JOIN clienti ON clienti.CHIAVE = preventivi.ID_CLIENTE\n            LEFT OUTER JOIN filiali_clienti ON filiali_clienti.CHIAVE = preventivi.ID_FILIALE\n            LEFT OUTER JOIN ddt_uscenti ON preventivi.ID_DDT_USCENTI = ddt_uscenti.CHIAVE\n            LEFT OUTER JOIN ddt_entranti ON preventivi.ID_DDT_ENTRANTI = ddt_entranti.CHIAVE \n            LEFT OUTER JOIN preventivi_multiparametrici ON preventivi_multiparametrici.ID_PREVENTIVO_CONFERMA = preventivi.CHIAVE\nWHERE preventivi.CHIAVE = :CHIAVE\n"
+			"SQL" : "SELECT preventivi.*, \n            anagrafiche.BOLLO,\n            fatture.NUMERO AS NUMERO_FATTURA, \n            fatture.ANNO AS ANNO_FATTURA, \n            conti_correnti_casse.IBAN AS IBAN_CONTO,\n            conti_correnti_casse.NR_CONTO, \n            conti_correnti_casse.BANCA AS BANCA_CONTO,\n            conti_correnti_casse.SWIFT AS SWIFT_CONTO,  \n            conti_correnti_casse.BIC AS BIC_CONTO, \n            anagrafiche.NATURA_PAGAMENTO,\n            anagrafiche.IVA_SUGGERITA_CLIENTE,\n            filiali_clienti.NOME AS NOME_FILIALE,\n            preventivi_multiparametrici.NUMERO AS NUMERO_PREVENTIVO,\n            preventivi_multiparametrici.ANNO AS ANNO_PREVENTIVO,\n            IF(ddt_uscenti.NUMERO_DDT IS NOT NULL, ddt_uscenti.NUMERO_DDT, ddt_entranti.NUMERO_DDT) AS NUMERO_DDT\n  FROM preventivi\n            LEFT OUTER JOIN fatture ON fatture.CHIAVE = preventivi.ID_FATTURA\n            LEFT OUTER JOIN conti_correnti_casse ON conti_correnti_casse.CHIAVE = preventivi.ID_CONTO_CORRENTE\n            LEFT OUTER JOIN anagrafiche ON anagrafiche.CHIAVE = preventivi.ID_CLIENTE\n            LEFT OUTER JOIN filiali_clienti ON filiali_clienti.CHIAVE = preventivi.ID_FILIALE\n            LEFT OUTER JOIN ddt_uscenti ON preventivi.ID_DDT_USCENTI = ddt_uscenti.CHIAVE\n            LEFT OUTER JOIN ddt_entranti ON preventivi.ID_DDT_ENTRANTI = ddt_entranti.CHIAVE \n            LEFT OUTER JOIN preventivi_multiparametrici ON preventivi_multiparametrici.ID_PREVENTIVO_CONFERMA = preventivi.CHIAVE\nWHERE preventivi.CHIAVE = :CHIAVE\n"
 		},
 		{
 			"Name" : "AllegatiPreventivo",

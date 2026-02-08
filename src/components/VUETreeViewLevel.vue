@@ -45,7 +45,6 @@
                       :Titolo ="TitoloMail"
                       :AttivazionePopup="PopupInviaEmail" 
                       :OggettoEmail="OggettoEmail"
-                      :ListaEmailAmministratore="Nodo.Data.ListaEmailAmm"
                       :ListaEmailCliente="Nodo.Data.ListaEmailCliente"
                       @onClickChiudiModal="AnnullaInvia"
                       @onClickConfermaModal="ConfermaInvia">
@@ -276,10 +275,6 @@ import { TFilterFattura } from '@/ListaFiltri.js'
        {
           let Self = this
           this.Nodo = ANode
-
-          if(ANode.Data.GetClassName() == 'TSchedaAmministratore')
-              this.TestoPopupStampa = 'Stampare estratto conto di ' + this.Nodo.Data.GetDescrizione() + '?'
-          else this.TestoPopupStampa = 'Stampare ' + this.Nodo.Data.GetDescrizione() + '?'
 
           if(ANode.Data.GetClassName() == 'TSchedaPreventivoMultiparametrico')
           { 

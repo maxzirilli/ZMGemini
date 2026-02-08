@@ -10,14 +10,12 @@
               <i title="Terzo Livello"  class="fa fa-circle" style="cursor:pointer;font-size:25px;padding-top:2px;border:0px; color:red;margin-left: 20px;" @click="onClickTerzoLivello"></i>
             </div>
 
-            <div v-if="ListaEmailCliente != null || ListaEmailAmministratore != null">
+            <div v-if="ListaEmailCliente != null">
               <button v-if="ListaEmailCliente != null && ListaEmailCliente != ''" class="btn btn-info" style="width:25%;float:right;margin-left:5px;" @click="OnClickCaricaEmailCliente">Carica email cliente</button>
-              <button v-if="ListaEmailAmministratore != null && ListaEmailAmministratore != ''"  class="btn btn-info" style="width:25%;float:right;margin-left:5px;" @click="OnClickCaricaEmailAmministratore">Carica email amm.</button>
             </div>
 
-            <div v-if="EmailPEC != null || EmailPECAmministratore != null">
+            <div v-if="EmailPEC != null">
               <button v-if="EmailPEC != null && EmailPEC != ''" class="btn btn-info" style="width:25%;float:right;margin-left:5px;" @click="OnClickCaricaPECCliente">Carica PEC cliente</button>
-              <button v-if="EmailPECAmministratore != null && EmailPECAmministratore != ''" class="btn btn-info"  style="width:25%;float:right;margin-left:5px;" @click="OnClickCaricaPECAmministratore">Carica PEC Amministratore</button>
             </div>
 
           </div>
@@ -71,7 +69,7 @@ export default
            }
   },
 
-  props : ['OggettoEmail', 'AttivazionePopup', 'ListaEmailCliente', 'EmailPEC', 'ListaEmailAmministratore','VisualizzaLivelliSolleciti','Titolo','EmailPECAmministratore'],
+  props : ['OggettoEmail', 'AttivazionePopup', 'ListaEmailCliente', 'EmailPEC','VisualizzaLivelliSolleciti','Titolo'],
 
   computed :
   {
@@ -79,7 +77,7 @@ export default
     {
       get()
       {
-        return this.ListaEmailCliente + this.EmailPEC + this.ListaEmailAmministratore;
+        return this.ListaEmailCliente + this.EmailPEC;
       }
     },
   },
@@ -111,12 +109,6 @@ export default
       this.$emit('onClickTerzoLivello')
     },
 
-    OnClickCaricaEmailAmministratore()
-    {
-      if(!this.OggettoEmail.Destinatario.includes(this.ListaEmailAmministratore))
-        this.OggettoEmail.Destinatario += this.OggettoEmail.Destinatario != ''? '; ' + this.ListaEmailAmministratore : this.ListaEmailAmministratore
-    },
-
     OnClickCaricaEmailCliente()
     {
       if(!this.OggettoEmail.Destinatario.includes(this.ListaEmailCliente))
@@ -127,11 +119,6 @@ export default
       if(!this.OggettoEmail.Destinatario.includes(this.EmailPEC))
         this.OggettoEmail.Destinatario += this.OggettoEmail.Destinatario != ''? '; ' + this.EmailPEC : this.EmailPEC
     },
-    OnClickCaricaPECAmministratore()
-    {
-      if(!this.OggettoEmail.Destinatario.includes(this.EmailPECAmministratore))
-        this.OggettoEmail.Destinatario += this.OggettoEmail.Destinatario != ''? '; ' + this.EmailPECAmministratore : this.EmailPECAmministratore
-    }
   }
 }
 </script>

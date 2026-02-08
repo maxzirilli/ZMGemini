@@ -197,7 +197,6 @@
             </div>
           </div>
         </div>
-      </div>
       <div class="ZMNuovaRigaScheda" style="padding-top:3px">
         <div class="col-md-12" style="align-items: center">
           <text v-if="!SchedaFattura.Dati.ENTE_PUBBLICO" style="font-weight: bold;float:left;margin-top:5px" >Reverse Charge&nbsp;</text>
@@ -389,6 +388,7 @@
       </div>
       
       <div class="ZMSeparatoreFiltri">&nbsp;</div>
+   </div>
    </div>
 
    <div v-if="Tabs.ActiveTab == 'VociFattura'" style="width:100%;">
@@ -1901,22 +1901,9 @@ export class TSchedaFattura extends TSchedaGenerica
                                               Self.Dati.PROVINCIA_DESTINAZIONE   = ArrayInfo[0].PROVINCIA_SPEDIZIONE
                                               Self.Dati.DESTINAZIONE             = TSchedaGenerica.DisponiFromString(ArrayInfo[0].PRESSO)
 
-                                              const BoolCondominioConFatturazione = TSchedaGenerica.DisponiFromBoolean(ArrayInfo[0].CONDOMINIO_CON_FATTURAZIONE);
-                                              if(ArrayInfo[0].ID_AMMINISTRATORE && !BoolCondominioConFatturazione)
-                                              {
-                                                Self.Dati.PEC                    = TSchedaGenerica.DisponiFromString(ArrayInfo[0].PEC_AMMINISTRATORE)
-                                                Self.Dati.COD_ENTE_SDI           = TSchedaGenerica.DisponiFromString(ArrayInfo[0].COD_ENTE_SDI_AMMINISTRATORE)
-                                                Self.Dati.COD_UFFICIO_DEST       = TSchedaGenerica.DisponiFromString(ArrayInfo[0].COD_UFFICIO_DEST_AMMINISTRATORE)
-
-                                                if(Self.Dati.COD_ENTE_SDI == '')
-                                                  Self.Dati.COD_ENTE_SDI = '0000000'
-                                              }
-                                              else
-                                              {
-                                                Self.Dati.PEC                    = TSchedaGenerica.DisponiFromString(ArrayInfo[0].PEC)
-                                                Self.Dati.COD_ENTE_SDI           = TSchedaGenerica.DisponiFromString(ArrayInfo[0].COD_ENTE_SDI)
-                                                Self.Dati.COD_UFFICIO_DEST       = TSchedaGenerica.DisponiFromString(ArrayInfo[0].COD_UFFICIO_DEST)
-                                              }
+                                              Self.Dati.PEC                    = TSchedaGenerica.DisponiFromString(ArrayInfo[0].PEC)
+                                              Self.Dati.COD_ENTE_SDI           = TSchedaGenerica.DisponiFromString(ArrayInfo[0].COD_ENTE_SDI)
+                                              Self.Dati.COD_UFFICIO_DEST       = TSchedaGenerica.DisponiFromString(ArrayInfo[0].COD_UFFICIO_DEST)
                                               
                                               Self.Dati.ENTE_PUBBLICO            = ArrayInfo[0].ENTE_PUBBLICO == 'T'? true : false
                                               Self.Dati.NAZIONE_DESTINAZIONE     = ArrayInfo[0].NAZIONE_SPEDIZIONE
@@ -2031,10 +2018,9 @@ export class TSchedaFattura extends TSchedaGenerica
                                           function(Results)
                                           {
                                             let ArrayEmailCliente = SystemInformation.AdvQuery.FindResults(Results,"ListaEmailCliente");
-                                            let ArrayEmailAmm     = SystemInformation.AdvQuery.FindResults(Results,"ListaEmailAmministratore");
                                             // var ArrayEmailPEC     = SystemInformation.AdvQuery.FindResults(Results,'EmailPEC')
                                             // var EmailPEC          = TSchedaGenerica.DisponiFromString(ArrayEmailPEC[0].PEC_CLIENTE)
-                                            if(ArrayEmailCliente != undefined && ArrayEmailAmm != undefined)
+                                            if(ArrayEmailCliente != undefined)
                                             {
                                               if(ArrayEmailCliente.length != 0)
                                                 ArrayEmailCliente.forEach(function(Email)
@@ -2042,18 +2028,11 @@ export class TSchedaFattura extends TSchedaGenerica
                                                   if(Email.EMAIL_CLIENTE != null)
                                                     Self.ListaEmailCliente += Email.EMAIL_CLIENTE + '; '
                                                 })
-                                              if(ArrayEmailAmm.length != 0)
-                                                ArrayEmailAmm.forEach(function(Email)
-                                                {
-                                                  if(Email.EMAIL_AMMINISTRATORE != null)
-                                                    Self.ListaEmailAmm += Email.EMAIL_AMMINISTRATORE + '; '
-                                                })
 
                                                 // if(EmailPEC != undefined && EmailPEC != '')
                                                 // {
                                                 //   Self.EmailPEC = Email.PEC + ';'
                                                 // }
-                                              Self.ListaEmailAmm     = Self.ListaEmailAmm.substring(0, Self.ListaEmailAmm.length - 2)
                                               Self.ListaEmailCliente = Self.ListaEmailCliente.substring(0, Self.ListaEmailCliente.length - 2)
                                               // Self.EmailPEC          = Self.EmailPEC.substring(0, Self.EmailPEC.length - 1)
                                               OnSuccess()

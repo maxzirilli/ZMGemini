@@ -15,9 +15,11 @@
   const TYP_MOVIMENTI         = 'M';
   const TYP_FATTURE_ATTIVE    = 'F';
   const TYP_NOTE_DI_CREDITO   = 'N';
+  const TYP_FATTURE_PASSIVE         = 'P';
+  const TYP_RATE_FATTURE_PASSIVE    = 'RF';
   const TYP_NOTE_DI_CREDITO_SPLIT = 'SN';
   const TYP_RATA_FATTURA      = 'R';
-  const TYP_FATTURE_PREGRESSE = 'P';
+  const TYP_FATTURE_PREGRESSE = '1';
   const TYP_APERTURA_ANNO     = 'A';
 
   class TRiga 
@@ -44,7 +46,7 @@
     }
   }
 
-  class TStampaContoCliente
+  class TStampaConto
   {
     public $BAND_INTESTAZIONE = array();
     public $BAND_FOOTER       = array();
@@ -73,7 +75,7 @@
     public $LB_TOTALE_AVERE = 0;
     public $LB_TOTALE_SALDO = 0;
     public $TOTALE_SALDO    = 0;
-    public $QRLabel10       = "Totali: ";
+    public $QRLabel10       = "Saldo attuale: ";
   }
 
   class TDatiDocumento
@@ -140,13 +142,15 @@
       }
   }
 
-  class TExtraStampaContoCliente extends TAdvQuery
+  class TExtraStampaConto extends TAdvQuery
   {
-    private $Parametri        = null;
-    private $FRigheProspetto  = array();
-    private $DareDiPartenza   = 0;
-    private $AvereDiPartenza  = 0;
-    
+    private $Parametri            = null;
+    private $FRigheProspetto      = array();
+    private $DareDiPartenza       = 0;
+    private $AvereDiPartenza      = 0;
+    private $SaldoContabileCliente = 0;
+    public $TotaleDareCliente                         = 0;
+    public $TotaleAvereCliente                        = 0;
 
     public function __construct($Parametri, $ScriptEsterno = false)
     {
@@ -168,6 +172,26 @@
        array_push($this->FRigheProspetto, new TRiga($Chiave,$Tipo,$Descrizione, $NumeroDocumento, $DataChiusura, $Importo, $IsDare, $ChiaveSecondaria));   
     }
 
+      private function FGetTotaleRitenutaRata($Totale, $IdRata)
+      {
+            foreach ($Totale->Rate as $Rata) 
+              if($IdRata == $Rata->IdRata)
+                return $Rata->Ritenuta;
+      }
+
+      private function GetRitenutaFatturaPassiva($PDODBase, $IdFatturaPassiva)
+      {
+            $SQLBody = "SELECT ritenute_fatture_passive.IMPORTO
+                          FROM ritenute_fatture_passive
+                         WHERE ID_FATTURA_PASSIVA = $IdFatturaPassiva";
+
+            if($Query = $PDODBase->query($SQLBody))
+            {
+              $Row = $Query->fetch(PDO::FETCH_ASSOC);
+              return $Row;
+            }
+      }
+
     private function FGetDatiStampa($Parametri, $PDODBase, &$JSONAnswer, $NomeLogo)
     {
       $ChiaveCliente  = $Parametri->ChiaveCliente;
@@ -175,7 +199,7 @@
       $DataAl         = $Parametri->DataAl;
       $VelocizzaXStampaSaldiClienti = isset($Parametri->VelocizzaXStampaSaldiClienti)? $Parametri->VelocizzaXStampaSaldiClienti : false;
 
-      $Result = new TStampaContoCliente();
+      $Result = new TStampaConto();
       $DatiIntestazione = new TDatiIntestazione();
       $DatiIntestazione->LB_NOME_CAUSALE = 'Dal ' . date('d/m/Y', strtotime($DataDal)) . ' al ' . date('d/m/Y', strtotime($DataAl));
 
@@ -186,6 +210,8 @@
 
       if(!$VelocizzaXStampaSaldiClienti)
         $this->FGestioneSaldoIniziale($PDODBase, $DataDal, $DataAl, $ChiaveCliente);
+
+      $this->FCalcolaSaldoContabileCliente($PDODBase, $ChiaveCliente);
 
       $DatiFooter = new TDatiFooter();
       $DatiFooter->LB_TOTALE_DARE  = 0;
@@ -199,17 +225,17 @@
       if(!$VelocizzaXStampaSaldiClienti)
       {
       
-        $SQLBody = "SELECT clienti.*
-                      FROM clienti
-                     WHERE clienti.CHIAVE = $ChiaveCliente";
+        $SQLBody = "SELECT anagrafiche.*
+                      FROM anagrafiche
+                     WHERE anagrafiche.CHIAVE = $ChiaveCliente";
 
         if($Query = $PDODBase->query($SQLBody))
         {
           while($Row = $Query->fetch(PDO::FETCH_ASSOC))
           {  
-            $DatiIntestazione->DESTINATARIO = array( 'CODICE CLIENTE: ' . $Row['CODICE_CLIENTE'], 
+            $DatiIntestazione->DESTINATARIO = array( 'CODICE CLIENTE: ' . $Row['CODICE'], 
                                                       $Row['RAGIONE_SOCIALE'], 
-                                                      $Row['INDIRIZZO_FATTURAZIONE'] . ' ' . $Row['NR_CIVICO_FATTURAZIONE'],
+                                                      $Row['INDIRIZZO_FATTURAZIONE'] . ' ' . $Row['NR_CIVICO_FATTURAZIONE'] . ' ' .
                                                       $Row['CAP_FATTURAZIONE'] . ' ' . $Row['COMUNE_FATTURAZIONE'] );
           }
         }
@@ -217,9 +243,9 @@
         $SQLBody = "SELECT  clienti_telefono.EMAIL,
                             clienti_telefono.TELEFONO,
                             clienti_telefono.DESCRIZIONE
-                    FROM   		clienti
-                    LEFT JOIN clienti_telefono ON clienti_telefono.ID_CLIENTE = clienti.CHIAVE
-                    WHERE clienti.CHIAVE = $ChiaveCliente";
+                    FROM   		anagrafiche
+                    LEFT JOIN clienti_telefono ON clienti_telefono.ID_CLIENTE = anagrafiche.CHIAVE
+                    WHERE anagrafiche.CHIAVE = $ChiaveCliente";
 
         if($Query = $PDODBase->query($SQLBody))
         {
@@ -228,44 +254,6 @@
             $RigaContattoDestinatario = $Row['EMAIL'] . ' ' . $Row['TELEFONO'] . ' ' . $Row['DESCRIZIONE'];
 
             array_push($DatiIntestazione->MM_CONTATTI_DESTINATARIO, $RigaContattoDestinatario);
-          }
-        }
-
-        $SQLBody = "SELECT 	amministratori.*
-                    FROM   	clienti
-                    JOIN 		amministratori ON amministratori.CHIAVE = clienti.ID_AMMINISTRATORE
-                    WHERE clienti.CHIAVE = $ChiaveCliente";
-        
-        if($Query = $PDODBase->query($SQLBody))
-        {
-          if($Row = $Query->fetch(PDO::FETCH_ASSOC))
-          { 
-            $MultirigaAmministatore = $Row['RAGIONE_SOCIALE'] . '\n' . $Row['INDIRIZZO_FATTURAZIONE'] . ' ' . $Row['NR_CIVICO_FATTURAZIONE'] 
-            . '\n' . $Row['CAP_FATTURAZIONE'] . ' ' . $Row['COMUNE_FATTURAZIONE'];
-
-            $ArrayAmministratore = explode('\n', $MultirigaAmministatore);
-
-            $DatiIntestazione->MM_AMMINISTRATORE = $ArrayAmministratore;
-            $DatiIntestazione->AmministratorePresente = true;
-          }
-        }
-
-        $SQLBody = "SELECT amministratori_telefono.EMAIL,
-                          amministratori_telefono.TELEFONO,
-                          amministratori_telefono.DESCRIZIONE
-                      FROM clienti
-                      JOIN amministratori   				ON amministratori.CHIAVE 											= clienti.ID_AMMINISTRATORE
-                      JOIN amministratori_telefono 	ON amministratori_telefono.ID_AMMINISTRATORE 	= amministratori.CHIAVE
-                    WHERE clienti.CHIAVE = $ChiaveCliente";
-
-
-        if($Query = $PDODBase->query($SQLBody))
-        {
-          while($Row = $Query->fetch(PDO::FETCH_ASSOC))
-          {  
-            $RigaContattoDestinatario = $Row['EMAIL'] . ' ' . $Row['TELEFONO'] . ' ' . $Row['DESCRIZIONE'];
-
-            array_push($DatiIntestazione->MM_CONTATTI_AMMINISTRATORE, $RigaContattoDestinatario);
           }
         }
       }
@@ -281,7 +269,7 @@
       $SQLBodyMovimenti = "SELECT movimenti.*,
                                   cat_movimenti.DESCRIZIONE AS DESCR_CATEGORIA
                              FROM movimenti LEFT OUTER JOIN cat_movimenti ON (cat_movimenti.CHIAVE = movimenti.ID_CATEGORIA_MOVIMENTO)
-                            WHERE ID_CLIENTE = $ChiaveCliente
+                            WHERE ID_ANAGRAFICA = $ChiaveCliente
                               AND (movimenti.DATA >= '$DataDal'  AND movimenti.DATA <= '$DataAl' OR 
                                    movimenti.DATA_CHIUSURA >= '$DataDal' AND movimenti.DATA_CHIUSURA <= '$DataAl')";
        
@@ -381,17 +369,104 @@
                                $TotaliFattura[0]->SommaIva, 
                                false);
 
-          // if($TotaliFattura[0]->TotaleRitenuta != 0)
-          //    $this->FAddNewRiga($Row['CHIAVE_FATTURA'],
-          //                       TYP_FATTURE_ATTIVE,
-          //                       'Ritenuta della fattura n. ' . $Row['NUMERO_FATTURA'], 
-          //                       $Row['NUMERO_FATTURA'], 
-          //                       $Row['DATA_FATTURA'], 
-          //                       $TotaliFattura[0]->TotaleRitenuta, 
-          //                       false);
         }
       }  
       else throw new Exception('Impossibile leggere le fatture attive dal database...');
+
+
+       // FATTURE PASSIVE FORNITORE
+            $SQLBody = "SELECT 
+                        fatture_passive.CHIAVE				        AS CHIAVE_FATTURA,
+                        fatture_passive.NUMERO							    	AS NUMERO_FATTURA,
+                        fatture_passive.DATA  						   	 	AS DATA_FATTURA,
+                        fatture_passive.OGGETTO					      AS OGGETTO_FATTURA,
+                        fatture_passive.IS_FATTURA,
+                        fatture_passive.TOTALE_FATTURA    AS TOTALE_FATTURA
+                  FROM  fatture_passive 
+                 WHERE  fatture_passive.ID_FORNITORE = $ChiaveCliente 
+                   AND  fatture_passive.DATA >= '$DataDal' AND fatture_passive.DATA <= '$DataAl'";
+            
+            if($Query = $PDODBase->query($SQLBody))
+            { 
+              while($Row = $Query->fetch(PDO::FETCH_ASSOC))
+              { 
+                $Descrizione      = $Row['IS_FATTURA'] == 'T' ? "Fattura passiva n. " : "Nota passiva n. ";
+                $Descrizione     .= $Row['NUMERO_FATTURA'];
+                $this->FAddNewRiga($Row['CHIAVE_FATTURA'],
+                                    TYP_FATTURE_PASSIVE,
+                                    $Descrizione, 
+                                    $Row['NUMERO_FATTURA'], 
+                                    $Row['DATA_FATTURA'], 
+                                    $Row['TOTALE_FATTURA'] / 100, 
+                                    $Row['IS_FATTURA'] == 'F');
+              }
+            }  
+            else throw new Exception('Impossibile trovare le fatture Fornitore...');
+
+
+            // PAGAMENTI FATTURE PASSIVE PAGATE DIRETTAMENTE
+            $SQLBody = "SELECT  fatture_passive.CHIAVE						       		 AS CHIAVE_FATTURA,
+                                fatture_passive.NUMERO								        AS NUMERO_FATTURA,
+                                fatture_passive.DATA  								        AS DATA_FATTURA,
+                                fatture_passive.OGGETTO							        AS OGGETTO_FATTURA,
+                                fatture_passive.IS_FATTURA,
+                                
+                                rate_fatture_passive.CHIAVE           AS CHIAVE_RATA,
+                                rate_fatture_passive.DATA_PAGAMENTO   AS DATA_PAGAMENTO_RATA,
+                                rate_fatture_passive.IMPORTO / 1000   AS IMPORTO_RATA,
+                                rate_fatture_passive.NOTE             AS NOTE_RATA,
+                                mod_pagamento.DESCRIZIONE             AS MODALITA_PAGAMENTO
+                          FROM  fatture_passive
+                                JOIN rate_fatture_passive     ON fatture_passive.CHIAVE      = rate_fatture_passive.ID_FATTURA_PASSIVA
+                                JOIN anagrafiche                ON anagrafiche.CHIAVE            = fatture_passive.ID_FORNITORE
+                                LEFT OUTER JOIN mod_pagamento ON mod_pagamento.CHIAVE        = rate_fatture_passive.ID_MOD_PAGAMENTO
+                         WHERE  (rate_fatture_passive.DATA_PAGAMENTO IS NOT NULL OR rate_fatture_passive.ID_MOVIMENTO IS NOT NULL)
+                           AND  fatture_passive.ID_FORNITORE = $ChiaveCliente
+                           AND  rate_fatture_passive.ID_MOVIMENTO IS NULL
+                           AND  fatture_passive.NUMERO IS NOT NULL
+                           AND  rate_fatture_passive.DATA_PAGAMENTO >= '$DataDal' AND rate_fatture_passive.DATA_PAGAMENTO <= '$DataAl'";
+
+            try 
+            {
+              if($Query = $PDODBase->query($SQLBody))
+              { 
+                while($Row = $Query->fetch(PDO::FETCH_ASSOC))
+                { 
+                  $FatturaONota     = $Row['IS_FATTURA'] == 'T' ? 'fattura passiva' : 'nota passiva';
+                  $Descrizione      = "Rata $FatturaONota n. " . $Row['NUMERO_FATTURA'];
+                  if(isset($Row['MODALITA_PAGAMENTO']))
+                     $Descrizione .= ' - ' . $Row['MODALITA_PAGAMENTO'];                                                    
+                  if(isset($Row['NOTE_RATA']) && trim($Row['NOTE_RATA']) != '')
+                     $Descrizione .= ' - ' . $Row['NOTE_RATA'];  
+
+                  $TotaleFatturaPassiva = $this->GetRitenutaFatturaPassiva($PDODBase, $Row['CHIAVE_FATTURA']);
+
+                  $this->FAddNewRiga($Row['CHIAVE_RATA'],
+                                    TYP_RATE_FATTURE_PASSIVE,
+                                    $Descrizione, 
+                                    $Row['NUMERO_FATTURA'], 
+                                    $Row['DATA_PAGAMENTO_RATA'],
+                                    $Row['IMPORTO_RATA'], 
+                                    $Row['IS_FATTURA'] == 'T',
+                                    $Row['CHIAVE_FATTURA']);
+
+                  if (is_array($TotaleFatturaPassiva) && $TotaleFatturaPassiva['IMPORTO'] != 0)
+                    $this->FAddNewRiga(-$Row['CHIAVE_RATA'],
+                                      TYP_RATE_FATTURE_PASSIVE,
+                                      'Ritenuta della fattura n. ' . $Row['NUMERO_FATTURA'], 
+                                      '', 
+                                      $Row['DATA_PAGAMENTO_RATA'],
+                                      $TotaleFatturaPassiva['IMPORTO']/ 100,
+                                      $Row['IS_FATTURA'] == 'T',
+                                      );
+                }
+              } 
+            }
+            catch(Exception $e)
+            {
+              error_log($SQLBody);
+              throw $e;
+            }
 
 
       // NOTE DI CREDITO DEL CLIENTE
@@ -435,6 +510,68 @@
             }
           }  
           else throw new Exception('Impossibile leggere le note del cliente dal database');
+
+            // MOVIMENTI ASSOCIATI AD UNA FATTURA PASSIVA O FATTURA PREGRESSA DEL FORNITORE
+           $SQLBody = "SELECT  movimenti.CHIAVE                      AS CHIAVE_MOVIMENTO,
+                               movimenti.DESCRIZIONE                 AS DESCRIZIONE_MOVIMENTO,
+                               movimenti.DATA                        AS DATA_MOVIMENTO,
+                               movimenti.IMPORTO / 100               AS IMPORTO_MOVIMENTO
+                          FROM fatture_passive
+                               JOIN rate_fatture_passive ON fatture_passive.CHIAVE   = rate_fatture_passive.ID_FATTURA_PASSIVA
+                               JOIN movimenti            ON movimenti.CHIAVE = rate_fatture_passive.ID_MOVIMENTO
+                         WHERE fatture_passive.ID_FORNITORE = $ChiaveCliente
+                           AND movimenti.DATA >= '$DataDal' AND movimenti.DATA <= '$DataAl'
+                     UNION 
+                        SELECT movimenti.CHIAVE                      AS CHIAVE_MOVIMENTO,
+                               movimenti.DESCRIZIONE                 AS DESCRIZIONE_MOVIMENTO,
+                               movimenti.DATA                        AS DATA_MOVIMENTO,
+                               movimenti.IMPORTO / 100               AS IMPORTO_MOVIMENTO
+                          FROM movimenti             
+                               JOIN fatture_insolute_pregresse_fornitori ON fatture_insolute_pregresse_fornitori.ID_MOVIMENTO = movimenti.CHIAVE
+                         WHERE fatture_insolute_pregresse_fornitori.ID_FORNITORE = $ChiaveCliente
+                           AND movimenti.DATA >= '$DataDal' AND movimenti.DATA <= '$DataAl'";
+
+           if($Query = $PDODBase->query($SQLBody))
+           { 
+             while($Row = $Query->fetch(PDO::FETCH_ASSOC))
+                 $this->FAddNewRiga($Row['CHIAVE_MOVIMENTO'],TYP_MOVIMENTI,'Movimento di Conto: ' . $Row['DESCRIZIONE_MOVIMENTO'], '', $Row['DATA_MOVIMENTO'], $Row['IMPORTO_MOVIMENTO'], true);
+           }  
+           else throw new Exception('Impossibile leggere le rate delle fatture attive dal database');
+
+             // FATTURE PREGRESSE DEL FORNITORE
+            $SQLBody = "SELECT CHIAVE          AS CHIAVE_FATTURA, 
+                               NUMERO          AS NUMERO_FATTURA, 
+                               ID_FORNITORE, 
+                               IMPORTO / 100   AS IMPORTO_PREGRESSA,
+                               DATA            AS DATA_FATTURA
+                          FROM fatture_insolute_pregresse_fornitori 
+                         WHERE ID_FORNITORE = $ChiaveCliente
+                           AND DATA >= '$DataDal' AND DATA <= '$DataAl'";
+            
+            if($Query = $PDODBase->query($SQLBody))
+            {
+              while($Row = $Query->fetch(PDO::FETCH_ASSOC))
+                  $this->FAddNewRiga($Row['CHIAVE_FATTURA'],TYP_FATTURE_PREGRESSE,'Fatt. Pregr. n. ' . $Row['NUMERO_FATTURA'], $Row['NUMERO_FATTURA'], $Row['DATA_FATTURA'], $Row['IMPORTO_PREGRESSA'], false);
+            }  
+            else throw new Exception('Impossibile trovare le fatture insolute pregresse del Fornitore'); 
+
+            // PAGAMENTI DIRETTI FATTURE INSOLUTE PREGRESSE FORNITORI
+            $SQLBody = "SELECT fatture_insolute_pregresse_fornitori.CHIAVE          AS CHIAVE_FATTURA, 
+                               fatture_insolute_pregresse_fornitori.NUMERO          AS NUMERO_FATTURA, 
+                               fatture_insolute_pregresse_fornitori.ID_FORNITORE, 
+                               fatture_insolute_pregresse_fornitori.IMPORTO / 100   AS IMPORTO_PREGRESSA, 
+                               fatture_insolute_pregresse_fornitori.DATA            AS DATA_FATTURA,
+                               fatture_insolute_pregresse_fornitori.DATA_PAGAMENTO
+                          FROM fatture_insolute_pregresse_fornitori
+                         WHERE fatture_insolute_pregresse_fornitori.ID_FORNITORE = $ChiaveCliente
+                           AND fatture_insolute_pregresse_fornitori.DATA_PAGAMENTO >= '$DataDal' AND fatture_insolute_pregresse_fornitori.DATA_PAGAMENTO <= '$DataAl'";
+
+            if($Query = $PDODBase->query($SQLBody))
+            {
+              while($Row = $Query->fetch(PDO::FETCH_ASSOC))
+                 $this->FAddNewRiga($Row['CHIAVE_FATTURA'],TYP_FATTURE_PREGRESSE,"Rata Fatt. Pregr. n. " . $Row['NUMERO_FATTURA'], $Row['NUMERO_FATTURA'], $Row['DATA_PAGAMENTO'], $Row['IMPORTO_PREGRESSA'], true);
+            }  
+            else throw new Exception('Impossibile trovare i pagamenti delle fatture insolute pregresse del Fornitore');
 
       
       // PAGAMENTI NOTE DI CREDITO DEL CLIENTE
@@ -579,7 +716,6 @@
       }  
       else throw new Exception('Impossibile leggere le note del cliente dal database');
 
-
       // PAGAMENTI FATTURE ATTIVE
       $SQLBody = "SELECT  fatture.CHIAVE							     AS CHIAVE_FATTURA,
                           fatture.NUMERO							     AS NUMERO_FATTURA,
@@ -598,7 +734,7 @@
                     FROM  fatture
                           LEFT OUTER JOIN rate_fattura          ON fatture.CHIAVE              = rate_fattura.ID_FATTURA
                           LEFT OUTER JOIN conti_correnti_casse  ON conti_correnti_casse.CHIAVE = rate_fattura.ID_CONTO_CASSE
-                          LEFT OUTER JOIN clienti               ON clienti.CHIAVE              = fatture.ID_CLIENTE
+                          LEFT OUTER JOIN anagrafiche               ON anagrafiche.CHIAVE              = fatture.ID_CLIENTE
                    WHERE  rate_fattura.DATA_PAGAMENTO IS NOT NULL
                      AND  rate_fattura.ID_MOVIMENTO IS NULL
                      AND  fatture.ID_CLIENTE = $ChiaveCliente
@@ -662,8 +798,6 @@
       }  
       else throw new Exception('Impossibile leggere le rate delle fatture attive dal database');
 
-
-      
       // MOVIMENTI ASSOCIATI AD UNA FATTURA O FATTURA PREGRESSA DEL CLIENTE
       $SQLBody = "SELECT  movimenti.CHIAVE                      AS CHIAVE_MOVIMENTO,
                           movimenti.DESCRIZIONE                 AS DESCRIZIONE_MOVIMENTO,
@@ -796,8 +930,6 @@
               });
       }
 
-      
-
       $PrimoElemento  = true;
       $ConteggioSaldo = 0;
 
@@ -873,43 +1005,24 @@
       $DatiFooterVuoto->QRLabel10       = '';
       $DatiFooterVuoto->LB_TOTALE_DARE  = '';
       $DatiFooterVuoto->LB_TOTALE_AVERE = '';
-      $DatiFooterVuoto->LB_TOTALE_DARE  = '';
-      $DatiFooterVuoto->LB_TOTALE_AVERE = '';
       $DatiFooterVuoto->LB_TOTALE_SALDO = '';
       array_push($Result->BAND_FOOTER, $DatiFooterVuoto);
 
-      $DatiFooterPeriodoSelezionato = new TDatiFooter();
-      $DatiFooterPeriodoSelezionato->QRLabel10       = "Tot. periodo: ";
-      $DatiFooterPeriodoSelezionato->LB_TOTALE_DARE  = $DatiFooter->LB_TOTALE_DARE;
-      $DatiFooterPeriodoSelezionato->LB_TOTALE_AVERE = $DatiFooter->LB_TOTALE_AVERE;
-      $DatiFooterPeriodoSelezionato->LB_TOTALE_DARE  = round($DatiFooter->LB_TOTALE_DARE, 2);
-      $DatiFooterPeriodoSelezionato->LB_TOTALE_AVERE = round($DatiFooter->LB_TOTALE_AVERE, 2);
-
-      $DatiFooterPeriodoSelezionato->TOTALE_SALDO    = round($DatiFooter->LB_TOTALE_DARE - $DatiFooter->LB_TOTALE_AVERE, 2);
-      $DatiFooterPeriodoSelezionato->LB_TOTALE_SALDO = number_format($DatiFooter->LB_TOTALE_DARE - $DatiFooter->LB_TOTALE_AVERE, 2, ',', '.') . '€';
-      
-      $DatiFooterPeriodoSelezionato->LB_TOTALE_AVERE = number_format($DatiFooter->LB_TOTALE_AVERE, 2, ',', '.') . '€';
-      $DatiFooterPeriodoSelezionato->LB_TOTALE_DARE  = number_format($DatiFooter->LB_TOTALE_DARE,  2, ',', '.') . '€';
-
-
-
-      $DatiFooter->LB_TOTALE_DARE  = $DatiFooter->LB_TOTALE_DARE  + $this->DareDiPartenza;
-      $DatiFooter->LB_TOTALE_AVERE = $DatiFooter->LB_TOTALE_AVERE + $this->AvereDiPartenza;
       $DatiFooter->LB_TOTALE_DARE  = round($DatiFooter->LB_TOTALE_DARE, 2);
       $DatiFooter->LB_TOTALE_AVERE = round($DatiFooter->LB_TOTALE_AVERE, 2);
 
-      $DatiFooter->TOTALE_SALDO    = round($DatiFooter->LB_TOTALE_DARE - $DatiFooter->LB_TOTALE_AVERE, 2);
-      $DatiFooter->LB_TOTALE_SALDO = number_format($DatiFooter->LB_TOTALE_DARE - $DatiFooter->LB_TOTALE_AVERE, 2, ',', '.') . '€';
+      $DatiFooter->TOTALE_SALDO    = $this->SaldoContabileCliente;
+      $DatiFooter->LB_TOTALE_SALDO = number_format($this->SaldoContabileCliente, 2, ',', '.') . '€';
       $Result->TotaleSaldoAttualePerSchedaClienteStringa = $DatiFooter->LB_TOTALE_SALDO;
       $Result->TotaleSaldoAttualePerSchedaCliente        = $DatiFooter->TOTALE_SALDO;
 
-      $DatiFooter->LB_TOTALE_AVERE = number_format($DatiFooter->LB_TOTALE_AVERE, 2, ',', '.') . '€';
-      $DatiFooter->LB_TOTALE_DARE  = number_format($DatiFooter->LB_TOTALE_DARE,  2, ',', '.') . '€';
+      $DatiFooter->LB_TOTALE_DARE  = number_format($this->TotaleDareCliente,  2, ',', '.') . '€';
+      $DatiFooter->LB_TOTALE_AVERE = number_format($this->TotaleAvereCliente, 2, ',', '.') . '€';
 
       array_push($Result->BAND_FOOTER, $DatiFooter);
-      array_push($Result->BAND_FOOTER, $DatiFooterPeriodoSelezionato);
 
       return $Result;
+
     }
 
     private function FFormattazioneDelleDateETotali(&$BAND_SUMMARY)
@@ -958,7 +1071,7 @@
         //Vado a vedere se sono presenti nel database
         $SQLBody = "SELECT  saldi_chiusure_annuali.*
                       FROM  saldi_chiusure_annuali
-                      WHERE saldi_chiusure_annuali.ID_CLIENTE = $ChiaveCliente
+                      WHERE saldi_chiusure_annuali.ID_ANAGRAFICA = $ChiaveCliente
                         AND saldi_chiusure_annuali.ANNO IN ($StringaAnni)";
 
 
@@ -1051,7 +1164,7 @@
       $SQLBodyMovimenti = "SELECT movimenti.*,
                                   cat_movimenti.DESCRIZIONE AS DESCR_CATEGORIA
                              FROM movimenti LEFT OUTER JOIN cat_movimenti ON (cat_movimenti.CHIAVE = movimenti.ID_CATEGORIA_MOVIMENTO)
-                            WHERE ID_CLIENTE = $ChiaveCliente
+                            WHERE ID_ANAGRAFICA = $ChiaveCliente
                               AND (movimenti.DATA >= '$DataDal'  AND movimenti.DATA <= '$DataAl' OR 
                                    movimenti.DATA_CHIUSURA >= '$DataDal' AND movimenti.DATA_CHIUSURA <= '$DataAl')";
 
@@ -1119,6 +1232,26 @@
         }
       }  
       else throw new Exception('Impossibile leggere le fatture attive dal database...');
+      
+
+        // FATTURE PASSIVE FORNITORE
+            $SQLBody = "SELECT 
+                        fatture_passive.IS_FATTURA,
+                        fatture_passive.TOTALE_FATTURA    AS TOTALE_FATTURA
+                  FROM  fatture_passive 
+                 WHERE  fatture_passive.ID_FORNITORE = $ChiaveCliente 
+                   AND  fatture_passive.DATA >= '$DataDal' AND fatture_passive.DATA <= '$DataAl'";
+            
+            if($Query = $PDODBase->query($SQLBody))
+            { 
+              while($Row = $Query->fetch(PDO::FETCH_ASSOC))
+              { 
+                if($Row['IS_FATTURA'] == 'F')
+                  $TotaleDareAnno += $Row['TOTALE_FATTURA'] / 100;
+                else $TotaleAvereAnno += $Row['TOTALE_FATTURA'] / 100;
+              }
+            }  
+            else throw new Exception('Impossibile trovare le fatture Fornitore...');
 
       if($VisualizzaSaldoNelLog)
       {
@@ -1144,12 +1277,129 @@
       }  
       else throw new Exception('Impossibile leggere le note del cliente dal database');
 
+        // PAGAMENTI FATTURE PASSIVE PAGATE DIRETTAMENTE
+            $SQLBody = "SELECT  fatture_passive.CHIAVE						       		 AS CHIAVE_FATTURA,
+                                fatture_passive.IS_FATTURA,
+                                rate_fatture_passive.IMPORTO / 1000   AS IMPORTO_RATA
+                          FROM  fatture_passive
+                                JOIN rate_fatture_passive     ON fatture_passive.CHIAVE      = rate_fatture_passive.ID_FATTURA_PASSIVA
+                         WHERE  (rate_fatture_passive.DATA_PAGAMENTO IS NOT NULL OR rate_fatture_passive.ID_MOVIMENTO IS NOT NULL)
+                           AND  fatture_passive.ID_FORNITORE = $ChiaveCliente
+                           AND  rate_fatture_passive.ID_MOVIMENTO IS NULL
+                           AND  fatture_passive.NUMERO IS NOT NULL
+                           AND  rate_fatture_passive.DATA_PAGAMENTO >= '$DataDal' AND rate_fatture_passive.DATA_PAGAMENTO <= '$DataAl'";
+
+            try 
+            {
+              if($Query = $PDODBase->query($SQLBody))
+              { 
+                while($Row = $Query->fetch(PDO::FETCH_ASSOC))
+                { 
+                  if($Row['IS_FATTURA'] == 'T')
+                    $TotaleDareAnno += $Row['IMPORTO_RATA'];
+                  else $TotaleAvereAnno += $Row['IMPORTO_RATA'];
+                }
+              } 
+            }
+            catch(Exception $e)
+            {
+              error_log($SQLBody);
+              throw $e;
+            }
+
       if($VisualizzaSaldoNelLog)
       {
         error_log("NOTE DI CREDITO DEL CLIENTE: " . $TotaleDareAnno);
         error_log("NOTE DI CREDITO DEL CLIENTE: " . $TotaleAvereAnno);
       }
 
+       // AGGIUNTA AL SALDO ANNUALE LA SOMMA DELLE RITENUTE DELLE FATTURE PASSIVE
+            $SQLBody = "SELECT (COUNT(rate_fatture_passive.ID_FATTURA_PASSIVA) = COUNT(rate_fatture_passive.DATA_PAGAMENTO)) AS PAGATE_TUTTE,
+                               SUM(ritenute_fatture_passive.IMPORTO) AS IMPORTO,
+                               fatture_passive.CHIAVE
+                          FROM fatture_passive
+                               LEFT JOIN rate_fatture_passive ON fatture_passive.CHIAVE = rate_fatture_passive.ID_FATTURA_PASSIVA
+                               LEFT JOIN ritenute_fatture_passive ON ritenute_fatture_passive.ID_FATTURA_PASSIVA = fatture_passive.CHIAVE
+                         WHERE fatture_passive.ID_FORNITORE = $ChiaveCliente
+                           AND rate_fatture_passive.DATA_SCADENZA >= '$DataDal' 
+                           AND rate_fatture_passive.DATA_SCADENZA <= '$DataAl'
+                         GROUP BY fatture_passive.CHIAVE";
+
+            if($Query = $PDODBase->query($SQLBody))
+            {
+              while($Row = $Query->fetch(PDO::FETCH_ASSOC))
+                if($Row['PAGATE_TUTTE'] == 1)
+                 $TotaleDareAnno += $Row['IMPORTO'] / 100;
+            }
+            else throw new Exception('Impossibile trovare leggere il risultato del confronto del pagamento delle fatture passive pagate');
+
+
+            // MOVIMENTI ASSOCIATI AD UNA FATTURA PASSIVA O FATTURA PREGRESSA DEL FORNITORE
+            $SQLBody = "SELECT  movimenti.CHIAVE                      AS CHIAVE_MOVIMENTO,
+                                movimenti.IMPORTO / 100               AS IMPORTO_MOVIMENTO
+                            FROM fatture_passive
+                                JOIN rate_fatture_passive ON fatture_passive.CHIAVE   = rate_fatture_passive.ID_FATTURA_PASSIVA
+                                JOIN movimenti            ON movimenti.CHIAVE = rate_fatture_passive.ID_MOVIMENTO
+                          WHERE fatture_passive.ID_FORNITORE = $ChiaveCliente
+                            AND movimenti.DATA >= '$DataDal' AND movimenti.DATA <= '$DataAl'
+                      UNION 
+                          SELECT movimenti.CHIAVE                      AS CHIAVE_MOVIMENTO,
+                                movimenti.IMPORTO / 100               AS IMPORTO_MOVIMENTO
+                            FROM movimenti             
+                                JOIN fatture_insolute_pregresse_fornitori ON fatture_insolute_pregresse_fornitori.ID_MOVIMENTO = movimenti.CHIAVE
+                          WHERE fatture_insolute_pregresse_fornitori.ID_FORNITORE = $ChiaveCliente
+                            AND movimenti.DATA >= '$DataDal' AND movimenti.DATA <= '$DataAl'";
+
+            if($Query = $PDODBase->query($SQLBody))
+            {
+              while($Row = $Query->fetch(PDO::FETCH_ASSOC))
+                if(!in_array($Row['CHIAVE_MOVIMENTO'], $MovimentiConteggiati))
+                  $TotaleDareAnno += $Row['IMPORTO_MOVIMENTO'];
+            }
+            else throw new Exception('Impossibile leggere le rate delle fatture attive dal database');
+
+
+            // FATTURE PREGRESSE DEL FORNITORE
+            $SQLBody = "SELECT CHIAVE          AS CHIAVE_FATTURA, 
+                               IMPORTO / 100   AS IMPORTO_PREGRESSA
+                          FROM fatture_insolute_pregresse_fornitori 
+                         WHERE ID_FORNITORE = $ChiaveCliente
+                           AND DATA >= '$DataDal' AND DATA <= '$DataAl'";
+            
+            if($Query = $PDODBase->query($SQLBody))
+              while($Row = $Query->fetch(PDO::FETCH_ASSOC))
+                $TotaleAvereAnno += $Row['IMPORTO_PREGRESSA'];
+            else throw new Exception('Impossibile trovare le fatture insolute pregresse del Fornitore'); 
+
+
+            // PAGAMENTI DIRETTI FATTURE INSOLUTE PREGRESSE FORNITORI
+            $SQLBody = "SELECT fatture_insolute_pregresse_fornitori.CHIAVE          AS CHIAVE_FATTURA, 
+                               fatture_insolute_pregresse_fornitori.IMPORTO / 100   AS IMPORTO_PREGRESSA
+                          FROM fatture_insolute_pregresse_fornitori
+                         WHERE fatture_insolute_pregresse_fornitori.ID_FORNITORE = $ChiaveCliente
+                           AND fatture_insolute_pregresse_fornitori.DATA_PAGAMENTO >= '$DataDal' AND fatture_insolute_pregresse_fornitori.DATA_PAGAMENTO <= '$DataAl'";
+
+            if($Query = $PDODBase->query($SQLBody))
+              while($Row = $Query->fetch(PDO::FETCH_ASSOC))
+                $TotaleDareAnno += $Row['IMPORTO_PREGRESSA'];
+            else throw new Exception('Impossibile trovare i pagamenti delle fatture insolute pregresse del Fornitore');
+
+
+            if($SalvareSaldoNellaTabella)
+            {
+              $SQLBody = "INSERT INTO saldi_chiusure_annuali (ID_ANAGRAFICA, ANNO, DARE_CHIUSURA, AVERE_CHIUSURA)
+                                                      VALUES ($ChiaveCliente, $OggettoAnno, $TotaleDareAnno * 100, $TotaleAvereAnno * 100)";
+        
+              try
+              {
+                $PDODBase->query($SQLBody);
+              }
+              catch(Exception $e)
+              {
+                error_log($SQLBody);
+                throw $e;
+              }
+            } 
 
       // PAGAMENTI NOTE DI CREDITO DEL CLIENTE
       $SQLBody = "SELECT rate_note.CHIAVE AS CHIAVE_RATA,
@@ -1242,7 +1492,7 @@
                     FROM  fatture
                           LEFT OUTER JOIN rate_fattura          ON fatture.CHIAVE              = rate_fattura.ID_FATTURA
                           LEFT OUTER JOIN conti_correnti_casse  ON conti_correnti_casse.CHIAVE = rate_fattura.ID_CONTO_CASSE
-                          LEFT OUTER JOIN clienti               ON clienti.CHIAVE              = fatture.ID_CLIENTE
+                          LEFT OUTER JOIN anagrafiche               ON anagrafiche.CHIAVE              = fatture.ID_CLIENTE
                    WHERE  rate_fattura.DATA_PAGAMENTO IS NOT NULL
                      AND  rate_fattura.ID_MOVIMENTO IS NULL
                      AND  fatture.ID_CLIENTE = $ChiaveCliente
@@ -1278,7 +1528,7 @@
       // MOVIMENTI ASSOCIATI AD UNA FATTURA O FATTURA PREGRESSA DEL CLIENTE
       $SQLBody = "  SELECT  movimenti.CHIAVE                      AS CHIAVE_MOVIMENTO,
                             movimenti.IMPORTO / 100               AS IMPORTO_MOVIMENTO,
-                            movimenti.ID_CLIENTE,
+                            movimenti.ID_ANAGRAFICA,
                             fatture.CHIAVE AS CHIAVE_FATTURA,
                             rate_fattura.CHIAVE AS CHIAVE_RATA,
                             fatture.NUMERO AS NUMERO_FATTURA,
@@ -1292,7 +1542,7 @@
                   UNION 
                     SELECT movimenti.CHIAVE                      AS CHIAVE_MOVIMENTO,
                             movimenti.IMPORTO / 100               AS IMPORTO_MOVIMENTO,
-                            movimenti.ID_CLIENTE,
+                            movimenti.ID_ANAGRAFICA,
                             1 AS CHIAVE_FATTURA,
                             1 AS CHIAVE_RATA,
                             1 AS NUMERO_FATTURA,
@@ -1386,7 +1636,7 @@
 
       if($SalvareSaldoNellaTabella)
       {
-        $SQLBody = "INSERT INTO saldi_chiusure_annuali (ID_CLIENTE, ANNO, DARE_CHIUSURA, AVERE_CHIUSURA)
+        $SQLBody = "INSERT INTO saldi_chiusure_annuali (ID_ANAGRAFICA, ANNO, DARE_CHIUSURA, AVERE_CHIUSURA)
                          VALUES ($ChiaveCliente, $OggettoAnno, $TotaleDareAnno * 100, $TotaleAvereAnno * 100)";
       
         try
@@ -1465,18 +1715,11 @@
       }
     }
 
-    private function FGetTotaleRitenutaRata($Totale, $IdRata)
-    {
-      foreach ($Totale->Rate as $Rata) 
-        if($IdRata == $Rata->IdRata)
-          return $Rata->Ritenuta;
-    }
-
     private function FGestioneSaldoIniziale($PDODBase, $DataDal, $DataAl, $ChiaveCliente)
     {
       $DataDalDateTime = new DateTime($DataDal);
 
-      if ($DataDalDateTime->format('d-m') == '01-01') 
+      if($DataDalDateTime->format('d-m') == '01-01') 
         return;
 
       $Anno      = $DataDalDateTime->format('Y');
@@ -1488,8 +1731,8 @@
 
       $SQLBody = "SELECT saldi_chiusure_annuali.*
                     FROM saldi_chiusure_annuali
-                   WHERE saldi_chiusure_annuali.ID_CLIENTE = $ChiaveCliente
-                     AND saldi_chiusure_annuali.ANNO = " . $Anno - 1;
+                   WHERE saldi_chiusure_annuali.ID_ANAGRAFICA = $ChiaveCliente
+                     AND saldi_chiusure_annuali.ANNO = " . ($Anno - 1);
 
       $Trovato = false;
 
@@ -1526,6 +1769,23 @@
 
       $this->DareDiPartenza  = round($CifraDare, 2);
       $this->AvereDiPartenza = round($CifraAvere, 2);
+
+    }
+
+    private function FCalcolaSaldoContabileCliente($PDODBase, $ChiaveCliente)
+    {
+       $OggettoSaldo = $this->FCalcoloTotaleSaldoCliente(
+                                                          "2000-01-01",      
+                                                          date('Y-m-d'),         
+                                                          date('Y'),
+                                                          $ChiaveCliente,
+                                                          true,
+                                                          $PDODBase);
+
+     $this->TotaleDareCliente  = round($OggettoSaldo->TotaleDareAnno,  2);
+     $this->TotaleAvereCliente = round($OggettoSaldo->TotaleAvereAnno, 2);
+
+     $this->SaldoContabileCliente = round($OggettoSaldo->TotaleDareAnno - $OggettoSaldo->TotaleAvereAnno,2);
     }
 
     protected function FExtraScriptServerSide($PDODBase,&$JSONAnswer)

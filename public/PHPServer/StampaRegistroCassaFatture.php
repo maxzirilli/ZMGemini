@@ -26,8 +26,7 @@
         public $LB_NUMERO         = null;
         public $LB_DATA           = null;
         public $MEMO_INTESTATARIO = array();
-        public $LB_CODICE_CLIENTE = null;
-        public $LB_AMMINISTRATORE = null;
+        public $LB_CODICE = null;
         public $LB_NOTE           = null;
         public $MEMO_NOTE         = array();
         public $LB_IVA            = null;
@@ -88,14 +87,12 @@
                                           fatture.CHIAVE,
                                           fatture.ID_CLIENTE,
                                           fatture.DA_BANCO,
-                                          clienti.CODICE_CLIENTE,
-                                          amministratori.RAGIONE_SOCIALE AS RAGIONE_SOCIALE_AMM,
+                                          anagrafiche.CODICE,
                                           rate_fattura.NOTE,
                                           rate_fattura.DATA_PAGAMENTO AS DATA_RATA
                                      FROM fatture 
-                                                     JOIN clienti        ON clienti.CHIAVE = fatture.ID_CLIENTE
-                                          LEFT OUTER JOIN rate_fattura   ON rate_fattura.ID_FATTURA = fatture.CHIAVE
-                                          LEFT OUTER JOIN amministratori ON amministratori.CHIAVE = clienti.ID_AMMINISTRATORE' . $QueryPart[count($QueryPart) - 1];
+                                                     JOIN anagrafiche        ON anagrafiche.CHIAVE = fatture.ID_CLIENTE
+                                          LEFT OUTER JOIN rate_fattura   ON rate_fattura.ID_FATTURA = fatture.CHIAVE ' . $QueryPart[count($QueryPart) - 1];
             $QueryDatiResoconto = explode('LIMIT', $QueryDatiResoconto)[0];
             
             $LastChiaveFattura = -1;
@@ -127,9 +124,8 @@
                         $DatiFattura->LB_DATA = date("d/m/Y", strtotime($Row['DATA']));
                         $DatiFattura->DataDocumento = $Row['DATA'];
                         array_push($DatiFattura->MEMO_INTESTATARIO, $Row['RAGIONE_SOCIALE']);
-                        $DatiFattura->LB_CODICE_CLIENTE = isset($Row['CODICE_CLIENTE'])? $Row['CODICE_CLIENTE'] : '';
-                        $DatiFattura->LB_AMMINISTRATORE = isset($Row['RAGIONE_SOCIALE_AMM'])? substr($Row['RAGIONE_SOCIALE_AMM'], 0, 30) : '';
-                        $DatiFattura->LB_IVA  = isset($Row['CODICE_CLIENTE'])? $Row['CODICE_CLIENTE'] : '';
+                        $DatiFattura->LB_CODICE = isset($Row['CODICE'])? $Row['CODICE'] : '';
+                        $DatiFattura->LB_IVA  = isset($Row['CODICE'])? $Row['CODICE'] : '';
 
                         
                         

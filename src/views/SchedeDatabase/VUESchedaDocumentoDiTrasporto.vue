@@ -114,15 +114,15 @@
       <div v-if="SchedaDocumentoDiTrasporto.Selezionato == 'C'" class="ZMNuovaRigaScheda">
         <div style="float:left; width:50%">
           <text style="font-weight: bold; float:left; width:50%">Cliente</text>
-          <VUEInputClienti @onUpdate="newValue => SchedaDocumentoDiTrasporto.Dati.ID_CLIENTE = newValue" :disabled="SchedaDocumentoDiTrasporto.Dati.ID_FATTURA != -1" v-model="SchedaDocumentoDiTrasporto.Dati.ID_CLIENTE"/>
-          <label v-if="SchedaDocumentoDiTrasporto.Dati.ID_CLIENTE == -1 && SchedaDocumentoDiTrasporto.Selezionato == 'C'" class="ZMFormLabelError">Campo obbligatorio</label> 
+          <VUEInputClienti @onUpdate="newValue => SchedaDocumentoDiTrasporto.Dati.ID_ANAGRAFICA = newValue" :disabled="SchedaDocumentoDiTrasporto.Dati.ID_FATTURA != -1" v-model="SchedaDocumentoDiTrasporto.Dati.ID_ANAGRAFICA"/>
+          <label v-if="SchedaDocumentoDiTrasporto.Dati.ID_ANAGRAFICA == -1 && SchedaDocumentoDiTrasporto.Selezionato == 'C'" class="ZMFormLabelError">Campo obbligatorio</label> 
         </div>
       </div>
       <div v-if="SchedaDocumentoDiTrasporto.Selezionato == 'F'" class="ZMNuovaRigaScheda">
         <div style="float:left; width:50%">
           <text style="font-weight: bold; float:left; width:50%">Fornitore</text>
-          <VUEInputFornitore :disabled="SchedaDocumentoDiTrasporto.Dati.ID_FATTURA != -1" v-model="SchedaDocumentoDiTrasporto.Dati.ID_FORNITORE" emptyElement="true"/>
-          <label v-if="SchedaDocumentoDiTrasporto.Dati.ID_FORNITORE == -1 && SchedaDocumentoDiTrasporto.Selezionato == 'F'" class="ZMFormLabelError">Campo obbligatorio</label> 
+          <VUEInputFornitore :disabled="SchedaDocumentoDiTrasporto.Dati.ID_FATTURA != -1" v-model="SchedaDocumentoDiTrasporto.Dati.ID_ANAGRAFICA" emptyElement="true"/>
+          <label v-if="SchedaDocumentoDiTrasporto.Dati.ID_ANAGRAFICA == -1 && SchedaDocumentoDiTrasporto.Selezionato == 'F'" class="ZMFormLabelError">Campo obbligatorio</label> 
         </div>
       </div>
       <div style="float:left;width:1%;">&nbsp;</div>
@@ -196,9 +196,10 @@
         <hr style="margin-top:5px">
       </div>
 
-      <VUEModalButtonRecapitiFiliali :styleForButton="'float:right; margin-right: 0px'"
-                                     :IdCliente="SchedaDocumentoDiTrasporto.Dati.ID_CLIENTE"
-                                     @filiale-selected="OnFilialeSelected"   />
+        <VUEModalButtonRecapitiFiliali v-if="SchedaDocumentoDiTrasporto.Selezionato == 'C'"
+                                     :styleForButton="'float:right; margin-right: 0px'"
+                                     :IdCliente="SchedaDocumentoDiTrasporto.Dati.ID_ANAGRAFICA"
+                                     @filiale-selected="OnFilialeSelected"/>
 
       <div class="ZMNuovaRigaScheda" style="margin-top:-18px">
         <div style="float:left;width:50%">
@@ -242,7 +243,7 @@
    </div>
 
    <div v-if="Tabs.ActiveTab == 'VociDDT'">
-    <div v-if="SchedaDocumentoDiTrasporto.Dati.ID_CLIENTE != -1 || SchedaDocumentoDiTrasporto.Dati.ID_FORNITORE != -1">
+    <div v-if="SchedaDocumentoDiTrasporto.Dati.ID_ANAGRAFICA != -1">
       <div class="ZMSeparatoreScheda" style="margin-top:5px">    
         <text style="font-weight: bold;">Info</text>
         <hr style="margin-top:5px">
@@ -342,7 +343,7 @@
                                     :IsSchedaDDT="true"
                                     @onChange="OnVociDocumentoDiTrasportoChange"
                                     :IdMagazzino="SchedaDocumentoDiTrasporto.Dati.ID_MAGAZZINO"
-                                    :IdCliente="SchedaDocumentoDiTrasporto.Dati.ID_CLIENTE"
+                                    :IdCliente="SchedaDocumentoDiTrasporto.Dati.ID_ANAGRAFICA"
                                     :ReadOnly="SchedaDocumentoDiTrasporto.Dati.ID_FATTURA != -1"/>    
     </div>
     <div v-else style="padding-bottom:2%; font-size:16px; font:bold; margin-top: 2%;margin-left: 1%;"> INSERIRE UN CLIENTE O UN FORNITORE NELLA DDT</div>
@@ -395,7 +396,7 @@ export class TSchedaDocumentoDiTrasporto extends TSchedaGenerica
   AssignSchedaFromPreventivo(Scheda)
   {
     this.BloccoWatchIdCliente        = true
-    this.Dati.ID_CLIENTE             = Scheda.Dati.ID_CLIENTE
+    this.Dati.ID_ANAGRAFICA          = Scheda.Dati.ID_CLIENTE
     this.Dati.RAGIONE_SOCIALE        = Scheda.Dati.RAGIONE_SOCIALE
     this.Dati.INDIRIZZO_FATTURAZIONE = Scheda.Dati.INDIRIZZO_FATTURAZIONE
     this.Dati.NR_CIVICO_FATTURAZIONE = Scheda.Dati.NR_CIVICO_FATTURAZIONE
@@ -455,7 +456,7 @@ export class TSchedaDocumentoDiTrasporto extends TSchedaGenerica
             this.Dati.DATA_DDT != '' && 
             this.Dati.NAZIONE_EM_PIVA != -1 &&
             this.Dati.RAGIONE_SOCIALE != '' &&
-            (this.Dati.ID_CLIENTE != -1 || this.Dati.ID_FORNITORE != -1) &&
+            (this.Dati.ID_ANAGRAFICA != -1) &&
             this.SchedaAllegati.AllDataOk() &&
             this.SchedaVociDocumentoDiTrasporto.AllDataOk()
   }
@@ -509,8 +510,7 @@ export class TSchedaDocumentoDiTrasporto extends TSchedaGenerica
                                   Parametri : {
                                                 CHIAVE                    : this.IsNuovo() ? undefined : Self.Chiave, 
                                                 NUMERO_DDT                : (this.Dati.NUMERO_DDT == null || this.Dati.NUMERO_DDT == undefined) ? -1 : TSchedaGenerica.PrepareForRecordInteger(this.Dati.NUMERO_DDT),
-                                                ID_CLIENTE                : this.Dati.ID_CLIENTE == -1? null : TSchedaGenerica.PrepareForRecordInteger(this.Dati.ID_CLIENTE),
-                                                ID_FORNITORE              : this.Dati.ID_FORNITORE == -1? null : TSchedaGenerica.PrepareForRecordInteger(this.Dati.ID_FORNITORE),
+                                                ID_ANAGRAFICA             : this.Dati.ID_ANAGRAFICA == -1? null : TSchedaGenerica.PrepareForRecordInteger(this.Dati.ID_ANAGRAFICA),
                                                 STATO_DDT                 : TSchedaGenerica.PrepareForRecordString(this.Dati.STATO_DDT),
                                                 RAGIONE_SOCIALE           : TSchedaGenerica.PrepareForRecordString(this.Dati.RAGIONE_SOCIALE),
                                                 INDIRIZZO_FATTURAZIONE    : TSchedaGenerica.PrepareForRecordString(this.Dati.INDIRIZZO_FATTURAZIONE),
@@ -582,13 +582,7 @@ export class TSchedaDocumentoDiTrasporto extends TSchedaGenerica
       this.Chiave                   = Riassunto.CHIAVE;
       this.SchedaAllegati.SetIdDocumento(this.Chiave)
       this.SchedaVociDocumentoDiTrasporto.SetIdDocumento(this.Chiave)
-      if(Riassunto.ID_CLIENTE == '' || Riassunto.ID_CLIENTE == -1)
-        this.Dati.ID_FORNITORE      = Riassunto.ID_FORNITORE
-      else 
-      {
-         if(Riassunto.ID_FORNITORE == '' || Riassunto.ID_FORNITORE == null)
-            this.Dati.ID_CLIENTE        = Riassunto.ID_CLIENTE;
-      }
+      this.Dati.ID_ANAGRAFICA        = Riassunto.ID_ANAGRAFICA;
       this.Dati.ID_FATTURA          = Riassunto.ID_FATTURA == null || Riassunto.ID_FATTURA == undefined ? -1 : Riassunto.ID_FATTURA 
       this.Dati.ANNO_DDT            = Riassunto.ANNO_DDT
       this.Dati.STATO_DDT           = Riassunto.STATO_DDT
@@ -602,7 +596,7 @@ export class TSchedaDocumentoDiTrasporto extends TSchedaGenerica
 
   AssignSchedaCliente(Scheda)
   {
-    this.Dati.ID_CLIENTE             = Scheda.Chiave
+    this.Dati.ID_ANAGRAFICA             = Scheda.Chiave
   }
 
   GetDescrizione()
@@ -620,8 +614,7 @@ export class TSchedaDocumentoDiTrasporto extends TSchedaGenerica
     this.SchedaVociDocumentoDiTrasporto.SetIdDocumento(-1)
     this.Dati = {
                     NUMERO_DDT                    : -1,
-                    ID_CLIENTE                    : -1,
-                    ID_FORNITORE                  : -1,
+                    ID_ANAGRAFICA                    : -1,
                     DATA_DDT                      : TZDateFunct.DateInHTMLInputFormat(new Date()),
                     RAGIONE_SOCIALE               : '',
                     INDIRIZZO_FATTURAZIONE        : '',
@@ -688,8 +681,7 @@ export class TSchedaDocumentoDiTrasporto extends TSchedaGenerica
                                             {
                                               Self.Dati = { 
                                                             NUMERO_DDT                    : TSchedaGenerica.DisponiFromInteger(ArrayInfo[0].NUMERO_DDT),
-                                                            ID_CLIENTE                    : ArrayInfo[0].ID_CLIENTE == undefined? -1 : TSchedaGenerica.DisponiFromInteger(ArrayInfo[0].ID_CLIENTE),
-                                                            ID_FORNITORE                  : ArrayInfo[0].ID_FORNITORE == undefined? -1 :TSchedaGenerica.DisponiFromInteger(ArrayInfo[0].ID_FORNITORE),
+                                                            ID_ANAGRAFICA                    : ArrayInfo[0].ID_ANAGRAFICA == undefined? -1 : TSchedaGenerica.DisponiFromInteger(ArrayInfo[0].ID_ANAGRAFICA),
                                                             ANNO_DDT                      : TSchedaGenerica.DisponiFromInteger(ArrayInfo[0].ANNO_DDT),
                                                             RAGIONE_SOCIALE               : TSchedaGenerica.DisponiFromString(ArrayInfo[0].RAGIONE_SOCIALE),
                                                             INDIRIZZO_FATTURAZIONE        : TSchedaGenerica.DisponiFromString(ArrayInfo[0].INDIRIZZO_FATTURAZIONE),
@@ -730,10 +722,13 @@ export class TSchedaDocumentoDiTrasporto extends TSchedaGenerica
                                                             ID_MAGAZZINO                  : (ArrayInfo[0].ID_MAGAZZINO == null || ArrayInfo[0].ID_MAGAZZINO == undefined) 
                                                                                             ? SystemInformation.Configurazioni.Impostazioni.MAGAZZINO 
                                                                                             : TSchedaGenerica.DisponiFromInteger(ArrayInfo[0].ID_MAGAZZINO),
+                                                            IS_CLIENTE                    : ArrayInfo[0].IS_CLIENTE,
+                                                            IS_FORNITORE                  : ArrayInfo[0].IS_FORNITORE,
                                               }
-                                              if(Self.Dati.ID_CLIENTE != -1)
-                                                Self.Selezionato = 'C'
-                                              else Self.Selezionato = 'F'
+                                               // SE è SIA CLIENTE CHE FORNITORE DEFAULT CLIENTE
+                                               Self.Selezionato = Self.Dati.IS_CLIENTE == 'T' ? 'C' :
+                                                                  Self.Dati.IS_FORNITORE == 'T' ? 'F' : '';
+
                                               if(Self.Dati.DATA_DDT != '')
                                                 Self.Dati.ANNO_DDT = new Date(Self.Dati.DATA_DDT).getFullYear();
                                               else Self.Dati.ANNO_DDT = -1;
@@ -758,13 +753,13 @@ export class TSchedaDocumentoDiTrasporto extends TSchedaGenerica
   GetFiltriAbilitati(OnSuccess)
   {
     var Anno = new Date(this.Dati.DATA_DDT)
-    if(this.Dati.ID_CLIENTE != -1)
+    if(this.Selezionato != 'F')
     {
       OnSuccess([{
                   Name : DASHBOARD_FILTER_TYPES.Clienti,
                   Positions : [
                                   this.Dati.RAGIONE_SOCIALE.substring(0,1).toUpperCase(),
-                                  this.Dati.ID_CLIENTE,
+                                  this.Dati.ID_ANAGRAFICA,
                                   ID_NODO_DDT,
                                   Anno.getFullYear(),
                                   this.Chiave
@@ -773,13 +768,13 @@ export class TSchedaDocumentoDiTrasporto extends TSchedaGenerica
     }
     else
     {
-      if(this.Dati.ID_FORNITORE != -1)
+      if(this.Selezionato != 'C')
       {
         OnSuccess([{
                     Name : DASHBOARD_FILTER_TYPES.Fornitore,
                     Positions : [
                                     this.Dati.RAGIONE_SOCIALE.substring(0,1).toUpperCase(),
-                                    this.Dati.ID_FORNITORE,
+                                    this.Dati.ID_ANAGRAFICA,
                                     ID_NODO_DDT_FORNITORE,
                                     Anno.getFullYear(),
                                     this.Chiave
@@ -875,12 +870,12 @@ export default
    {
      CurrentCliente()
      {
-       return this.SchedaDocumentoDiTrasporto.Dati.ID_CLIENTE
+       return this.SchedaDocumentoDiTrasporto.Dati.ID_ANAGRAFICA
      },
 
      CurrentFornitore()
      {
-      return this.SchedaDocumentoDiTrasporto.Dati.ID_FORNITORE
+      return this.SchedaDocumentoDiTrasporto.Dati.ID_ANAGRAFICA
      },
 
     ErrorePartitaIVA :
@@ -1030,18 +1025,16 @@ export default
 
     OnClickFornitore()
     {
-      this.SchedaDocumentoDiTrasporto.Selezionato       = 'F'
-      this.SchedaDocumentoDiTrasporto.Dati.ID_FORNITORE = -1
-      this.SchedaDocumentoDiTrasporto.Dati.ID_CLIENTE   = -1
-      this.SchedaDocumentoDiTrasporto.Dati.CAUSALE      = -1
+      this.SchedaDocumentoDiTrasporto.Selezionato          = 'F'
+      this.SchedaDocumentoDiTrasporto.Dati.ID_ANAGRAFICA   = -1
+      this.SchedaDocumentoDiTrasporto.Dati.CAUSALE         = -1
     },
 
     OnClickCliente()
     {
-      this.SchedaDocumentoDiTrasporto.Selezionato       = 'C'
-      this.SchedaDocumentoDiTrasporto.Dati.ID_CLIENTE   = -1
-      this.SchedaDocumentoDiTrasporto.Dati.ID_FORNITORE = -1
-      this.SchedaDocumentoDiTrasporto.Dati.CAUSALE      = -1
+      this.SchedaDocumentoDiTrasporto.Selezionato          = 'C'
+      this.SchedaDocumentoDiTrasporto.Dati.ID_ANAGRAFICA   = -1
+      this.SchedaDocumentoDiTrasporto.Dati.CAUSALE         = -1
     },
 
     OnClickStatoConcluso()
@@ -1093,11 +1086,7 @@ export default
    beforeMount() 
    {
      this.ActiveTab = 'Documento di trasporto'
-     if(this.SchedaDocumentoDiTrasporto.Dati.ID_CLIENTE == null || this.SchedaDocumentoDiTrasporto.Dati.ID_CLIENTE == -1)
-        this.SchedaDocumentoDiTrasporto.Selezionato = 'F'
-     if(this.SchedaDocumentoDiTrasporto.Dati.ID_FORNITORE == null || this.SchedaDocumentoDiTrasporto.Dati.ID_FORNITORE == -1)
-        this.SchedaDocumentoDiTrasporto.Selezionato = 'C'
-    },
+   },
 
 }
 </script>

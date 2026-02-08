@@ -14,13 +14,13 @@
 
   class TRiga 
   {
-    public $LB_CODICE_CLIENTE        = null;
+    public $LB_CODICE        = null;
     public $LB_DESCRIZIONE_CLIENTE   = '';
     public $LB_SALDO                 = 0;
 
     function __construct($CodiceCliente, $RagioneSociale)
     {
-      $this->LB_CODICE_CLIENTE      = $CodiceCliente;
+      $this->LB_CODICE      = $CodiceCliente;
       $this->LB_DESCRIZIONE_CLIENTE = $RagioneSociale;
     }
   }
@@ -112,22 +112,22 @@
         $SQLBody = '';
         if($Ordinamento == 'A')
         {
-          $SQLBody = "SELECT fornitori.*
-                        FROM fornitori
-                    ORDER BY fornitori.RAGIONE_SOCIALE";
+          $SQLBody = "SELECT anagrafiche.*
+                        FROM anagrafiche
+                    ORDER BY anagrafiche.RAGIONE_SOCIALE";
         }
         else 
           {
-          $SQLBody = "SELECT fornitori.*
-                        FROM fornitori
-                       ORDER BY SUBSTRING(fornitori.CODICE_FORNITORE, 2) + 0";
+          $SQLBody = "SELECT anagrafiche.*
+                        FROM anagrafiche
+                       ORDER BY SUBSTRING(anagrafiche.CODICE, 2) + 0";
           }
 
         if($Query = $PDODBase->query($SQLBody))
         { 
           while($Row = $Query->fetch(PDO::FETCH_ASSOC))
           {
-            $Fornitore           = new TRiga($Row['CODICE_FORNITORE'], $Row['RAGIONE_SOCIALE']);
+            $Fornitore           = new TRiga($Row['CODICE'], $Row['RAGIONE_SOCIALE']);
             
             $Fornitore->LB_SALDO = $this->FCalcoloSaldo($Row['CHIAVE'], $DataDal, $DataAl, $PDODBase);
             
@@ -167,7 +167,7 @@
       $SQLBodyMovimenti = "SELECT movimenti.*,
                                   cat_movimenti.DESCRIZIONE AS DESCR_CATEGORIA
                              FROM movimenti LEFT OUTER JOIN cat_movimenti ON (cat_movimenti.CHIAVE = movimenti.ID_CATEGORIA_MOVIMENTO)
-                            WHERE ID_FORNITORE = $ChiaveFornitore
+                            WHERE ID_ANAGRAFICA = $ChiaveFornitore
                               AND (movimenti.DATA >= '$DataDal'  AND movimenti.DATA <= '$DataAl' OR 
                                    movimenti.DATA_CHIUSURA >= '$DataDal' AND movimenti.DATA_CHIUSURA <= '$DataAl')";
       
@@ -257,7 +257,7 @@
                     FROM  fatture_passive
                           LEFT OUTER JOIN rate_fatture_passive  ON fatture_passive.CHIAVE      = rate_fatture_passive.ID_FATTURA_PASSIVA
                           LEFT OUTER JOIN conti_correnti_casse  ON conti_correnti_casse.CHIAVE = rate_fatture_passive.ID_CONTO_CASSA
-                          LEFT OUTER JOIN fornitori             ON fornitori.CHIAVE            = fatture_passive.ID_FORNITORE
+                          LEFT OUTER JOIN anagrafiche             ON anagrafiche.CHIAVE            = fatture_passive.ID_FORNITORE
                    WHERE  rate_fatture_passive.DATA_PAGAMENTO IS NOT NULL
                      AND  rate_fatture_passive.ID_MOVIMENTO IS NULL
                      AND  fatture_passive.ID_FORNITORE = $ChiaveFornitore

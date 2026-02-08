@@ -454,7 +454,7 @@
                         {{ FormattaData(Preventivo.DATA) }}
                       </td>
                       <td style="padding:2px;border:1px solid #ddd; border-bottom:0; background-color:white;font-size:16px;text-align:center;vertical-align: middle;">
-                        {{ Preventivo.CODICE_CLIENTE }}
+                        {{ Preventivo.CODICE }}
                       </td>
                       <td style="padding:2px;border:1px solid #ddd; border-bottom:0; background-color:white;font-size:16px;text-align:center;vertical-align: middle;">
                         {{ Preventivo.RAGIONE_SOCIALE_CLIENTE }}
@@ -514,8 +514,8 @@
                       <td style="padding:2px;border:1px solid #ddd; border-bottom:0; background-color:white;font-size:16px;text-align:center;vertical-align: middle;">
                         {{ DDT.DATA_DDT }}
                       </td>
-                      <td v-if="DDT.RAGIONE_SOCIALE_CLIENTE && DDT.CODICE_CLIENTE" style="padding:2px;border:1px solid #ddd; border-bottom:0; background-color:white;font-size:16px;text-align:center;vertical-align: middle;">
-                        {{ DDT.CODICE_CLIENTE }} - {{ DDT.RAGIONE_SOCIALE_CLIENTE }}
+                      <td v-if="DDT.RAGIONE_SOCIALE_CLIENTE && DDT.CODICE" style="padding:2px;border:1px solid #ddd; border-bottom:0; background-color:white;font-size:16px;text-align:center;vertical-align: middle;">
+                        {{ DDT.CODICE }} - {{ DDT.RAGIONE_SOCIALE_CLIENTE }}
                       </td>
                       <td v-else-if="DDT.RAGIONE_SOCIALE_CLIENTE" style="padding:2px;border:1px solid #ddd; border-bottom:0; background-color:white;font-size:16px;text-align:center;vertical-align: middle;">
                         {{ DDT.RAGIONE_SOCIALE_CLIENTE }}
@@ -579,8 +579,8 @@
                       <td style="padding:2px;border:1px solid #ddd; border-bottom:0; background-color:white;font-size:16px;text-align:center;vertical-align: middle;">
                         {{ Fattura.DATA }}
                       </td>
-                      <td v-if="Fattura.RAGIONE_SOCIALE_CLIENTE && Fattura.CODICE_CLIENTE" style="padding:2px;border:1px solid #ddd; border-bottom:0; background-color:white;font-size:16px;text-align:center;vertical-align: middle;">
-                        {{ Fattura.CODICE_CLIENTE }} - {{ Fattura.RAGIONE_SOCIALE_CLIENTE }}
+                      <td v-if="Fattura.RAGIONE_SOCIALE_CLIENTE && Fattura.CODICE" style="padding:2px;border:1px solid #ddd; border-bottom:0; background-color:white;font-size:16px;text-align:center;vertical-align: middle;">
+                        {{ Fattura.CODICE }} - {{ Fattura.RAGIONE_SOCIALE_CLIENTE }}
                       </td>
                       <td v-else-if="Fattura.RAGIONE_SOCIALE_CLIENTE" style="padding:2px;border:1px solid #ddd; border-bottom:0; background-color:white;font-size:16px;text-align:center;vertical-align: middle;">
                         {{ Fattura.RAGIONE_SOCIALE_CLIENTE }}

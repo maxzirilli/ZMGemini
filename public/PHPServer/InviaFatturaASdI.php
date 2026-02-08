@@ -158,12 +158,10 @@
             $Ccn          = '';
             $CorpoEmail   = $ParametriEmail->CorpoEmail;
 
-            $SQLBody = "SELECT IF(clienti.ID_AMMINISTRATORE IS NOT NULL, amministratori_telefono.EMAIL, clienti_telefono.EMAIL) AS EMAIL
+            $SQLBody = "SELECT IF(clienti_telefono.EMAIL) AS EMAIL
                           FROM note_di_credito
-                                           JOIN clienti ON note_di_credito.ID_CLIENTE = clienti.CHIAVE
-                                LEFT OUTER JOIN clienti_telefono ON (clienti_telefono.ID_CLIENTE = clienti.CHIAVE AND clienti_telefono.PRINCIPALE = 'T')
-                                LEFT OUTER JOIN amministratori ON amministratori.CHIAVE = clienti.ID_AMMINISTRATORE 
-                                LEFT OUTER JOIN amministratori_telefono ON (amministratori_telefono.ID_AMMINISTRATORE = amministratori.CHIAVE AND amministratori_telefono.PRINCIPALE = 'T')
+                                           JOIN anagrafiche ON note_di_credito.ID_CLIENTE = anagrafiche.CHIAVE
+                                LEFT OUTER JOIN clienti_telefono ON (clienti_telefono.ID_CLIENTE = anagrafiche.CHIAVE AND clienti_telefono.PRINCIPALE = 'T')
                          WHERE note_di_credito.CHIAVE = $Chiave
                          ORDER BY EMAIL";
 
@@ -226,12 +224,10 @@
             $Ccn          = '';
             $CorpoEmail   = $ParametriEmail->CorpoEmail;
 
-            $SQLBody = "SELECT IF(clienti.ID_AMMINISTRATORE IS NOT NULL, amministratori_telefono.EMAIL, clienti_telefono.EMAIL) AS EMAIL
+            $SQLBody = "SELECT IF(clienti_telefono.EMAIL) AS EMAIL
                           FROM fatture
-                                           JOIN clienti ON fatture.ID_CLIENTE = clienti.CHIAVE
-                                LEFT OUTER JOIN clienti_telefono ON (clienti_telefono.ID_CLIENTE = clienti.CHIAVE AND clienti_telefono.PRINCIPALE = 'T')
-                                LEFT OUTER JOIN amministratori ON amministratori.CHIAVE = clienti.ID_AMMINISTRATORE 
-                                LEFT OUTER JOIN amministratori_telefono ON (amministratori_telefono.ID_AMMINISTRATORE = amministratori.CHIAVE AND amministratori_telefono.PRINCIPALE = 'T')
+                                           JOIN anagrafiche ON fatture.ID_CLIENTE = anagrafiche.CHIAVE
+                                LEFT OUTER JOIN clienti_telefono ON (clienti_telefono.ID_CLIENTE = anagrafiche.CHIAVE AND clienti_telefono.PRINCIPALE = 'T')
                         WHERE fatture.CHIAVE = $Chiave
                         ORDER BY EMAIL";
 

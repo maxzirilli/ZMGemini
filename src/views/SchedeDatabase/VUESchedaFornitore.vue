@@ -61,13 +61,21 @@
 
     <div  v-if="Tabs.ActiveTab == 'DatiFatturazione'">
         <div class="ZMNuovaRigaScheda">
-            <div v-if="SchedaFornitore.Dati.CODICE_FORNITORE == '' "  style="float:left;">
+            <div v-if="SchedaFornitore.Dati.CODICE == '' "  style="float:left;">
                   <label style="margin-right:15px;"><span style="font-weight:bold;">Ultimo codice fornitore inserito:</span> {{ SchedaFornitore.CodiceUltimoFornitore }}</label>
             </div> 
-        </div>      <div style="clear:both">
+        </div>   
+        <div style="float:left;margin-right:5px">
+                <input style="float:left;margin-top:2px" type="checkbox" v-model="SchedaFornitore.Dati.IS_CLIENTE"/>
+        </div>
+        <div style="float:left;">
+                <label style="font-weight: bold;">Anche cliente&nbsp;</label>
+        </div>  
+         <div style="clear:both">
+            
           <div style="float:left;width:14%">
             <label style="font-weight: bold;">Cod. fornitore </label>
-            <input type="text" class="form-control" v-model="SchedaFornitore.Dati.CODICE_FORNITORE" placeholder="Codice fornitore" maxlength="10"/>
+            <input type="text" class="form-control" v-model="SchedaFornitore.Dati.CODICE" placeholder="Codice fornitore" maxlength="10"/>
           </div> 
           <div style="float:left;width:1%;">&nbsp;</div>
           <div style="float:left;width:39%">
@@ -316,32 +324,48 @@
                         <th style="width: 10%; text-align: left;">Saldo</th>
                         <th style="width: 5%; text-align: left;">Info</th>
                     </thead>
-                    <tbody>
-                        <tr v-for="Documento in SchedaFornitore.SchedaStatoContabile.ListaDocumenti" :key="Documento.CHIAVE">
-                          <td style="text-align: left;">{{ Documento.LB_DATA_DOCUMENTO }}</td>
-                          <td style="text-align: left;">{{ Documento.LB_NUMERO_DOCUMENTO }}</td>
-                          <td style="text-align: left;">{{ Documento.LB_DESCRIZIONE_DOCUMENTO }}</td>
-                          <!-- <td style=" align-items: center; justify-content: center;" v-if="Documento.INVIATA_ALLO_SDI == 'T'">
-                            <i class="ZMIconButton fa fa-check-square text-info"></i>
-                          </td> -->
-                          <td style="text-align: left;font-weight: bold;">{{ Documento.LB_DARE }}</td>
-                          <td style="text-align: left;font-weight: bold;">{{ Documento.LB_AVERE }}</td>
-                          <td style="text-align: left;font-weight: bold;">{{ Documento.LB_SALDO }}</td>
-                          <td>
-                            <i class="ZMIconButton fa fa-folder-open text-info" @click="VisualizzaDocumento(Documento)"
-                              :style="{ visibility: (Documento.Tipologia != 'A' && Documento.Tipologia != '1') ? 'visible' : 'hidden' }"></i>
-                          </td>
-                        </tr>
-                        <template v-if="SchedaFornitore.SchedaStatoContabile.TotaliDocumenti.length > 0">
-                          <tr v-for="(Totali, index) in SchedaFornitore.SchedaStatoContabile.TotaliDocumenti" :key="index"> 
-                            <td colspan="3" style="text-align: right; font-weight: bold;">{{ Totali.QRLabel10 }} &nbsp;</td>
-                            <td style="font-weight: bold;">{{ Totali.LB_TOTALE_DARE }} </td>
-                            <td style="font-weight: bold;">{{ Totali.LB_TOTALE_AVERE }}</td>
-                            <td style="font-weight: bold;">{{ Totali.LB_TOTALE_SALDO }}</td>
-                            <td></td>
+                     <tbody>
+                          <tr v-for="Documento in SchedaFornitore.SchedaStatoContabile.ListaDocumenti" :key="Documento.CHIAVE">
+                            <td style="text-align: left;">{{ Documento.LB_DATA_DOCUMENTO }}</td>
+                            <td style="text-align: left;">{{ Documento.LB_NUMERO_DOCUMENTO }}</td>
+                            <td style="text-align: left;">{{ Documento.MM_DESCRIZIONE_DOCUMENTO }}</td>
+                            <!-- <td style=" align-items: center; justify-content: center;" v-if="Documento.INVIATA_ALLO_SDI == 'T'">
+                              <i class="ZMIconButton fa fa-check-square text-info"></i>
+                            </td> -->
+                            <td style="text-align: left;font-weight: bold;">{{ Documento.LB_DARE }}</td>
+                            <td style="text-align: left;font-weight: bold;">{{ Documento.LB_AVERE }}</td>
+                            <td style="text-align: left;font-weight: bold;">{{ Documento.LB_SALDO }}</td>
+                            <td>
+                              <i class="ZMIconButton fa fa-folder-open text-info" @click="VisualizzaDocumento(Documento)"
+                              :style="{ visibility: (Documento.Tipologia != 'A' && Documento.Tipologia != 'P') ? 'visible' : 'hidden' }"></i>
+                            </td>
                           </tr>
-                        </template>
-                    </tbody>
+                          <template v-if="SchedaFornitore.SchedaStatoContabile.TotaliDocumenti.length > 0">
+                            <td></td>
+                            <tr v-if="SchedaFornitore.SchedaStatoContabile.SaldoPeriodo">
+                            <td colspan="3" style="text-align: right; font-weight: bold;">
+                              Saldo periodo:
+                            </td>
+                            <td style="font-weight: bold;">
+                              {{ SchedaFornitore.SchedaStatoContabile.SaldoPeriodo.LB_DARE }}
+                            </td>
+                            <td style="font-weight: bold;">
+                              {{ SchedaFornitore.SchedaStatoContabile.SaldoPeriodo.LB_AVERE }}
+                            </td>
+                            <td style="font-weight: bold;">
+                              {{ SchedaFornitore.SchedaStatoContabile.SaldoPeriodo.LB_SALDO }}
+                            </td>
+                            <td></td>
+                            </tr>
+                            <tr v-for="(Totali, index) in SchedaFornitore.SchedaStatoContabile.TotaliDocumenti" :key="index"> 
+                              <td colspan="3" style="text-align: right; font-weight: bold;">{{ Totali.QRLabel10 }} &nbsp;</td>
+                              <td style="font-weight: bold;">{{ Totali.LB_TOTALE_DARE }} </td>
+                              <td style="font-weight: bold;">{{ Totali.LB_TOTALE_AVERE }}</td>
+                              <td style="font-weight: bold;">{{ Totali.LB_TOTALE_SALDO }}</td>
+                              <td></td>
+                            </tr>
+                          </template>
+                      </tbody>
                 </table>
             </div>
         </div>
@@ -390,8 +414,9 @@ class TSchedaSituzioneContabile
 
   AssignDati(ArraySituazioneContabile)
   {
-    this.ListaDocumenti = []
+    this.ListaDocumenti  = []
     this.TotaliDocumenti = []
+    this.SaldoPeriodo    = null
 
     ArraySituazioneContabile.LsConti.BAND_SUMMARY.forEach(item => {
                                                                     this.ListaDocumenti.push(item)
@@ -400,6 +425,8 @@ class TSchedaSituzioneContabile
     ArraySituazioneContabile.LsConti.BAND_FOOTER.forEach(item => {
                                                                     this.TotaliDocumenti.push(item)
                                                                   })
+   if(ArraySituazioneContabile.SaldoPeriodo)
+      this.SaldoPeriodo = ArraySituazioneContabile.SaldoPeriodo
   }
 }
 
@@ -438,7 +465,7 @@ export class TSchedaFornitore extends TSchedaGenerica
                     RAGIONE_SOCIALE                : '',
                     REGIME_FISCALE                 : TZFattElettronicaRegimeFiscale.ID_FATT_REGIME_FISCALE_RF01,
                     TIPO_RITENUTA                  : TZFatturaTipoRitenuta.ritPersonaGiuridica,
-                    CODICE_FORNITORE               : '',
+                    CODICE               : '',
                     CODICE_FISCALE                 : '',
                     PARTITA_IVA                    : '',
                     INDIRIZZO_FATTURAZIONE         : '',
@@ -457,6 +484,7 @@ export class TSchedaFornitore extends TSchedaGenerica
                     COMUNE_SPEDIZIONE              : '',
                     CAP_SPEDIZIONE                 : '',
                     TIPO_AUTOFATTURA               : TIPO_AUTOFATTURA.ExtraComunitarie,
+                    IS_CLIENTE               : false,
                     ContoCorrente                  : { 
                                                         IBAN              : '',
                                                         BANCA             : '',
@@ -506,9 +534,10 @@ export class TSchedaFornitore extends TSchedaGenerica
                                             let ArrayInfoTelefono  = Results.DatiForitoreTelefono
                                             let ArrayCodiciFornitore = Results.DatiFornitoreCodici
 
-                                            if (Results.DatiSituazioneContabileFornitore)
+                                            if(Results.DatiSituazioneContabileFornitore)
                                             {
                                               let ArraySituazioneContabile = Results.DatiSituazioneContabileFornitore;
+
                                               Self.SchedaStatoContabile.AssignDati(ArraySituazioneContabile);
                                             } 
 
@@ -523,7 +552,7 @@ export class TSchedaFornitore extends TSchedaGenerica
                                                               RAGIONE_SOCIALE                : TSchedaGenerica.DisponiFromString(ArrayInfo[0].RAGIONE_SOCIALE),
                                                               REGIME_FISCALE                 : TSchedaGenerica.DisponiFromString(ArrayInfo[0].REGIME_FISCALE),
                                                               TIPO_RITENUTA                  : TSchedaGenerica.DisponiFromInteger(ArrayInfo[0].TIPO_RITENUTA),
-                                                              CODICE_FORNITORE               : TSchedaGenerica.DisponiFromString(ArrayInfo[0].CODICE_FORNITORE),
+                                                              CODICE               : TSchedaGenerica.DisponiFromString(ArrayInfo[0].CODICE),
                                                               CODICE_FISCALE                 : TSchedaGenerica.DisponiFromString(ArrayInfo[0].CODICE_FISCALE),
                                                               PARTITA_IVA                    : TSchedaGenerica.DisponiFromString(ArrayInfo[0].PARTITA_IVA),
                                                               INDIRIZZO_FATTURAZIONE         : TSchedaGenerica.DisponiFromString(ArrayInfo[0].INDIRIZZO_FATTURAZIONE),
@@ -541,6 +570,7 @@ export class TSchedaFornitore extends TSchedaGenerica
                                                               NAZIONE_SPEDIZIONE             : TSchedaGenerica.DisponiFromListIndex(ArrayInfo[0].NAZIONE_SPEDIZIONE),
                                                               COMUNE_SPEDIZIONE              : TSchedaGenerica.DisponiFromString(ArrayInfo[0].COMUNE_SPEDIZIONE),
                                                               CAP_SPEDIZIONE                 : TSchedaGenerica.DisponiFromString(ArrayInfo[0].CAP_SPEDIZIONE),
+                                                              IS_CLIENTE               : TSchedaGenerica.DisponiFromBoolean(ArrayInfo[0].IS_CLIENTE),
                                                               ContoCorrente                  : {
                                                                                                   IBAN              : ArrayInfo[0].ID_CONTO_CORRENTE != null? TSchedaGenerica.DisponiFromString(ArrayInfo[0].IBAN_CONTO) : TSchedaGenerica.DisponiFromString(ArrayInfo[0].IBAN),
                                                                                                   ID_CONTO_CORRENTE : TSchedaGenerica.DisponiFromListIndex(ArrayInfo[0].ID_CONTO_CORRENTE),
@@ -609,7 +639,7 @@ export class TSchedaFornitore extends TSchedaGenerica
                                                 RAGIONE_SOCIALE           : TSchedaGenerica.PrepareForRecordString(this.Dati.RAGIONE_SOCIALE),
                                                 REGIME_FISCALE            : TSchedaGenerica.PrepareForRecordString(this.Dati.REGIME_FISCALE),
                                                 TIPO_RITENUTA             : TSchedaGenerica.PrepareForRecordInteger(this.Dati.TIPO_RITENUTA),
-                                                CODICE_FORNITORE          : TSchedaGenerica.PrepareForRecordString(this.Dati.CODICE_FORNITORE),
+                                                CODICE          : TSchedaGenerica.PrepareForRecordString(this.Dati.CODICE),
                                                 PARTITA_IVA               : TSchedaGenerica.PrepareForRecordString(this.Dati.PARTITA_IVA),
                                                 EMITTENTE_PIVA            : TSchedaGenerica.PrepareForRecordListIndex(this.Dati.EMITTENTE_PIVA),
                                                 RITENUTA                  : TSchedaGenerica.PrepareForRecordInteger(this.Dati.RITENUTA * 10),
@@ -634,6 +664,8 @@ export class TSchedaFornitore extends TSchedaGenerica
                                                 ID_CONTO_CORRENTE         : TSchedaGenerica.PrepareForRecordListIndex(this.Dati.ContoCorrente.ID_CONTO_CORRENTE),
                                                 PEC                       : TSchedaGenerica.PrepareForRecordString(this.Dati.PEC),
                                                 TIPO_AUTOFATTURA          : TSchedaGenerica.PrepareForRecordString(this.Dati.TIPO_AUTOFATTURA) != ''? TSchedaGenerica.PrepareForRecordString(this.Dati.TIPO_AUTOFATTURA) : null,
+                                                IS_FORNITORE              : true,
+                                                IS_CLIENTE                : TSchedaGenerica.PrepareForRecordBoolean(this.Dati.IS_CLIENTE)
                                               }
                                 });
         
@@ -643,7 +675,7 @@ export class TSchedaFornitore extends TSchedaGenerica
         {
           ObjQuery.Operazioni.push({
                                           Query     : "InsertUltimoCodiceFornitore",
-                                          Parametri : { ULTIMO_CODICE_FORNITORE : Self.Dati.CODICE_FORNITORE},
+                                          Parametri : { ULTIMO_CODICE_FORNITORE : Self.Dati.CODICE},
                                         })
         }
 
@@ -790,6 +822,7 @@ export class TSchedaFornitore extends TSchedaGenerica
       var SchedaIndiceAutoFatture = new TSchedaIndiceAutoFatture('',this.Chiave);
       var NodeAutoFatture = AnItem.AddChild(SchedaIndiceAutoFatture.GetDescrizione(),SchedaIndiceAutoFatture)
       NodeAutoFatture.HasChildren = true;
+      
       OnSuccess()
     }
 
@@ -892,14 +925,14 @@ export default
       var Self = this;
       if (this.MenuStampa.length == 0)
       { 
-        var Parametri = {ChiaveFornitore : this.SchedaFornitore.Chiave}
+        var Parametri = {ChiaveCliente : this.SchedaFornitore.Chiave}
         this.MenuNuovo = []
         this.MenuStampa = [
           {
             Caption: "Estratto conto",
             OnClick: function () 
             { 
-              SystemInformation.AdvQuery.ExecuteExternalScript('StampaEstrattoContoFornitore', Parametri,
+              SystemInformation.AdvQuery.ExecuteExternalScript('StampaEstrattoConto', Parametri,
                                         function(Result)
                                         {  
                                           if(Result.PDF != undefined)
@@ -957,7 +990,7 @@ export default
     {
       var Self = this
       var Parametri = {
-                        ChiaveFornitore : this.SchedaFornitore.Chiave,
+                        ChiaveCliente   : this.SchedaFornitore.Chiave,
                         DataDal         : this.ContoFornitoreDal,
                         DataAl          : this.ContoFornitoreAl
                       }
@@ -965,7 +998,7 @@ export default
       SystemInformation.UltimaDataDalContoFornitoreInserita = this.ContoFornitoreDal
       SystemInformation.UltimaDataAlContoFornitoreInserita  = this.ContoFornitoreAl
 
-      SystemInformation.AdvQuery.ExecuteExternalScript('StampaContoFornitore', Parametri,
+      SystemInformation.AdvQuery.ExecuteExternalScript('StampaConto', Parametri,
                                               function(Result)
                                               {  
                                                 if(Result.PDF != undefined)
@@ -1109,13 +1142,11 @@ export default
                                 ]
                 }
 
-      if(SystemInformation.AccessRights.VisibilitaAssociazioneCodiciFornitoriConProdottiMagazzino())
-      {
+      
         Result.Tabs.push({
                             Caption : 'Prodotti',
                             Id      : 'Prodotti'
                         })
-      }
 
       Result.Tabs.push({
                           Caption : 'Situazione contabile',

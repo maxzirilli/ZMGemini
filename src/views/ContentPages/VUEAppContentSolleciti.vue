@@ -6,10 +6,8 @@
   <VUEModalInvioEmail v-if="PopupEmailVisibile"
                       :AttivazionePopup="PopupEmailVisibile" 
                       :OggettoEmail="OggettoEmail"
-                      :ListaEmailAmministratore="ListaEmailAmministratore"
                       :ListaEmailCliente="ListaEmailCliente"
                       :EmailPEC="EmailPEC"
-                      :EmailPECAmministratore="EmailPECAmministratore"
                       :VisualizzaLivelliSolleciti="true"
                       @onClickChiudiModal="AnnullaInvia()"
                       @onClickConfermaModal="ConfermaInvia()"
@@ -51,18 +49,8 @@
             <select style="float:left;width:100%;margin-right:5px" class="form-control" v-model="TipoOrdinamento">
              <option value="OrdinaRagioneSociale">Ragione Sociale</option>           
              <option value="OrdinaImporto">Importo</option>
-             <option value="Amministrati"> Amministratore</option>           
             </select>
           </div>
-
-          <div style="float: left;font-size:14px;padding-top: 5px;width:7%;text-align: right; padding-right: 15px;">
-            <label style="margin-bottom: 0px">Seleziona :</label>
-          </div>
-          <select style="float:left;width:7%;margin-right:5px" class="form-control" v-model="FiltroClienti">
-             <option value="Tutti">Tutti</option>           
-             <option value="Clienti">Clienti</option>
-             <option value="Condomini">Condomini</option>
-          </select>   
 
           <div style="float: left;font-size:14px;padding-top: 5px;margin-left:-40px;width:7%;text-align: right; padding-right: 15px;">
             <label style="margin-bottom: 0px">Clienti :</label>
@@ -83,7 +71,7 @@
   <div class="ZMCorpoSchedeDati" style="float:left;margin-top:5px">
       <div class="panel-default" v-for="(Fattura,Indice) in LsFatture" :key="Fattura.id"  style="cursor:pointer">
         <div v-if="Fattura.RagioneSociale != ''" @click="OnClickEspandiEventi(Indice)" style="padding-top:15px; height:50px; background-color: #68b6be;">
-          <label style="width:25px;float:left;color:white; margin-top:3px; margin-left:1%" class="fa fa-envelope-o ZMIconButton" @click.stop="OnClickInviaMultipla(Fattura.IdCliente,Fattura.IsACondominio)"></label>
+          <label style="width:25px;float:left;color:white; margin-top:3px; margin-left:1%" class="fa fa-envelope-o ZMIconButton" @click.stop="OnClickInviaMultipla(Fattura.IdCliente)"></label>
           <div style="font-weight: bold; background-color: #68b6be;color: white;float: left;width:7%; margin-left: 2%">N° ALLEGATI: {{ Fattura.ConteggioFatture }}</div>
           <div style="font-weight: bold; background-color: #68b6be;color: white;float: left; margin-left: 25%">{{ Fattura.RagioneSociale  }} - TOTALE DA PAGARE: {{FormattaImporto(Fattura.LsTotaleImporti[0].TotaleImporti)}}</div>
           <i v-if="!Fattura.Grafica.EventiEspansi" style="color:#59b9eb; font-size:15px; float:right; margin-right: 1%" class="fa fa-caret-square-o-down"></i>
@@ -108,7 +96,7 @@
 
         <div style="height:40px" class="panel-heading"  @click="OnClickEspandiPagina(Indice)">
             <div style="width:3%;float:left">
-                <label style="width:25px;float:left;color:cadetblue; margin-right:2px;margin-left:4px" class="fa fa-envelope-o ZMIconButton" @click.stop="OnClickInviaSingola(Fattura.IdCliente,Fattura.Chiave,Fattura.Numero,GetTotaleImportiFattura(Fattura), Fattura.Data, Fattura.Cliente,Fattura.IsACondominio)"></label> 
+                <label style="width:25px;float:left;color:cadetblue; margin-right:2px;margin-left:4px" class="fa fa-envelope-o ZMIconButton" @click.stop="OnClickInviaSingola(Fattura.IdCliente,Fattura.Chiave,Fattura.Numero,GetTotaleImportiFattura(Fattura), Fattura.Data, Fattura.Cliente)"></label> 
             </div>
             <div v-if ="Fattura.Tipo == 'P'" style ="float:left;width:15px; margin-left: -30px; margin-right: 2px; margin-top: -5px; margin-bottom: auto" >
              <img src="@/assets/images/FatturaPregressa.png">
@@ -285,10 +273,8 @@ export default
             LsEventi                        : [],
             LsTotaleImporti                 : [],
             PopupEmailVisibile              : false,
-            ListaEmailAmministratore        : '',
             ListaEmailCliente               : '',
             EmailPEC                        : '',
-            EmailPECAmministratore          : '',
             LivelloSelezionato              : 'primo livello',
             PopupElimina                    : false,
             PopupInviaEmail                 : false,
@@ -311,7 +297,6 @@ export default
                                                Oggetto       : '',
                                                NumeroFattura : [],
                                                Tipo          : '',
-                                               IsACondominio : '',
                                                Allegato      : []
                                              }, 
             LsChiavi                        : [],
@@ -349,13 +334,10 @@ export default
         Parametri.DATA        = Self.ClasseDataTable.DataTableEventi.Righe[i].Dati.DATA.Valore
         Parametri.IdCliente   = IdCliente
         
-        if(Self.TipoOrdinamento == 'Amministrati')
-          Parametri.ID_AMMINISTRATORE  = Self.LsFatture[Indice].IdCliente
-        else
           Parametri.ID_CLIENTE = Self.LsFatture[Indice].IdCliente
         var ObjQuery = { Operazioni : [] };
         ObjQuery.Operazioni.push({
-                                  Query     : Self.ClasseDataTable.DataTableEventi.Righe[i].Dati.CHIAVE == undefined ? (Self.TipoOrdinamento == 'Amministrati' ? 'InserisciEventoPerAmministratore': 'InserisciEvento'): "ModificaEvento",
+                                  Query     : Self.ClasseDataTable.DataTableEventi.Righe[i].Dati.CHIAVE == undefined ?  'InserisciEvento': "ModificaEvento",
                                   Parametri
                                 })
         if(Self.ClasseDataTable.DataTableEventi.Righe[i].Eliminato)
@@ -508,7 +490,7 @@ export default
 
 
       var Oggetto                   = {}
-      Oggetto.Query                 = Self.TipoOrdinamento == 'Amministrati' ? 'InserisciEventoPerAmministratore' : "InserisciEvento",
+      Oggetto.Query                 = "InserisciEvento",
       Oggetto.Parametri             = {} 
       Oggetto.Parametri.CHIAVE      = -1
       
@@ -521,16 +503,7 @@ export default
 
       Oggetto.Parametri.DATA        = TZDateFunct.FormatDateTime('yyyy-mm-dd',new Date())
       
-      if(Self.TipoOrdinamento == 'Amministrati')
-      {
-        Oggetto.Parametri.ID_AMMINISTRATORE  = this.InvioIdClientePremuto
-        Oggetto.Parametri.ID_CLIENTE         = null
-      }
-      else 
-      {
-        Oggetto.Parametri.ID_AMMINISTRATORE  = null
-        Oggetto.Parametri.ID_CLIENTE         = this.InvioIdClientePremuto                    
-      }
+      Oggetto.Parametri.ID_CLIENTE         = this.InvioIdClientePremuto                    
 
       if(!this.InvioEmailSingola)
         NumeriFatture = NumeriFatture.slice(0,-3)
@@ -547,7 +520,6 @@ export default
           Parametri.Chiave           = this.OggettoEmail.ChiaveFattura
           Parametri.InvioEmail       = true
           Parametri.IdCliente        = Oggetto.Parametri.ID_CLIENTE
-          Parametri.IdAmministratore = Oggetto.Parametri.ID_AMMINISTRATORE
           SystemInformation.AdvQuery.ExecuteExternalScript('InvioMailAccountSolleciti', Parametri,
                                                           function(Answer)
                                                           {
@@ -580,7 +552,6 @@ export default
 
           let Parametri              = this.OggettoEmail
           Parametri.IdCliente        = Oggetto.Parametri.ID_CLIENTE
-          Parametri.IdAmministratore = Oggetto.Parametri.ID_AMMINISTRATORE
 
           Fattura.Invia(Parametri, 
                         function(Answer)
@@ -621,7 +592,6 @@ export default
             Parametri.InvioEmail       = true
             Parametri.LsChiaviFattureA = ChiaviPerStampaFattura
             Parametri.IdCliente        = Oggetto.Parametri.ID_CLIENTE
-            Parametri.IdAmministratore = Oggetto.Parametri.ID_AMMINISTRATORE
 
             if(this.AllegatoMancante != false)
             {
@@ -657,7 +627,6 @@ export default
         {
           Parametri.FromSolleciti    = -1
           Parametri.IdCliente        = Oggetto.Parametri.ID_CLIENTE
-          Parametri.IdAmministratore = Oggetto.Parametri.ID_AMMINISTRATORE
           SystemInformation.AdvQuery.ExecuteExternalScript('StampaFattura', Parametri,
                                                           function(Answer)
                                                           {  
@@ -718,7 +687,6 @@ export default
     AnnullaInvia()
     {
       this.EmailPEC                  = ''
-      this.EmailPECAmministratore    = ''
       this.OggettoEmail.Destinatario = ''
       this.PopupEmailVisibile        = false
       this.LivelloSelezionato        = 'primo livello';
@@ -737,8 +705,8 @@ export default
                                             ArrayInfoEventi.forEach(function(AEvento)
                                             {
                                               for(var i = 0; i < Self.LsFatture.length; i++)
-                                              if(Self.TipoOrdinamento == 'Amministrati' ? AEvento.ID_AMMINISTRATORE : AEvento.ID_CLIENTE)
-                                                if(Self.LsFatture[i].IdCliente == AEvento.ID_CLIENTE || Self.LsFatture[i].IdCliente == AEvento.ID_AMMINISTRATORE)
+                                              if(AEvento.ID_CLIENTE)
+                                                if(Self.LsFatture[i].IdCliente == AEvento.ID_CLIENTE)
                                                   Self.LsFatture[i].DatiEventi.push(AEvento)
                                             })
                                           },
@@ -780,7 +748,7 @@ export default
       var Parametri = {}
       if(this.TipoOrdinamento == 'OrdinaRagioneSociale')
           Parametri.OrdinaRagioneSociale = true
-      if(this.TipoOrdinamento == 'OrdinaImporto' || this.FiltroClienti == 'Tutti' || this.FiltroClienti == 'Condomini')
+      if(this.TipoOrdinamento == 'OrdinaImporto' || this.FiltroClienti == 'Tutti')
           Parametri.OrdinaImporto = true
       if(this.FiltroClientiAttivi != 'Tutti')
       {
@@ -788,8 +756,6 @@ export default
           Parametri.ClientiAttivi = 'T'
         else Parametri.ClientiAttivi = 'F'
       }
-      if(this.TipoOrdinamento == 'Amministrati')
-        Parametri.OrdinaPerAmministratore = true
 
       if(this.FiltroClientiPassatiAdAvvocato == 'PassatiAdAvvocato')
         Parametri.PassataAdAvvocato = 'T'
@@ -798,8 +764,6 @@ export default
     
       if(this.FiltroClienti == 'Clienti')
           Parametri.Clienti = true
-      if(this.FiltroClienti == 'Condomini')
-          Parametri.Condomini = true
       if(this.FiltroRagioneSociale.Cliente != -1)
           Parametri.CHIAVE = this.FiltroRagioneSociale.Cliente
         
@@ -807,7 +771,7 @@ export default
       SystemInformation.AdvQuery.GetSQL('Fatture',Parametri,
                                   function(Results)
                                   { 
-                                    let ArrayRateNonPagate = SystemInformation.AdvQuery.FindResults(Results,(Self.TipoOrdinamento == 'Amministrati' ? "DettaglioFattureNonPagatePerAmministratore" : "DettaglioFattureNonPagate"));
+                                    let ArrayRateNonPagate = SystemInformation.AdvQuery.FindResults(Results,("DettaglioFattureNonPagate"));
                                     
                                     if(ArrayRateNonPagate != undefined)
                                     { 
@@ -815,7 +779,6 @@ export default
                                       var IdFattura = -1
                                       var ObjectFattura = null
                                       var UltimaChiaveCliente = -1
-                                      var UltimaChiaveAmministratore = -1
                                       var ObjTitolo = null;
 
                                       ArrayRateNonPagate.forEach(function(ARata)
@@ -828,7 +791,7 @@ export default
                                           ObjectFattura = {
                                                             Chiave                      : ARata.CHIAVE_FATTURA,
                                                             Numero                      : ARata.NUMERO_FATTURA,
-                                                            IdCliente                   : Self.TipoOrdinamento == 'Amministrati' ? ARata.ID_AMMINISTRATORE : ARata.ID_CLIENTE,
+                                                            IdCliente                   : ARata.ID_CLIENTE,
                                                             Anno                        : TZDateFunct.FormatDateTime('yyyy',TZDateFunct.DateFromHTMLInput(ARata.DATA_FATTURA)),
                                                             Data                        : TZDateFunct.FormatDateTime('dd/mm/yyyy',TZDateFunct.DateFromHTMLInput(ARata.DATA_FATTURA)),
                                                             Cliente                     : ARata.RAGIONE_SOCIALE_DEL_CLIENTE,
@@ -845,20 +808,16 @@ export default
                                                             LsTotaleImporti             : [],
                                                             ConteggioFatture            : 1,
                                                             DatiEventi                  : [],
-                                                            IsACondominio               : ARata.CONDOMINIO,
                                                             Allegato                    : ARata.ALLEGATO
                                                           } 
 
-                                          if(Self.TipoOrdinamento != 'Amministrati')               
                                             ObjectFattura.RagioneSociale =  UltimaChiaveCliente != ARata.ID_CLIENTE ?  ARata.RAGIONE_SOCIALE_DEL_CLIENTE : ''
-                                          else ObjectFattura.RagioneSociale = UltimaChiaveAmministratore != ARata.CHIAVE_AMMINISTRATORE ? ARata.RAGIONE_SOCIALE_AMMINISTRATORE : ''
 
                                           if(ObjectFattura.RagioneSociale != '')
                                             ObjTitolo = ObjectFattura
                                           else ObjTitolo.ConteggioFatture++
                                           
                                           UltimaChiaveCliente        =  ARata.ID_CLIENTE
-                                          UltimaChiaveAmministratore = ARata.CHIAVE_AMMINISTRATORE 
                                           Self.LsFatture.push(ObjectFattura)
                                           IdFattura = ARata.CHIAVE_FATTURA
                                         }
@@ -883,12 +842,6 @@ export default
                                       ArrayInfoEventi.forEach(function(AEvento)
                                       { 
                                         for(var i = 0; i < Self.LsFatture.length; i++) 
-                                          if(Self.TipoOrdinamento == 'Amministrati')
-                                          { 
-                                            if(Self.LsFatture[i].IdCliente == AEvento.ID_AMMINISTRATORE)
-                                              Self.LsFatture[i].DatiEventi.push(AEvento)
-                                          } 
-                                          else
                                             if(Self.LsFatture[i].IdCliente == AEvento.ID_CLIENTE)
                                                 Self.LsFatture[i].DatiEventi.push(AEvento)
                                       }) 
@@ -945,21 +898,6 @@ export default
                                           }
                                       })
                                       
-                                      let ArrayTotaleImportoFatturePerAmministratore = SystemInformation.AdvQuery.FindResults(Results, "TotaleImportoFatturePerAmministratore")
-
-                                      ArrayTotaleImportoFatturePerAmministratore.forEach(function(ATotaleImporto)
-                                      { 
-                                        for(var i = 0; i < Self.LsFatture.length; i++)
-                                          {
-                                            if(Self.LsFatture[i].IdCliente == ATotaleImporto.ID_AMMINISTRATORE)
-                                            Self.LsFatture[i].LsTotaleImporti.push({
-                                                                                      IdCliente    : ATotaleImporto.ID_AMMINISTRATORE,
-                                                                                      TotaleImporti :ATotaleImporto.TOTALE_IMPORTO/100
-                                                                                    })
-                                          }
-                                      })
-
-                                      if(Self.TipoOrdinamento == 'OrdinaImporto' || Self.TipoOrdinamento == "Amministrati" )
                                         Self.LsFatture.sort(function(a,b)
                                                             {
                                                               if(a.LsTotaleImporti[0].TotaleImporti > b.LsTotaleImporti[0].TotaleImporti)
@@ -1030,7 +968,7 @@ export default
       else Fattura.LsNote.splice(Fattura.LsNote.indexOf(Nota),1)
     },
 
-    OnClickInviaMultipla(IdCliente,IsACondominio)
+    OnClickInviaMultipla(IdCliente)
     {
         var Self  = this
         Self.OggettoEmail.Destinatario   = ''
@@ -1042,7 +980,6 @@ export default
         Self.OggettoEmail.Data           = []
         Self.OggettoEmail.Totale         = []
         Self.OggettoEmail.Cliente        = []
-        Self.OggettoEmail.IsACondominio  = IsACondominio
         Self.OggettoEmail.Allegato       = []
         this.InvioEmailSingola           = false
         this.InvioIdClientePremuto       = IdCliente
@@ -1075,37 +1012,18 @@ export default
         function(Results)
         {
           var ListaEmailCliente = []
-          if(Self.TipoOrdinamento == 'Amministrati')
-            ListaEmailCliente = []
-          else
-            ListaEmailCliente = SystemInformation.AdvQuery.FindResults(Results,'ListaEmailClienti')
 
-          var ListaEmailAmministratore    = SystemInformation.AdvQuery.FindResults(Results, (Self.TipoOrdinamento == 'Amministrati' ? 'ListaEmailAmministratori' :'ListaEmailAmministratore'))
+            ListaEmailCliente = SystemInformation.AdvQuery.FindResults(Results,'ListaEmailClienti')
 
           var ArrayEmailPEC               = SystemInformation.AdvQuery.FindResults(Results, 'PECCliente')
           var EmailPEC                    = ''
           if(ArrayEmailPEC != undefined && ArrayEmailPEC.length != 0)
             EmailPEC                      = TSchedaGenerica.DisponiFromString( ArrayEmailPEC[0].PEC_CLIENTE )
           
-          var ArrayEmailPECAmm            = SystemInformation.AdvQuery.FindResults(Results, 'PECAmministratore')
-          var EmailPECAmministratore      = ''
-          if(ArrayEmailPECAmm != undefined && ArrayEmailPECAmm.length != 0)
-              EmailPECAmministratore      = TSchedaGenerica.DisponiFromString( ArrayEmailPECAmm[0].PEC_AMMINISTRATORE )
 
-          if(ListaEmailCliente != undefined || ListaEmailAmministratore != undefined)
+          if(ListaEmailCliente != undefined)
           {
-            Self.ListaEmailAmministratore = '' 
             Self.ListaEmailCliente        = ''
-
-            for(var i = 0; i < ListaEmailAmministratore.length; i++)
-            {
-              if(ListaEmailAmministratore[i].EMAIL_AMMINISTRATORE != undefined && ListaEmailAmministratore[i].EMAIL_AMMINISTRATORE != '')
-              {
-                Self.ListaEmailAmministratore += ListaEmailAmministratore[i].EMAIL_AMMINISTRATORE + ';' + ' ' 
-                
-                Self.OggettoEmail.Destinatario += ListaEmailAmministratore[i].EMAIL_AMMINISTRATORE + ';' + ' '
-              }
-            }
 
             for(i = 0; i < ListaEmailCliente.length; i++)
             {
@@ -1120,11 +1038,6 @@ export default
               Self.EmailPEC                   = EmailPEC + ';' + ' '
               Self.OggettoEmail.Destinatario += EmailPEC + ';' + ' '
             }
-            if(EmailPECAmministratore != undefined && EmailPECAmministratore != '')
-            {
-              Self.EmailPECAmministratore     = EmailPECAmministratore + ';' + ' '
-              Self.OggettoEmail.Destinatario += EmailPECAmministratore + ';' + ' '
-            }
 
             Self.LivelloSelezionato = 'primo livello';
             Self.PopupEmailVisibile = true
@@ -1135,7 +1048,7 @@ export default
         {
           SystemInformation.HandleError(HTTPError,SubHTTPError,Response);
         },
-        Self.TipoOrdinamento =='Amministrati' ?  'ListaEmailPECAmministratoreSolleciti' :'ListaEmailFatturaSolleciti')
+        'ListaEmailFatturaSolleciti')
     },
 
     GetDescrizioneToken()
@@ -1143,15 +1056,13 @@ export default
       var Result = ''
       for(var i= 0; i < this.OggettoEmail.NumeroFattura.length; i++)
         {
-        if(this.TipoOrdinamento == 'Amministrati' || this.OggettoEmail.IsACondominio == 'T')
-          Result +=   '\n'+ 'Cliente:  ' + this.OggettoEmail.Cliente[i] + '  ' +'N° Fattura: '  + this.OggettoEmail.NumeroFattura[i] + '  ' +'Importo: '+  this.OggettoEmail.Importo[i] + '  ' +'Data: ' + this.OggettoEmail.Data[i] 
-        else Result += '\n'+'N° Fattura: '  + this.OggettoEmail.NumeroFattura[i] + '  ' +'Importo: '+  this.OggettoEmail.Importo[i] + '  ' +'Data: ' + this.OggettoEmail.Data[i] + '  '              
+           Result += '\n'+'N° Fattura: '  + this.OggettoEmail.NumeroFattura[i] + '  ' +'Importo: '+  this.OggettoEmail.Importo[i] + '  ' +'Data: ' + this.OggettoEmail.Data[i] + '  '              
         }
         Result += '\n' + 'Totale: ' + this.OggettoEmail.Totale[0];            
           return Result 
     },
 
-    OnClickInviaSingola(IdCliente, IdFattura, Numero, Importo, Data, Cliente,IsACondominio)
+    OnClickInviaSingola(IdCliente, IdFattura, Numero, Importo, Data, Cliente)
     {   
         var Self  = this
         Self.OggettoEmail.Destinatario   = ''
@@ -1164,7 +1075,6 @@ export default
         Self.OggettoEmail.Data           = [Data]
         Self.OggettoEmail.Totale         = [Importo]
         Self.OggettoEmail.Cliente        = [Cliente]
-        Self.OggettoEmail.IsACondominio  = [IsACondominio]
         Self.OggettoEmail.CorpoEmail     = SystemInformation.Configurazioni.Impostazioni.CONFIGURAZIONE_MAIL_SOLLECITI_PRIMO_LIVELLO.replace('[TOKEN_FATTURA]',Self.GetDescrizioneToken() )
         Self.OggettoEmail.Allegato       = []
 
@@ -1193,36 +1103,18 @@ export default
         function(Results)
         {
             var ListaEmailCliente = []
-            if(Self.TipoOrdinamento == 'Amministrati')
-              ListaEmailCliente = []
-            else
-              ListaEmailCliente = SystemInformation.AdvQuery.FindResults(Results,'ListaEmailClienti')
 
-            var ListaEmailAmministratore    = SystemInformation.AdvQuery.FindResults(Results,(Self.TipoOrdinamento == 'Amministrati' ? 'ListaEmailAmministratori' :'ListaEmailAmministratore'))
+            ListaEmailCliente = SystemInformation.AdvQuery.FindResults(Results,'ListaEmailClienti')
 
             var ArrayEmailPEC               = SystemInformation.AdvQuery.FindResults(Results, 'PECCliente')
             var EmailPEC                    = ''
             if(ArrayEmailPEC != undefined && ArrayEmailPEC.length != 0)
               EmailPEC                      = TSchedaGenerica.DisponiFromString( ArrayEmailPEC[0].PEC_CLIENTE )
             
-            var ArrayEmailPECAmm            = SystemInformation.AdvQuery.FindResults(Results, 'PECAmministratore')
-            var EmailPECAmministratore      = ''
-            if(ArrayEmailPECAmm != undefined && ArrayEmailPECAmm.length != 0)
-              EmailPECAmministratore        = TSchedaGenerica.DisponiFromString( ArrayEmailPECAmm[0].PEC_AMMINISTRATORE )
-            
-            if(ListaEmailCliente != undefined || ListaEmailAmministratore != undefined)
+            if(ListaEmailCliente != undefined)
             {
-              Self.ListaEmailAmministratore = '' 
               Self.ListaEmailCliente        = ''
 
-              for(var i = 0; i < ListaEmailAmministratore.length; i++)
-              {
-                if(ListaEmailAmministratore[i].EMAIL_AMMINISTRATORE != undefined && ListaEmailAmministratore[i].EMAIL_AMMINISTRATORE != '')
-                {
-                  Self.ListaEmailAmministratore   += ListaEmailAmministratore[i].EMAIL_AMMINISTRATORE + ';' + ' '
-                  Self.OggettoEmail.Destinatario  += ListaEmailAmministratore[i].EMAIL_AMMINISTRATORE + ';' + ' '
-                }
-              }
               for(i = 0; i < ListaEmailCliente.length; i++)
               {
                 if(ListaEmailCliente[i].EMAIL_CLIENTE != undefined && ListaEmailCliente[i].EMAIL_CLIENTE != '')
@@ -1238,12 +1130,6 @@ export default
                 Self.OggettoEmail.Destinatario += EmailPEC + ';' + ' '
               }
 
-              if(EmailPECAmministratore != undefined && EmailPECAmministratore != '')
-              {
-                Self.EmailPECAmministratore     = EmailPECAmministratore + ';' + ' '
-                Self.OggettoEmail.Destinatario += EmailPECAmministratore + ';' + ' '
-              }
-
               Self.LivelloSelezionato = 'primo livello';
               Self.PopupEmailVisibile           = true
             }
@@ -1253,7 +1139,7 @@ export default
         {
           SystemInformation.HandleError(HTTPError,SubHTTPError,Response);
         },
-        Self.TipoOrdinamento =='Amministrati' ? 'ListaEmailPECAmministratoreSolleciti' :'ListaEmailFatturaSolleciti')
+        'ListaEmailFatturaSolleciti')
         this.InvioIdClientePremuto      = IdCliente
     },
 

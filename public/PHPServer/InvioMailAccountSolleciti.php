@@ -27,8 +27,6 @@
 
       if(isset($Parametri->IdCliente))
         $this->IdCliente = $Parametri->IdCliente;
-      if(isset($Parametri->IdAmministratore))
-        $this->IdAmministratore = $Parametri->IdAmministratore;
 
       $LsAllegati   = array();
       $NomeCartella = '';

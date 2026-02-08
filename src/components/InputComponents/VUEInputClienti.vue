@@ -83,7 +83,7 @@ const CLIENTI_TUTTI      = 2;
                (Cliente.ATTIVO != 'T' && Self.StatoCliente == CLIENTI_NON_ATTIVI))
             {
               Result.push({
-                            IDENTIFICATIVO : Cliente.CODICE_CLIENTE + ' - ' + Cliente.RAGIONE_SOCIALE,
+                            IDENTIFICATIVO : Cliente.CODICE + ' - ' + Cliente.RAGIONE_SOCIALE,
                             CHIAVE         : Cliente.CHIAVE
                           })
             }
@@ -105,7 +105,7 @@ const CLIENTI_TUTTI      = 2;
           if (ControlloNonAttivi != undefined) 
           {
             Result.push({
-                          IDENTIFICATIVO: ControlloNonAttivi.CODICE_CLIENTE + ' - ' + ControlloNonAttivi.RAGIONE_SOCIALE + ' - NON ATTIVO',
+                          IDENTIFICATIVO: ControlloNonAttivi.CODICE + ' - ' + ControlloNonAttivi.RAGIONE_SOCIALE + ' - NON ATTIVO',
                           CHIAVE: ControlloNonAttivi.CHIAVE
                         });
           }
@@ -116,7 +116,7 @@ const CLIENTI_TUTTI      = 2;
             this.Clienti.forEach(function(Cliente)
             {
               Result.push({
-                            IDENTIFICATIVO : Cliente.CODICE_CLIENTE + ' - ' + Cliente.RAGIONE_SOCIALE,
+                            IDENTIFICATIVO : Cliente.CODICE + ' - ' + Cliente.RAGIONE_SOCIALE,
                             CHIAVE         : Cliente.CHIAVE
                           })
             })

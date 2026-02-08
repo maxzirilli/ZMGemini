@@ -93,7 +93,7 @@
                </div>
 
            </div>
-           <div class="col-md-6" style="float:left" v-if="OggettoEmail.IdCliente != null || OggettoEmail.IdAmministratore != null"> 
+           <div class="col-md-6" style="float:left" v-if="OggettoEmail.IdCliente != null"> 
             <button style="float:right;margin-left:10px;margin-top: -8px" @click="OnClickGuardaListaEventi(false)" class="btn btn-info">Guarda lista eventi</button>
             <div style="float:right;">
               <div style="float:left;">
@@ -326,7 +326,6 @@ export default
                                             Oggetto          : '',
                                             Allegato         : [],
                                             IdCliente        : null,
-                                            IdAmministratore : null,
                                             AllegaListaEventiSolleciti : false,
                                             DescrizioneListaEventi     : null,
                                             TitoloListaEventi          : null,
@@ -506,14 +505,6 @@ export default
       {
         Query = 'SelectListaEventiSollecitiCliente'
         Parametri.ID_CLIENTE = this.OggettoEmail.IdCliente
-      }
-      else
-      {
-        if(this.OggettoEmail.IdAmministratore != null)
-        {
-          Query = 'SelectListaEventiSollecitiAmministratore'
-          Parametri.ID_AMMINISTRATORE = this.OggettoEmail.IdAmministratore
-        }
       }
 
       SystemInformation.AdvQuery.GetSQL('LogEmail', Parametri,
@@ -706,7 +697,6 @@ export default
                                                         Self.OggettoEmail.CorpoEmail       = CorpoEmailPulito.textContent || CorpoEmailPulito.innerText
                                                         Self.OggettoEmail.CorpoEmail       = Self.OggettoEmail.CorpoEmail.trim(); 
                                                         Self.OggettoEmail.IdCliente        = Email.ID_CLIENTE
-                                                        Self.OggettoEmail.IdAmministratore = Email.ID_AMMINISTRATORE
                                                         Self.OggettoEmail.AllegaListaEventiSolleciti = false
                                                         Self.VisualizzaPopupInoltro        = true
                                                       }
@@ -727,7 +717,6 @@ export default
       this.OggettoEmail.Destinatario        = ''
       this.OggettoEmail.Oggetto             = ''
       this.OggettoEmail.IdCliente           = null
-      this.OggettoEmail.IdAmministratore    = null
       this.OggettoEmail.AllegaListaEventiSolleciti = false
       this.OggettoEmail.DescrizioneListaEventi     = null
       this.OggettoEmail.TitoloListaEventi   = null
@@ -772,14 +761,6 @@ export default
       {
         Query = 'SelectListaEventiSollecitiCliente'
         Parametri.ID_CLIENTE = this.OggettoEmail.IdCliente
-      }
-      else
-      {
-        if(this.OggettoEmail.IdAmministratore != null)
-        {
-          Query = 'SelectListaEventiSollecitiAmministratore'
-          Parametri.ID_AMMINISTRATORE = this.OggettoEmail.IdAmministratore
-        }
       }
 
       SystemInformation.AdvQuery.GetSQL('LogEmail', Parametri,

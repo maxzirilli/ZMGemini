@@ -19,7 +19,6 @@ import { TSchedaMovimento } from '@/views/SchedeDatabase/VUESchedaMovimento.vue'
 import { TSchedaMovimentiMagazzini } from '@/views/SchedeDatabase/VUESchedaMovimentiMagazzini.vue';
 import { TSchedaDocumentoDiTrasporto } from '@/views/SchedeDatabase/VUESchedaDocumentoDiTrasporto.vue';
 import { TSchedaDocScaricoProdottiComposti } from '@/views/SchedeDatabase/VUESchedaDocScaricoProdottiComposti.vue';
-import { TSchedaAmministratore } from '@/views/SchedeDatabase/VUESchedaAmministratore.vue';
 import { TZFilter } from '../../../../../../Librerie/VUE/ZFilters.js';
 import { TSchedaFornitore } from '@/views/SchedeDatabase/VUESchedaFornitore.vue';
 import { TSchedaProdotto } from '@/views/SchedeDatabase/VUESchedaProdotto.vue';
@@ -42,8 +41,6 @@ export class TFilterCliente extends TZFilter
       this.IndirizzoFiliale       = '',
       this.Regione                = -1,
       this.Provincia              = -1,
-      this.PresenzaAmministratori = 'Tutti', 
-      this.Condomini              = 'Tutti',
       this.CodiceCliente          = ''
       this.ZonaFiliale            = -1
     }
@@ -81,21 +78,6 @@ export class TFilterCliente extends TZFilter
     if(this.StatoAttivita == 'NonAttivi')
         Parametri.Attivo = 'F';
 
-    if(this.PresenzaAmministratori != 'Tutti')
-    {
-      if(this.PresenzaAmministratori == 'Presenti')
-        Parametri.AmministratoriPresenti = -1;
-      if(this.PresenzaAmministratori == 'NonPresenti')
-        Parametri.AmministratoriNonPresenti = -1;
-    }
-
-    if(this.Condomini != 'Tutti')
-    {
-      if(this.Condomini == 'Condomini')
-        Parametri.Condomini = -1;
-      if(this.Condomini == 'Clienti')
-        Parametri.Clienti = -1;
-    }
 
     if(this.Ritenute != 'Qualsiasi')
     {
@@ -143,8 +125,6 @@ export class TFilterCliente extends TZFilter
       this.StatoFatture           = 'Qualsiasi'
       this.AnnoRitenuta           = (new Date()).getFullYear()
       this.IndirizzoFatturazione  = ''
-      this.PresenzaAmministratori = 'Tutti'
-      this.Condomini              = 'Tutti'
       this.ZonaFiliale            = -1
     } 
 
@@ -1823,75 +1803,6 @@ export class TFilterDocScaricoProdComposti extends TZFilter
                                         if(OnError != undefined)
                                           OnError()
                                       }, "FiltroDoc")
-  }
-}
-
-export class TFilterAmministratore extends TZFilter
-{
-  constructor()
-  {
-    super()
-    this.RagioneSociale = ''
-    this.Indirizzo      = ''
-  }
-
-  GetFilterId()
-  {
-    return DASHBOARD_FILTER_TYPES.Amministratori
-  }
-
-  GetDescrizione()
-  {
-    return 'Amministratori'
-  }
-
-  GetParametriXAmministratore()
-  {
-    var Parametri = {}
-    if(this.RagioneSociale.trim() != '')
-      Parametri.RagioneSociale = '%' + this.RagioneSociale + '%';
-    if(this.Indirizzo.trim() != '')
-      Parametri.Indirizzo = '%' + this.Indirizzo + '%';
-    return Parametri;
-  } 
-
-  ClearFilterAmministratore()
-  {
-    this.RagioneSociale = ''
-    this.Indirizzo      = ''
-  }
-
-  Apply(Component,OnSuccess,OnError)
-  {
-    SystemInformation.AdvQuery.GetSQL('Amministratori',this.GetParametriXAmministratore(),
-                                      function(Results)
-                                      {
-                                          let ArrayInfo = SystemInformation.AdvQuery.FindResults(Results,"LsAmministratori");
-                                          if(ArrayInfo != undefined)
-                                          {
-                                            Component.TreeView.Clear();
-                                            ArrayInfo.forEach(function(ARecord)
-                                            {
-                                              let SchedaAmministratore = new TSchedaAmministratore(SystemInformation.AdvQuery);
-                                              SchedaAmministratore.CaricaRiassunto(ARecord);
-                                              var NodeAmministratore = Component.TreeView.AddChild(SchedaAmministratore.GetDescrizione(), SchedaAmministratore);
-                                              NodeAmministratore.HasChildren = true;
-
-                                            });
-                                            OnSuccess();
-                                          }
-                                          else SystemInformation.HandleError('Impossibile ottenere la lista degli amministratori');
-                                          {
-                                            if(OnError != undefined)
-                                              OnError()
-                                          }
-                                      },
-                                      function(HTTPError,SubHTTPError,Response)
-                                      {
-                                        SystemInformation.HandleError(HTTPError,SubHTTPError,Response);
-                                        if(OnError != undefined)
-                                          OnError()
-                                      })
   }
 }
 

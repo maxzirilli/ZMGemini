@@ -21,32 +21,6 @@
               @onClickChiudiPopup="PopupDisattivaCliente = false">
   </VUEConfirm>
 
-  <VUEModal v-if="VisualizzaAmministratore" :Titolo="'Visualizza amministratore'" :Altezza="'600px'" :Larghezza="'1300px'"
-            @onClickChiudiModal="VisualizzaAmministratore = false">
-    <template v-slot:Body>
-      <div class="form-row">
-        <VUESchedaAmministratore :SchedaAmministratore="SchedaSelezionataPopup" />  
-      </div> 
-    </template>
-    <template v-slot:Footer>
-      <button type="button" class="btn btn-danger" style="float:right;margin-left:10px;font-weight:bold;width:18%" @click="VisualizzaAmministratore = false" data-dismiss="modal">Annulla</button>
-      <button v-if="SchedaSelezionataPopup.CanRecord()" type="button" class="btn btn-info" style="float:right;font-weight:bold;width:15%" @click="OnClickConfermaSchedaSelezionataPopup" data-dismiss="modal">Conferma</button>
-    </template>
-  </VUEModal>
-
-  <VUEModal v-if="NuovoAmministratore" :Titolo="'Crea amministratore'" :Altezza="'600px'" :Larghezza="'1300px'"
-            @onClickChiudiModal="NuovoAmministratore = false">
-    <template v-slot:Body>
-      <div class="form-row">
-        <VUESchedaAmministratore :SchedaAmministratore="SchedaAmministratore" />  
-      </div> 
-    </template>
-    <template v-slot:Footer>
-      <button type="button" class="btn btn-danger" style="float:right;margin-left:10px;font-weight:bold;width:18%" @click="NuovoAmministratore = false" data-dismiss="modal">Annulla</button>
-      <button v-if="SchedaAmministratore.CanRecord()" type="button" class="btn btn-info" style="float:right;font-weight:bold;width:18%" @click="ConfermaCreaAmministratore" data-dismiss="modal">Conferma</button>
-    </template>
-  </VUEModal>
-
   <VUEModal v-if="DataContoCliente" :Titolo="'Inserire data per conto cliente'" :Altezza="'100px'" :Larghezza="'520px'"
             @onClickChiudiModal="DataContoCliente = false">
       <template v-slot:Body>
@@ -176,11 +150,7 @@
             <li v-for="ATab in Tabs.Tabs" :Key="ATab.Id" 
                 :class="{ active : ATab.Id == Tabs.ActiveTab }">
               <a @click="Tabs.ActiveTab = ATab.Id">{{ATab.Caption}}
-                <img v-if="SchedaCliente.Dati.IS_A_CONDOMINIO && SchedaCliente.Dati.ATTIVO && SchedaCliente.Dati.ID_AMMINISTRATORE == -1 && ATab.Id == 'DatiFatturazione'" src="@/assets/images/IconeAlbero/CondominioSenzaAmm2.png" style="width:40px;height:40px;float:left;margin-top:-9px">  
-                <img v-else-if="SchedaCliente.Dati.IS_A_CONDOMINIO && SchedaCliente.Dati.ATTIVO && ATab.Id == 'DatiFatturazione'" src="@/assets/images/IconeAlbero/Condominio2.png" style="width:40px;height:40px;float:left;margin-top:-9px">  
-                <img v-else-if="SchedaCliente.Dati.IS_A_CONDOMINIO && !SchedaCliente.Dati.ATTIVO && ATab.Id == 'DatiFatturazione'" src="@/assets/images/IconeAlbero/CondominioNonAttivo2.png" style="width:40px;height:40px;float:left;margin-top:-9px">  
-                <img v-else-if="!SchedaCliente.Dati.IS_A_CONDOMINIO && !SchedaCliente.Dati.ATTIVO && ATab.Id == 'DatiFatturazione'" src="@/assets/images/IconeAlbero/ClienteNonAttivo2.png" style="width:40px;height:40px;float:left;margin-top:-9px">  
-                <img v-else-if="ATab.Id == 'DatiFatturazione'" src="@/assets/images/IconeAlbero/Cliente2.png" style="width:40px;height:40px;float:left;margin-top:-9px">  
+                <img v-if="ATab.Id == 'DatiFatturazione'" src="@/assets/images/IconeAlbero/Cliente2.png" style="width:40px;height:40px;float:left;margin-top:-9px">  
               </a>
             </li>
           </ul>
@@ -196,25 +166,19 @@
                 <label :style="{ color : SchedaCliente.Dati.ATTIVO ? undefined : 'red' }" style="font-weight: bold;">Cliente attivo&nbsp;</label>
               </div>
               <div style="float:left;width:3%">&nbsp;</div>
+
               <div style="float:left;margin-right:5px">
-                <input type="checkbox" style="margin-top:2px;" v-model="SchedaCliente.Dati.PRIORITA_INVERSA"/>
+                <input style="float:left;margin-top:2px" type="checkbox" v-model="SchedaCliente.Dati.IS_FORNITORE"/>
               </div>
               <div style="float:left;">
-                <label style="font-weight: bold;">Priorità inversa&nbsp;</label>
-              </div>
-              <div style="float:left;width:3%" v-if="!SchedaCliente.Dati.IMPIANTO_REVERSE_CHARGE">&nbsp;</div>
-              <div style="float:left;margin-right:5px"  v-if="!SchedaCliente.Dati.IMPIANTO_REVERSE_CHARGE">
-                <input type="checkbox" style="margin-top:2px;" v-model="SchedaCliente.Dati.ENTE_PUBBLICO" @change="OnChangeEntePubblico"/>
-              </div>
-              <div style="float:left;"  v-if="!SchedaCliente.Dati.IMPIANTO_REVERSE_CHARGE">
-                <label style="font-weight: bold;">Ente pubblico&nbsp;</label>
+                <label style="font-weight: bold;">Anche fornitore&nbsp;</label>
               </div>
               <div style="float:left;width:3%">&nbsp;</div>
-              <div style="float:left;margin-right:5px" v-if="!SchedaCliente.Dati.ENTE_PUBBLICO">
-                <input type="checkbox" style="margin-top:2px;" v-model="SchedaCliente.Dati.IMPIANTO_REVERSE_CHARGE" @change="OnChangeImpiantoReverseChange"/>
+              <div style="float:left;margin-right:5px">
+                <input type="checkbox" style="margin-top:2px;" v-model="SchedaCliente.Dati.ENTE_PUBBLICO" @change="OnChangeEntePubblico"/>
               </div>
-              <div style="float:left;" v-if="!SchedaCliente.Dati.ENTE_PUBBLICO">
-                <label style="font-weight: bold;">Impianto reverse charge&nbsp;</label>
+              <div style="float:left;">
+                <label style="font-weight: bold;">Ente pubblico&nbsp;</label>
               </div>
               <div style="float:left;width:3%">&nbsp;</div>
               <div style="float:left;margin-right:5px">
@@ -294,7 +258,7 @@
           <div style="clear:both;padding-top: 6px;">
             <div style="float:left;width:15%">
               <label style="font-weight: bold;">Codice cliente </label>
-              <input type="text" class="form-control" @keypress="OnKeyPressCodiceCliente()" v-model="SchedaCliente.Dati.CODICE_CLIENTE" placeholder="Codice cliente" maxlength="10"/>
+              <input type="text" class="form-control" @keypress="OnKeyPressCodiceCliente()" v-model="SchedaCliente.Dati.CODICE" placeholder="Codice cliente" maxlength="10"/>
             </div> 
             <div style="float:left;width:1%;">&nbsp;</div>
             <div style="float:left;" :style="{ width: VisibilitaCategorieClienti ? '63%' : '84%' }">
@@ -314,48 +278,6 @@
                         {{SelectOption.DESCRIZIONE}} 
                 </option>
               </select>
-            </div>
-          </div>
-          <div style="clear:both;height:1%">&nbsp;</div>
-          <div class="ZMSeparatoreScheda">Tipo cliente</div>
-          <div class="ZMNuovaRigaScheda">
-            <div style="float:left;">
-                <label>Privato&nbsp;</label>
-            </div>
-            <div style="float:left;">
-              <input type="radio" name="Amministratore" :value="false" v-model="SchedaCliente.Dati.IS_A_CONDOMINIO" @change="OnChangeAmministratore"/>
-            </div>
-            <div style="float:left;width:3%">&nbsp;</div>
-            <div style="float:left;">
-                <label>Condominio&nbsp;</label>
-            </div>
-            <div style="float:left;">
-              <input type="radio" name="Amministratore" :value="true" v-model="SchedaCliente.Dati.IS_A_CONDOMINIO" @change="OnChangeAmministratore"/>
-            </div>
-            <div v-if="SchedaCliente.Dati.IS_A_CONDOMINIO">
-              <div style="float:left;width:12%">&nbsp;</div>
-              <div style="float:left;">
-                  <input style="float:left;margin-top:2px" type="checkbox" v-model="SchedaCliente.Dati.CONDOMINIO_CON_FATTURAZIONE"/>
-              </div>
-              <div style="float:left;">
-                  <label>&nbsp;&nbsp;Usare PEC o SDI del condominio</label>
-              </div>
-            </div>
-          </div>
-          <div class="ZMNuovaRigaScheda" v-if="SchedaCliente.Dati.IS_A_CONDOMINIO">
-            <div style="float:left;width:60%">
-            <label style="font-weight: bold;">Amministratore</label>
-            <VUEInputAmministratore :key="ChiaveComponenteInput" v-model="SchedaCliente.Dati.ID_AMMINISTRATORE" emptyElement="true"/>
-            </div>
-            <div style="float:left;width:1%;">&nbsp;</div>
-            <div v-if="!SchedaCliente.DatiModificati() && SchedaCliente.Dati.ID_AMMINISTRATORE != -1" style="float:left;width:14%">
-              <label style="font-weight: bold;">&nbsp;</label>
-              <button class="btn btn-sm btn-info" style="width:100%" @click="OnClickVisualizzaAmministratore">Visualizza amm.</button>
-            </div>
-            <div v-if="!SchedaCliente.DatiModificati()" style="float:left;width:1%;" >&nbsp;</div>
-            <div style="float:left;width:24%">
-              <label style="font-weight: bold;">&nbsp;</label>
-              <button class="btn btn-sm btn-info" style="width:100%" @click="OnClickNuovoAmministratore">Nuovo amm.</button>
             </div>
           </div>
           <div style="clear:both;height:1%">&nbsp;</div>
@@ -396,7 +318,7 @@
           <div style="float:left;width:16%">
                   <label style="font-weight: bold;">Codice fiscale</label>
                   <VUEInputCodiceFiscale v-model="SchedaCliente.Dati.CODICE_FISCALE"/>
-                  <label v-if="(SchedaCliente.Dati.PARTITA_IVA.trim() == '' && SchedaCliente.Dati.CODICE_FISCALE.trim() == '') && !SchedaCliente.Dati.IS_A_CONDOMINIO && !DeveloperMode" 
+                  <label v-if="(SchedaCliente.Dati.PARTITA_IVA.trim() == '' && SchedaCliente.Dati.CODICE_FISCALE.trim() == '') && !DeveloperMode" 
                         class="ZMFormLabelError">Campo obbligatorio</label>
                   <label v-if="ErroreCodiceFiscale != '' && !DeveloperMode && SchedaCliente.Dati.NAZIONE_EM_PIVA == StatoItaliano" class="ZMFormLabelError">{{ ErroreCodiceFiscale }}</label>
               </div>
@@ -404,7 +326,7 @@
               <div style="float:left;width:11%">
                   <label style="font-weight: bold;">Partita IVA</label>
                   <VUEInputPartitaIVA v-model="SchedaCliente.Dati.PARTITA_IVA" />
-                  <label v-if="(SchedaCliente.Dati.PARTITA_IVA.trim() == '' && SchedaCliente.Dati.CODICE_FISCALE.trim() == '' && !SchedaCliente.Dati.IS_A_CONDOMINIO) && !DeveloperMode" 
+                  <label v-if="(SchedaCliente.Dati.PARTITA_IVA.trim() == '' && SchedaCliente.Dati.CODICE_FISCALE.trim() == '') && !DeveloperMode" 
                         class="ZMFormLabelError">Campo obbligatorio</label>
                   <label v-if="ErrorePartitaIVA != '' && !DeveloperMode && SchedaCliente.Dati.NAZIONE_EM_PIVA == StatoItaliano" class="ZMFormLabelError">{{ ErrorePartitaIVA }}</label>
               </div> 
@@ -900,6 +822,22 @@
                             </td>
                           </tr>
                           <template v-if="SchedaCliente.SchedaStatoContabile.TotaliDocumenti.length > 0">
+                            <td></td>
+                            <tr v-if="SchedaCliente.SchedaStatoContabile.SaldoPeriodo">
+                            <td colspan="3" style="text-align: right; font-weight: bold;">
+                              Saldo periodo:
+                            </td>
+                            <td style="font-weight: bold;">
+                              {{ SchedaCliente.SchedaStatoContabile.SaldoPeriodo.LB_DARE }}
+                            </td>
+                            <td style="font-weight: bold;">
+                              {{ SchedaCliente.SchedaStatoContabile.SaldoPeriodo.LB_AVERE }}
+                            </td>
+                            <td style="font-weight: bold;">
+                              {{ SchedaCliente.SchedaStatoContabile.SaldoPeriodo.LB_SALDO }}
+                            </td>
+                            <td></td>
+                            </tr>
                             <tr v-for="(Totali, index) in SchedaCliente.SchedaStatoContabile.TotaliDocumenti" :key="index"> 
                               <td colspan="3" style="text-align: right; font-weight: bold;">{{ Totali.QRLabel10 }} &nbsp;</td>
                               <td style="font-weight: bold;">{{ Totali.LB_TOTALE_DARE }} </td>
@@ -936,7 +874,6 @@
  import VUEInputCondPagamenti from '@/components/InputComponents/VUEInputCondPagamenti.vue';
  import VUEInputContoRibaCorrente from '@/components/InputComponents/VUEInputContoRibaCorrente.vue';
  import VUEInputEsigibilitaIVA from '@/components/InputComponents/VUEInputEsigibilitaIVA.vue';
- import VUEInputAmministratore from '@/components/InputComponents/VUEInputAmministratore.vue';
  import VUEInputZone from '@/components/InputComponents/VUEInputZone.vue';
  import VUEInputPartitaIVA from '../../components/InputComponents/VUEInputPartitaIVA.vue';
  import VUEInputCodiceFiscale from '@/components/InputComponents/VUEInputCodiceFiscale.vue';
@@ -948,7 +885,6 @@
  import { TZDateFunct } from '../../../../../../../../Librerie/VUE/ZDateFunct.js'
  import { TZFatturaElettronica } from '../../../../../../../../Librerie/VUE/ZFatturaElettronica.js'
  import { TZGenericFunct } from '../../../../../../../../Librerie/VUE/ZGenericFunct';
- import VUESchedaAmministratore, { TSchedaAmministratore } from '@/views/SchedeDatabase/VUESchedaAmministratore.vue'
  import VUEModal from '@/components/Slots/VUEModal.vue';
  import VUEConfirm from '@/components/VUEConfirm.vue';
  import * as XLSX from 'xlsx';
@@ -1428,8 +1364,9 @@ import VUEAllegati, { TSchedaAllegati } from '../../components/VUEAllegati.vue';
 
     AssignDati(ArraySituazioneContabile)
     {
-      this.ListaDocumenti = []
+      this.ListaDocumenti  = []
       this.TotaliDocumenti = []
+      this.SaldoPeriodo    = null
 
       ArraySituazioneContabile.LsConti.BAND_SUMMARY.forEach(item => {
                                                                     this.ListaDocumenti.push(item)
@@ -1438,6 +1375,8 @@ import VUEAllegati, { TSchedaAllegati } from '../../components/VUEAllegati.vue';
       ArraySituazioneContabile.LsConti.BAND_FOOTER.forEach(item => {
                                                                     this.TotaliDocumenti.push(item)
                                                                   })
+      if(ArraySituazioneContabile.SaldoPeriodo)
+         this.SaldoPeriodo = ArraySituazioneContabile.SaldoPeriodo
     }
   }
 
@@ -1522,7 +1461,7 @@ import VUEAllegati, { TSchedaAllegati } from '../../components/VUEAllegati.vue';
     { 
       return this.Dati.RAGIONE_SOCIALE.trim() != '' && 
             this.Dati.NAZIONE_EM_PIVA != -1 &&
-            (this.Dati.IS_A_CONDOMINIO || (this.Dati.CODICE_FISCALE.trim() != '' || this.Dati.PARTITA_IVA.trim() != '') || SystemInformation.DeveloperMode) &&
+            ((this.Dati.CODICE_FISCALE.trim() != '' || this.Dati.PARTITA_IVA.trim() != '') || SystemInformation.DeveloperMode) &&
             this.Dati.COND_PAGAMENTO != -1 &&
             this.Dati.COD_ENTE_SDI.trim().length == 7 &&
             (this.Dati.COD_UFFICIO_DEST.length == 6 || this.Dati.COD_UFFICIO_DEST == '') &&
@@ -1579,19 +1518,8 @@ import VUEAllegati, { TSchedaAllegati } from '../../components/VUEAllegati.vue';
 
     GetImageIndex()
     {
-      if(this.Dati.IS_A_CONDOMINIO)
-      {  
-        if(this.Dati.PASSATA_AD_AVVOCATO && this.Dati.ID_AMMINISTRATORE == -1)
-          return 'CondominioSenzaAmmAV.png'
-        if(this.Dati.PASSATA_AD_AVVOCATO)
-          return 'CondominioAV.png'
-        if(this.Dati.ATTIVO)
-          return this.Dati.ID_AMMINISTRATORE == -1? 'CondominioSenzaAmm.png' : 'Condominio.png'
-        else return 'CondominioNonAttivo.png'
-      }
-
-      else if(this.Dati.PASSATA_AD_AVVOCATO)
-      return 'ClienteAV.png'
+      if(this.Dati.PASSATA_AD_AVVOCATO)
+          return 'ClienteAV.png'
 
       else return this.Dati.ATTIVO ? 'Cliente.png' : 'ClienteNonAttivo.png'
     }
@@ -1663,22 +1591,20 @@ import VUEAllegati, { TSchedaAllegati } from '../../components/VUEAllegati.vue';
     DoRegistra(OnSuccess,OnError)
     {  
       var Self = this
-      this.CheckDoppiaPartitaIva(this.Dati.PARTITA_IVA,this.Dati.CODICE_FISCALE, this.Dati.CODICE_CLIENTE,
+      this.CheckDoppiaPartitaIva(this.Dati.PARTITA_IVA,this.Dati.CODICE_FISCALE, this.Dati.CODICE,
                                 function()
                                 {
                                   Self.PopupConfermaDoppioCodiceFiscale   = false
                                   var ObjQuery = { Operazioni : [] };
-                                  ObjQuery.Operazioni.push({
+                                   ObjQuery.Operazioni.push({
                                                             Query     : Self.IsNuovo() ? "Insert" : "Update",
                                                             Parametri : {
                                                                             CHIAVE_CLIENTE              : Self.Chiave, 
                                                                             RAGIONE_SOCIALE             : TSchedaGenerica.PrepareForRecordString(Self.Dati.RAGIONE_SOCIALE),
                                                                             ID_CAT_CLIENTE              : TSchedaGenerica.PrepareForRecordListIndex(Self.Dati.ID_CAT_CLIENTE),
-                                                                            CODICE_CLIENTE              : TSchedaGenerica.PrepareForRecordString(Self.Dati.CODICE_CLIENTE),
+                                                                            CODICE              : TSchedaGenerica.PrepareForRecordString(Self.Dati.CODICE),
                                                                             ID_AMMINISTRATORE           : TSchedaGenerica.PrepareForRecordListIndex(Self.Dati.ID_AMMINISTRATORE),
                                                                             ENTE_PUBBLICO               : TSchedaGenerica.PrepareForRecordBoolean(Self.Dati.ENTE_PUBBLICO),
-                                                                            PRIORITA_INVERSA            : TSchedaGenerica.PrepareForRecordBoolean(Self.Dati.PRIORITA_INVERSA),
-                                                                            IMPIANTO_REVERSE_CHARGE     : TSchedaGenerica.PrepareForRecordBoolean(Self.Dati.IMPIANTO_REVERSE_CHARGE),
                                                                             COD_ENTE_SDI                : TSchedaGenerica.PrepareForRecordString(Self.Dati.COD_ENTE_SDI),
                                                                             COD_UFFICIO_DEST            : TSchedaGenerica.PrepareForRecordString(Self.Dati.COD_UFFICIO_DEST),
                                                                             PARTITA_IVA                 : TSchedaGenerica.PrepareForRecordString(Self.Dati.PARTITA_IVA),
@@ -1723,8 +1649,11 @@ import VUEAllegati, { TSchedaAllegati } from '../../components/VUEAllegati.vue';
                                                                             IS_A_CONDOMINIO             : TSchedaGenerica.PrepareForRecordBoolean(Self.Dati.IS_A_CONDOMINIO),
                                                                             PASSATA_AD_AVVOCATO         : TSchedaGenerica.PrepareForRecordBoolean(Self.Dati.PASSATA_AD_AVVOCATO),
                                                                             SCONTO_GENERALE             : TSchedaGenerica.PrepareForRecordInteger(Self.Dati.SCONTO_GENERALE * 100),
+                                                                            IS_CLIENTE                  : true,
+                                                                            IS_FORNITORE                : TSchedaGenerica.PrepareForRecordBoolean(Self.Dati.IS_FORNITORE),
                                                                         }
                                                           });
+
                                   Self.SchedaFiliali.PrepareQueryParameters(ObjQuery.Operazioni,Self.Chiave)
                                   Self.SchedaRecapiti.PrepareQueryParametersTelefono(ObjQuery.Operazioni,Self.Chiave,'ID_CLIENTE')
                                   Self.SchedaAllegati.PrepareQueryParameters(ObjQuery.Operazioni,'ID_CLIENTE') 
@@ -1757,23 +1686,6 @@ import VUEAllegati, { TSchedaAllegati } from '../../components/VUEAllegati.vue';
                                     Self.DataTableAgenda.Righe[0].Dati['EVENTO'].Valore = 'Segnalazione di una o più fatture passate all\'avvocato'
                                     Self.DataTableAgenda.Righe[0].Dati['DATA'].Valore   = TSchedaGenerica.PrepareForRecordDate(new Date())
                                   }
-
-                                  if(!Self.IsNuovo())
-                                    if(Self.Dati.MemoriaAmministratore != undefined && Self.Dati.MemoriaAmministratore != null)
-                                      if(Self.Dati.MemoriaAmministratore != Self.Dati.ID_AMMINISTRATORE && Self.Dati.MemoriaAmministratore != -1)
-                                      {
-                                        
-                                          ObjQuery.Operazioni.push({
-                                                                      Query     : "InsertEvento",
-                                                                      Parametri : { 
-                                                                                    CHIAVE         : undefined,
-                                                                                    CHIAVE_CLIENTE : TSchedaGenerica.PrepareForRecordInteger(Self.Chiave),
-                                                                                    EVENTO         : 'Cambio amministratore. Il vecchio amministratore era ' + Self.Dati.RagioneSocialeAmministratore,
-                                                                                    DATA           : TSchedaGenerica.PrepareForRecordDate(new Date()),
-                                                                                  } ,
-                                                                      ResetKeys : [2]
-                                                                    })
-                                      }
 
                                   Self.DataTableAgenda.Righe.forEach(function(Riga)
                                   {
@@ -1838,11 +1750,11 @@ import VUEAllegati, { TSchedaAllegati } from '../../components/VUEAllegati.vue';
                                       }
                                   });
                                   
-                                  if(Self.IsNuovo() && Self.Dati.CODICE_CLIENTE.trim() != '')
+                                  if(Self.IsNuovo() && Self.Dati.CODICE.trim() != '')
                                   {
                                       ObjQuery.Operazioni.push({
                                                                   Query     : "InsertUltimoCodiceCliente",
-                                                                  Parametri : { ULTIMO_CODICE_CLIENTE : Self.Dati.CODICE_CLIENTE},
+                                                                  Parametri : { ULTIMO_CODICE_CLIENTE : Self.Dati.CODICE},
                                                                 })
                                   }
                                   
@@ -2002,12 +1914,7 @@ import VUEAllegati, { TSchedaAllegati } from '../../components/VUEAllegati.vue';
     {
       for(var Elemento of ArrayCambiamenti)
       {
-        if(Elemento.Chiave == 'IS_A_CONDOMINIO')
-          if(Elemento.ValoreNuovo)
-            MessaggioEvento += 'Reso il cliente un condominio,\n';
-          else
-            MessaggioEvento += 'Reso il cliente un privato,\n';
-        else if(Elemento.Chiave == 'ContoCorrente')
+        if(Elemento.Chiave == 'ContoCorrente')
           MessaggioEvento += `\nNel conto corrente sono stati cambiati i seguenti dati: \n${Self.ComponiMessaggioCambiamentiContoCorrente(Elemento)}`;
         else if(typeof Elemento.ValoreNuovo == 'boolean')
           if(Elemento.ValoreNuovo)
@@ -2331,11 +2238,8 @@ import VUEAllegati, { TSchedaAllegati } from '../../components/VUEAllegati.vue';
                                                 Self.Dati = { 
                                                               RAGIONE_SOCIALE             : TSchedaGenerica.DisponiFromString(ArrayInfo[0].RAGIONE_SOCIALE),
                                                               ID_CAT_CLIENTE              : TSchedaGenerica.DisponiFromListIndex(ArrayInfo[0].ID_CAT_CLIENTE),
-                                                              CODICE_CLIENTE              : TSchedaGenerica.DisponiFromString(ArrayInfo[0].CODICE_CLIENTE),
-                                                              ID_AMMINISTRATORE           : ((ArrayInfo[0].ID_AMMINISTRATORE == undefined || ArrayInfo[0].ID_AMMINISTRATORE == null) ? -1 : TSchedaGenerica.DisponiFromListIndex(ArrayInfo[0].ID_AMMINISTRATORE)),
+                                                              CODICE                      : TSchedaGenerica.DisponiFromString(ArrayInfo[0].CODICE),
                                                               ENTE_PUBBLICO               : TSchedaGenerica.DisponiFromBoolean(ArrayInfo[0].ENTE_PUBBLICO),
-                                                              PRIORITA_INVERSA            : TSchedaGenerica.DisponiFromBoolean(ArrayInfo[0].PRIORITA_INVERSA),
-                                                              IMPIANTO_REVERSE_CHARGE     : TSchedaGenerica.DisponiFromBoolean(ArrayInfo[0].IMPIANTO_REVERSE_CHARGE),
                                                               COD_ENTE_SDI                : TSchedaGenerica.DisponiFromString(ArrayInfo[0].COD_ENTE_SDI),
                                                               COD_UFFICIO_DEST            : TSchedaGenerica.DisponiFromString(ArrayInfo[0].COD_UFFICIO_DEST),
                                                               PARTITA_IVA                 : TSchedaGenerica.DisponiFromString(ArrayInfo[0].PARTITA_IVA),
@@ -2371,9 +2275,8 @@ import VUEAllegati, { TSchedaAllegati } from '../../components/VUEAllegati.vue';
                                                               BOLLO                       : TSchedaGenerica.DisponiFromString(ArrayInfo[0].BOLLO),
                                                               TIPOLOGIA_SCISSIONE         : TSchedaGenerica.DisponiFromListIndex(ArrayInfo[0].TIPOLOGIA_SCISSIONE),
                                                               RITENUTA                    : parseFloat((TSchedaGenerica.DisponiFromInteger(ArrayInfo[0].RITENUTA) / 10).toFixed(2)),
-                                                              CONDOMINIO_CON_FATTURAZIONE : TSchedaGenerica.DisponiFromBoolean(ArrayInfo[0].CONDOMINIO_CON_FATTURAZIONE),                                                               
-                                                              IS_A_CONDOMINIO             : ArrayInfo[0].ID_AMMINISTRATORE != null? true : TSchedaGenerica.DisponiFromBoolean(ArrayInfo[0].IS_A_CONDOMINIO),
                                                               SCONTO_GENERALE             : parseFloat((TSchedaGenerica.DisponiFromInteger(ArrayInfo[0].SCONTO_GENERALE) / 100).toFixed(2)),
+                                                              IS_FORNITORE                : TSchedaGenerica.DisponiFromBoolean(ArrayInfo[0].IS_FORNITORE),
                                                               ContoCorrente               : {
                                                                                               IBAN              : ArrayInfo[0].ID_CONTO_CORRENTE != null? TSchedaGenerica.DisponiFromString(ArrayInfo[0].IBAN_CONTO) : TSchedaGenerica.DisponiFromString(ArrayInfo[0].IBAN),
                                                                                               ID_CONTO_CORRENTE : TSchedaGenerica.DisponiFromListIndex(ArrayInfo[0].ID_CONTO_CORRENTE),
@@ -2390,8 +2293,6 @@ import VUEAllegati, { TSchedaAllegati } from '../../components/VUEAllegati.vue';
                                                               ModificaTabelle              : false,
                                                               ModificaRitenute             : false,
                                                               ModificaTabellaAllegati      : false,
-                                                              RagioneSocialeAmministratore : ArrayInfo[0].RAGIONE_SOCIALE_AMMINISTRATORE,
-                                                              MemoriaAmministratore        : TSchedaGenerica.DisponiFromListIndex(ArrayInfo[0].ID_AMMINISTRATORE),
                                                             }
                                                 Self.Confronti.VecchiaPEC           = Self.Dati.PEC;
                                                 Self.Confronti.VecchioCodiceSDI     = Self.Dati.COD_ENTE_SDI;
@@ -2430,12 +2331,9 @@ import VUEAllegati, { TSchedaAllegati } from '../../components/VUEAllegati.vue';
     {
         this.Chiave                         = Riassunto.CHIAVE;
         this.Dati.RAGIONE_SOCIALE           = TSchedaGenerica.DisponiFromString(Riassunto.RAGIONE_SOCIALE);
-        this.Dati.ID_AMMINISTRATORE         = TSchedaGenerica.DisponiFromListIndex(Riassunto.ID_AMMINISTRATORE);
         this.Eliminabile                    = Riassunto.CLIENTE_CANCELLABILE == 1? false : true
         this.Dati.ATTIVO                    = TSchedaGenerica.DisponiFromBoolean(Riassunto.ATTIVO);
-        this.Dati.IS_A_CONDOMINIO           = Riassunto.ID_AMMINISTRATORE != undefined? true : Riassunto.IS_A_CONDOMINIO == 'T';
         this.Dati.PASSATA_AD_AVVOCATO       = TSchedaGenerica.DisponiFromBoolean(Riassunto.PASSATA_AD_AVVOCATO);
-        this.Dati.MemoriaAmministratore     = TSchedaGenerica.DisponiFromListIndex(Riassunto.ID_AMMINISTRATORE);
         this.SchedaAllegati.SetIdDocumento(this.Chiave)
         this.CreateSnapshot();
     }
@@ -2455,11 +2353,8 @@ import VUEAllegati, { TSchedaAllegati } from '../../components/VUEAllegati.vue';
       this.Dati = { 
                     RAGIONE_SOCIALE             : '',
                     ID_CAT_CLIENTE              : -1,
-                    CODICE_CLIENTE              : '',
-                    ID_AMMINISTRATORE           : -1,
+                    CODICE              : '',
                     ENTE_PUBBLICO               : false,
-                    PRIORITA_INVERSA            : false,
-                    IMPIANTO_REVERSE_CHARGE     : false,
                     COD_ENTE_SDI                : '0000000',
                     COD_UFFICIO_DEST            : '',
                     PARTITA_IVA                 : '',
@@ -2496,8 +2391,7 @@ import VUEAllegati, { TSchedaAllegati } from '../../components/VUEAllegati.vue';
                     ATTIVO                      : true,
                     BOLLO                       : PAGAMENTO_BOLLO.NessunBollo,
                     RITENUTA                    : 0,
-                    CONDOMINIO_CON_FATTURAZIONE : false,
-                    IS_A_CONDOMINIO             : false,
+                    IS_FORNITORE                : false,
                     ContoCorrente               : { 
                                                       IBAN              : '',
                                                       BIC               : '',
@@ -2513,9 +2407,7 @@ import VUEAllegati, { TSchedaAllegati } from '../../components/VUEAllegati.vue';
                     ModificaTabellaOrariFiliali   : false,
                     ModificaTabelle               : false,
                     ModificaRitenute              : false,
-                    RagioneSocialeAmministratore  : null,
                     ModificaTabellaAllegati       : false,
-                    MemoriaAmministratore         : null
       }  
       this.Confronti = {
                         VecchiaPEC           : "",
@@ -2667,8 +2559,6 @@ import VUEAllegati, { TSchedaAllegati } from '../../components/VUEAllegati.vue';
         VUEInputPartitaIVA,
         VUEInputCodiceFiscale,
         VUERecapiti,
-        VUEInputAmministratore,
-        VUESchedaAmministratore,
         VUEModal,
         VUEInputContoRibaCorrente,
         VUEInputZone,
@@ -2693,13 +2583,10 @@ import VUEAllegati, { TSchedaAllegati } from '../../components/VUEAllegati.vue';
                 Collapsed                             : true,
                 TipiFatturazione                      : SystemInformation.GetLsTipiFatturazione(),
                 ShowCodiceCliente                     : false,
-                VisualizzaAmministratore              : false, 
-                NuovoAmministratore                   : false,
                 DataContoCliente                      : false,
                 ContoClienteDal                       : '',
                 ContoClienteAl                        : '',
                 SchedaSelezionataPopup                : new TSchedaGenerica(SystemInformation.AdvQuery),
-                SchedaAmministratore                  : {},
                 ChiaveComponenteInput                 : 0,
                 headers                               : [],
                 data                                  : [],
@@ -2734,8 +2621,7 @@ import VUEAllegati, { TSchedaAllegati } from '../../components/VUEAllegati.vue';
               'onClickNuovaNotaDiCredito', 
               'onClickNuovaFatturaDaBanco', 
               'onClickNuovoDDT',
-              'onClickNuovoDDTEntrante',
-              'onClickVisualizzaAmministratore'],
+              'onClickNuovoDDTEntrante'],
 
     props : ['SchedaCliente'],
     
@@ -3196,7 +3082,7 @@ import VUEAllegati, { TSchedaAllegati } from '../../components/VUEAllegati.vue';
                     Caption: "Estratto conto",
                     OnClick: function () 
                     {
-                        SystemInformation.AdvQuery.ExecuteExternalScript('StampaEstrattoContoCliente', Parametri,
+                        SystemInformation.AdvQuery.ExecuteExternalScript('StampaEstrattoConto', Parametri,
                                                   function(Result)
                                                   {  
                                                     if(Result.PDF != undefined)
@@ -3259,55 +3145,14 @@ import VUEAllegati, { TSchedaAllegati } from '../../components/VUEAllegati.vue';
         }
       },
 
-      OnClickNuovoAmministratore()
-      {
-        if(!this.NuovoAmministratore)
-        {
-          this.NuovoAmministratore = true
-          this.SchedaAmministratore = {}
-          this.SchedaAmministratore = new TSchedaAmministratore(SystemInformation.AdvQuery);
-          this.SchedaAmministratore.Nuovo(); 
-        }
-        else this.NuovoAmministratore = false
-      },
-
-      OnClickVisualizzaAmministratore()
-      {
-        var Self = this;
-        this.VisualizzaAmministratore      = true
-        this.SchedaSelezionataPopup        = new TSchedaAmministratore(SystemInformation.AdvQuery);
-        this.SchedaSelezionataPopup.Chiave = Self.SchedaCliente.Dati.ID_AMMINISTRATORE
-        this.SchedaSelezionataPopup.Disponi(function()
-                                                      {
-                                                        Self.VisualizzaAmministratore = true
-                                                      })
-        
-      },
-
       OnClickConfermaSchedaSelezionataPopup()
       {
-        var Self = this
+        // var Self = this
         this.SchedaSelezionataPopup.Registra(function()
         {
-          Self.VisualizzaAmministratore = false
+          // Self.VisualizzaAmministratore = false
         })
         
-      },
-
-      ConfermaCreaAmministratore()
-      {
-        var Self = this
-        if(this.SchedaAmministratore != {})
-        {
-          Self.SchedaAmministratore.Registra(function()
-          {
-              Self.ChiaveComponenteInput++
-              Self.SchedaCliente.Dati.ID_AMMINISTRATORE = Self.SchedaAmministratore.Chiave
-              Self.NuovoAmministratore = false
-              Self.VisualizzaAmministratore = false
-
-          })
-        }
       },
 
       ConfermaDataContoCliente()
@@ -3325,7 +3170,7 @@ import VUEAllegati, { TSchedaAllegati } from '../../components/VUEAllegati.vue';
         if(this.DataContoCliente)
         {
           this.DataContoCliente = false
-          SystemInformation.AdvQuery.ExecuteExternalScript('StampaContoCliente', Parametri,
+          SystemInformation.AdvQuery.ExecuteExternalScript('StampaConto', Parametri,
                                                   function(Result)
                                                   {  
                                                     if(Result.PDF != undefined)
@@ -3529,15 +3374,6 @@ import VUEAllegati, { TSchedaAllegati } from '../../components/VUEAllegati.vue';
           this.SchedaCliente.Dati.BIC            = ''
           this.SchedaCliente.Dati.SWIFT          = ''
         }
-      },
-
-      OnChangeAmministratore()
-      {
-        this.SchedaCliente.Dati.ID_AMMINISTRATORE = -1
-        if(this.SchedaCliente.Dati.IS_A_CONDOMINIO)
-          this.SchedaCliente.Dati.RITENUTA = SystemInformation.Configurazioni.Impostazioni.RITENUTA_ACCONTO / 10
-        else this.SchedaCliente.Dati.RITENUTA = 0
-        this.SchedaCliente.Dati.CONDOMINIO_CON_FATTURAZIONE = false
       },
 
       OnKeyPressCodiceCliente()

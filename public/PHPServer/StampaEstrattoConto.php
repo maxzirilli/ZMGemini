@@ -93,15 +93,15 @@
 
             $this->FPrepareParameterValue($ChiaveCliente, ':');
 
-            $SQLBody = "SELECT clienti.*
-                          FROM clienti
-                         WHERE clienti.CHIAVE = $ChiaveCliente";
+            $SQLBody = "SELECT anagrafiche.*
+                          FROM anagrafiche
+                         WHERE anagrafiche.CHIAVE = $ChiaveCliente";
 
             if($Query = $PDODBase->query($SQLBody))
             {
               while($Row = $Query->fetch(PDO::FETCH_ASSOC))
               {  
-                $DatiIntestazione->DESTINATARIO = array( 'CODICE CLIENTE: ' . $Row['CODICE_CLIENTE'], 
+                $DatiIntestazione->DESTINATARIO = array( 'CODICE CLIENTE: ' . $Row['CODICE'], 
                                                          $Row['RAGIONE_SOCIALE'], 
                                                          $Row['INDIRIZZO_FATTURAZIONE'] . ' ' . $Row['NR_CIVICO_FATTURAZIONE'],
                                                          $Row['CAP_FATTURAZIONE'] . ' ' . $Row['COMUNE_FATTURAZIONE'] . ' ' . $Row['ZONA_FATTURAZIONE'] );
@@ -110,51 +110,7 @@
 
 
             $TutteLeRighe                     = array();
-
-            // $SQLBodyMovimenti = "SELECT *
-            //                      FROM   movimenti
-            //                      WHERE ID_CLIENTE = $ChiaveCliente";
-                                 
-
-            // try
-            // {
-            //   $Query = $PDODBase->query($SQLBodyMovimenti);
-
-            //   while($Row = $Query->fetch(PDO::FETCH_ASSOC))
-            //   {
-            //     // error_log('Row assoc mov: ' . json_encode($Row));
-
-            //     $MovimentoAssociato['IS_MOVIMENTO_ASSOCIATO'] = true;
-
-            //     $MovimentoAssociato['CHIAVE']       = $Row['CHIAVE'];
-            //     $MovimentoAssociato['DATA']         = $Row['DATA'];
-            //     $MovimentoAssociato['IMPORTO']      = $Row['IMPORTO'] / 100;
-            //     $MovimentoAssociato['DESCRIZIONE']  = $Row['DESCRIZIONE'];
-                
-            //     if(isset($Row['CONTO_CORRENTE_VERSAMENTO']) && !isset($Row['CONTO_CORRENTE_PRELIEVO']))
-            //     {
-            //       $MovimentoAssociato['IS_ENTRANTE'] = true;
-            //     }
-            //     else
-            //     {
-            //       if(!isset($Row['CONTO_CORRENTE_VERSAMENTO']) && isset($Row['CONTO_CORRENTE_PRELIEVO']))
-            //       {
-            //         $MovimentoAssociato['IS_ENTRANTE'] = false;
-            //       }
-            //       else
-            //       {
-            //         continue; // non pusho la riga nella remota eventualità che sia un giroconto (non dovrebbe accadere, perché non avrebbe senso associare un giroconto a un cliente, però maniman...)
-            //       }
-            //     }
-
-            //     array_push($TutteLeRighe, $MovimentoAssociato);
-            //   }
-            // }
-            // catch(Exception $e)
-            // {
-            //   error_log($SQLBodyMovimenti);
-            //   throw $e;
-            // }
+            $this->FAggiungiDocumentiPassivi($TutteLeRighe, $PDODBase, $ChiaveCliente);
 
 
             $SQLBody = "SELECT fatture.*,
@@ -191,6 +147,7 @@
                 {
                   array_push($TutteLeRighe, $ParagonePerMoltepliciRate);
                   $LastChiave = null;
+                  continue;
                 }
 
                 if(!isset($LastChiave))
@@ -264,93 +221,72 @@
             
             
             
-                  foreach($TutteLeRighe as $Row)
+            foreach($TutteLeRighe as $Row)
             {
+              $Row['DA_BANCO'] = $Row['DA_BANCO'] ?? 'F';
+              $Row['NETTO_A_PAGARE'] = $Row['NETTO_A_PAGARE'] ?? 0;
+              $Row['PREGRESSA'] = $Row['PREGRESSA'] ?? 'F';
+          
               $DatiFattura = new TDatiFattura();
-
-              // if(isset($Row['IS_MOVIMENTO_ASSOCIATO']) && $Row['IS_MOVIMENTO_ASSOCIATO'] == true)
-              // {
-              //   $DatiFattura->LB_CAUSALE_DOCUMENTO  = $Row['DESCRIZIONE'];
-              //   $DatiFattura->LB_DATA_DOCUMENTO     = date("d/m/Y", strtotime($Row['DATA']));
-              //   $DatiFattura->LB_NUMERO_DOCUMENTO   = ' - ';
-                
-              //   if($Row['IS_ENTRANTE'] == true)
-              //   {
-              //     // Movimenti ENTRANTI diminuiscono il debito che il cliente ha nei nostri confronti
-              //     $DatiFattura->LB_IMPORTO_DOCUMENTO        = '- ' . EuropeanCurrencyFormat($Row['IMPORTO']);
-              //     $DatiFooter->LB_IMPORTO_DA_PAGARE_TOTALE -= $Row['IMPORTO'];
-              //   }
-              //   else 
-              //   {
-              //     // Movimenti USCENTI aumentano il debito che il cliente ha nei nostri confronti
-              //     $DatiFattura->LB_IMPORTO_DOCUMENTO = EuropeanCurrencyFormat($Row['IMPORTO']);
-              //     $DatiFooter->LB_IMPORTO_DA_PAGARE_TOTALE += $Row['IMPORTO'];
-              //   }
-
-              //   $DatiFattura->LB_SCADENZA_DOCUMENTO = ' - ';
-              // }
-              // else
-              // {
-                if(isset($Row['IS_NOTA_CREDITO']))
-                  $DatiFattura->LB_CAUSALE_DOCUMENTO = isset($Row['NUMERO'])? 'Nota di credito n. ' . $Row['NUMERO'] : 'Avviso nota ' . $Row['CHIAVE'];
-                else 
-                {
-                  if($Row['DA_BANCO'] == 'T')
-                    $DatiFattura->LB_CAUSALE_DOCUMENTO = isset($Row['NUMERO'])? 'Fatt.ra B' . $Row['NUMERO'] : 'Avviso fatt.ra ' . $Row['CHIAVE'];
-                  else 
+          
+              // Tipo di riga: default a "ATTIVO" se non specificato
+              $TipoRiga = $Row['TIPO'] ?? 'ATTIVO';
+              $PrefissoDocumento = $Row['PREFISSO'] ?? ($TipoRiga == 'PASSIVO' ? '[PASSIVO]' : '[ATTIVO]');
+          
+              // Causale
+              if(isset($Row['IS_NOTA_CREDITO']) && $Row['IS_NOTA_CREDITO'] == 'T')
+              {
+                  $DatiFattura->LB_CAUSALE_DOCUMENTO = isset($Row['NUMERO'])
+                      ? 'Nota di credito n. ' . $Row['NUMERO']
+                      : 'Avviso nota ' . $Row['CHIAVE'];
+              }
+              else
+              {
+                  if($TipoRiga == 'PASSIVO')
                   {
-                    if(isset($Row['PREGRESSA']))
-                      $DatiFattura->LB_CAUSALE_DOCUMENTO = 'Fatt.ra preg. ' . $Row['NUMERO'];
-                    else $DatiFattura->LB_CAUSALE_DOCUMENTO = isset($Row['NUMERO'])? 'Fattura n. ' . $Row['NUMERO'] : 'Avviso fatt.ra ' . $Row['CHIAVE'];
+                      if($Row['IS_FATTURA'] == 'T')
+                          $DatiFattura->LB_CAUSALE_DOCUMENTO = isset($Row['NUMERO'])
+                              ? 'Fattura passiva n. ' . $Row['NUMERO']
+                              : 'Avviso fattura passiva ' . $Row['CHIAVE'];
+                      else
+                          $DatiFattura->LB_CAUSALE_DOCUMENTO = isset($Row['NUMERO'])
+                              ? 'Nota passiva n. ' . $Row['NUMERO']
+                              : 'Avviso nota passiva ' . $Row['CHIAVE'];
                   }
-                }
-
-                $DatiFattura->LB_DATA_DOCUMENTO = date("d/m/Y", strtotime($Row['DATA']));
-                $DatiFattura->LB_NUMERO_DOCUMENTO = isset($Row['NUMERO'])? $Row['NUMERO'] : $Row['CHIAVE'];
-
-                if(isset($Row['IS_NOTA_CREDITO']))
-                  $DatiFattura->LB_IMPORTO_DOCUMENTO = '- ' . EuropeanCurrencyFormat($Row['TOTALE_NOTA']);
-                else $DatiFattura->LB_IMPORTO_DOCUMENTO = EuropeanCurrencyFormat($Row['NETTO_A_PAGARE']);
-
-                if(isset($Row['IS_NOTA_CREDITO']))
-                  $DatiFooter->LB_IMPORTO_DA_PAGARE_TOTALE -= $Row['TOTALE_NOTA'];
-                else $DatiFooter->LB_IMPORTO_DA_PAGARE_TOTALE += $Row['NETTO_A_PAGARE'];
-
-                if(isset($Row['IS_NOTA_CREDITO']))
-                  $DatiFattura->LB_SCADENZA_DOCUMENTO = date("d/m/Y", strtotime($Row['DATA_SCADENZA']));
-                else
-                {
-                  if ($Row['DATA_SCADENZA'] != '-')
-                    $DatiFattura->LB_SCADENZA_DOCUMENTO = date("d/m/Y", strtotime($Row['DATA_SCADENZA']));
                   else
-                    $DatiFattura->LB_SCADENZA_DOCUMENTO = $Row['DATA_SCADENZA'];
-                }
-
-                // if(isset($Row['ID_CONTO_CORRENTE']))
-                //   if(isset($Row['IBAN_CONTO']))
-                //   {
-                //     $ContoTrovato = false;
-                //     for( $i = 0; $i < count($DatiIntestazione->QR_MEMO_IBAN); $i++ )
-                //     {
-                //       if($DatiIntestazione->QR_MEMO_IBAN[$i] == $Row['IBAN_CONTO'])
-                //       {
-                //         $ContoTrovato = true;
-                //         break;
-                //       }
-                //     }
-                //     if(!$ContoTrovato)
-                //     {
-                //       array_push($DatiIntestazione->QR_MEMO_IBAN, $Row['IBAN_CONTO']);
-                //       $ContoTrovato = false;
-                //     }
-                //   }
-
-              // }
-
+                  {
+                      $DatiFattura->LB_CAUSALE_DOCUMENTO = isset($Row['NUMERO'])
+                          ? 'Fattura n. ' . $Row['NUMERO']
+                          : 'Avviso fatt.ra ' . $Row['CHIAVE'];
+                  }
+              }
+          
+              $DatiFattura->LB_CAUSALE_DOCUMENTO = $PrefissoDocumento . ' ' . $DatiFattura->LB_CAUSALE_DOCUMENTO;
+          
+              // Data e numero
+              $DatiFattura->LB_DATA_DOCUMENTO = date("d/m/Y", strtotime($Row['DATA']));
+              $DatiFattura->LB_NUMERO_DOCUMENTO = isset($Row['NUMERO']) ? $Row['NUMERO'] : $Row['CHIAVE'];
+          
+              // Importo
+              if(isset($Row['IS_NOTA_CREDITO']) || (isset($Row['IS_FATTURA']) && $Row['IS_FATTURA'] == 'F'))
+              {
+                  $DatiFattura->LB_IMPORTO_DOCUMENTO = '- ' . EuropeanCurrencyFormat($Row['NETTO_A_PAGARE']);
+                  $DatiFooter->LB_IMPORTO_DA_PAGARE_TOTALE -= $Row['NETTO_A_PAGARE'];
+              }
+              else
+              {
+                  $DatiFattura->LB_IMPORTO_DOCUMENTO = EuropeanCurrencyFormat($Row['NETTO_A_PAGARE']);
+                  $DatiFooter->LB_IMPORTO_DA_PAGARE_TOTALE += $Row['NETTO_A_PAGARE'];
+              }
+          
+              // Scadenza
+              if(isset($Row['DATA_SCADENZA']) && $Row['DATA_SCADENZA'] != '-')
+                  $DatiFattura->LB_SCADENZA_DOCUMENTO = date("d/m/Y", strtotime($Row['DATA_SCADENZA']));
+              else
+                  $DatiFattura->LB_SCADENZA_DOCUMENTO = $Row['DATA_SCADENZA'] ?? '-';
+          
               array_push($Result->BAND_SUMMARY, $DatiFattura);
-
             }
-
 
             if($NomeLogo != '')
               $DatiIntestazione->QR_LOGO = NOME_CARTELLA_FILE_TEMP . '/' . $NomeLogo . '.jpg'; 
@@ -363,6 +299,60 @@
 
             return $Result;
           }
+
+          private function FAggiungiDocumentiPassivi(&$TutteLeRighe, $PDODBase, $ChiaveCliente)
+          {
+           // =========================
+           // FATTURE PASSIVE E NOTE PASSIVE
+           // =========================
+           $SQLBody = "
+               SELECT 
+                   fatture_passive.NUMERO,
+                   fatture_passive.DATA,
+                   rate_fatture_passive.IMPORTO / 1000 AS IMPORTO_RIGA,
+                   rate_fatture_passive.DATA_SCADENZA,
+                   rate_fatture_passive.NOTE AS NOTE_RATA,
+                   fatture_passive.IS_FATTURA
+               FROM fatture_passive
+               JOIN rate_fatture_passive
+                   ON fatture_passive.CHIAVE = rate_fatture_passive.ID_FATTURA_PASSIVA
+               WHERE fatture_passive.ID_FORNITORE = $ChiaveCliente
+                 AND rate_fatture_passive.DATA_PAGAMENTO IS NULL
+                 AND rate_fatture_passive.ID_MOVIMENTO IS NULL
+                 AND rate_fatture_passive.DATA_SCADENZA <= CURDATE()
+               ORDER BY fatture_passive.DATA, rate_fatture_passive.DATA_SCADENZA
+           ";
+       
+           if($Query = $PDODBase->query($SQLBody))
+           {
+               while($Row = $Query->fetch(PDO::FETCH_ASSOC))
+               {
+                   // Definisce se è fattura o nota
+                   if($Row['IS_FATTURA'] == 'T')
+                   {
+                       $Row['TIPO'] = 'PASSIVO';
+                       $Row['NETTO_A_PAGARE'] = $Row['IMPORTO_RIGA'];
+                       $Row['PREFISSO'] = '[PASSIVO]';
+                       $Row['DATA_SCADENZA'] = $Row['DATA_SCADENZA'];
+                   }
+                   else // IS_FATTURA = 'F' -> nota passiva
+                   {
+                       $Row['TIPO'] = 'PASSIVO';
+                       $Row['NETTO_A_PAGARE'] = $Row['IMPORTO_RIGA']; // se vuoi mostrarlo negativo: -$Row['IMPORTO_RIGA']
+                       $Row['PREFISSO'] = '[NOTA PASSIVA]';
+                       $Row['DATA_SCADENZA'] = '-';
+                   }
+       
+                   // Aggiunge la riga all'elenco
+                   array_push($TutteLeRighe, $Row);
+               }
+           }
+           else
+           {
+               throw new Exception('Impossibile trovare fatture o note passive del cliente.');
+           }
+          }
+
             
           protected function FExtraScriptServerSide($PDODBase,&$JSONAnswer)
           { 

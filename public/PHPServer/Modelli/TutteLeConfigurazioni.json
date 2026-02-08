@@ -23,11 +23,11 @@
 		},
 		{
 			"Name" : "Fornitori",
-			"SQL" : "SELECT CHIAVE,RAGIONE_SOCIALE, CODICE_FORNITORE\n FROM fornitori\nORDER BY RAGIONE_SOCIALE\n"
+			"SQL" : "SELECT CHIAVE,RAGIONE_SOCIALE, CODICE\n FROM anagrafiche\nWHERE IS_FORNITORE = 'T'\nORDER BY RAGIONE_SOCIALE\n"
 		},
 		{
 			"Name" : "Clienti",
-			"SQL" : "SELECT CHIAVE,RAGIONE_SOCIALE,CODICE_CLIENTE, ATTIVO\n FROM clienti\nORDER BY RAGIONE_SOCIALE\n"
+			"SQL" : "SELECT CHIAVE,RAGIONE_SOCIALE,CODICE, ATTIVO\n FROM anagrafiche\nWHERE IS_CLIENTE = 'T' \nORDER BY RAGIONE_SOCIALE\n"
 		},
 		{
 			"Name" : "CategoriaMovimenti",
@@ -44,10 +44,6 @@
 		{
 			"Name" : "UnitaDiMisura",
 			"SQL" : "SELECT *\n  FROM unita_di_misura\n"
-		},
-		{
-			"Name" : "Amministratori",
-			"SQL" : "SELECT CHIAVE, RAGIONE_SOCIALE\n FROM amministratori\nORDER BY RAGIONE_SOCIALE\n"
 		},
 		{
 			"Name" : "Titoli",
@@ -95,7 +91,7 @@
 		},
 		{
 			"Name" : "ClientiNonAttivi",
-			"SQL" : "SELECT CHIAVE,RAGIONE_SOCIALE,CODICE_CLIENTE, ATTIVO\n FROM clienti\nWHERE clienti.ATTIVO <> 'T'\nORDER BY RAGIONE_SOCIALE\n"
+			"SQL" : "SELECT CHIAVE,RAGIONE_SOCIALE,CODICE, ATTIVO\n FROM anagrafiche\nWHERE anagrafiche.ATTIVO <> 'T' AND IS_CLIENTE = 'T'\nORDER BY RAGIONE_SOCIALE\n"
 		},
 		{
 			"Name" : "Magazzini",
@@ -105,7 +101,7 @@
 	"SelectSQL" : [
 		{
 			"Name" : "UserInformation",
-			"SQL" : "SELECT USERNAME,\n            RAGIONE_SOCIALE,\n            ROLE,\n            EMAIL,\n            IMMAGINE,\n            PRIMO_ACCESSO,\n            ID_CLIENTE,\n            ID_AMMINISTRATORE\n  FROM utenti \nWHERE CHIAVE = :KeyAccount\n"
+			"SQL" : "SELECT USERNAME,\n            RAGIONE_SOCIALE,\n            ROLE,\n            EMAIL,\n            IMMAGINE,\n            PRIMO_ACCESSO\n  FROM utenti \nWHERE CHIAVE = :KeyAccount\n"
 		}
 ]
 }

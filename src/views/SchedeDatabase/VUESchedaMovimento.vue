@@ -392,7 +392,7 @@
       <label v-if="CurrentSchedaMovimento.Dati.DATA == ''" class="ZMFormLabelError">Campo obbligatorio</label>
      </div> 
 
-     <div v-if="CurrentSchedaMovimento.Dati.ID_CLIENTE != -1 || CurrentSchedaMovimento.Dati.ID_FORNITORE != -1" style="float:left;margin-left:3px">
+     <div v-if="CurrentSchedaMovimento.Dati.ID_ANAGRAFICA != -1" style="float:left;margin-left:3px">
       <text style="font-weight: bold;">Data chiusura</text>
       <input style="" type="date" id="input-data" class="form-control" v-model="CurrentSchedaMovimento.Dati.DATA_CHIUSURA"/>
       <label v-if="CurrentSchedaMovimento.Dati.DATA == ''" class="ZMFormLabelError">Campo obbligatorio</label>
@@ -406,8 +406,7 @@
 
     <button class="btn btn-sm btn-info" style="float:right;margin-top:15px;font-weight:bold;width:10%" @click="OnClickApriPopupAssociazione" data-dismiss="modal">Associa</button>
      <div style= "float:right;margin-top:22px;margin-right:1x;padding-right:20px;font-weight:bold;width:auto">
-    <label v-if="CurrentSchedaMovimento.Dati.ID_CLIENTE != -1"><b> Cliente</b> : {{ this.RagioneSocialeClienteAssociato }}</label>
-    <label v-if="CurrentSchedaMovimento.Dati.ID_FORNITORE != -1"><b> Fornitore</b> : {{ this.RagioneSocialeFornitoreAssociato }}</label>
+    <label v-if="CurrentSchedaMovimento.Dati.ID_ANAGRAFICA != -1"><b>Associato a</b> : {{ this.RagioneSocialeAssociato }}</label>
     </div>
 
      <div style="clear:both; height:10px"></div>
@@ -717,34 +716,34 @@ export class TSchedaMovimento extends TSchedaGenerica
 
    ControlloSaldiChiusureAnnuali(ObjQuery)
    {
-      if(this.Dati.ID_CLIENTE != -1)
+      if(this.Dati.ID_ANAGRAFICA != -1)
       {
         ObjQuery.Operazioni.push({
                                     Query     : "EliminaRecordSaldiChiusureAnnuali",
                                     Parametri : {
-                                                  CHIAVE_CLIENTE : TSchedaGenerica.PrepareForRecordInteger(this.Dati.ID_CLIENTE),
+                                                  CHIAVE_CLIENTE : TSchedaGenerica.PrepareForRecordInteger(this.Dati.ID_ANAGRAFICA),
                                                   ANNO           : TSchedaGenerica.PrepareForRecordString(TZDateFunct.FormatDateTime('yyyy',TZDateFunct.DateFromHTMLInput(this.Dati.DATA)))
                                                 }
                                 });
       }
 
-      if(this.Dati.ID_FORNITORE != -1)
-      {
-        ObjQuery.Operazioni.push({
-                                    Query     : "EliminaRecordSaldiChiusureAnnualiFornitore",
-                                    Parametri : {
-                                                  CHIAVE_FORNITORE : TSchedaGenerica.PrepareForRecordInteger(this.Dati.ID_FORNITORE),
-                                                  ANNO             : TSchedaGenerica.PrepareForRecordString(TZDateFunct.FormatDateTime('yyyy',TZDateFunct.DateFromHTMLInput(this.Dati.DATA)))
-                                                }
-                                });
-      }
+      // if(this.Dati.ID_FORNITORE != -1)
+      // {
+      //   ObjQuery.Operazioni.push({
+      //                               Query     : "EliminaRecordSaldiChiusureAnnualiFornitore",
+      //                               Parametri : {
+      //                                             CHIAVE_FORNITORE : TSchedaGenerica.PrepareForRecordInteger(this.Dati.ID_FORNITORE),
+      //                                             ANNO             : TSchedaGenerica.PrepareForRecordString(TZDateFunct.FormatDateTime('yyyy',TZDateFunct.DateFromHTMLInput(this.Dati.DATA)))
+      //                                           }
+      //                           });
+      // }
 
       for(let i = 0; i < this.Dati.LsRateCorrelate.length; i++ )
       {
         ObjQuery.Operazioni.push({
                                     Query     : "EliminaRecordSaldiChiusureAnnuali",
                                     Parametri : {
-                                                  CHIAVE_CLIENTE : TSchedaGenerica.PrepareForRecordInteger(this.Dati.LsRateCorrelate[i].ID_CLIENTE),
+                                                  CHIAVE_CLIENTE : TSchedaGenerica.PrepareForRecordInteger(this.Dati.LsRateCorrelate[i].ID_ANAGRAFICA),
                                                   ANNO           : TSchedaGenerica.PrepareForRecordString(TZDateFunct.FormatDateTime('yyyy',TZDateFunct.DateFromHTMLInput(this.Dati.DATA)))
                                                 }
                                 });
@@ -755,7 +754,7 @@ export class TSchedaMovimento extends TSchedaGenerica
         ObjQuery.Operazioni.push({
                                     Query     : "EliminaRecordSaldiChiusureAnnuali",
                                     Parametri : {
-                                                  CHIAVE_CLIENTE : TSchedaGenerica.PrepareForRecordInteger(this.Dati.LsFattureCorrelate[i].ID_CLIENTE),
+                                                  CHIAVE_CLIENTE : TSchedaGenerica.PrepareForRecordInteger(this.Dati.LsFattureCorrelate[i].ID_ANAGRAFICA),
                                                   ANNO           : TSchedaGenerica.PrepareForRecordString(TZDateFunct.FormatDateTime('yyyy',TZDateFunct.DateFromHTMLInput(this.Dati.DATA)))
                                                 }
                                 });
@@ -766,7 +765,7 @@ export class TSchedaMovimento extends TSchedaGenerica
         ObjQuery.Operazioni.push({
                                     Query     : "EliminaRecordSaldiChiusureAnnualiFornitore",
                                     Parametri : {
-                                                  CHIAVE_FORNITORE : TSchedaGenerica.PrepareForRecordInteger(this.Dati.LsFatturePregresseFornitoriCorrelate[i].ID_FORNITORE),
+                                                  CHIAVE_FORNITORE : TSchedaGenerica.PrepareForRecordInteger(this.Dati.LsFatturePregresseFornitoriCorrelate[i].ID_ANAGRAFICA),
                                                   ANNO             : TSchedaGenerica.PrepareForRecordString(TZDateFunct.FormatDateTime('yyyy',TZDateFunct.DateFromHTMLInput(this.Dati.DATA)))
                                                 }
                                 });
@@ -776,7 +775,7 @@ export class TSchedaMovimento extends TSchedaGenerica
         ObjQuery.Operazioni.push({
                                     Query     : "EliminaRecordSaldiChiusureAnnualiFornitore",
                                     Parametri : {
-                                                  CHIAVE_FORNITORE : TSchedaGenerica.PrepareForRecordInteger(this.Dati.LsRateFattureFornitoriCorrelate[i].ID_FORNITORE),
+                                                  CHIAVE_FORNITORE : TSchedaGenerica.PrepareForRecordInteger(this.Dati.LsRateFattureFornitoriCorrelate[i].ID_ANAGRAFICA),
                                                   ANNO             : TSchedaGenerica.PrepareForRecordString(TZDateFunct.FormatDateTime('yyyy',TZDateFunct.DateFromHTMLInput(this.Dati.DATA)))
                                                 }
                                 });
@@ -828,8 +827,7 @@ export class TSchedaMovimento extends TSchedaGenerica
                                      LsFattureCorrelate          : [],
                                      LsRateFattureFornitoriCorrelate : [],
                                      LsFatturePregresseFornitoriCorrelate : [],
-                                     ID_CLIENTE                  : -1,
-                                     ID_FORNITORE                : -1,
+                                     ID_ANAGRAFICA                  : -1,
                                      NO_PRIMA_NOTA               : ''
                                   }                                 
       super.Clear();
@@ -852,34 +850,33 @@ export class TSchedaMovimento extends TSchedaGenerica
                                                   ID_CATEGORIA_MOVIMENTO     : TSchedaGenerica.PrepareForRecordListIndex(this.Dati.ID_CATEGORIA_MOVIMENTO),
                                                   CONTO_CORRENTE_PRELIEVO    : this.Dati.CkPrelievoEsterno? null : TSchedaGenerica.PrepareForRecordListIndex(this.Dati.CONTO_CORRENTE_PRELIEVO),
                                                   CONTO_CORRENTE_VERSAMENTO  : this.Dati.CkVersamentoEsterno? null : TSchedaGenerica.PrepareForRecordListIndex(this.Dati.CONTO_CORRENTE_VERSAMENTO),
-                                                  ID_FORNITORE               : this.Dati.ID_FORNITORE == -1 ? null : TSchedaGenerica.PrepareForRecordInteger(this.Dati.ID_FORNITORE),
-                                                  ID_CLIENTE                 : this.Dati.ID_CLIENTE == -1 ? null : TSchedaGenerica.PrepareForRecordInteger(this.Dati.ID_CLIENTE), 
+                                                  ID_ANAGRAFICA              : this.Dati.ID_ANAGRAFICA == -1 ? null : TSchedaGenerica.PrepareForRecordInteger(this.Dati.ID_ANAGRAFICA), 
                                                   NO_PRIMA_NOTA              : TSchedaGenerica.PrepareForRecordBoolean(this.Dati.NO_PRIMA_NOTA),                                            
                                                }
                                  });
         var Self = this
 
-        if(this.Dati.ID_CLIENTE != -1)
+        if(this.Dati.ID_ANAGRAFICA != -1)
         {
           ObjQuery.Operazioni.push({
                                       Query     : "EliminaRecordSaldiChiusureAnnuali",
                                       Parametri : {
-                                                    CHIAVE_CLIENTE : TSchedaGenerica.PrepareForRecordInteger(this.Dati.ID_CLIENTE),
+                                                    CHIAVE_CLIENTE : TSchedaGenerica.PrepareForRecordInteger(this.Dati.ID_ANAGRAFICA),
                                                     ANNO           : TSchedaGenerica.PrepareForRecordString(TZDateFunct.FormatDateTime('yyyy',TZDateFunct.DateFromHTMLInput(this.Dati.DATA)))
                                                   }
                                   });
         }
 
-        if(this.Dati.ID_FORNITORE != -1)
-        {
-          ObjQuery.Operazioni.push({
-                                      Query     : "EliminaRecordSaldiChiusureAnnualiFornitore",
-                                      Parametri : {
-                                                    CHIAVE_FORNITORE : TSchedaGenerica.PrepareForRecordInteger(this.Dati.ID_FORNITORE),
-                                                    ANNO             : TSchedaGenerica.PrepareForRecordString(TZDateFunct.FormatDateTime('yyyy',TZDateFunct.DateFromHTMLInput(this.Dati.DATA)))
-                                                  }
-                                  });
-        }
+        // if(this.Dati.ID_FORNITORE != -1)
+        // {
+        //   ObjQuery.Operazioni.push({
+        //                               Query     : "EliminaRecordSaldiChiusureAnnualiFornitore",
+        //                               Parametri : {
+        //                                             CHIAVE_FORNITORE : TSchedaGenerica.PrepareForRecordInteger(this.Dati.ID_FORNITORE),
+        //                                             ANNO             : TSchedaGenerica.PrepareForRecordString(TZDateFunct.FormatDateTime('yyyy',TZDateFunct.DateFromHTMLInput(this.Dati.DATA)))
+        //                                           }
+        //                           });
+        // }
 
         this.AdvQuery.PostSQL('MovimentiConti',ObjQuery,function(Response)
         {
@@ -911,7 +908,7 @@ export class TSchedaMovimento extends TSchedaGenerica
         ObjQuery.Operazioni.push({
                                     Query     : "EliminaRecordSaldiChiusureAnnuali",
                                     Parametri : {
-                                                  CHIAVE_CLIENTE : TSchedaGenerica.PrepareForRecordInteger(this.Dati.LsRateCorrelate[i].ID_CLIENTE),
+                                                  CHIAVE_CLIENTE : TSchedaGenerica.PrepareForRecordInteger(this.Dati.LsRateCorrelate[i].ID_ANAGRAFICA),
                                                   ANNO           : TSchedaGenerica.PrepareForRecordString(TZDateFunct.FormatDateTime('yyyy',TZDateFunct.DateFromHTMLInput(this.Dati.DATA)))
                                                 }
                                 });
@@ -963,7 +960,7 @@ export class TSchedaMovimento extends TSchedaGenerica
         ObjQuery.Operazioni.push({
                                     Query     : "EliminaRecordSaldiChiusureAnnuali",
                                     Parametri : {
-                                                  CHIAVE_CLIENTE : TSchedaGenerica.PrepareForRecordInteger(this.Dati.LsFattureCorrelate[i].ID_CLIENTE),
+                                                  CHIAVE_CLIENTE : TSchedaGenerica.PrepareForRecordInteger(this.Dati.LsFattureCorrelate[i].ID_ANAGRAFICA),
                                                   ANNO           : TSchedaGenerica.PrepareForRecordString(TZDateFunct.FormatDateTime('yyyy',TZDateFunct.DateFromHTMLInput(this.Dati.DATA)))
                                                 }
                                 });
@@ -995,7 +992,7 @@ export class TSchedaMovimento extends TSchedaGenerica
                                                     CHIAVE      : undefined,
                                                     IMPORTO     : TSchedaGenerica.PrepareForRecordInteger(this.Dati.LsFattureCorrelate[i].IMPORTO - Math.round(this.Dati.LsFattureCorrelate[i].IMPORTO_PAGATO * 100)),
                                                     NUMERO      : TSchedaGenerica.PrepareForRecordInteger(this.Dati.LsFattureCorrelate[i].NUMERO_FATTURA),
-                                                    ID_CLIENTE  : TSchedaGenerica.PrepareForRecordInteger(this.Dati.LsFattureCorrelate[i].ID_CLIENTE),
+                                                    ID_CLIENTE  : TSchedaGenerica.PrepareForRecordInteger(this.Dati.LsFattureCorrelate[i].ID_ANAGRAFICA),
                                                     DATA        : TSchedaGenerica.PrepareForRecordDate(this.Dati.LsFattureCorrelate[i].DATA),
                                                     NOTE        : TSchedaGenerica.PrepareForRecordString('Generata dalla correlazione con il movimento'),
                                                   },
@@ -1017,7 +1014,7 @@ export class TSchedaMovimento extends TSchedaGenerica
         ObjQuery.Operazioni.push({
                                     Query     : "EliminaRecordSaldiChiusureAnnualiFornitore",
                                     Parametri : {
-                                                  CHIAVE_FORNITORE : TSchedaGenerica.PrepareForRecordInteger(this.Dati.LsFatturePregresseFornitoriCorrelate[i].ID_FORNITORE),
+                                                  CHIAVE_FORNITORE : TSchedaGenerica.PrepareForRecordInteger(this.Dati.LsFatturePregresseFornitoriCorrelate[i].ID_ANAGRAFICA),
                                                   ANNO             : TSchedaGenerica.PrepareForRecordString(TZDateFunct.FormatDateTime('yyyy',TZDateFunct.DateFromHTMLInput(this.Dati.DATA)))
                                                 }
                                 });
@@ -1049,7 +1046,7 @@ export class TSchedaMovimento extends TSchedaGenerica
                                                     CHIAVE        : undefined,
                                                     IMPORTO       : TSchedaGenerica.PrepareForRecordInteger((this.Dati.LsFatturePregresseFornitoriCorrelate[i].IMPORTO - Math.round(this.Dati.LsFatturePregresseFornitoriCorrelate[i].IMPORTO_PAGATO * 1000)) / 10),
                                                     NUMERO        : TSchedaGenerica.PrepareForRecordInteger(this.Dati.LsFatturePregresseFornitoriCorrelate[i].NUMERO_FATTURA),
-                                                    ID_FORNITORE  : TSchedaGenerica.PrepareForRecordInteger(this.Dati.LsFatturePregresseFornitoriCorrelate[i].ID_FORNITORE),
+                                                    ID_FORNITORE  : TSchedaGenerica.PrepareForRecordInteger(this.Dati.LsFatturePregresseFornitoriCorrelate[i].ID_ANAGRAFICA),
                                                     DATA          : TSchedaGenerica.PrepareForRecordDate(this.Dati.LsFatturePregresseFornitoriCorrelate[i].DATA),
                                                     NOTE          : TSchedaGenerica.PrepareForRecordString('Generata dalla correlazione con il movimento'),
                                                   },
@@ -1071,7 +1068,7 @@ export class TSchedaMovimento extends TSchedaGenerica
         ObjQuery.Operazioni.push({
                                     Query     : "EliminaRecordSaldiChiusureAnnualiFornitore",
                                     Parametri : {
-                                                  CHIAVE_FORNITORE : TSchedaGenerica.PrepareForRecordInteger(this.Dati.LsRateFattureFornitoriCorrelate[i].ID_FORNITORE),
+                                                  CHIAVE_FORNITORE : TSchedaGenerica.PrepareForRecordInteger(this.Dati.LsRateFattureFornitoriCorrelate[i].ID_ANAGRAFICA),
                                                   ANNO             : TSchedaGenerica.PrepareForRecordString(TZDateFunct.FormatDateTime('yyyy',TZDateFunct.DateFromHTMLInput(this.Dati.DATA)))
                                                 }
                                 });
@@ -1133,7 +1130,7 @@ export class TSchedaMovimento extends TSchedaGenerica
 
    AssignSchedaCliente(Scheda)
    {  
-      this.Dati.ID_CLIENTE             = Scheda.Chiave
+      this.Dati.ID_ANAGRAFICA  = Scheda.Chiave
    }
 
    GetTotaleDocumentiCorrelati()
@@ -1238,8 +1235,7 @@ export class TSchedaMovimento extends TSchedaGenerica
                                                     ID_CATEGORIA_MOVIMENTO    : TSchedaGenerica.DisponiFromListIndex(ArrayInfo[0].ID_CATEGORIA_MOVIMENTO),
                                                     CONTO_CORRENTE_PRELIEVO   : ArrayInfo[0].CONTO_CORRENTE_PRELIEVO != undefined? TSchedaGenerica.DisponiFromListIndex(ArrayInfo[0].CONTO_CORRENTE_PRELIEVO) : -1,
                                                     CONTO_CORRENTE_VERSAMENTO : ArrayInfo[0].CONTO_CORRENTE_VERSAMENTO != undefined? TSchedaGenerica.DisponiFromListIndex(ArrayInfo[0].CONTO_CORRENTE_VERSAMENTO) : -1,
-                                                    ID_CLIENTE                : Self.Dati.ID_CLIENTE == null ? -1 : TSchedaGenerica.DisponiFromListIndex(ArrayInfo[0].ID_CLIENTE),
-                                                    ID_FORNITORE              : Self.Dati.ID_FORNITORE == null ? -1 : TSchedaGenerica.DisponiFromListIndex(ArrayInfo[0].ID_FORNITORE),
+                                                    ID_ANAGRAFICA             : Self.Dati.ID_ANAGRAFICA == null ? -1 : TSchedaGenerica.DisponiFromListIndex(ArrayInfo[0].ID_ANAGRAFICA),
                                                     NO_PRIMA_NOTA             : TSchedaGenerica.DisponiFromBoolean(ArrayInfo[0].NO_PRIMA_NOTA)
                                                 }
 
@@ -1405,13 +1401,13 @@ export default
   props : ['SchedaMovimento'],
   computed :
   {
-    RagioneSocialeFornitoreAssociato :
-    {
-      get()
-      {
-        return SystemInformation.GetRagioneSocialeFornitore(this.CurrentSchedaMovimento.Dati.ID_FORNITORE)
-      }
-    }, 
+    // RagioneSocialeAssociato :
+    // {
+    //   get()
+    //   {
+    //     return SystemInformation.GetRagioneSocialeFornitore(this.CurrentSchedaMovimento.Dati.ID_FORNITORE)
+    //   }
+    // }, 
 
     TotaleRateFattureFornitoriFiltrate : 
       {
@@ -1469,11 +1465,11 @@ export default
         }
       },
 
-      RagioneSocialeClienteAssociato :
+      RagioneSocialeAssociato :
       {
         get()
         {
-          return SystemInformation.GetRagioneSocialeCliente(this.CurrentSchedaMovimento.Dati.ID_CLIENTE)
+          return SystemInformation.GetRagioneSociale(this.CurrentSchedaMovimento.Dati.ID_ANAGRAFICA)
         }
       },
 
@@ -1503,7 +1499,7 @@ export default
               if(TZStringFunct.RicercaParoleInStringa(Rata.RAGIONE_SOCIALE,Filtro))
                 return true;
 
-              if(TZStringFunct.RicercaParoleInStringa(Rata.CODICE_CLIENTE,Filtro))
+              if(TZStringFunct.RicercaParoleInStringa(Rata.CODICE,Filtro))
                 return true;
 
               return false;
@@ -1530,7 +1526,7 @@ export default
               if(TZStringFunct.RicercaParoleInStringa(Rata.RAGIONE_SOCIALE,Filtro))
                 return true;
                             
-              if(TZStringFunct.RicercaParoleInStringa(Rata.CODICE_FORNITORE,Filtro))
+              if(TZStringFunct.RicercaParoleInStringa(Rata.CODICE,Filtro))
                 return true;
 
               return false;
@@ -1556,7 +1552,7 @@ export default
               if(TZStringFunct.RicercaParoleInStringa(FatturaPregressa.RAGIONE_SOCIALE,Filtro))
                 return true;
                           
-              if(TZStringFunct.RicercaParoleInStringa(FatturaPregressa.CODICE_CLIENTE,Filtro))
+              if(TZStringFunct.RicercaParoleInStringa(FatturaPregressa.CODICE,Filtro))
                 return true;
 
               return false;
@@ -1582,7 +1578,7 @@ export default
               if(TZStringFunct.RicercaParoleInStringa(FatturaPregressaFornitore.RAGIONE_SOCIALE,Filtro))
                 return true;
                                           
-              if(TZStringFunct.RicercaParoleInStringa(FatturaPregressaFornitore.CODICE_FORNITORE,Filtro))
+              if(TZStringFunct.RicercaParoleInStringa(FatturaPregressaFornitore.CODICE,Filtro))
                 return true;
               
               return false;
@@ -1813,8 +1809,8 @@ export default
       {
         this.PopupAssociazione = true
          
-        this.IDClienteTemporaneo = this.CurrentSchedaMovimento.Dati.ID_CLIENTE
-        this.IDFornitoreTemporaneo = this.CurrentSchedaMovimento.Dati.ID_FORNITORE
+        this.IDClienteTemporaneo = this.CurrentSchedaMovimento.Dati.ID_ANAGRAFICA
+        this.IDFornitoreTemporaneo = this.CurrentSchedaMovimento.Dati.ID_ANAGRAFICA
       
         if(this.IDClienteTemporaneo == -1 && this.IDFornitoreTemporaneo == -1)
         {
@@ -1822,7 +1818,7 @@ export default
         }
         else 
         {
-          if (this.IDClienteTemporaneo != -1)
+          if(this.IDClienteTemporaneo != -1)
           {
             this.TipoSelezione = 'Cliente'
           }
@@ -2198,7 +2194,7 @@ export default
                                                                TZDateFunct.FormatDateTime('dd/mm/yyyy', new Date(Rata.DATA_FATTURA)) +
                                                                ' del cliente ' +
                                                                Rata.RAGIONE_SOCIALE +
-                                                               ' Cod. ' + Rata.CODICE_CLIENTE
+                                                               ' Cod. ' + Rata.CODICE
             });
           }
           else
@@ -2229,7 +2225,7 @@ export default
                                                                        TZDateFunct.FormatDateTime('dd/mm/yyyy', new Date(this.ListaRate[j].DATA_FATTURA)) +
                                                                        ' del cliente ' +
                                                                        this.ListaRate[j].RAGIONE_SOCIALE 
-                                                                       + ' Cod. ' + this.ListaRate[j].CODICE_CLIENTE
+                                                                       + ' Cod. ' + this.ListaRate[j].CODICE
                     }
                   }
                 }
@@ -2247,7 +2243,7 @@ export default
                                                                   TZDateFunct.FormatDateTime('dd/mm/yyyy', new Date(Rata.DATA_FATTURA)) +
                                                                   ' del cliente ' +
                                                                   Rata.RAGIONE_SOCIALE +
-                                                                  ' Cod. ' + Rata.CODICE_CLIENTE
+                                                                  ' Cod. ' + Rata.CODICE
               });
             }
           }
@@ -2299,7 +2295,7 @@ export default
                                                               ' del fornitore ' +
                                                                 FatturaPregressa.RAGIONE_SOCIALE +
                                                               ' Cod. ' +
-                                                                FatturaPregressa.CODICE_FORNITORE
+                                                                FatturaPregressa.CODICE
             });
           }
           else
@@ -2331,7 +2327,7 @@ export default
                                                                       ' del cliente ' +
                                                                         this.ListaFatturePregresseFornitori[j].RAGIONE_SOCIALE +
                                                                       ' Cod. ' +
-                                                                        this.ListaFatturePregresseFornitori[j].CODICE_FORNITORE
+                                                                        this.ListaFatturePregresseFornitori[j].CODICE
                 
                       }
                   }
@@ -2351,7 +2347,7 @@ export default
                                                                   ' del fornitore ' +
                                                                     FatturaPregressa.RAGIONE_SOCIALE +
                                                                   ' Cod. ' +
-                                                                    FatturaPregressa.CODICE_FORNITORE
+                                                                    FatturaPregressa.CODICE
                   });
             }
           }
@@ -2403,7 +2399,7 @@ export default
                                                                TZDateFunct.FormatDateTime('dd/mm/yyyy', new Date(Rata.DATA_FATTURA)) +
                                                                ' del fornitore ' +
                                                                Rata.RAGIONE_SOCIALE +
-                                                               ' Cod. ' + Rata.CODICE_FORNITORE
+                                                               ' Cod. ' + Rata.CODICE
             });
           }
           else
@@ -2435,7 +2431,7 @@ export default
                                                                        ' del fornitore ' +
                                                                        this.ListaRateFattureFornitori[j].RAGIONE_SOCIALE +
                                                                        ' Cod. ' +
-                                                                       this.ListaRateFattureFornitori[j].CODICE_FORNITORE
+                                                                       this.ListaRateFattureFornitori[j].CODICE
                     }
                   }
                 }
@@ -2453,7 +2449,7 @@ export default
                                                                   TZDateFunct.FormatDateTime('dd/mm/yyyy', new Date(Rata.DATA_FATTURA)) +
                                                                   ' del fornitore ' +
                                                                   Rata.RAGIONE_SOCIALE +
-                                                                  ' Cod. ' + Rata.CODICE_FORNITORE
+                                                                  ' Cod. ' + Rata.CODICE
               });
             }
           }
@@ -2505,7 +2501,7 @@ export default
                                                                 TZDateFunct.FormatDateTime('dd/mm/yyyy', new Date(FatturaPregressa.DATA)) +
                                                               ' del cliente ' +
                                                                 FatturaPregressa.RAGIONE_SOCIALE +
-                                                              ' Cod. ' + FatturaPregressa.CODICE_CLIENTE
+                                                              ' Cod. ' + FatturaPregressa.CODICE
             });
           }
           else
@@ -2536,7 +2532,7 @@ export default
                                                                         TZDateFunct.FormatDateTime('dd/mm/yyyy', new Date(this.ListaFatturePregresse[j].DATA)) +
                                                                       ' del cliente ' +
                                                                         this.ListaFatturePregresse[j].RAGIONE_SOCIALE 
-                                                                        + ' Cod. ' + this.ListaFatturePregresse[j].CODICE_CLIENTE
+                                                                        + ' Cod. ' + this.ListaFatturePregresse[j].CODICE
                 
                       }
                   }
@@ -2555,7 +2551,7 @@ export default
                                                                     TZDateFunct.FormatDateTime('dd/mm/yyyy', new Date(FatturaPregressa.DATA)) +
                                                                   ' del cliente ' +
                                                                     FatturaPregressa.RAGIONE_SOCIALE +
-                                                                  ' Cod. ' + FatturaPregressa.CODICE_CLIENTE
+                                                                  ' Cod. ' + FatturaPregressa.CODICE
               });
             }
           }
@@ -2600,22 +2596,19 @@ export default
 
         if(this.TipoSelezione == 'NessunaAssociazione')
         {
-          this.CurrentSchedaMovimento.Dati.ID_CLIENTE = -1
-          this.CurrentSchedaMovimento.Dati.ID_FORNITORE = -1
+          this.CurrentSchedaMovimento.Dati.ID_ANAGRAFICA = -1
         }
         else
         {
           if(this.TipoSelezione == 'Cliente')
           {
-            this.CurrentSchedaMovimento.Dati.ID_CLIENTE = this.IDClienteTemporaneo
-            this.CurrentSchedaMovimento.Dati.ID_FORNITORE = -1
+            this.CurrentSchedaMovimento.Dati.ID_ANAGRAFICA = this.IDClienteTemporaneo
             
             
           }
           else
           {
-            this.CurrentSchedaMovimento.Dati.ID_FORNITORE = this.IDFornitoreTemporaneo
-            this.CurrentSchedaMovimento.Dati.ID_CLIENTE = -1
+            this.CurrentSchedaMovimento.Dati.ID_ANAGRAFICA = this.IDFornitoreTemporaneo
             
           }
         }

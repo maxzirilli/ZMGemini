@@ -3,7 +3,7 @@
   include_once 'Configurations.php';
   include_once 'Definitions.php';
   include_once 'SystemInformation.php';
-  include_once 'ClassStampaContoCliente.php';
+  include_once 'ClassStampaConto.php';
   include_once PATH_LIBRERIE . 'ZAdvQuery.php';
   include_once PATH_LIBRERIE . 'ZGenericFunct.php';
   include_once PATH_LIBRERIE . 'ZReport.php';
@@ -16,13 +16,13 @@
 
   class TRigaSaldo 
   {
-    public $LB_CODICE_CLIENTE        = null;
+    public $LB_CODICE        = null;
     public $LB_DESCRIZIONE_CLIENTE   = '';
     public $LB_SALDO                 = 0;
 
     function __construct($CodiceCliente, $RagioneSociale)
     {
-      $this->LB_CODICE_CLIENTE      = $CodiceCliente;
+      $this->LB_CODICE      = $CodiceCliente;
       $this->LB_DESCRIZIONE_CLIENTE = $RagioneSociale;
     }
   }
@@ -109,21 +109,21 @@
       $SQLBody = '';
                       //  AND CHIAVE = 482550
       if($Ordinamento == 'A')
-        $SQLBody = "SELECT clienti.*
-                      FROM clienti
-                     WHERE clienti.ATTIVO = 'T'
-                  ORDER BY clienti.RAGIONE_SOCIALE";
+        $SQLBody = "SELECT anagrafiche.*
+                      FROM anagrafiche
+                     WHERE anagrafiche.ATTIVO = 'T'
+                  ORDER BY anagrafiche.RAGIONE_SOCIALE";
       else 
-        $SQLBody = "SELECT clienti.*
-                      FROM clienti
-                     WHERE clienti.ATTIVO = 'T'
-                     ORDER BY clienti.CODICE_CLIENTE + 0";
+        $SQLBody = "SELECT anagrafiche.*
+                      FROM anagrafiche
+                     WHERE anagrafiche.ATTIVO = 'T'
+                     ORDER BY anagrafiche.CODICE + 0";
 
       if($Query = $PDODBase->query($SQLBody))
       { 
         while($Row = $Query->fetch(PDO::FETCH_ASSOC))
         {
-          $Cliente                  = new TRigaSaldo($Row['CODICE_CLIENTE'],$Row['RAGIONE_SOCIALE']);
+          $Cliente                  = new TRigaSaldo($Row['CODICE'],$Row['RAGIONE_SOCIALE']);
 
           $Parametri                = new stdClass();
           $Parametri->ChiaveCliente = $Row['CHIAVE'];
@@ -131,7 +131,7 @@
           $Parametri->DataAl        = $DataAl;
           $Parametri->StatoConti    = true;
           $Parametri->VelocizzaXStampaSaldiClienti = true;
-          $AConnection              = new TExtraStampaContoCliente($Parametri, true);
+          $AConnection              = new TExtraStampaConto($Parametri, true);
           $ResultStampaContoCliente = $AConnection->ServerSideScript(false);
 
           if(isset($ResultStampaContoCliente->LsConti->TotaleSaldoAttualePerSchedaCliente))

@@ -265,7 +265,7 @@
                         {{ Preventivo.DATA }}
                       </td>
                       <td style="padding:2px;border:1px solid #ddd; border-bottom:0; background-color:white;font-size:16px;text-align:center;vertical-align: middle;">
-                        {{ Preventivo.CODICE_CLIENTE }}
+                        {{ Preventivo.CODICE }}
                       </td>
                       <td style="padding:2px;border:1px solid #ddd; border-bottom:0; background-color:white;font-size:16px;text-align:center;vertical-align: middle;">
                         {{ Preventivo.RAGIONE_SOCIALE_CLIENTE }}

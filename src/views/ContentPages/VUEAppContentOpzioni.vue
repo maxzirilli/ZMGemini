@@ -24,12 +24,6 @@
           <input type="number" class="form-control" v-model="Dati.IVASuggerita" step="0.1"/>
        </label>
       </div>
-      <div style="float:left;width:1%">&nbsp;</div>
-      <div style="float:left; margin-right: 5%;width:40%">
-       <label style="font-size:14px;">Ritenuta d'acconto amministratori
-          <input type="number" class="form-control" v-model="Dati.RitenutadAccontoSuggerita" step="0.1"/>
-       </label>
-      </div>
     </div>
    </div>
    <div class="col-md-8" style="float:left">
@@ -91,14 +85,6 @@
   </div>
 
   <div class="col-md-8" style="float:left">
-   <div style="padding-top: 25px;" class="ZMNuovaRigaScheda">
-      <div style="float:left; margin-right: 5%;width:40%">
-       <label style="font-size:14px;">Numero di mesi che devono passare per ritenere una fattura insoluta per i condomini
-          <input type="number" class="form-control" step="1" v-model="Dati.NumeroMesiPerFattureInsolutePerCondomini" min="0"/>
-       </label>
-      </div>
-   </div>
-
     <div style="float:left; margin-right: 5%;width:40%">
       <label style="font-size:14px;">Numero di mesi che devono passare per ritenere una fattura insoluta per i privati
         <input type="number" class="form-control" step="1" v-model="Dati.NumeroMesiPerFattureInsolutePerPrivati" min="0"/>
@@ -118,12 +104,6 @@
          <label style="font-size:14px;">Anno messa in opera
             <input type="number" class="form-control" v-model="Dati.AnnoMessaInOpera" min="0"/>
          </label>
-         </div>
-         <div style="float:left;width:1%">&nbsp;</div>
-         <div style="float:left; margin-right: 5%;width:40%">
-         <!-- <label style="font-size:14px;">Ritenuta d'acconto amministratori
-            <input type="number" class="form-control" v-model="Dati.RitenutadAccontoSuggerita" step="0.1"/>
-         </label> -->
          </div>
       </div>
    </div>
@@ -290,7 +270,6 @@ export default
                       LogoAzienda                              : '',
                       NumerazionePrimiGiorni                   : 1,
                       NumeroMesiPerFattureInsolutePerPrivati   : 0,
-                      NumeroMesiPerFattureInsolutePerCondomini : 0,
                       AnnoMessaInOpera                         : (new Date()).getFullYear(),
                       AnnoPrimaFattura                         : '',
                       NumeroPrimaFattura                       : '',
@@ -371,7 +350,6 @@ export default
                                                              UNITA_DI_MISURA_SUGGERITA                       : Self.Dati.UnitaDiMisura,
                                                              LOGO_AZIENDA                                    : Self.Dati.LogoAzienda,
                                                              NUMERAZIONE_PRIMI_GIORNI                        : Self.Dati.NumerazionePrimiGiorni,
-                                                             NUMERO_MESI_PER_FATTURE_INSOLUTE_PER_CONDOMINI  : Self.Dati.NumeroMesiPerFattureInsolutePerCondomini,
                                                              NUMERO_MESI_PER_FATTURE_INSOLUTE_PER_PRIVATI    : Self.Dati.NumeroMesiPerFattureInsolutePerPrivati,
                                                              ANNO_PRIMA_FATTURA                              : Self.Dati.AnnoPrimaFattura,
                                                              NUMERO_PRIMA_FATTURA                            : Self.Dati.NumeroPrimaFattura,
@@ -466,7 +444,6 @@ export default
                                            Self.Dati.NumerazionePrimiGiorni                   = ArrayInfo[0].NUMERAZIONE_PRIMI_GIORNI,
                                            Self.Dati.AnnoPrimaFatturaBanco                    = ArrayInfo[0].ANNO_PRIMA_FATTURA_BANCO,
                                            Self.Dati.NumeroPrimaFatturaBanco                  = ArrayInfo[0].NUMERO_PRIMA_FATTURA_BANCO,
-                                           Self.Dati.NumeroMesiPerFattureInsolutePerCondomini = ArrayInfo[0].NUMERO_MESI_PER_FATTURE_INSOLUTE_PER_CONDOMINI
                                            Self.Dati.NumeroMesiPerFattureInsolutePerPrivati   = ArrayInfo[0].NUMERO_MESI_PER_FATTURE_INSOLUTE_PER_PRIVATI
                                            Self.Dati.AnnoPrimoDDT                             = ArrayInfo[0].ANNO_PRIMO_DDT,
                                            Self.Dati.NumeroPrimoDDT                           = ArrayInfo[0].NUMERO_PRIMO_DDT,

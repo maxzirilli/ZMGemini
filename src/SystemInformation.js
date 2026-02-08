@@ -22,7 +22,6 @@ export const TIPO_COMUNICAZIONI = { // uguale a php
 
 export const TIPOLOGIA_MODIFICA_ANAGRAFICA = {
                                                 Cliente : 'C',
-                                                Amministratore : 'A',
                                                 Filiale : 'F',
                                              }
 
@@ -144,7 +143,6 @@ export const DASHBOARD_FILTER_TYPES =
     Movimenti                  : 'Movimenti',
     DDT                        : 'Documenti di trasporto',
     DDTEntranti                : 'Entranti',
-    Amministratori             : 'Amministratori',
     Conferme                   : 'Conferme',
     Preventivi                 : 'Preventivi',
     MovimentiMagazzini         : 'Movimenti Magazzini',
@@ -533,7 +531,6 @@ class TSystemInformation
                                                         Fornitori                               : self.AdvQuery.FindResults(Results,'Fornitori'),
                                                         Clienti                                 : self.AdvQuery.FindResults(Results,'Clienti'),
                                                         ClientiNonAttivi                        : self.AdvQuery.FindResults(Results,'ClientiNonAttivi'),
-                                                        Amministratori                          : self.AdvQuery.FindResults(Results,'Amministratori'),
                                                         UnitaDiMisura                           : self.AdvQuery.FindResults(Results,'UnitaDiMisura'),
                                                         EmailSegnalazioni                       : self.AdvQuery.FindResults(Results,'EmailSegnalazioni'),
                                                         Titoli                                  : self.AdvQuery.FindResults(Results,'Titoli'),
@@ -712,20 +709,33 @@ class TSystemInformation
     return ListaProdottiComposti
   }
 
-  GetRagioneSocialeCliente(IdCliente)
-  {
-    for(let i = 0; i < this.Configurazioni.Clienti.length; i++)
-      if(this.Configurazioni.Clienti[i].CHIAVE == IdCliente)
-        return this.Configurazioni.Clienti[i].RAGIONE_SOCIALE
-    return 'cliente non trovato'
-  }
+  // GetRagioneSocialeCliente(IdCliente)
+  // {
+  //   for(let i = 0; i < this.Configurazioni.Clienti.length; i++)
+  //     if(this.Configurazioni.Clienti[i].CHIAVE == IdCliente)
+  //       return this.Configurazioni.Clienti[i].RAGIONE_SOCIALE
+  //   return 'cliente non trovato'
+  // }
 
-  GetRagioneSocialeFornitore(IdFornitore)
+  // GetRagioneSocialeFornitore(IdFornitore)
+  // {
+  //   for(let i = 0; i < this.Configurazioni.Fornitori.length; i++)
+  //     if(this.Configurazioni.Fornitori[i].CHIAVE == IdFornitore)
+  //       return this.Configurazioni.Fornitori[i].RAGIONE_SOCIALE
+  //   return 'fornitore non trovato'
+  // }
+
+  GetRagioneSociale(IdAnagrafica)
   {
+    console.log('qui')
+    for(let i = 0; i < this.Configurazioni.Clienti.length; i++)
+      if(this.Configurazioni.Clienti[i].CHIAVE == IdAnagrafica)
+        return this.Configurazioni.Clienti[i].RAGIONE_SOCIALE
+
     for(let i = 0; i < this.Configurazioni.Fornitori.length; i++)
-      if(this.Configurazioni.Fornitori[i].CHIAVE == IdFornitore)
+      if(this.Configurazioni.Fornitori[i].CHIAVE == IdAnagrafica)
         return this.Configurazioni.Fornitori[i].RAGIONE_SOCIALE
-    return 'fornitore non trovato'
+    return 'Anagrafica non trovata'
   }
 
   GetTargaProvincia(ChiaveProvincia)

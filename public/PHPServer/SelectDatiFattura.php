@@ -2,7 +2,7 @@
       include_once 'Configurations.php';
       include_once 'Definitions.php';
       include_once 'SystemInformation.php';
-      include_once 'ClassStampaContoCliente.php';
+      include_once 'ClassStampaConto.php';
       include_once PATH_LIBRERIE . 'ZAdvQuery.php';
             
       header("Content-Type: application/json;charset=UTF-8");
@@ -60,7 +60,7 @@
           {
             $JSONAnswer->DatiSituazioneContabile    = array();
             $Parametri->StatoConti                  = true;
-            $AConnection                            = new TExtraStampaContoCliente($Parametri, true);
+            $AConnection                            = new TExtraStampaConto($Parametri, true);
             $JSONAnswer->DatiSituazioneContabile    = $AConnection->ServerSideScript(false);
           }
         }

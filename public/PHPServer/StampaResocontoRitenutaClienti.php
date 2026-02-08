@@ -123,13 +123,13 @@
 
 
             $QueryRitenuteCertificate = "SELECT ritenute_cliente.RITENUTA AS RITENUTA_CERTIFICATA,
-                                                clienti.RAGIONE_SOCIALE,
-                                                clienti.CODICE_CLIENTE,
+                                                anagrafiche.RAGIONE_SOCIALE,
+                                                anagrafiche.CODICE,
                                                 ritenute_cliente.ID_CLIENTE,
                                                 ritenute_cliente.ANNO AS ANNO_RITENUTA_CERTIF,
                                                 ritenute_cliente.IDENTIFICATIVO_FISCALE 
                                            FROM ritenute_cliente
-                                                    JOIN clienti ON clienti.CHIAVE = ritenute_cliente.ID_CLIENTE
+                                                    JOIN anagrafiche ON anagrafiche.CHIAVE = ritenute_cliente.ID_CLIENTE
                                           WHERE ritenute_cliente.ID_CLIENTE IN ($Chiavi)";
 
             $DatiClienteRitenuteCertif = array();
@@ -143,13 +143,13 @@
             }
 
             $QueryRitenuteAcconto = "SELECT ritenute_acconto_clienti.RITENUTE AS RITENUTA_ACCONTO,
-                                            clienti.RAGIONE_SOCIALE,
-                                            clienti.CODICE_CLIENTE,
+                                            anagrafiche.RAGIONE_SOCIALE,
+                                            anagrafiche.CODICE,
                                             ritenute_acconto_clienti.ID_CLIENTE,
                                             ritenute_acconto_clienti.CERTIFICATA AS RITENUTA_ACCONTO_CERTIFICATA,
                                             ritenute_acconto_clienti.DATA AS ANNO_RITENUTA_ACCONTO
                                        FROM ritenute_acconto_clienti
-                                            JOIN clienti ON clienti.CHIAVE = ritenute_acconto_clienti.ID_CLIENTE
+                                            JOIN anagrafiche ON anagrafiche.CHIAVE = ritenute_acconto_clienti.ID_CLIENTE
                                       WHERE ritenute_acconto_clienti.ID_CLIENTE IN ($Chiavi)";
                                       
             $DatiClienteRitenuteAcconto = array();
@@ -183,7 +183,7 @@
                    $NuovoCliente                  = new stdClass();
                    $NuovoCliente->IdCliente       = $IdCliente;
                    $NuovoCliente->RagioneSociale  = $RigaAcconto['RAGIONE_SOCIALE'];
-                   $NuovoCliente->CodiceCliente   = $RigaAcconto['CODICE_CLIENTE'];
+                   $NuovoCliente->CodiceCliente   = $RigaAcconto['CODICE'];
                    $NuovoCliente->Ritenute        = [];
                    $DatiClienteRitenute[]         = $NuovoCliente;
                    end($DatiClienteRitenute);
@@ -218,7 +218,7 @@
                if($DatiClienteRitenute[$i]->IdCliente == $DatiClienteRitenuteCertif[$j]['ID_CLIENTE'])
                {
                  $DatiClienteRitenute[$i]->RagioneSociale = $DatiClienteRitenuteCertif[$j]['RAGIONE_SOCIALE'];
-                 $DatiClienteRitenute[$i]->CodiceCliente = $DatiClienteRitenuteCertif[$j]['CODICE_CLIENTE'];
+                 $DatiClienteRitenute[$i]->CodiceCliente = $DatiClienteRitenuteCertif[$j]['CODICE'];
 
                 for($k = 0; $k < count($DatiClienteRitenute[$i]->Ritenute); $k++) 
                 {
@@ -251,11 +251,11 @@
                }
             }
 
-          $QueryDatiClienti = "SELECT clienti.CHIAVE,
-                                        clienti.RAGIONE_SOCIALE,
-                                        clienti.CODICE_CLIENTE
-                                   FROM clienti
-                                   WHERE clienti.CHIAVE IN ($Chiavi)";
+          $QueryDatiClienti = "SELECT anagrafiche.CHIAVE,
+                                        anagrafiche.RAGIONE_SOCIALE,
+                                        anagrafiche.CODICE
+                                   FROM anagrafiche
+                                   WHERE anagrafiche.CHIAVE IN ($Chiavi)";
 
             $DatiClienti = array();
             
@@ -273,7 +273,7 @@
                 if($DatiClienteRitenute[$i]->IdCliente == $DatiClienti[$j]['CHIAVE'])
                 {
                   $DatiClienteRitenute[$i]->RagioneSociale = $DatiClienti[$j]['RAGIONE_SOCIALE'];
-                  $DatiClienteRitenute[$i]->CodiceCliente  = $DatiClienti[$j]['CODICE_CLIENTE'];
+                  $DatiClienteRitenute[$i]->CodiceCliente  = $DatiClienti[$j]['CODICE'];
                 }
               }
 

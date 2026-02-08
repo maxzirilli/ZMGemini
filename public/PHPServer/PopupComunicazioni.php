@@ -163,13 +163,13 @@
                                   magazzini.CHIAVE AS CHIAVE_MAGAZZINO,
                                   magazzini.DESCRIZIONE AS DESCRIZIONE_MAGAZZINO,
                                   codici_fornitore.ID_FORNITORE,
-                                  fornitori.RAGIONE_SOCIALE
+                                  anagrafiche.RAGIONE_SOCIALE
                              FROM prodotti
                              JOIN settori ON settori.CHIAVE = prodotti.ID_SETTORE
                              LEFT JOIN qnt_x_magazzino ON qnt_x_magazzino.ID_PRODOTTO = prodotti.CHIAVE
                              LEFT JOIN magazzini ON magazzini.CHIAVE = qnt_x_magazzino.ID_MAGAZZINO
                              LEFT JOIN codici_fornitore ON codici_fornitore.ID_PRODOTTO = prodotti.CHIAVE
-                             LEFT JOIN fornitori ON fornitori.CHIAVE = codici_fornitore.ID_FORNITORE
+                             LEFT JOIN anagrafiche ON anagrafiche.CHIAVE = codici_fornitore.ID_FORNITORE
                             WHERE prodotti.PRODOTTO_COMPOSTO <> 'T'
                               AND (settori.IS_SERVIZI = 'F' OR settori.IS_SERVIZI IS NULL)
                               AND qnt_x_magazzino.QUANTITA_MAGAZZINO < qnt_x_magazzino.SOGLIA_ALLARME
@@ -208,10 +208,10 @@
 
             private function FGetFornitoriSenzaCodice($PDODBase, &$ListaComunicazioni)
             {
-                $SQLBody = "SELECT fornitori.CHIAVE,
-                                   fornitori.RAGIONE_SOCIALE
-                              FROM fornitori
-                             WHERE (fornitori.CODICE_FORNITORE IS NULL OR fornitori.CODICE_FORNITORE = '')";
+                $SQLBody = "SELECT anagrafiche.CHIAVE,
+                                   anagrafiche.RAGIONE_SOCIALE
+                              FROM anagrafiche
+                             WHERE (anagrafiche.CODICE IS NULL OR anagrafiche.CODICE = '')";
 
                 if($Query = $PDODBase->query($SQLBody))
                 {
