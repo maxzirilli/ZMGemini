@@ -3354,6 +3354,7 @@ export default
 
           if(FiltroSelezionato == undefined)
           {
+            console.log('sss')
             let SubMenuTrovato
             let MenuFilterTrovato = Self.MenuFilter.find(function(AMenu)
                                     {

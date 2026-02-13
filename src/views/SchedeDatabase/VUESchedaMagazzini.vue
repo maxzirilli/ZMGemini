@@ -9,7 +9,7 @@
           <label>Prodotto</label>
         </div>
         <div style="float:left;width:13%;margin-right:20px">
-          <input type="text" class="form-control" v-model="NomeProdotto"/>
+          <VUEInputProdotti v-model="NomeProdotto"/>
         </div> 
 
           <div style="float: left;font-size:14px;padding-top: 5px;width:6%;text-align: right; padding-right: 15px;">
@@ -93,15 +93,15 @@
 
 <script>
 import { SystemInformation } from '@/SystemInformation.js';
-// import { TZDateFunct } from '../../../../../../../../Librerie/VUE/ZDateFunct.js';
-// import XLSX from 'xlsx-js-style/dist/xlsx.min.js';
 import VUEModalCaricamentoDati from '../../../../../../../../Librerie/VUE/TemplateGestionale/VUEModalCaricamentoDati.vue';
+import VUEInputProdotti from '@/components/InputComponents/VUEInputProdotti.vue';
 
 export default 
 {
  components : 
  {
-  VUEModalCaricamentoDati
+  VUEModalCaricamentoDati,
+  VUEInputProdotti
  },
  data()
  {
@@ -346,10 +346,6 @@ export default
         this.OnClickCaricaListaProdotti();
     },
 
-    OnChangeIdCliente()
-    {
-      // this.IdContratto = -1
-    },
 
     // OnClickEsportaFilialiExcel()
     // {

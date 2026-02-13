@@ -106,7 +106,7 @@
                             LEFT OUTER JOIN province  ON province.CHIAVE = ddt_entranti.PROVINCIA_FATTURAZIONE
                             LEFT OUTER JOIN nazioni   ON nazioni.CHIAVE = ddt_entranti.NAZIONE_EM_PIVA
                             LEFT OUTER JOIN causali   ON causali.CHIAVE = ddt_entranti.CAUSALE
-                            LEFT OUTER JOIN anagrafiche   ON anagrafiche.CHIAVE = ddt_entranti.ID_ANAGRAFICHE
+                            LEFT OUTER JOIN anagrafiche   ON anagrafiche.CHIAVE = ddt_entranti.ID_ANAGRAFICA
                       WHERE ddt_entranti.CHIAVE = $ChiaveDDT";
 
                 if($Query = $PDODBase->query($SQLBody))
