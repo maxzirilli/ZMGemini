@@ -1,10 +1,10 @@
 <template>
-    <VUEDataTableSecondaria :DataTableSecondaria="SchedaRecapiti.DataTableTelefono" @onChange="OnRecapitiChange"></VUEDataTableSecondaria>
+    <VUEDataTable :DataTable="SchedaRecapiti.DataTableTelefono" :NomeProgramma="'Gemini'" :PathLogo="require('../../../assets/images/LogoGemini2.png')"></VUEDataTable>
 </template>
 
 <script>
-import { TZDataTable,TZDTableColumnType } from '@/../../../../../../Librerie/VUE/ZDataTable.js'
-import VUEDataTableSecondaria from '@/components/VUEDataTableSecondaria.vue'
+import { TZDataTable,TZDTableColumnType } from '@/../../../../../../Librerie/VUE/ZDataTable2.js'
+import VUEDataTable from '../../../../../../../../../Librerie/VUE/TemplateGestionale/VUEDataTable2Secondaria.vue';
 
 export class TSchedaRecapiti
 {
@@ -156,7 +156,7 @@ export default
   emits: ['onChange'],
   components: 
   {
-    VUEDataTableSecondaria
+    VUEDataTable
   },
 
   data()
@@ -166,13 +166,30 @@ export default
      }
   },
 
+  watch: 
+  {
+    SchedaRecapiti :
+    { 
+        handler(NewValue,OldValue)
+        {
+          if(NewValue != OldValue && NewValue != undefined)
+          {
+              this.SchedaRecapiti.DataTableTelefono.AssignOnRowChange(() =>
+              {
+                  this.$emit('onChange');
+              })
+              this.SchedaRecapiti.DataTableTelefono.AssignOnRowDelete(() =>
+              {
+                  this.$emit('onChange');
+              })
+          }
+        },
+        immediate : true
+    }
+  },
+
   methods :
   {
-    OnRecapitiChange()
-    {
-        if(this.SchedaRecapiti.DataTableTelefono.Modificato())
-          this.$emit('onChange');
-    }
   }
 }     
 
