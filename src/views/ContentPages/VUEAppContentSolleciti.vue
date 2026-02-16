@@ -86,7 +86,8 @@
         <div v-if="Fattura.Grafica.EventiEspansi" class="panel-collapse collapse in">
           <div style="background-color:rgb(230 230 230);cursor:pointer" class="panel-heading">
             <VUEDataTable :DataTable="ClasseDataTable.DataTableEventi" 
-                  @onChange="OnEventiChange">
+                          :NomeProgramma="'Gemini'" 
+                          :PathLogo="require('../../assets/images/LogoGemini2.png')">
             </VUEDataTable>
             <button v-if="ShowConfermaEventi" type="button" class="btn btn-danger" style="float:right;margin-left:10px;font-weight:bold;width:8%;margin-top:0.8%" @click="AnnullaEventi(Indice)" data-dismiss="modal">Annulla</button>
             <button v-if="ShowConfermaEventi" type="button" class="btn btn-info" style="float:right;font-weight:bold;width:8%;margin-top:0.8%" @click="ConfermaEventi(Indice,IdCliente)" data-dismiss="modal">Conferma</button>
@@ -215,11 +216,11 @@
 <script>
 import VUEInputClienti from '@/components/InputComponents/VUEInputClienti.vue';
 import VUEConfirm from '@/components/VUEConfirm.vue';
-import VUEDataTable from '@/components/VUEDataTable.vue';
+import VUEDataTable from '../../../../../../../../Librerie/VUE/TemplateGestionale/VUEDataTable2.vue';
+import { TZDataTable, TZDTableColumnType } from '../../../../../../../../Librerie/VUE/ZDataTable2.js';
 import { SystemInformation } from '@/SystemInformation.js';
 import VUEModalInvioEmail from '@/views/SchedeDatabase/ComponentMultiScheda/VUEModalInvioEmail.vue';
 import VUEModalCaricamentoDati from '../../../../../../../../Librerie/VUE/TemplateGestionale/VUEModalCaricamentoDati.vue';
-import { TZDataTable, TZDTableColumnType } from '../../../../../../../../Librerie/VUE/ZDataTable.js';
 import { TZDateFunct } from '../../../../../../../../Librerie/VUE/ZDateFunct.js';
 import { TZEconomicFunct } from '../../../../../../../../Librerie/VUE/ZEconomicFunct.js';
 import { TSchedaGenerica } from '../../../../../../../../Librerie/VUE/ZSchedaGenerica.js';
@@ -316,13 +317,6 @@ export default
       return TZEconomicFunct.EuropeanCurrencyFormat(Valore)
     },
 
-    OnEventiChange()
-    {
-      this.ClasseDataTable.ModificaTabelle = this.ClasseDataTable.DataTableEventi.Modificato();
-      if(this.ClasseDataTable.ModificaTabelle)
-        this.ShowConfermaEventi = true
-    },
-
     ConfermaEventi(Indice,IdCliente)
     {
       var Self = this;
@@ -352,6 +346,7 @@ export default
                                             {
                                               Self.Disponi()
                                               Self.ShowConfermaEventi = false
+                                              Self.ModificaTabelle    = false
                                             },
                                             function(HTTPError,SubHTTPError,Response)
                                             {
@@ -426,13 +421,15 @@ export default
         }
 
         this.LsFatture[Indice].Grafica.EventiEspansi = !this.LsFatture[Indice].Grafica.EventiEspansi;
-        this.ShowConfermaEventi = false
-
+        
         if(this.LsFatture[Indice].Grafica.EventiEspansi)
         {
           this.ClasseDataTable.AssignDati([])
           this.ClasseDataTable.AssignDati(this.LsFatture[Indice].DatiEventi)
         }
+
+        this.ClasseDataTable.ModificaTabelle = false
+        this.ShowConfermaEventi = false  
       }
     },
     
@@ -1205,6 +1202,31 @@ export default
         else Self.LsFatture[Self.IndiceFatture].LsNote.splice(Self.LsFatture[Self.IndiceFatture].LsNote.indexOf(Self.NotaDaEliminare), 1)
       
     },
+  },
+
+  watch :
+  {
+   'ClasseDataTable.DataTableEventi' :
+    { 
+          handler(NewValue,OldValue)
+          {
+             if(NewValue != OldValue && NewValue != undefined)
+             {
+                 this.ClasseDataTable.DataTableEventi.AssignOnRowChange(() =>
+                 {
+                   this.ClasseDataTable.ModificaTabelle = true
+                   this.ShowConfermaEventi = true
+                 })
+ 
+                 this.ClasseDataTable.DataTableEventi.AssignOnRowDelete(() =>
+                 {
+                   this.ClasseDataTable.ModificaTabelle = true
+                   this.ShowConfermaEventi = true
+                 })
+             } 
+          },
+          immediate : true
+     },
   },
 
   mounted()
