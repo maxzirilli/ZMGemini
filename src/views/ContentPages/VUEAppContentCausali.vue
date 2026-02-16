@@ -5,13 +5,13 @@
     <a class="btn btn-s-md btn-success" style="margin-right:20px" v-if="DataTable.AllDataOk()" @click="Registra()">Conferma</a>
     <a class="btn btn-s-md btn-danger" @click="OnClickAnnulla();">Annulla</a>
 </div>
-<VUEDataTable :DataTable="DataTable" @onChange="OnDataChanged"></VUEDataTable>
+<VUEDataTable :DataTable="DataTable" :NomeProgramma="'Gemini'" :PathLogo="require('../../assets/images/LogoGemini2.png')"></VUEDataTable>
 </template>
 
 <script>
 import { SystemInformation, RIFERIMENTO_CAUSALI } from '@/SystemInformation';
-import VUEDataTable from '@/components/VUEDataTable.vue'
-import { TZDataTable,TZDTableColumnType } from '../../../../../../../../Librerie/VUE/ZDataTable.js'
+import VUEDataTable from '../../../../../../../../Librerie/VUE/TemplateGestionale/VUEDataTable2.vue';
+import { TZDataTable,TZDTableColumnType } from '../../../../../../../../Librerie/VUE/ZDataTable2.js';
 import VUEConfirm from '@/components/VUEConfirm.vue';
 
 export default 
@@ -47,11 +47,6 @@ export default
   },
   methods:
   {
-    OnDataChanged()
-    {
-     this.ModificheDaApplicare = this.DataTable.Modificato();
-    },
-
     Registra()
     {
       var Self = this;
@@ -116,6 +111,7 @@ export default
                                          {
                                            let ArrayInfo = SystemInformation.AdvQuery.FindResults(Results,"Tutto");
                                            Self.DataTable.AssignDati(ArrayInfo);
+                                           Self.ModificheDaApplicare = false
                                          },
                                          function(HTTPError,SubHTTPError,Response)
                                          {
@@ -130,6 +126,19 @@ export default
   {
     this.Annulla()
   },
+  mounted()
+  {
+    this.DataTable.AssignOnRowChange(() =>
+    {
+      this.ModificheDaApplicare = true
+    })
+    this.DataTable.AssignOnRowDelete(() =>
+    {
+      this.ModificheDaApplicare = true
+    })
+    this.Annulla();
+  },
+
    
 }
 </script>

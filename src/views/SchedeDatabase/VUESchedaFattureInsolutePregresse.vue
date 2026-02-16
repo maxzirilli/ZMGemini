@@ -53,7 +53,8 @@
     <a v-if="!SchedaFattureInsolutePregresse.ControlloRigheDataPagamento()" style="float:left;font-weight:bold;color:red;font-size:13px;margin-left:30px;margin-top:5px;margin-bottom:5px">Inserire sia la data pagamento sia il conto associato</a>
     <div class="ZMSeparatoreFiltri"></div>
     <VUEDataTable :DataTable="SchedaFattureInsolutePregresse.DataTable"
-                  @onChange="OnDataChanged">
+                  :NomeProgramma="'Gemini'" 
+                  :PathLogo="require('../../assets/images/LogoGemini2.png')">
     </VUEDataTable>
     <div>
       <header class="panel-heading bg-light" style="margin-top:5px; margin-bottom:5px">
@@ -76,8 +77,8 @@
 </template>
 
 <script>
-import { TZDataTable,TZDTableColumnType } from '../../../../../../../../Librerie/VUE/ZDataTable.js'
-import VUEDataTable from '@/components/VUEDataTable.vue'
+import { TZDataTable,TZDTableColumnType } from '../../../../../../../../Librerie/VUE/ZDataTable2.js'
+import VUEDataTable from '../../../../../../../../Librerie/VUE/TemplateGestionale/VUEDataTable2.vue';
 import { TSchedaGenerica } from '../../../../../../../../Librerie/VUE/ZSchedaGenerica.js'
 import { SystemInformation } from '@/SystemInformation';
 // import VUEModal from '@/components/Slots/VUEModal.vue';
@@ -183,6 +184,7 @@ export class TSchedaFattureInsolutePregresse extends TSchedaGenerica
                                         if(ArrayInfo != undefined)
                                         {
                                           Self.DataTable.AssignDati(ArrayInfo);
+                                          Self.Dati.ModificaTabella = false
 
                                           for(let i = 0; i < Self.DataTable.Righe.length; i++)
                                           {
@@ -522,6 +524,28 @@ export default
     // VUEModal
   },
 
+  watch: {
+    SchedaFattureInsolutePregresse :
+    { 
+        handler(NewValue,OldValue)
+        {
+          if(NewValue != OldValue && NewValue != undefined)
+          {
+              this.SchedaFattureInsolutePregresse.DataTable.AssignOnRowChange(() =>
+              {
+                this.SchedaFattureInsolutePregresse.Dati.ModificaTabella = true
+              })
+
+              this.SchedaFattureInsolutePregresse.DataTable.AssignOnRowDelete(() =>
+              {
+                this.SchedaFattureInsolutePregresse.Dati.ModificaTabella = true
+              })
+          } 
+        },
+        immediate : true
+    }
+  },
+
   computed :
   {
     SommaInsoluti :
@@ -544,28 +568,23 @@ export default
 
   methods:
   {
-    OnDataChanged()
+    OnClickIncassaFattureInsolute()
     {
-       this.SchedaFattureInsolutePregresse.Dati.ModificaTabella = this.SchedaFattureInsolutePregresse.DataTable.Modificato();
+      for(let i = 0; i < this.SchedaFattureInsolutePregresse.DataTable.Righe.length; i++)
+        this.SchedaFattureInsolutePregresse.DataTable.Righe[i].Selezionata = false
+      
+      this.PopupSceltaFattureInsolute = true
     },
 
-    // OnClickIncassaFattureInsolute()
-    // {
-    //   for(let i = 0; i < this.SchedaFattureInsolutePregresse.DataTable.Righe.length; i++)
-    //     this.SchedaFattureInsolutePregresse.DataTable.Righe[i].Selezionata = false
-      
-    //   this.PopupSceltaFattureInsolute = true
-    // },
+    OnClickConfermaPopupFattureInsolute()
+    {
+      var ListaSelezionati = []
+      for(let i = 0; i < this.SchedaFattureInsolutePregresse.DataTable.Righe.length; i++)
+        if(this.SchedaFattureInsolutePregresse.DataTable.Righe[i].Selezionata)
+          ListaSelezionati.push(this.SchedaFattureInsolutePregresse.DataTable.Righe[i])
 
-    // OnClickConfermaPopupFattureInsolute()
-    // {
-    //   var ListaSelezionati = []
-    //   for(let i = 0; i < this.SchedaFattureInsolutePregresse.DataTable.Righe.length; i++)
-    //     if(this.SchedaFattureInsolutePregresse.DataTable.Righe[i].Selezionata)
-    //       ListaSelezionati.push(this.SchedaFattureInsolutePregresse.DataTable.Righe[i])
-
-    //   this.$emit('onClickNuovoMovimentoFromFattureInsolute', ListaSelezionati)
-    // },
+      this.$emit('onClickNuovoMovimentoFromFattureInsolute', ListaSelezionati)
+    },
 
     ControlloSelezionati()
     {

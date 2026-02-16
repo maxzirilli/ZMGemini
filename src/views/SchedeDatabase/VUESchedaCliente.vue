@@ -619,7 +619,8 @@
         <div v-else style="padding-bottom:2%; font-size:16px; font:bold; margin-top: 2%;margin-left: 1%;">NON SONO PRESENTI FATTURE CON RITENUTA DI ACCONTO</div>
 
         <VUEDataTable :DataTable="SchedaCliente.DataTableRitenuteCliente" 
-                      @onChange="OnRitenuteClienteChange">
+                      :NomeProgramma="'Gemini'" 
+                      :PathLogo="require('../../assets/images/LogoGemini2.png')">
         </VUEDataTable>
 
         <div>
@@ -673,22 +674,21 @@
         </div>
 
       </div>
-      <div v-if="Tabs.ActiveTab == 'Filiali'">
+      <!-- <div v-if="Tabs.ActiveTab == 'Filiali'">
         <div class="ZMNuovaRigaScheda">
-        <!-- <label v-if="!SchedaCliente.ControlloPresenzaDiAlmenoUnaFiliale() && !SchedaCliente.SchedaFiliali.DataTableFiliali.Righe.length == 0" style="font-size:14px;margin-left:1%" class="ZMFormLabelError">Inserire almeno una filiale</label>      -->
-        <!-- <label v-if="!SchedaCliente.ControlloInserimentoFilialePrincipale() && !SchedaCliente.SchedaFiliali.DataTableFiliali.Righe.length == 0" style="font-size:14px;margin-left:1%" class="ZMFormLabelError">Inserire una sede</label>      -->
         <VUEDataTable RowType="FilialiClienti"
                     :DataTable="DataTableFiliali" 
                     @onChange="OnFilialiChange"
                     :SchedaCliente="SchedaCliente"/>
         </div>
-      </div>
+      </div> -->
       <div  v-if="Tabs.ActiveTab == 'Recapiti'">
         <VUERecapiti :SchedaRecapiti="SchedaCliente.SchedaRecapiti" @onChange="OnRecapitiChange"></VUERecapiti>
       </div>
       <div  v-if="Tabs.ActiveTab == 'AgendaEventi'">
         <VUEDataTable :DataTable="SchedaCliente.DataTableAgenda" 
-                      @onChange="OnAgendaChange">
+                      :NomeProgramma="'Gemini'" 
+                      :PathLogo="require('../../assets/images/LogoGemini2.png')">
         </VUEDataTable>
       </div>
 
@@ -864,8 +864,8 @@
 
 <script>
  import { TSchedaGenerica } from '../../../../../../../../Librerie/VUE/ZSchedaGenerica.js'
- import { TZDataTable,TZDTableColumnType } from '../../../../../../../../Librerie/VUE/ZDataTable.js'
- import VUEDataTable from '@/components/VUEDataTable.vue'
+ import { TZDataTable,TZDTableColumnType } from '../../../../../../../../Librerie/VUE/ZDataTable2.js'
+ import VUEDataTable from '../../../../../../../../Librerie/VUE/TemplateGestionale/VUEDataTable2.vue'
  import { SystemInformation, DASHBOARD_FILTER_TYPES, PAGAMENTO_BOLLO, RUOLI, TIPO_SCONTO, TIPOLOGIA_RIGHE_CONTO_CLIENTE } from '@/SystemInformation.js' 
  import VUEInputCAP from '@/components/InputComponents/VUEInputCAP.vue';
  import VUEInputProvince from '@/components/InputComponents/VUEInputProvince.vue';
@@ -2631,6 +2631,46 @@ import VUEAllegati, { TSchedaAllegati } from '../../components/VUEAllegati.vue';
       {
         this.ShowCodiceCliente = false;
       },
+
+      'SchedaCliente.DataTableRitenuteCliente' :
+      { 
+         handler(NewValue,OldValue)
+         {
+            if(NewValue != OldValue && NewValue != undefined)
+            {
+                this.SchedaCliente.DataTableRitenuteCliente.AssignOnRowChange(() =>
+                {
+                  this.SchedaCliente.Dati.ModificaTabelle = true
+                })
+
+                this.SchedaCliente.DataTableRitenuteCliente.AssignOnRowDelete(() =>
+                {
+                  this.SchedaCliente.Dati.ModificaTabelle = true
+                })
+            } 
+         },
+         immediate : true
+      },
+      
+      'SchedaCliente.DataTableAgenda' :
+      { 
+         handler(NewValue,OldValue)
+         {
+            if(NewValue != OldValue && NewValue != undefined)
+            {
+                this.SchedaCliente.DataTableAgenda.AssignOnRowChange(() =>
+                {
+                  this.SchedaCliente.Dati.ModificaTabelle = true
+                })
+
+                this.SchedaCliente.DataTableAgenda.AssignOnRowDelete(() =>
+                {
+                  this.SchedaCliente.Dati.ModificaTabelle = true
+                })
+            } 
+         },
+         immediate : true
+      }
     },
 
     computed :
@@ -3278,16 +3318,6 @@ import VUEAllegati, { TSchedaAllegati } from '../../components/VUEAllegati.vue';
             break;
           }
         }
-      },
-
-      OnRitenuteClienteChange()
-      {
-        this.SchedaCliente.Dati.ModificaTabelle = this.SchedaCliente.DataTableRitenuteCliente.Modificato();
-      },
-
-      OnAgendaChange()
-      {
-        this.SchedaCliente.Dati.ModificaTabelle = this.SchedaCliente.DataTableAgenda.Modificato();
       },
       
       OnRecapitiChange()

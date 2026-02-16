@@ -165,7 +165,8 @@
    <div v-if="SchedaProdotto.Dati.PRODOTTO_COMPOSTO">
       <div v-if="Tabs.ActiveTab == 'ProdottoComposto'">
           <VUEDataTable :DataTable="SchedaProdotto.DataTableProdottiMontaggio"
-                        @onChange="OnProdottiMontaggioChange"/>
+                        :NomeProgramma="'Gemini'" 
+                        :PathLogo="require('../../assets/images/LogoGemini2.png')"/>
       </div>
     </div>
 
@@ -178,8 +179,8 @@
  import { SystemInformation, DASHBOARD_FILTER_TYPES} from '@/SystemInformation.js' //, RUOLI 
  import VUEInputUdm from '@/components/InputComponents/VUEInputUdm.vue'
  import VUELogProdotti, { TSchedaLogProdotti } from '@/views/SchedeDatabase/ComponentMultiScheda/VUELogProdotti.vue';
- import { TZDataTable,TZDTableColumnType } from '../../../../../../../../Librerie/VUE/ZDataTable.js'
- import VUEDataTable from '@/components/VUEDataTable.vue'
+ import { TZDataTable,TZDTableColumnType } from '../../../../../../../../Librerie/VUE/ZDataTable2.js'
+ import VUEDataTable from '../../../../../../../../Librerie/VUE/TemplateGestionale/VUEDataTable2.vue';
  import { TZDateFunct } from '../../../../../../../../Librerie/VUE/ZDateFunct.js'
  import VUEModal from '@/components/Slots/VUEModal.vue';
  
@@ -371,10 +372,12 @@
             SystemInformation.GetConfigurazioni(function()
             {
               ObjQuery = {};
+              Self.Dati.ModificaTabellaProdottiMontaggio = false
               if(Self.Chiave == -1)
                   Self.Chiave = Response.NewKey1;
               Self.CreateSnapshot();
               OnSuccess();
+              
             })
         },
         function(HTTPError,SubHTTPError,Response)
@@ -681,7 +684,27 @@
 
         if(Valore && this.Tabs.ActiveTab == 'LogProdotto')
           this.Tabs.ActiveTab = 'Generale';
-      }
+      },
+
+      SchedaProdotto :
+      { 
+          handler(NewValue,OldValue)
+          {
+            if(NewValue != OldValue && NewValue != undefined)
+            {
+                this.SchedaProdotto.DataTableProdottiMontaggio.AssignOnRowChange(() =>
+                {
+                  this.SchedaProdotto.Dati.ModificaTabellaProdottiMontaggio = true
+                })
+  
+                this.SchedaProdotto.DataTableProdottiMontaggio.AssignOnRowDelete(() =>
+                {
+                  this.SchedaProdotto.Dati.ModificaTabellaProdottiMontaggio = true
+                })
+            } 
+          },
+          immediate : true
+       }
     },
 
     methods: 
@@ -755,11 +778,6 @@
                                                     {
                                                       SystemInformation.HandleError(HTTPError,SubHTTPError,Response);
                                                     })
-      },
-
-      OnProdottiMontaggioChange()
-      {
-        this.SchedaProdotto.Dati.ModificaTabellaProdottiMontaggio = this.SchedaProdotto.DataTableProdottiMontaggio.Modificato();
       },
 
       EliminaProdottoSemplice()

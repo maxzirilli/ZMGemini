@@ -13,6 +13,7 @@
     "file-saver": "^2.0.5",
     "leaflet": "^1.9.4",
     "vue": "^3.2.47",
+    "vue-accessible-color-picker": "^4.1.4",
     "vue-axios": "^3.5.2",
     "vue-gtag": "^2.0.1",
     "vue-router": "^4.1.6",

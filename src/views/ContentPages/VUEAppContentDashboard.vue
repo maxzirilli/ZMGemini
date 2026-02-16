@@ -3054,12 +3054,12 @@ export default
         this.SchedaSelezionata.Nuovo();
       },  
 
-      // OnClickNuovoMovimentoFromFattureInsolute(Dati)
-      // {
-      //   this.SchedaSelezionata = new TSchedaMovimento(SystemInformation.AdvQuery);
-      //   this.SchedaSelezionata.Nuovo();
-      //   this.SchedaSelezionata.AssignDati(Dati)
-      // },
+      OnClickNuovoMovimentoFromFattureInsolute(Dati)
+      {
+        this.SchedaSelezionata = new TSchedaMovimento(SystemInformation.AdvQuery);
+        this.SchedaSelezionata.Nuovo();
+        this.SchedaSelezionata.AssignDati(Dati)
+      },
 
 
       // OnClickNuovoPreventivoMultiRapido()

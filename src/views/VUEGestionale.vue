@@ -26,7 +26,7 @@
                 <VUEAppContentCfgDescrizione                       v-if="Pages.CategorieMovimenti" NomeModello="CategorieMovimenti" :Altezza="Altezza"></VUEAppContentCfgDescrizione>
                 <VUEAppContentAmmEsportaSdI                        v-if="Pages.AmministrazioneEsporta && !InvioManualeCheck" :Altezza="Altezza"></VUEAppContentAmmEsportaSdI>
                 <VUEAppContentAmmEsportaManualmente                v-if="Pages.AmministrazioneEsporta && InvioManualeCheck" :Altezza="Altezza"></VUEAppContentAmmEsportaManualmente>
-                <VUEAppContentSolleciti                            v-if="Pages.Solleciti && VisualizzaSolleciti" :Altezza="Altezza"></VUEAppContentSolleciti>
+                <VUEAppContentSolleciti                            v-if="Pages.Solleciti" :Altezza="Altezza"></VUEAppContentSolleciti>
                 <VUEAppContentGestioneFatturePassive               v-if="Pages.GestioneFatturePassive"></VUEAppContentGestioneFatturePassive>
                 <VUEAppContentCfgFatturaElettronica                v-if="Pages.CfgFatturaElettronica" :Altezza="Altezza"></VUEAppContentCfgFatturaElettronica>
                 <VUEAppContentCfgEmailSegnalazioni                 v-if="Pages.CfgEmailSegnalazioni" NomeModello="EmailSegnalazioni" :Altezza="Altezza"></VUEAppContentCfgEmailSegnalazioni>
@@ -45,7 +45,7 @@
                 <VUEAppContentAggiungiMessaggio       v-if="Pages.AggiungiMessaggio" :Altezza="Altezza"></VUEAppContentAggiungiMessaggio>
                 <VUEAppContentSchedaMessaggi          v-if="Pages.SchedaMessaggi"></VUEAppContentSchedaMessaggi>
                 <VUEAppContentLogEmailInviate         v-if="Pages.LogEmailInviate"></VUEAppContentLogEmailInviate>
-                <VUEAppContentFattureInsolute         v-if="Pages.FattureInsolute && VisualizzaSolleciti"></VUEAppContentFattureInsolute>
+                <VUEAppContentFattureInsolute         v-if="Pages.FattureInsolute"></VUEAppContentFattureInsolute>
                 <VUEAppAzioniAmministratore           v-if="Pages.AzioniAmministratore" :Altezza="Altezza"></VUEAppAzioniAmministratore>
              </section>
              </section>

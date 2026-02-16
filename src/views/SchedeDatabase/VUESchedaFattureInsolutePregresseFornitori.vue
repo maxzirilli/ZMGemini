@@ -53,7 +53,8 @@
     <a v-if="!SchedaFattureInsolutePregresseFornitori.ControlloRigheDataPagamento()" style="float:left;font-weight:bold;color:red;font-size:13px;margin-left:30px;margin-top:5px;margin-bottom:5px">Inserire sia la data pagamento sia il conto associato</a>
     <div class="ZMSeparatoreFiltri"></div>
     <VUEDataTable :DataTable="SchedaFattureInsolutePregresseFornitori.DataTable"
-                  @onChange="OnDataChanged">
+                  :NomeProgramma="'Gemini'" 
+                  :PathLogo="require('../../assets/images/LogoGemini2.png')">
     </VUEDataTable>
     <div>
       <header class="panel-heading bg-light" style="margin-top:5px; margin-bottom:5px">
@@ -76,8 +77,8 @@
 </template>
 
 <script>
-import { TZDataTable,TZDTableColumnType } from '../../../../../../../../Librerie/VUE/ZDataTable.js'
-import VUEDataTable from '@/components/VUEDataTable.vue'
+import { TZDataTable,TZDTableColumnType } from '../../../../../../../../Librerie/VUE/ZDataTable2.js'
+import VUEDataTable from '../../../../../../../../Librerie/VUE/TemplateGestionale/VUEDataTable2.vue';
 import { TSchedaGenerica } from '../../../../../../../../Librerie/VUE/ZSchedaGenerica.js'
 import { SystemInformation, RUOLI } from '@/SystemInformation';
 // import VUEModal from '@/components/Slots/VUEModal.vue';
@@ -177,6 +178,7 @@ export class TSchedaFattureInsolutePregresseFornitori extends TSchedaGenerica
                                         if(ArrayInfo != undefined)
                                         {
                                           Self.DataTable.AssignDati(ArrayInfo);
+                                          Self.Dati.ModificaTabella = false
 
                                           for(let i = 0; i < Self.DataTable.Righe.length; i++)
                                           {
@@ -355,30 +357,47 @@ export default
     }
   },
 
+  watch: {
+    SchedaFattureInsolutePregresseFornitori :
+    { 
+        handler(NewValue,OldValue)
+        {
+          if(NewValue != OldValue && NewValue != undefined)
+          {
+              this.SchedaFattureInsolutePregresseFornitori.DataTable.AssignOnRowChange(() =>
+              {
+                this.SchedaFattureInsolutePregresseFornitori.Dati.ModificaTabella = true
+              })
+
+              this.SchedaFattureInsolutePregresseFornitori.DataTable.AssignOnRowDelete(() =>
+              {
+                this.SchedaFattureInsolutePregresseFornitori.Dati.ModificaTabella = true
+              })
+          } 
+        },
+        immediate : true
+    }
+  },
+
   methods:
   {
-    OnDataChanged()
+    OnClickIncassaFattureInsolute()
     {
-       this.SchedaFattureInsolutePregresseFornitori.Dati.ModificaTabella = this.SchedaFattureInsolutePregresseFornitori.DataTable.Modificato();
+      for(let i = 0; i < this.SchedaFattureInsolutePregresseFornitori.DataTable.Righe.length; i++)
+        this.SchedaFattureInsolutePregresseFornitori.DataTable.Righe[i].Selezionata = false
+      
+      this.PopupSceltaFattureInsolute = true
     },
 
-    // OnClickIncassaFattureInsolute()
-    // {
-    //   for(let i = 0; i < this.SchedaFattureInsolutePregresseFornitori.DataTable.Righe.length; i++)
-    //     this.SchedaFattureInsolutePregresseFornitori.DataTable.Righe[i].Selezionata = false
-      
-    //   this.PopupSceltaFattureInsolute = true
-    // },
+    OnClickConfermaPopupFattureInsolute()
+    {
+      var ListaSelezionati = []
+      for(let i = 0; i < this.SchedaFattureInsolutePregresseFornitori.DataTable.Righe.length; i++)
+        if(this.SchedaFattureInsolutePregresseFornitori.DataTable.Righe[i].Selezionata)
+          ListaSelezionati.push(this.SchedaFattureInsolutePregresseFornitori.DataTable.Righe[i])
 
-    // OnClickConfermaPopupFattureInsolute()
-    // {
-    //   var ListaSelezionati = []
-    //   for(let i = 0; i < this.SchedaFattureInsolutePregresseFornitori.DataTable.Righe.length; i++)
-    //     if(this.SchedaFattureInsolutePregresseFornitori.DataTable.Righe[i].Selezionata)
-    //       ListaSelezionati.push(this.SchedaFattureInsolutePregresseFornitori.DataTable.Righe[i])
-
-    //   this.$emit('onClickNuovoMovimentoFromFattureInsolute', ListaSelezionati)
-    // },
+      this.$emit('onClickNuovoMovimentoFromFattureInsolute', ListaSelezionati)
+    },
 
     ControlloSelezionati()
     {

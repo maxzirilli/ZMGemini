@@ -185,7 +185,7 @@
     </div>
     <div style="clear:both; padding-bottom:10px"></div>
 
-    <VUEDataTable :NumeroRighePerPagina="50" :DataTable="SchedaFatturaPassiva.DataTable" @onChange="OnDataChanged" style="background:#d0e9ff"></VUEDataTable>
+    <VUEDataTable :NumeroRighe="50" :DataTable="SchedaFatturaPassiva.DataTable" :NomeProgramma="'Gemini'" :PathLogo="require('../../assets/images/LogoGemini2.png')" style="background:#d0e9ff"></VUEDataTable>
     <div class="ZMNuovaRigaScheda" style="background-color:#d2e8ff;margin-top:20px">
     
         <div class="col-md-4" style="float:right;">
@@ -240,17 +240,17 @@
       <text style="font-weight: bold;">Ritenute</text>
       <hr style="margin-top:5px">
     </div>
-    <VUEDataTable :DataTable="SchedaFatturaPassiva.DataTableRitenute" @onChange="OnRitenuteChanged" style="background:#d0e9ff"></VUEDataTable>
+    <VUEDataTable :DataTable="SchedaFatturaPassiva.DataTableRitenute" :NomeProgramma="'Gemini'" :PathLogo="require('../../assets/images/LogoGemini2.png')" style="background:#d0e9ff"></VUEDataTable>
     <div class="ZMSeparatoreScheda">       
       <text style="font-weight: bold;">Casse previdenziali</text>
       <hr style="margin-top:5px">
     </div>
-    <VUEDataTable :DataTable="SchedaFatturaPassiva.DataTableCasse" @onChange="OnCasseChanged" style="background:#d0e9ff"></VUEDataTable>
+    <VUEDataTable :DataTable="SchedaFatturaPassiva.DataTableCasse" :NomeProgramma="'Gemini'" :PathLogo="require('../../assets/images/LogoGemini2.png')" style="background:#d0e9ff"></VUEDataTable>
     <div class="ZMSeparatoreScheda">       
       <text style="font-weight: bold;">Riepiloghi aliquote</text>
       <hr style="margin-top:5px">
     </div>
-    <VUEDataTable :DataTable="SchedaFatturaPassiva.DataTableAliquote" @onChange="OnAliquotaChanged" style="background:#d0e9ff"></VUEDataTable>
+    <VUEDataTable :DataTable="SchedaFatturaPassiva.DataTableAliquote" :NomeProgramma="'Gemini'" :PathLogo="require('../../assets/images/LogoGemini2.png')" style="background:#d0e9ff"></VUEDataTable>
   </div>
 
   <div  v-if="Tabs.ActiveTab == 'Rate'">
@@ -260,7 +260,7 @@
     </div>
     <label style="font-size: 14px;" v-if="!SchedaFatturaPassiva.ContoObbligatorioInserito()"
             class="ZMFormLabelError">Inserire Conto/Cassa</label>
-    <VUEDataTable :DataTable="SchedaFatturaPassiva.DataTableRate" @onChange="OnRateChanged" style="background:#d0e9ff"></VUEDataTable>
+    <VUEDataTable :DataTable="SchedaFatturaPassiva.DataTableRate" :NomeProgramma="'Gemini'" :PathLogo="require('../../assets/images/LogoGemini2.png')" style="background:#d0e9ff"></VUEDataTable>
     <br>
     <br>
     <br>
@@ -282,8 +282,8 @@ import VUEInputCAP from '@/components/InputComponents/VUEInputCAP.vue';
 import VUEInputNazioni from '@/components/InputComponents/VUEInputNazioni.vue';
 import VUEAllegati, { TSchedaAllegati } from '../../components/VUEAllegati.vue';
 import { TZDateFunct } from '../../../../../../../../Librerie/VUE/ZDateFunct.js'
-import VUEDataTable from '@/components/VUEDataTable.vue'
-import { TZDataTable,TZDTableColumnType } from '../../../../../../../../Librerie/VUE/ZDataTable.js'
+import VUEDataTable from '../../../../../../../../Librerie/VUE/TemplateGestionale/VUEDataTable2.vue';
+import { TZDataTable,TZDTableColumnType } from '../../../../../../../../Librerie/VUE/ZDataTable2.js'
 import { TZEconomicFunct, TZCheckDatiFiscali } from '../../../../../../../../Librerie/VUE/ZEconomicFunct.js';
 import { ID_NODO_FATTURE_PASSIVE, ID_NODO_NOTE_DI_CREDITO_PASSIVE } from '@/NodiVuoti'
 
@@ -680,10 +680,12 @@ export class TSchedaFatturaPassiva extends TSchedaGenerica
               else
               {
                 if(Riga.Eliminato)
+                {
                     ObjQuery.Operazioni.push({
                                               Query     : "EliminaRateFatturaPassiva",
                                               Parametri : { CHIAVE : Riga.Dati['CHIAVE'] }
                                             })
+                }
                 else 
                 {
                   if(Riga.Modificato())
@@ -1266,6 +1268,106 @@ export default
            
         }
      },
+
+     'SchedaFatturaPassiva.DataTable' :
+      { 
+         handler(NewValue,OldValue)
+         {
+            if(NewValue != OldValue && NewValue != undefined)
+            {
+                this.SchedaFatturaPassiva.DataTable.AssignOnRowChange(() =>
+                {
+                  this.SchedaFatturaPassiva.Dati.ModificaTabellaVoci = true
+                })
+
+                this.SchedaFatturaPassiva.DataTable.AssignOnRowDelete(() =>
+                {
+                  this.SchedaFatturaPassiva.Dati.ModificaTabellaVoci = true
+                })
+            } 
+         },
+         immediate : true
+      },
+
+      'SchedaFatturaPassiva.DataTableRate' :
+      { 
+         handler(NewValue,OldValue)
+         {
+            if(NewValue != OldValue && NewValue != undefined)
+            {
+                this.SchedaFatturaPassiva.DataTableRate.AssignOnRowChange(() =>
+                {
+                  this.SchedaFatturaPassiva.Dati.ModificaTabellaRate = true
+                })
+
+                this.SchedaFatturaPassiva.DataTableRate.AssignOnRowDelete(() =>
+                {
+                  this.SchedaFatturaPassiva.Dati.ModificaTabellaRate = true
+                })
+            } 
+         },
+         immediate : true
+      },
+
+      'SchedaFatturaPassiva.DataTableRitenute' :
+      { 
+         handler(NewValue,OldValue)
+         {
+            if(NewValue != OldValue && NewValue != undefined)
+            {
+                this.SchedaFatturaPassiva.DataTableRitenute.AssignOnRowChange(() =>
+                {
+                  this.SchedaFatturaPassiva.Dati.ModificaTabellaRitenute = true
+                })
+
+                this.SchedaFatturaPassiva.DataTableRitenute.AssignOnRowDelete(() =>
+                {
+                  this.SchedaFatturaPassiva.Dati.ModificaTabellaRitenute = true
+                })
+            } 
+         },
+         immediate : true
+      },
+
+      'SchedaFatturaPassiva.DataTableCasse' :
+      { 
+         handler(NewValue,OldValue)
+         {
+            if(NewValue != OldValue && NewValue != undefined)
+            {
+                this.SchedaFatturaPassiva.DataTableCasse.AssignOnRowChange(() =>
+                {
+                  this.SchedaFatturaPassiva.Dati.ModificaTabellaCasse = true
+                })
+
+                this.SchedaFatturaPassiva.DataTableCasse.AssignOnRowDelete(() =>
+                {
+                  this.SchedaFatturaPassiva.Dati.ModificaTabellaCasse = true
+                })
+            } 
+         },
+         immediate : true
+      },
+
+      'SchedaFatturaPassiva.DataTableAliquote' :
+      { 
+         handler(NewValue,OldValue)
+         {
+            if(NewValue != OldValue && NewValue != undefined)
+            {
+                this.SchedaFatturaPassiva.DataTableAliquote.AssignOnRowChange(() =>
+                {
+                  this.SchedaFatturaPassiva.Dati.ModificaTabellaAliquote = true
+                })
+
+                this.SchedaFatturaPassiva.DataTableAliquote.AssignOnRowDelete(() =>
+                {
+                  this.SchedaFatturaPassiva.Dati.ModificaTabellaAliquote = true
+                })
+            } 
+         },
+         immediate : true
+      },
   },
   methods: 
   {  
@@ -1284,31 +1386,6 @@ export default
     OnClickCopiaDaPartitaIva()
     {
       this.SchedaFatturaPassiva.Dati.CODICE_FISCALE = this.SchedaFatturaPassiva.Dati.PARTITA_IVA
-    },
-
-    OnDataChanged()
-    {
-       this.SchedaFatturaPassiva.Dati.ModificaTabellaVoci = this.SchedaFatturaPassiva.DataTable.Modificato();
-    },
-
-    OnRateChanged()
-    {
-      this.SchedaFatturaPassiva.Dati.ModificaTabellaRate = this.SchedaFatturaPassiva.DataTableRate.Modificato();
-    },
-
-    OnRitenuteChanged()
-    {
-      this.SchedaFatturaPassiva.Dati.ModificaTabellaRitenute = this.SchedaFatturaPassiva.DataTableRitenute.Modificato();
-    },
-
-    OnCasseChanged()
-    {
-      this.SchedaFatturaPassiva.Dati.ModificaTabellaCasse = this.SchedaFatturaPassiva.DataTableCasse.Modificato();
-    },
-
-    OnAliquotaChanged()
-    {
-      this.SchedaFatturaPassiva.Dati.ModificaTabellaAliquote = this.SchedaFatturaPassiva.DataTableAliquote.Modificato();
     },
 
     OnClickTipologiaDocumento()

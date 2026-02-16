@@ -292,7 +292,8 @@
     </div>
     <div  v-if="Tabs.ActiveTab == 'Prodotti'">
       <VUEDataTable :DataTable="SchedaFornitore.DataTableCodiciFornitore"
-                    @onChange="OnCodiciFornitoreChange"/>
+                  :NomeProgramma="'Gemini'" 
+                  :PathLogo="require('../../assets/images/LogoGemini2.png')"/>
     </div>
 
     <div v-if="Tabs.ActiveTab == 'SituazioneContabile'">
@@ -377,8 +378,8 @@
 <script>
 import VUEModal from '@/components/Slots/VUEModal.vue';
 import { TZDateFunct } from '../../../../../../../../Librerie/VUE/ZDateFunct.js'
-import VUEDataTable from '@/components/VUEDataTable.vue'
-import { TZDataTable,TZDTableColumnType } from '../../../../../../../../Librerie/VUE/ZDataTable.js'
+import VUEDataTable from '../../../../../../../../Librerie/VUE/TemplateGestionale/VUEDataTable2.vue';
+import { TZDataTable,TZDTableColumnType } from '../../../../../../../../Librerie/VUE/ZDataTable2.js'
 import { SystemInformation, DASHBOARD_FILTER_TYPES, TIPO_AUTOFATTURA, RUOLI } from '@/SystemInformation.js'
 import { TSchedaGenerica } from '../../../../../../../../Librerie/VUE/ZSchedaGenerica.js'
 import VUEInputCAP from '@/components/InputComponents/VUEInputCAP.vue';
@@ -665,7 +666,8 @@ export class TSchedaFornitore extends TSchedaGenerica
                                                 PEC                       : TSchedaGenerica.PrepareForRecordString(this.Dati.PEC),
                                                 TIPO_AUTOFATTURA          : TSchedaGenerica.PrepareForRecordString(this.Dati.TIPO_AUTOFATTURA) != ''? TSchedaGenerica.PrepareForRecordString(this.Dati.TIPO_AUTOFATTURA) : null,
                                                 IS_FORNITORE              : true,
-                                                IS_CLIENTE                : TSchedaGenerica.PrepareForRecordBoolean(this.Dati.IS_CLIENTE)
+                                                IS_CLIENTE                : TSchedaGenerica.PrepareForRecordBoolean(this.Dati.IS_CLIENTE),
+                                                ModificaTabellaCodiciFornitore : false
                                               }
                                 });
         
@@ -875,6 +877,28 @@ export default
           };
   },
   props : ['SchedaFornitore'],
+  
+  watch: {
+    SchedaFornitore :
+    { 
+        handler(NewValue,OldValue)
+        {
+          if(NewValue != OldValue && NewValue != undefined)
+          {
+              this.SchedaFornitore.DataTableCodiciFornitore.AssignOnRowChange(() =>
+              {
+                this.SchedaFornitore.Dati.ModificaTabellaCodiciFornitore = true
+              })
+
+              this.SchedaFornitore.DataTableCodiciFornitore.AssignOnRowDelete(() =>
+              {
+                this.SchedaFornitore.Dati.ModificaTabellaCodiciFornitore = true
+              })
+          } 
+        },
+        immediate : true
+    }
+  },
 
   computed :
   {    
@@ -903,11 +927,6 @@ export default
 
   methods :
   {
-    OnCodiciFornitoreChange()
-    {
-      this.SchedaFornitore.Dati.ModificaTabellaCodiciFornitore = this.SchedaFornitore.DataTableCodiciFornitore.Modificato();
-    },
-
     OnNextMenuStampa(AMenu) 
     {
       if (AMenu.SubMenu != undefined)

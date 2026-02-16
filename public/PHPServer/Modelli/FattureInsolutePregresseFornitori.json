@@ -21,7 +21,7 @@
 		},
 		{
 			"Name" : "EliminaRecordSaldiChiusureAnnuali",
-			"SQL" : "DELETE FROM saldi_chiusure_annuali\n WHERE ID_FORNITORE = :CHIAVE_FORNITORE\n     AND ANNO >= #ANNO\n"
+			"SQL" : "DELETE FROM saldi_chiusure_annuali\n WHERE ID_ANAGRAFICA = :CHIAVE_FORNITORE\n     AND ANNO >= #ANNO\n"
 		}
 ]
 }

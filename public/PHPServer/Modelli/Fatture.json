@@ -121,7 +121,7 @@
 		},
 		{
 			"Name" : "EliminaRecordSaldiChiusureAnnuali",
-			"SQL" : "DELETE FROM saldi_chiusure_annuali\n WHERE ID_CLIENTE = :CHIAVE_CLIENTE\n     AND ANNO >= #ANNO\n"
+			"SQL" : "DELETE FROM saldi_chiusure_annuali\n WHERE ID_ANAGRAFICA = :CHIAVE_CLIENTE\n     AND ANNO >= #ANNO\n"
 		},
 		{
 			"Name" : "ModificaEvento",
