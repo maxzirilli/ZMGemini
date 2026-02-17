@@ -81,7 +81,7 @@
      </div>
      <div style="float:left;width:1%">&nbsp;</div>
      <div style="padding-top:4px;float: left; width: 4%; text-align: center;">  
-               <a v-if="CurrentRiga.Dati['ATTIVAZIONI_PRESENTI'].Valore != 0 && CurrentRiga.Dati['ATTIVAZIONI_PRESENTI'].Valore != null && ListaLogFilialiVisibile"
+               <a v-if="CurrentRiga.Dati['ATTIVAZIONI_PRESENTI'].Valore != 0 && CurrentRiga.Dati['ATTIVAZIONI_PRESENTI'].Valore != null"
                  class="fa fa-list" 
                  style="cursor:pointer;color:black;font-size:15px;margin-right:5px;"
                  @click="ListaLogFiliali()">
@@ -265,7 +265,6 @@ export default
   data()
   {    
      return {
-              ListaLogFilialiVisibile    : SystemInformation.AccessRights.ListaLogFilialiVisibile(),
               Collapsed                  : true,
               PopupDataRowFilialiClienti : false,
               PopupDataRowCordinate      : false,

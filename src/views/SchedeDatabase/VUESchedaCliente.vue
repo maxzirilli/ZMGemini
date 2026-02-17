@@ -674,14 +674,17 @@
         </div>
 
       </div>
-      <!-- <div v-if="Tabs.ActiveTab == 'Filiali'">
+      <div v-if="Tabs.ActiveTab == 'Filiali'">
         <div class="ZMNuovaRigaScheda">
-        <VUEDataTable RowType="FilialiClienti"
-                    :DataTable="DataTableFiliali" 
-                    @onChange="OnFilialiChange"
-                    :SchedaCliente="SchedaCliente"/>
+          <VUEDataTable :DataTable="[]" @onChange="OnFilialiChange" :SchedaCliente="SchedaCliente" :NomeProgramma="'Gemini'" :PathLogo="require('../../assets/images/LogoGemini2.png')">
+            <template v-slot:RowAlternativa>
+              <div class="DivRighe" v-for="Riga in FilialiFiltrate" :key="Riga">
+                  <VUEDataRowFilialiClienti :Riga="Riga" :DataTable="FilialiFiltrate" :SchedaCliente="SchedaCliente"/>
+              </div>
+            </template>
+          </VUEDataTable>
         </div>
-      </div> -->
+      </div>
       <div  v-if="Tabs.ActiveTab == 'Recapiti'">
         <VUERecapiti :SchedaRecapiti="SchedaCliente.SchedaRecapiti" @onChange="OnRecapitiChange"></VUERecapiti>
       </div>
@@ -887,6 +890,7 @@
  import { TZGenericFunct } from '../../../../../../../../Librerie/VUE/ZGenericFunct';
  import VUEModal from '@/components/Slots/VUEModal.vue';
  import VUEConfirm from '@/components/VUEConfirm.vue';
+ import VUEDataRowFilialiClienti from '@/components/DataRows/VUEDataRowFilialiClienti.vue';
  import * as XLSX from 'xlsx';
 //  import { TZStringFunct } from '../../../../../../../../Librerie/VUE/ZStringFunct.js';
 import VUESchedaFattura, { TSchedaFattura } from './VUESchedaFattura.vue';
@@ -2566,7 +2570,8 @@ import VUEAllegati, { TSchedaAllegati } from '../../components/VUEAllegati.vue';
         VUESchedaFattura,
         VUESchedaMovimento,
         VUESchedaNotaDiCredito,
-        VUEAllegati
+        VUEAllegati,
+        VUEDataRowFilialiClienti
         //VUEInputScissioneDeiPagamenti
     },
     data()
@@ -2602,6 +2607,14 @@ import VUEAllegati, { TSchedaAllegati } from '../../components/VUEAllegati.vue';
                 TipoDocumento            : '',
                 TestoPopupDocumento      : '',
                 DocumentoSelezionato     : null,
+                FiltroFiliali            : 'Attive',              //
+                FiltroPerFiliali         : '',                    //
+                PaginazioneFiliali : {
+                                          NrRighe   : 10,          //
+                                          NrPagina  : 1,           //
+                                          StartGruppoPagine : 1    //
+                                      },
+            //  OrdinamentoInCorso  : false,
                 FatturaSelezionata       : null,
                 Filtro                                : {
                                                           xNome : '',
@@ -2675,6 +2688,64 @@ import VUEAllegati, { TSchedaAllegati } from '../../components/VUEAllegati.vue';
 
     computed :
     {
+      FilialiFiltrate :
+      {
+        get()
+        {
+          let Result = [];
+          var FiltroFiliali = this.FiltroFiliali;
+          let ListaFiltrata = this.RigheFiltrate;
+      
+          if(FiltroFiliali == 'Attive')
+          {
+             ListaFiltrata = ListaFiltrata.filter(function(Riga)
+             {
+               return Riga.Dati.FILIALE_DISATTIVATA.Valore == false;
+             });
+          }
+      
+          if(FiltroFiliali == 'Disattive')
+          {
+             ListaFiltrata = ListaFiltrata.filter(function(Riga)
+             {
+               return Riga.Dati.FILIALE_DISATTIVATA.Valore == true;
+             });
+          }
+      
+          for(let i = (this.PaginazioneFiliali.NrPagina - 1) * this.PaginazioneFiliali.NrRighe;i < ListaFiltrata.length && i < (this.PaginazioneFiliali.NrPagina) * this.PaginazioneFiliali.NrRighe;i++)
+          {
+              Result.push(ListaFiltrata[i]);
+          }
+      
+          return Result;
+        }
+      },
+      
+      RigheFiltrate :
+      {
+        get()
+        {
+          var Self = this;
+          var Filtro = this.FiltroPerFiliali.toUpperCase().trim();
+          var ListaRighe = this.DataTableFiliali.Righe.filter(function(Riga)
+          {
+            if(Riga.Eliminato)
+               return false;
+            if(Filtro == '') 
+               return true;
+            for(let i = 0; i < Self.DataTableFiliali.Configurazione.Colonne.length;i++)
+            {
+                let Colonna = Self.DataTableFiliali.Configurazione.Colonne[i];
+                if(Riga.GetText(Colonna.Campo).toUpperCase().indexOf(Filtro) !== -1)
+                   return true;
+            }
+            return false;
+          });
+          
+          return ListaRighe;
+        }
+      },
+
       DataTableFiliali :
       {
         get()
