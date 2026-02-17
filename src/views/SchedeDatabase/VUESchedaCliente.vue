@@ -676,7 +676,7 @@
       </div>
       <div v-if="Tabs.ActiveTab == 'Filiali'">
         <div class="ZMNuovaRigaScheda">
-          <VUEDataTable :DataTable="[]" @onChange="OnFilialiChange" :SchedaCliente="SchedaCliente" :NomeProgramma="'Gemini'" :PathLogo="require('../../assets/images/LogoGemini2.png')">
+          <VUEDataTable :DataTable="DataTableFiliali" @onChange="OnFilialiChange" :SchedaCliente="SchedaCliente" :NomeProgramma="'Gemini'" :PathLogo="require('../../assets/images/LogoGemini2.png')">
             <template v-slot:RowAlternativa>
               <div class="DivRighe" v-for="Riga in FilialiFiltrate" :key="Riga">
                   <VUEDataRowFilialiClienti :Riga="Riga" :DataTable="FilialiFiltrate" :SchedaCliente="SchedaCliente"/>
