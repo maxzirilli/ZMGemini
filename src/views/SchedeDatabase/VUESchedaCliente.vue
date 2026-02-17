@@ -686,7 +686,8 @@
           </select>
         </div>
         <div class="ZMNuovaRigaScheda">
-          <VUEDataTable :DataTable="FilialiFiltrate" :SchedaCliente="SchedaCliente" :NomeProgramma="'Gemini'" :PathLogo="require('../../assets/images/LogoGemini2.png')">
+          <!-- FilialiFiltrate -->
+          <VUEDataTable :DataTable="DataTableFiliali" :NomeProgramma="'Gemini'" :PathLogo="require('../../assets/images/LogoGemini2.png')">
             <template v-slot:RowAlternativa="{ Riga, DataTable }">
               <VUEDataRowFilialiClienti :Riga="Riga" :DataTable="DataTable" :SchedaCliente="SchedaCliente"/>
             </template>
@@ -2686,13 +2687,13 @@ import VUEAllegati, { TSchedaAllegati } from '../../components/VUEAllegati.vue';
          immediate : true
       },
       
-      'SchedaCliente.DataTableFiliali' :
+      'SchedaCliente.SchedaFiliali.DataTableFiliali' :
       { 
-         handler(NewValue,OldValue)
-         {
-            if(NewValue != OldValue && NewValue != undefined)
+         handler(NewValue)
+         {          
+            if(NewValue != undefined)
             {
-                this.SchedaCliente.DataTableFiliali.AssignOnRowChange(() =>
+                this.SchedaCliente.SchedaFiliali.DataTableFiliali.AssignOnRowChange(() =>
                 {
                   this.SchedaCliente.Dati.ModificaTabellaFiliali = true
 
@@ -2715,7 +2716,7 @@ import VUEAllegati, { TSchedaAllegati } from '../../components/VUEAllegati.vue';
                   }
                 })
 
-                this.SchedaCliente.DataTableFiliali.AssignOnRowDelete(() =>
+                this.SchedaCliente.SchedaFiliali.DataTableFiliali.AssignOnRowDelete(() =>
                 {
                   this.SchedaCliente.Dati.ModificaTabellaFiliali = true
 
