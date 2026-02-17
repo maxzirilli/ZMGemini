@@ -675,12 +675,20 @@
 
       </div>
       <div v-if="Tabs.ActiveTab == 'Filiali'">
+        <div style="float: left;font-size:14px;width:10%;text-align: right; padding-right: 10px;padding-top: 5px;">
+        <label style="margin-bottom: 0px;">Stato filiali</label>
+        </div>
+        <div style="float:left;width:11%;">
+          <select style="float:left;width:100%;margin-right:5px" class="form-control" v-model="FiltroFiliali">
+            <option value="Tutte">Tutte</option>
+            <option value="Attive">Attive</option>           
+            <option value="Disattive">Disattive</option>           
+          </select>
+        </div>
         <div class="ZMNuovaRigaScheda">
-          <VUEDataTable :DataTable="DataTableFiliali" @onChange="OnFilialiChange" :SchedaCliente="SchedaCliente" :NomeProgramma="'Gemini'" :PathLogo="require('../../assets/images/LogoGemini2.png')">
-            <template v-slot:RowAlternativa>
-              <div class="DivRighe" v-for="Riga in FilialiFiltrate" :key="Riga">
-                  <VUEDataRowFilialiClienti :Riga="Riga" :DataTable="FilialiFiltrate" :SchedaCliente="SchedaCliente"/>
-              </div>
+          <VUEDataTable :DataTable="FilialiFiltrate" :SchedaCliente="SchedaCliente" :NomeProgramma="'Gemini'" :PathLogo="require('../../assets/images/LogoGemini2.png')">
+            <template v-slot:RowAlternativa="{ Riga, DataTable }">
+              <VUEDataRowFilialiClienti :Riga="Riga" :DataTable="DataTable" :SchedaCliente="SchedaCliente"/>
             </template>
           </VUEDataTable>
         </div>
@@ -2607,14 +2615,7 @@ import VUEAllegati, { TSchedaAllegati } from '../../components/VUEAllegati.vue';
                 TipoDocumento            : '',
                 TestoPopupDocumento      : '',
                 DocumentoSelezionato     : null,
-                FiltroFiliali            : 'Attive',              //
-                FiltroPerFiliali         : '',                    //
-                PaginazioneFiliali : {
-                                          NrRighe   : 10,          //
-                                          NrPagina  : 1,           //
-                                          StartGruppoPagine : 1    //
-                                      },
-            //  OrdinamentoInCorso  : false,
+                FiltroFiliali            : '',              
                 FatturaSelezionata       : null,
                 Filtro                                : {
                                                           xNome : '',
@@ -2683,6 +2684,62 @@ import VUEAllegati, { TSchedaAllegati } from '../../components/VUEAllegati.vue';
             } 
          },
          immediate : true
+      },
+      
+      'SchedaCliente.DataTableFiliali' :
+      { 
+         handler(NewValue,OldValue)
+         {
+            if(NewValue != OldValue && NewValue != undefined)
+            {
+                this.SchedaCliente.DataTableFiliali.AssignOnRowChange(() =>
+                {
+                  this.SchedaCliente.Dati.ModificaTabellaFiliali = true
+
+                  for(let i = 0; i < this.DataTableFiliali.Righe.length; i++)
+                  {
+                    if(this.DataTableFiliali.Righe[i].DataTableOrari.Modificato())
+                    {
+                      this.SchedaCliente.Dati.ModificaTabellaOrariFiliali = true
+                      break;
+                    }
+                  }
+
+                  for(let i = 0; i < this.DataTableFiliali.Righe.length; i++)
+                  {
+                    if(this.DataTableFiliali.Righe[i].SchedaRecapitiFiliali.DataTableTelefono.Modificato())
+                    {
+                      this.SchedaCliente.Dati.ModificaTabellaTelefonoFiliali = true
+                      break;
+                    }
+                  }
+                })
+
+                this.SchedaCliente.DataTableFiliali.AssignOnRowDelete(() =>
+                {
+                  this.SchedaCliente.Dati.ModificaTabellaFiliali = true
+
+                  for(let i = 0; i < this.DataTableFiliali.Righe.length; i++)
+                  {
+                    if(this.DataTableFiliali.Righe[i].DataTableOrari.Modificato())
+                    {
+                      this.SchedaCliente.Dati.ModificaTabellaOrariFiliali = true
+                      break;
+                    }
+                  }
+
+                  for(let i = 0; i < this.DataTableFiliali.Righe.length; i++)
+                  {
+                    if(this.DataTableFiliali.Righe[i].SchedaRecapitiFiliali.DataTableTelefono.Modificato())
+                    {
+                      this.SchedaCliente.Dati.ModificaTabellaTelefonoFiliali = true
+                      break;
+                    }
+                  }
+                })
+            } 
+         },
+         immediate : true
       }
     },
 
@@ -2692,57 +2749,29 @@ import VUEAllegati, { TSchedaAllegati } from '../../components/VUEAllegati.vue';
       {
         get()
         {
-          let Result = [];
           var FiltroFiliali = this.FiltroFiliali;
-          let ListaFiltrata = this.RigheFiltrate;
-      
+          let ListaFiltrata = this.DataTableFiliali;
           if(FiltroFiliali == 'Attive')
           {
-             ListaFiltrata = ListaFiltrata.filter(function(Riga)
+             let ListraRighe = ListaFiltrata.Righe
+             ListraRighe = ListraRighe.filter(function(Riga)
              {
                return Riga.Dati.FILIALE_DISATTIVATA.Valore == false;
              });
+             ListaFiltrata.Righe = ListraRighe
           }
       
           if(FiltroFiliali == 'Disattive')
           {
-             ListaFiltrata = ListaFiltrata.filter(function(Riga)
+             let ListraRighe = ListaFiltrata.Righe
+             ListraRighe = ListraRighe.filter(function(Riga)
              {
                return Riga.Dati.FILIALE_DISATTIVATA.Valore == true;
              });
+             ListaFiltrata.Righe = ListraRighe
           }
       
-          for(let i = (this.PaginazioneFiliali.NrPagina - 1) * this.PaginazioneFiliali.NrRighe;i < ListaFiltrata.length && i < (this.PaginazioneFiliali.NrPagina) * this.PaginazioneFiliali.NrRighe;i++)
-          {
-              Result.push(ListaFiltrata[i]);
-          }
-      
-          return Result;
-        }
-      },
-      
-      RigheFiltrate :
-      {
-        get()
-        {
-          var Self = this;
-          var Filtro = this.FiltroPerFiliali.toUpperCase().trim();
-          var ListaRighe = this.DataTableFiliali.Righe.filter(function(Riga)
-          {
-            if(Riga.Eliminato)
-               return false;
-            if(Filtro == '') 
-               return true;
-            for(let i = 0; i < Self.DataTableFiliali.Configurazione.Colonne.length;i++)
-            {
-                let Colonna = Self.DataTableFiliali.Configurazione.Colonne[i];
-                if(Riga.GetText(Colonna.Campo).toUpperCase().indexOf(Filtro) !== -1)
-                   return true;
-            }
-            return false;
-          });
-          
-          return ListaRighe;
+          return ListaFiltrata;
         }
       },
 
@@ -3366,29 +3395,6 @@ import VUEAllegati, { TSchedaAllegati } from '../../components/VUEAllegati.vue';
                                 ]
           }
           else this.MenuNuovo = [];
-      },
-
-      OnFilialiChange()
-      {
-        var Self = this
-        this.SchedaCliente.Dati.ModificaTabellaFiliali = this.DataTableFiliali.Modificato();
-
-        for(let i = 0; i < this.DataTableFiliali.Righe.length; i++)
-        {
-          if(this.DataTableFiliali.Righe[i].DataTableOrari.Modificato())
-          {
-            Self.SchedaCliente.Dati.ModificaTabellaOrariFiliali = true
-            break;
-          }
-        }
-        for(let i = 0; i < this.DataTableFiliali.Righe.length; i++)
-        {
-          if(this.DataTableFiliali.Righe[i].SchedaRecapitiFiliali.DataTableTelefono.Modificato())
-          {
-            Self.SchedaCliente.Dati.ModificaTabellaTelefonoFiliali = true
-            break;
-          }
-        }
       },
       
       OnRecapitiChange()
