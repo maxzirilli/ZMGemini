@@ -2,7 +2,9 @@
   <VUEModalCaricamentoDati v-if="PopupAttesaCalcolo" :PathGif="require('@/assets/images/CaricamentoDatiGif.gif')"/>
 
   <VUEModal v-if="PopupProdottiExcel" :Titolo="'Stampa excel prodotti'" :Altezza="'170px'" :Larghezza="'520px'"
-            @onClickChiudiModal="PopupProdottiExcel = false">
+            @onClickChiudiModal="PopupProdottiExcel = false"
+            :PathLogo="require('../../assets/images/LogoGemini2.png')"
+            :Programma="NomeProgramma">
       <template v-slot:Body>
         <div class="form-row">
           <div class="col-md-12" style="margin-bottom:10px;">
@@ -2274,7 +2276,7 @@ import VUEInputProvince from '@/components/InputComponents/VUEInputProvince.vue'
 import VUEInputRegioni from '@/components/InputComponents/VUEInputRegioni.vue';
 import VUEInputZone from '@/components/InputComponents/VUEInputZone.vue';
 import VUEInputProdotti from '@/components/InputComponents/VUEInputProdotti.vue';
-import VUEModal from '@/components/Slots/VUEModal.vue';
+import VUEModal from '../../../../../../../../Librerie/VUE/TemplateGestionale/VUEModal.vue';
 import VUEConfirm from '@/components/VUEConfirm.vue';
 import VUETreeViewLevel from '@/components/VUETreeViewLevel.vue';
 import {
@@ -2303,6 +2305,7 @@ import {
           RUOLI,
           SystemInformation,
           TIPO_COMUNICAZIONI,
+          NOME_PROGRAMMA
         } from '@/SystemInformation';
 import VUESchedaCliente, { TSchedaCliente } from '@/views/SchedeDatabase/VUESchedaCliente.vue';
 import VUESchedaDocumentoDiTrasporto, { TSchedaDocumentoDiTrasporto } from '@/views/SchedeDatabase/VUESchedaDocumentoDiTrasporto.vue';
@@ -2742,7 +2745,10 @@ export default
                                                       },
                                                     ]
                                           })
-         return Modello;
+
+          Modello.NomeProgramma = NOME_PROGRAMMA 
+                         
+          return Modello;
     },
 
     methods: 

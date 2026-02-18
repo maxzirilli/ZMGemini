@@ -11,6 +11,7 @@ export const LOCALSTORAGE = {
                             }  
 
 export const NUMERO_VERSIONE_GEMINI = '0.000.000'
+export const NOME_PROGRAMMA = 'Gemini'
 
 export const TIPO_COMUNICAZIONI = { // uguale a php
                                     AvvisoGenerico                  : 'A',
@@ -727,7 +728,6 @@ class TSystemInformation
 
   GetRagioneSociale(IdAnagrafica)
   {
-    console.log('qui')
     for(let i = 0; i < this.Configurazioni.Clienti.length; i++)
       if(this.Configurazioni.Clienti[i].CHIAVE == IdAnagrafica)
         return this.Configurazioni.Clienti[i].RAGIONE_SOCIALE

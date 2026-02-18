@@ -1,13 +1,19 @@
 <template>
-<VUEConfirm :Popup="PopupDataRowFilialiClienti" :Richiesta="'Eliminare la riga selezionata?'" @onClickConfermaPopup="ConfermaElimina" @onClickChiudiPopup="AnnullaElimina">
+<VUEConfirm :Popup="PopupDataRowFilialiClienti" :Richiesta="'Eliminare la riga selezionata?'" @onClickConfermaPopup="ConfermaElimina" @onClickChiudiPopup="AnnullaElimina" 
+            :PathLogo="require('../../assets/images/LogoGemini2.png')"
+            :Programma="NomeProgramma" >
 </VUEConfirm>
-<VUEConfirm :Popup="PopupDataRowCordinate" :Richiesta="'Vuoi aggiornare le coordinate?'" @onClickConfermaPopup="ConfermaAggiorna" @onClickChiudiPopup="AnnullaAggiorna">
+<VUEConfirm :Popup="PopupDataRowCordinate" :Richiesta="'Vuoi aggiornare le coordinate?'" @onClickConfermaPopup="ConfermaAggiorna" @onClickChiudiPopup="AnnullaAggiorna"
+            :PathLogo="require('../../assets/images/LogoGemini2.png')"
+            :Programma="NomeProgramma">
 </VUEConfirm>
 
 <VUEModal v-if="LsLogFiliali" 
             :Titolo="'Lista Log Filiale'" 
             :Altezza="'200px'" 
             :Larghezza="'900px'"
+            :PathLogo="require('../../assets/images/LogoGemini2.png')"
+            :Programma="NomeProgramma"
             @onClickChiudiModal="OnClickChiudiLista">
  <template v-slot:Body>
   <div class="row wrapper">
@@ -205,7 +211,7 @@
 
       <div v-if="!NascondiTimes" :style="{ width : TimesWidth + '%' }" style="float:left">
          <VUEDataTableSecondaria :DataTable="CurrentDataTableSecondaria"
-                                 :NomeProgramma="'Gemini'" 
+                                 :NomeProgramma="NomeProgramma" 
                                  :PathLogo="require('../../assets/images/LogoGemini2.png')"/>
       </div>
       
@@ -238,15 +244,15 @@
 </template>
 
 <script>
-import { SystemInformation } from '@/SystemInformation';
+import { SystemInformation, NOME_PROGRAMMA } from '@/SystemInformation';
 import { TZDateFunct } from '../../../../../../../../Librerie/VUE/ZDateFunct.js'
 import VUEInputCAP from '@/components/InputComponents/VUEInputCAP.vue';
 import VUEInputZone from '@/components/InputComponents/VUEInputZone.vue';
 import VUEInputProvince from '@/components/InputComponents/VUEInputProvince.vue';
 import VUEInputNazioni from '@/components/InputComponents/VUEInputNazioni.vue';
 import VUEDataTableSecondaria from '../../../../../../../../Librerie/VUE/TemplateGestionale/VUEDataTable2Secondaria.vue';
-import VUEConfirm from '@/components/VUEConfirm.vue';
-import VUEModal from '@/components/Slots/VUEModal.vue';
+import VUEConfirm from '../../../../../../../../Librerie/VUE/TemplateGestionale/VUEConfirm.vue';
+import VUEModal from '../../../../../../../../Librerie/VUE/TemplateGestionale/VUEModal.vue';
 import VUERecapiti from '@/views/SchedeDatabase/ComponentMultiScheda/VUERecapiti.vue';
 import { TZOpenStreetMap } from '../../../../../../../../Librerie/VUE/ZOpenStreetMap.js';
 
@@ -273,8 +279,9 @@ export default
               PopupDataRowFilialiClienti : false,
               PopupDataRowCordinate      : false,
               LsLogFiliali               : false,
-              NascondiRecapiti          : false,
+              NascondiRecapiti           : false,
               NascondiTimes              : false,
+              NomeProgramma              : NOME_PROGRAMMA,
               RecapitiWidth              : 44,
               TimesWidth                 : 55,
               RigaPopup                  : null,
