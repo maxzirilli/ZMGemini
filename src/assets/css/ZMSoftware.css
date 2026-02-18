@@ -450,8 +450,8 @@ h4 {
 
 .btn-close-modal {
   color: #fff !important;
-  background-color: #4cc0c1;
-  border-color: #4cc0c1;
+  background-color:rgb(104, 182, 190);
+  border-color: rgb(104, 182, 190)
 }
 .btn-close-modal:hover,
 .btn-close-modal:focus,
@@ -459,14 +459,14 @@ h4 {
 .btn-close-modal.active,
 .open .dropdown-toggle.btn-close-modal {
   color: #fff !important;
-  background-color: #3fb4b5;
-  border-color: #3ba9a9;
+  background-color: rgb(104, 182, 190);
+  border-color: rgb(104, 182, 190)
 }
 
 .custom-modal-header-footer {
-  background-color: #1d94c3;
+  background-color: rgb(104, 182, 190)
 }
 
 .custom-modal-content {
-  background-color: #accce8;
+  background-color: rgb(208, 233, 255)
 }

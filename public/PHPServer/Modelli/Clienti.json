@@ -185,7 +185,7 @@
 		},
 		{
 			"Name" : "DeleteSaldiAnnualiTramiteCliente",
-			"SQL" : "DELETE FROM saldi_chiusure_annuali\n          WHERE ID_CLIENTE = :CHIAVE_CLIENTE\n"
+			"SQL" : "DELETE FROM saldi_chiusure_annuali\n          WHERE ID_ANAGRAFICA = :CHIAVE_CLIENTE\n"
 		},
 		{
 			"Name" : "DeleteListinoScontiTramiteCliente",
