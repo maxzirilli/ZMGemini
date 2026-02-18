@@ -121,7 +121,7 @@
 		},
 		{
 			"Name" : "UpdateTelefonoFiliale",
-			"SQL" : "UPDATE filiali_telefono\n     SET DESCRIZIONE = #DESCRIZIONE,\n            TELEFONO = #TELEFONO,\n            EMAIL = #EMAIL,\n            EMAIL_PER_AVVISO = #EMAIL_PER_AVVISO, \n            TELEFONO_PER_AVVISO = #TELEFONO_PER_AVVISO,\n    WHERE CHIAVE = :CHIAVE\n"
+			"SQL" : "UPDATE filiali_telefono\n     SET DESCRIZIONE = #DESCRIZIONE,\n            TELEFONO = #TELEFONO,\n            EMAIL = #EMAIL,\n            EMAIL_PER_AVVISO = #EMAIL_PER_AVVISO, \n            TELEFONO_PER_AVVISO = #TELEFONO_PER_AVVISO\n    WHERE CHIAVE = :CHIAVE\n"
 		},
 		{
 			"Name" : "DeleteTelefonoFiliale",

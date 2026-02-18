@@ -49,7 +49,7 @@
            <label style="font-weight: bold;">Sede riscossione&nbsp;&nbsp;&nbsp;</label>
         </div>
         <div style="float:left;">
-          <input type="checkbox" v-model="CurrentRiga.Dati['SEDE'].Valore"/>
+          <input @input="CurrentRiga.OnChange()" type="checkbox" v-model="CurrentRiga.Dati['SEDE'].Valore"/>
         </div>
      </div>
      <div style="float:left;width:10%;padding-top: 8px;">
@@ -57,7 +57,7 @@
            <label style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;Disattivata&nbsp;&nbsp;&nbsp;</label>
         </div>
         <div style="float:left;">
-          <input type="checkbox" v-model="CurrentRiga.Dati['FILIALE_DISATTIVATA'].Valore" @change="OnChangeSede(CurrentRiga)"/>
+          <input @input="CurrentRiga.OnChange()" type="checkbox" v-model="CurrentRiga.Dati['FILIALE_DISATTIVATA'].Valore" @change="OnChangeSede(CurrentRiga)"/>
         </div>
      </div>
      <div style="float:left;width:5%;padding-top: 2px" v-if="CurrentRiga.Dati['FILIALE_DISATTIVATA'].Valore"><br>
@@ -71,7 +71,7 @@
            <label style="font-weight: bold;">Nome&nbsp;&nbsp;&nbsp;</label>
         </div>
         <div style="float:left;width: 88%;">
-          <input type="text" style="width:100%" class="form-control" v-model="CurrentRiga.Dati['NOME'].Valore" />
+          <input @input="CurrentRiga.OnChange()" type="text" style="width:100%" class="form-control" v-model="CurrentRiga.Dati['NOME'].Valore" />
         </div>
      </div>
      <div style="float:left;width:1%">&nbsp;</div>
@@ -107,27 +107,27 @@
       <div style="clear:both">
           <div style="float:left;width:50%">
               <label style="font-weight: bold;">Indirizzo</label>
-              <input type="text" class="form-control" v-model="CurrentRiga.Dati['INDIRIZZO'].Valore" placeholder="Indirizzo"/>
+              <input @input="CurrentRiga.OnChange()" type="text" class="form-control" v-model="CurrentRiga.Dati['INDIRIZZO'].Valore" placeholder="Indirizzo"/>
           </div> 
           <div style="float:left;width:1%;">&nbsp;</div>
           <div style="float:left;width:7%">
                <label style="font-weight: bold;">Civico</label>
-               <input maxlength="7" type="text" class="form-control" v-model="CurrentRiga.Dati['NR_CIVICO'].Valore" placeholder="Nr. civico"/>
+               <input @input="CurrentRiga.OnChange()" maxlength="7" type="text" class="form-control" v-model="CurrentRiga.Dati['NR_CIVICO'].Valore" placeholder="Nr. civico"/>
           </div> 
           <div style="float:left;width:1%;">&nbsp;</div>
           <div style="float:left;width:7%">
                <label style="font-weight: bold;">CAP</label>
-               <VUEInputCAP v-model="CurrentRiga.Dati['CAP'].Valore"/>
+               <VUEInputCAP @input="CurrentRiga.OnChange()" v-model="CurrentRiga.Dati['CAP'].Valore"/>
           </div>
           <div style="float:left;width:1%;">&nbsp;</div>
           <div style="float:left;width:13%">
               <label style="font-weight: bold;">Latitudine</label>
-              <input maxlength="10" type="text" class="form-control" v-model="CurrentRiga.Dati['LAT_IND'].Valore" placeholder="Latitudine"/>
+              <input @input="CurrentRiga.OnChange()" maxlength="10" type="text" class="form-control" v-model="CurrentRiga.Dati['LAT_IND'].Valore" placeholder="Latitudine"/>
           </div> 
           <div style="float:left;width:1%;">&nbsp;</div>
           <div style="float:left;width:13%">
               <label style="font-weight: bold;">Longitudine</label>
-              <input maxlength="10" type="text" class="form-control" v-model="CurrentRiga.Dati['LONG_IND'].Valore" placeholder="Longitudine"/>
+              <input @input="CurrentRiga.OnChange()" maxlength="10" type="text" class="form-control" v-model="CurrentRiga.Dati['LONG_IND'].Valore" placeholder="Longitudine"/>
           </div>
           <div style="padding-top:15px;">
                   <img style="float:left;cursor:pointer; margin-left:20px"  
@@ -138,22 +138,22 @@
       <div style="clear:both">
          <div style="float:left;width:24%">
               <label style="font-weight: bold;">Comune</label>
-              <input type="text" class="form-control" v-model="CurrentRiga.Dati['COMUNE'].Valore" placeholder="Comune"/>
+              <input @input="CurrentRiga.OnChange()" type="text" class="form-control" v-model="CurrentRiga.Dati['COMUNE'].Valore" placeholder="Comune"/>
          </div>
          <div style="float:left;width:1%;">&nbsp;</div>
          <div style="float:left;width:14%">
             <label style="font-weight: bold;">Provincia</label>
-            <VUEInputProvince v-model="CurrentRiga.Dati['PROVINCIA'].Valore" emptyElement="true"/>
+            <VUEInputProvince @input="CurrentRiga.OnChange()" v-model="CurrentRiga.Dati['PROVINCIA'].Valore" emptyElement="true"/>
          </div> 
          <div style="float:left;width:1%;">&nbsp;</div>
          <div style="float:left;width:10%">
             <label style="font-weight: bold;">Zona</label>
-            <VUEInputZone v-model="CurrentRiga.Dati['ZONA'].Valore"/>
+            <VUEInputZone @input="CurrentRiga.OnChange()" v-model="CurrentRiga.Dati['ZONA'].Valore"/>
          </div> 
          <div style="float:left;width:1%;">&nbsp;</div>
          <div style="float:left;width:15%">
             <label style="font-weight: bold;">Nazione</label>
-            <VUEInputNazioni v-model="CurrentRiga.Dati['NAZIONE'].Valore" emptyElement="true"/>
+            <VUEInputNazioni @input="CurrentRiga.OnChange()" v-model="CurrentRiga.Dati['NAZIONE'].Valore" emptyElement="true"/>
          </div>
          
          <div style="float:left;width:1%;">&nbsp;</div>
@@ -198,7 +198,7 @@
       <div style="clear: both;height: 5px;">&nbsp;</div>
 
       <div v-if="!NascondiRecapiti" :style="{ width : RecapitiWidth + '%' }" style="float:left;">
-         <VUERecapiti :SchedaRecapiti="CurrentDataTableRecapiti"></VUERecapiti>
+         <VUERecapiti :SchedaRecapiti="CurrentDataTableRecapiti" @onChange="OnRecapitiChange"></VUERecapiti>
       </div>
 
       <div v-if="!NascondiRecapiti && !NascondiTimes" style="float:left;width:1%;">&nbsp;</div>
@@ -279,7 +279,13 @@ export default
   },
   methods: 
   {
-   
+    OnRecapitiChange()
+    {
+      console.log(this.CurrentDataTableRecapiti.DataTableTelefono);
+      
+      this.CurrentRiga.OnChange()
+    },
+
     OnClickEliminaRiga(Riga)
     {
        this.PopupDataRowFilialiClienti = true
