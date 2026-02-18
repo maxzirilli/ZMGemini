@@ -208,27 +208,29 @@
       </div>
       
       <div class="ZMSeparatoreFiltri">&nbsp;</div>
-      <div class="col-md-6" style="padding:0px">
+
+      <!-- <div class="col-md-6" style="padding:0px">
          <div class="ZMSeparatoreScheda">Altre info</div>
          <div class="ZMNuovaRigaScheda" style="padding-top:0px">
-            <!-- <div style="float:left;width:35%;">
+            <div style="float:left;width:35%;">
                <label style="font-weight: bold;">Giorni di chiusura</label>
                <input type="text" style="width:99%" class="form-control" v-model="CurrentRiga.Dati['CHIUSURA'].Valore" />
-            </div> -->
+            </div>
          </div>
-      </div>
-      <div class="col-md-6" style="padding:0px">
+      </div> -->
+      
+      <div class="col-md-12" style="padding:0px">
          <div class="ZMSeparatoreScheda">Note</div>
          <div class="ZMNuovaRigaScheda" style="padding-top:0px">
-            <div style="float:left;width:1%;">&nbsp;</div>
-            <div style="float:left;width:99%;">
-               <textarea style="resize:none;height:104px" class="form-control" v-model="CurrentRiga.Dati['NOTE'].Valore" />
+            <!-- <div style="float:left;width:1%;">&nbsp;</div> -->
+            <div style="float:left;width:100%;">
+               <textarea @input="CurrentRiga.OnChange()" style="resize:none;height:104px" class="form-control" v-model="CurrentRiga.Dati['NOTE'].Valore" />
             </div>
          </div>
       </div>
       
    </div>
-   <div style="clear: both;height: 2px;">&nbsp;</div>
+   <div style="clear: both;height: 5px;">&nbsp;</div>
 
 </div>
 </template>
