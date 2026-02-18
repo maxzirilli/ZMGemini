@@ -1,6 +1,7 @@
 <template>
 
-  <VUEModal v-if="PopupLsFatture" :Titolo="'Lista Fatture '" :Altezza="'500px'" :Larghezza="'600px'"
+  <VUEModal v-if="PopupLsFatture" :PathLogo="require('@/assets/images/LogoGemini2.png')"
+             :Programma="NomeProgramma" :Titolo="'Lista Fatture '" :Altezza="'500px'" :Larghezza="'600px'"
             @onClickChiudiModal="OnClickAnnullaFattura">
     <template v-slot:Body>
         <!-- <input type="checkbox" style="width:15px;float:left;margin-left:15px" class="input-sm form-control" v-model="CercaPerSottostringaCodice">
@@ -162,11 +163,11 @@
 
 <script>
 
-import { SystemInformation } from '@/SystemInformation.js'
+import { SystemInformation , NOME_PROGRAMMA } from '@/SystemInformation.js'
 import { TSchedaGenerica } from '../../../../../../../../../Librerie/VUE/ZSchedaGenerica.js'
 import VUEInputContoCorrente from '@/components/InputComponents/VUEInputContoCorrente.vue'
 import { TZDateFunct } from '../../../../../../../../../Librerie/VUE/ZDateFunct.js'
-import VUEModal from '@/components/Slots/VUEModal.vue'
+import VUEModal from '../../../../../../../../../Librerie/VUE/TemplateGestionale/VUEModal.vue'
 
 export class TSingolaRata
 {
@@ -614,7 +615,8 @@ export default {
       NumeroMassimoFatture : 100,
       ListaFatture         : [],
       RataSelezionata      : -1,
-      FiltroFatturaNumero  : null
+      FiltroFatturaNumero  : null,
+      NomeProgramma        : NOME_PROGRAMMA
     }
 
   },

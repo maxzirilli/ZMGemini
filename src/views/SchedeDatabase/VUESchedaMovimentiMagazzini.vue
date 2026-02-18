@@ -1,6 +1,7 @@
 <template>
  
-  <VUEModal v-if="PopupLsProdotti" :Titolo="'Lista Prodotti '" :Altezza="'500px'" :Larghezza="'1200px'"
+  <VUEModal v-if="PopupLsProdotti" :PathLogo="require('../../assets/images/LogoGemini2.png')"
+             :Programma="NomeProgramma" :Titolo="'Lista Prodotti '" :Altezza="'500px'" :Larghezza="'1200px'"
             @onClickChiudiModal="PopupLsProdotti=false">
     <template v-slot:Body>
           <input type="text" style="width:76%;float:left" class="input-sm form-control" placeholder="Cerca per descrizione" v-model="FiltroProdottiDescrizione">
@@ -145,10 +146,10 @@
 
 <script>
 import { TSchedaGenerica } from '../../../../../../../../Librerie/VUE/ZSchedaGenerica.js'
-import { SystemInformation, DASHBOARD_FILTER_TYPES } from '@/SystemInformation.js'
+import { SystemInformation, DASHBOARD_FILTER_TYPES, NOME_PROGRAMMA } from '@/SystemInformation.js'
 import { TZDateFunct } from '../../../../../../../../Librerie/VUE/ZDateFunct.js'
 import VUEInputMagazzini from '@/components/InputComponents/VUEInputMagazzini.vue';
-import VUEModal from '@/components/Slots/VUEModal.vue';
+import VUEModal from '../../../../../../../../Librerie/VUE/TemplateGestionale/VUEModal.vue';
 
 export class TSchedaMovimentiMagazzini extends TSchedaGenerica
 {
@@ -472,6 +473,7 @@ export default
               PopupLsProdotti            : false,
               NumeroMassimoProdotti      : 100,
               FiltroProdottiDescrizione  : '',
+              NomeProgramma              : NOME_PROGRAMMA
              };
   },
   props : ['SchedaMovimentiMagazzini'],

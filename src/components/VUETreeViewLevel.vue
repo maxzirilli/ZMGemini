@@ -24,7 +24,8 @@
   </VUEConfirm>
 
   <VUEModal v-if="PopupRevisione" :PathLogo="require('@/assets/images/LogoGemini2.png')"
-            :Programma="NomeProgramma" :Titolo="'Conferma'" :Altezza="'700px'" :Larghezza="'1500px'" 
+                                  :Programma="NomeProgramma" 
+                                  :Titolo="'Conferma'" :Altezza="'700px'" :Larghezza="'1500px'" 
             @onClickChiudiModal="AnnullaStampa" @onClickConfermaModal="ConfermaStampa">
             <template v-slot:Body>
               <div class="col-md-12">                
@@ -50,8 +51,6 @@
 
   <VUEModalInvioEmail v-if="Nodo != undefined"
                       :Titolo ="TitoloMail"
-                      :PathLogo="require('@/assets/images/LogoGemini2.png')"
-                      :Programma="NomeProgramma"
                       :AttivazionePopup="PopupInviaEmail" 
                       :OggettoEmail="OggettoEmail"
                       :ListaEmailCliente="Nodo.Data.ListaEmailCliente"

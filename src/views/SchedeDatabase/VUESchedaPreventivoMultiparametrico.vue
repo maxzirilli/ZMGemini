@@ -8,7 +8,8 @@
               @onClickChiudiPopup="AnnullaIncrementaRevisione">
   </VUEConfirm>
 
-  <VUEModal v-if="PopupRevisione" :Titolo="'Conferma'" :Altezza="'600px'" :Larghezza="'1500px'" 
+  <VUEModal v-if="PopupRevisione" :PathLogo="require('../../assets/images/LogoGemini2.png')"
+             :Programma="NomeProgramma" :Titolo="'Conferma'" :Altezza="'600px'" :Larghezza="'1500px'" 
             @onClickChiudiModal="PopupRevisione = false" @onClickConfermaModal="ConfermaPreventivoMultiParametrico">
             <template v-slot:Body>
               <div class="col-md-12">                
@@ -32,7 +33,8 @@
             </template>
   </VUEModal>
 
-  <VUEModal v-if="PopupVisualizzaRevisione" :Titolo="'Conferma'" :Altezza="'600px'" :Larghezza="'1500px'" 
+  <VUEModal v-if="PopupVisualizzaRevisione" :PathLogo="require('../../assets/images/LogoGemini2.png')"
+             :Programma="NomeProgramma" :Titolo="'Conferma'" :Altezza="'600px'" :Larghezza="'1500px'" 
             @onClickChiudiModal="PopupVisualizzaRevisione = false">
             <template v-slot:Body>
               <div class="col-md-12">                
@@ -55,7 +57,8 @@
             </template>
   </VUEModal>
 
-  <VUEModal v-if="SchedaPreventivo.PopupSchedaPreventivo" :Titolo="'Conferma'" :Altezza="'100px'" :Larghezza="'500px'"
+  <VUEModal v-if="SchedaPreventivo.PopupSchedaPreventivo" :PathLogo="require('../../assets/images/LogoGemini2.png')"
+             :Programma="NomeProgramma" :Titolo="'Conferma'" :Altezza="'100px'" :Larghezza="'500px'"
             @onClickChiudiModal="SchedaPreventivo.PopupSchedaPreventivo = false">
     <template v-slot:Body>
       <p>Vuoi generare la fattura?</p>
@@ -67,7 +70,8 @@
     </template>
   </VUEModal>
 
-  <VUEModal v-if="PopupGenerazioneConfermaDOrdine" :Titolo="'Scegli soluzioni'" :Altezza="'400px'" :Larghezza="'700px'"
+  <VUEModal v-if="PopupGenerazioneConfermaDOrdine" :PathLogo="require('../../assets/images/LogoGemini2.png')"
+             :Programma="NomeProgramma" :Titolo="'Scegli soluzioni'" :Altezza="'400px'" :Larghezza="'700px'"
             @onClickChiudiModal="OnClickAnnullaGenerazioneConfermaDOrdine">
     <template v-slot:Body>
 
@@ -102,7 +106,8 @@
                       @onClickConfermaModal="ConfermaInvia">
   </VUEModalInvioEmail>
 
-  <VUEModal v-if="SchedaPreventivo.ScegliAllegato" :Titolo="'Scegli allegato'" :Altezza="'500px'" :Larghezza="'1000px'" @onClickChiudiModal="AnnullaSceltaAllegati">
+  <VUEModal v-if="SchedaPreventivo.ScegliAllegato" :PathLogo="require('../../assets/images/LogoGemini2.png')"
+             :Programma="NomeProgramma" :Titolo="'Scegli allegato'" :Altezza="'500px'" :Larghezza="'1000px'" @onClickChiudiModal="AnnullaSceltaAllegati">
     <template v-slot:Body>
       <div class="row wrapper" style="padding-top:0px">
         <section class="panel panel-default" style="background-color:white;">
@@ -545,12 +550,7 @@
 <script>
 import VUEModalButtonRecapitiFiliali from '@/components/VUEModalButtonRecapitiFiliali';
 import { TSchedaGenerica } from '../../../../../../../../Librerie/VUE/ZSchedaGenerica.js'
-import { SystemInformation,  
-                             
-                            DASHBOARD_FILTER_TYPES, 
-                            DOCUMENTO_CORRELATO,
-                            RUOLI,
-                            NOME_PROGRAMMA } from '@/SystemInformation.js'
+import { SystemInformation,DASHBOARD_FILTER_TYPES, DOCUMENTO_CORRELATO,RUOLI,NOME_PROGRAMMA } from '@/SystemInformation.js'
 import VUEInputCondPagamenti from '@/components/InputComponents/VUEInputCondPagamenti.vue';
 import VUEInputClienti from '@/components/InputComponents/VUEInputClienti.vue';
 import VUEInputCodiceFiscale from '@/components/InputComponents/VUEInputCodiceFiscale.vue';
@@ -569,7 +569,7 @@ import VUEInputEsigibilitaIVA from '@/components/InputComponents/VUEInputEsigibi
 import { TZEconomicFunct, TZCheckDatiFiscali } from '../../../../../../../../Librerie/VUE/ZEconomicFunct.js';
 import VUEInputContoRibaCorrente from '@/components/InputComponents/VUEInputContoRibaCorrente.vue';
 // import VUELogDocumentiEconomici, { TSchedaLogDocumentiEconomici } from '@/views/SchedeDatabase/ComponentMultiScheda/VUELogDocumentiEconomici.vue';
-import VUEModal from '@/components/Slots/VUEModal.vue';
+import VUEModal from '../../../../../../../../Librerie/VUE/TemplateGestionale/VUEModal.vue';
 import VUEModalInvioEmail from '@/views/SchedeDatabase/ComponentMultiScheda/VUEModalInvioEmail.vue';
 
 export class TSchedaPreventivoMultiparametrico extends TSchedaGenerica

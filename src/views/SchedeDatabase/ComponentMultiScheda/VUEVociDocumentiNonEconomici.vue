@@ -159,7 +159,8 @@
       </div>
   </div>
   
-   <VUEModal v-if="PopupLsProdotti" :Titolo="'Lista prodotti'" :Altezza="'400px'" :Larghezza="'1000px'"
+   <VUEModal v-if="PopupLsProdotti" :PathLogo="require('@/assets/images/LogoGemini2.png')"
+             :Programma="NomeProgramma" :Titolo="'Lista prodotti'" :Altezza="'400px'" :Larghezza="'1000px'"
             @onClickChiudiModal="PopupLsProdotti = false">
       <template v-slot:Body>
       <div style="width:1%;float:left">&nbsp;</div>
@@ -222,7 +223,8 @@
    </VUEModal>
 
 
-   <VUEModal v-if="PopupLsPreventivi" :Titolo="'Lista conferme d\'ordine'" :Altezza="'400px'" :Larghezza="'1000px'"
+   <VUEModal v-if="PopupLsPreventivi" :PathLogo="require('@/assets/images/LogoGemini2.png')"
+             :Programma="NomeProgramma" :Titolo="'Lista conferme d\'ordine'" :Altezza="'400px'" :Larghezza="'1000px'"
             @onClickChiudiModal="PopupLsPreventivi = false">
       <template v-slot:Body>
             <div style="width:45%;float:left">
@@ -287,9 +289,9 @@
 
 <script>
 import VUEInputUdm from '@/components/InputComponents/VUEInputUdm.vue'
-import { SystemInformation, TIPO_SCONTO } from '@/SystemInformation.js'
+import { SystemInformation, TIPO_SCONTO, NOME_PROGRAMMA} from '@/SystemInformation.js'
 import { TZDateFunct } from '../../../../../../../../../Librerie/VUE/ZDateFunct.js'
-import VUEModal from '@/components/Slots/VUEModal.vue';
+import VUEModal from '../../../../../../../../../Librerie/VUE/TemplateGestionale/VUEModal.vue'
 import { TSchedaGenerica } from '../../../../../../../../../Librerie/VUE/ZSchedaGenerica.js'
 
 
@@ -529,7 +531,8 @@ export default {
               NumeroMassimoProdotti       : 100,
               VisibilitaListinoPrezziCliente : SystemInformation.AccessRights.VisibilitaListinoPrezziCliente(),
               DallaData                   : TZDateFunct.DateInHTMLInputFormat(new Date('January 01,' + (new Date().getFullYear()))),
-              AllaData                    : TZDateFunct.DateInHTMLInputFormat(new Date()),                       
+              AllaData                    : TZDateFunct.DateInHTMLInputFormat(new Date()),  
+              NomeProgramma               : NOME_PROGRAMMA                     
     }
   },
 

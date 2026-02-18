@@ -6,18 +6,6 @@
                       @onClickConfermaModal="ConfermaInvia">
   </VUEModalInvioEmail>
 
-  <!-- <VUEModal v-if="SchedaPreventivo.PopupSchedaPreventivo" :Titolo="'Conferma'" :Altezza="'100px'" :Larghezza="'500px'"
-            @onClickChiudiModal="SchedaPreventivo.PopupSchedaPreventivo = false">
-    <template v-slot:Body>
-      <p>Vuoi generare il?</p>
-    </template>
-    <template v-slot:Footer>
-      <button type="button" class="btn btn-danger" style="float:right;margin-left:5px;font-weight:bold;width:20%" @click="SchedaPreventivo.AnnullaGenerazione()" data-dismiss="modal">No</button>
-      <button type="button" class="btn btn-warning" style="float:right;font-weight:bold;width:30%" @click="SchedaPreventivo.ConfermaGenerazioneDaBanco()" data-dismiss="modal">Sì, ma da banco</button>
-      <button type="button" class="btn btn-success" style="float:right;font-weight:bold;width:20%" @click="SchedaPreventivo.ConfermaGenerazione()" data-dismiss="modal">Sì</button>
-    </template>
-  </VUEModal> POPUP PER LA CREAZIONE DI UNA FATTURA, ORA SPOSTATO IN DASHBOARD   -->  
-
  <div class="ZMCorpoSchedeDati">
    <header class="panel-heading bg-light" >
     <ul class="nav nav-tabs nav-justified">
@@ -410,8 +398,6 @@
 <script>
 import VUEModalButtonRecapitiFiliali from '@/components/VUEModalButtonRecapitiFiliali';
 import { TSchedaGenerica } from '../../../../../../../../Librerie/VUE/ZSchedaGenerica.js'
-//import VUEDataTable from '@/components/VUEDataTable.vue'
-//import { TZDataTable } from '@/../../../../../../Librerie/VUE/ZDataTable.js'
 import { SystemInformation, FATT_ELE_ESIGIBILITA_IVA, 
                             DASHBOARD_FILTER_TYPES, 
                             DOCUMENTO_CORRELATO,

@@ -26,7 +26,8 @@
  <VUEConfirm :Popup="PopupCorreggiFattura"  :PathLogo="require('../../assets/images/LogoGemini2.png')"
              :Programma="NomeProgramma" :Richiesta="'Vuoi correggere la fattura?'" @onClickConfermaPopup="ConfermaCorrezione" @onClickChiudiPopup="AnnullaPopup">
  </VUEConfirm>
- <VUEModal v-if="PopupScegliFileXML" :Titolo="'Lista file .xml'" :Altezza="'20%'" :Larghezza="'50%'"
+ <VUEModal v-if="PopupScegliFileXML" :PathLogo="require('../../assets/images/LogoGemini2.png')"
+             :Programma="NomeProgramma" :Titolo="'Lista file .xml'" :Altezza="'20%'" :Larghezza="'50%'"
           @onClickChiudiModal="OnClickChiudiPopupScegliFile">
     <template v-slot:Body>
           <div class="row wrapper" style="height:100%">
@@ -61,7 +62,8 @@
     </template>
  </VUEModal>
 
- <VUEModal v-if="PopupNotadiCredito" :Titolo=" 'Nota di credito' " :Altezza="'550px'" :Larghezza="'1250px'"
+ <VUEModal v-if="PopupNotadiCredito" :PathLogo="require('../../assets/images/LogoGemini2.png')"
+             :Programma="NomeProgramma" :Titolo=" 'Nota di credito' " :Altezza="'550px'" :Larghezza="'1250px'"
               @onClickChiudiModal="PopupNotadiCredito = false">
       <template v-slot:Body>
         <div class="col-md-12" style="padding-left:15px;padding-right:15px;padding-top:1px;padding-bottom:1px"> 
@@ -92,7 +94,8 @@
    <div v-if="Tabs.ActiveTab == 'Fattura'">
     <div v-if="VisualizzaAnticipiFattura" style="background-color: #ABF7B1; border: 2px solid green; border-radius: 2px; padding: 15px; margin: 5px; font-weight: bold; display: flex; align-items: center; justify-content: space-between; width: 100%">
       <div style="margin: auto 0">Hai delle fatture da scalare</div>
-      <VUEModal v-if="PopupFattureAnticipo" :Titolo="'Fatture da scalare'" :Altezza="'500px'" :Larghezza="'1200px'"
+      <VUEModal v-if="PopupFattureAnticipo" :PathLogo="require('../../assets/images/LogoGemini2.png')"
+             :Programma="NomeProgramma" :Titolo="'Fatture da scalare'" :Altezza="'500px'" :Larghezza="'1200px'"
       @onClickChiudiModal="OnClickAnnullaFattureDaScalare">
         <template v-slot:Body>
           <div class="row wrapper">
@@ -788,7 +791,7 @@ import VUELogDocumentiEconomici, { TSchedaLogDocumentiEconomici } from '@/views/
 import { TZStringConvFunct } from '../../../../../../../../Librerie/VUE/ZStringConvFunct.js'
 import VUEConfirm from '../../../../../../../../Librerie/VUE/TemplateGestionale/VUEConfirm.vue';
 import { saveAs } from 'file-saver';
-import VUEModal from '@/components/Slots/VUEModal.vue';
+import VUEModal from '../../../../../../../../Librerie/VUE/TemplateGestionale/VUEModal.vue';
 import VUEInputContoCorrente from '@/components/InputComponents/VUEInputContoCorrente.vue'
 import VUESchedaNotaDiCredito, { TSchedaNotaDiCredito } from '@/views/SchedeDatabase/VUESchedaNotaDiCredito.vue'
 import VUEModalCaricamentoDati from '../../../../../../../../Librerie/VUE/TemplateGestionale/VUEModalCaricamentoDati.vue';

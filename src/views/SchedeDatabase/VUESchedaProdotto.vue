@@ -1,5 +1,6 @@
 <template>
- <VUEModal v-if="PopupCancellaProdottiSemplici" :Titolo="'Conferma'" :Altezza="'100px'" :Larghezza="'500px'"
+ <VUEModal v-if="PopupCancellaProdottiSemplici" :PathLogo="require('../../assets/images/LogoGemini2.png')"
+             :Programma="NomeProgramma" :Titolo="'Conferma'" :Altezza="'100px'" :Larghezza="'500px'"
           @onClickChiudiModal="OnClickAnnullaCancellaProdottiSemplici">
     <template v-slot:Body>
       <div class="form-row">
@@ -176,13 +177,13 @@
 
 <script>
  import { TSchedaGenerica } from '../../../../../../../../Librerie/VUE/ZSchedaGenerica.js'
- import { SystemInformation, DASHBOARD_FILTER_TYPES} from '@/SystemInformation.js' //, RUOLI 
+ import { SystemInformation, DASHBOARD_FILTER_TYPES, NOME_PROGRAMMA} from '@/SystemInformation.js' //, RUOLI 
  import VUEInputUdm from '@/components/InputComponents/VUEInputUdm.vue'
  import VUELogProdotti, { TSchedaLogProdotti } from '@/views/SchedeDatabase/ComponentMultiScheda/VUELogProdotti.vue';
  import { TZDataTable,TZDTableColumnType } from '../../../../../../../../Librerie/VUE/ZDataTable2.js'
  import VUEDataTable from '../../../../../../../../Librerie/VUE/TemplateGestionale/VUEDataTable2.vue';
  import { TZDateFunct } from '../../../../../../../../Librerie/VUE/ZDateFunct.js'
- import VUEModal from '@/components/Slots/VUEModal.vue';
+ import VUEModal from '../../../../../../../../Librerie/VUE/TemplateGestionale/VUEModal.vue';
  
 
  export class TSchedaProdotto extends TSchedaGenerica
@@ -600,6 +601,7 @@
     {
       return { 
                ListaSettori         : [],
+               NomeProgramma        : NOME_PROGRAMMA,
                PopupCancellaProdottiSemplici : false,
                Tabs                 : {
                                        ActiveTab    : 'Generale',

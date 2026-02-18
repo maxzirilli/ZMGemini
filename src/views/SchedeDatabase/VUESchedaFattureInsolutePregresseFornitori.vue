@@ -1,5 +1,6 @@
 <template>
-<!-- <VUEModal v-if="PopupSceltaFattureInsolute" 
+<!-- <VUEModal v-if="PopupSceltaFattureInsolute" :PathLogo="require('../../assets/images/LogoGemini2.png')"
+             :Programma="NomeProgramma"
           :Titolo="'Scegli le fatture da incassare'" 
           :Altezza="'300px'" 
           :Larghezza="'600px'"
@@ -81,7 +82,7 @@ import { TZDataTable,TZDTableColumnType } from '../../../../../../../../Librerie
 import VUEDataTable from '../../../../../../../../Librerie/VUE/TemplateGestionale/VUEDataTable2.vue';
 import { TSchedaGenerica } from '../../../../../../../../Librerie/VUE/ZSchedaGenerica.js'
 import { SystemInformation, RUOLI } from '@/SystemInformation';
-// import VUEModal from '@/components/Slots/VUEModal.vue';
+// import VUEModal from '../../../../../../../../Librerie/VUE/TemplateGestionale/VUEModal.vue';
 import { TZDateFunct } from '../../../../../../../../Librerie/VUE/ZDateFunct.js'
 
 export class TSchedaFattureInsolutePregresseFornitori extends TSchedaGenerica

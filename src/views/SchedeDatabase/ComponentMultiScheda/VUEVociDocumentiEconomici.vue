@@ -50,7 +50,8 @@
       </button>
     </div>
   </div>
-  <VUEModal v-if="AssociaSconto" :Titolo="'Inserire sconto'" :Altezza="'100px'" :Larghezza="'400px'"
+  <VUEModal v-if="AssociaSconto" :PathLogo="require('@/assets/images/LogoGemini2.png')"
+             :Programma="NomeProgramma" :Titolo="'Inserire sconto'" :Altezza="'100px'" :Larghezza="'400px'"
             @onClickChiudiModal="OnClickAssegnaSconto">
     <template v-slot:Body>
       <div class="form-row">
@@ -247,7 +248,8 @@
         </div>
       </div>
   </div>
-  <VUEModal v-if="PopupLsProdotti" :Titolo="'Lista Prodotti '" :Altezza="'500px'" :Larghezza="'1200px'"
+  <VUEModal v-if="PopupLsProdotti" :PathLogo="require('@/assets/images/LogoGemini2.png')"
+             :Programma="NomeProgramma" :Titolo="'Lista Prodotti '" :Altezza="'500px'" :Larghezza="'1200px'"
             @onClickChiudiModal="PopupLsProdotti=false">
     <template v-slot:Body>
         <input type="checkbox" style="width:15px;float:left;margin-left:15px" class="input-sm form-control" v-model="CercaPerSottostringaCodice">
@@ -318,7 +320,8 @@
     </template>
   </VUEModal>  
 
-  <VUEModal v-if="PopupNaturaPagamento.Visibile" :Titolo="'Natura Pagamento'" :Altezza="'500px'" :Larghezza="'1200px'" @onClickChiudiModal="PopupNaturaPagamento.Visibile=false">
+  <VUEModal v-if="PopupNaturaPagamento.Visibile" :PathLogo="require('@/assets/images/LogoGemini2.png')"
+             :Programma="NomeProgramma" :Titolo="'Natura Pagamento'" :Altezza="'500px'" :Larghezza="'1200px'" @onClickChiudiModal="PopupNaturaPagamento.Visibile=false">
     <template v-slot:Body>
       <table class="table table-striped b-t b-light" style="width:100%;height: 60%">
         <thead>  
@@ -356,7 +359,8 @@
 
   </VUEModal>
 
-  <VUEModal v-if="PopupLsVociPreventiviPredefinite" :Titolo="'Voci preventivi predefinite'" :Altezza="'500px'" :Larghezza="'1200px'"
+  <VUEModal v-if="PopupLsVociPreventiviPredefinite" :PathLogo="require('@/assets/images/LogoGemini2.png')"
+             :Programma="NomeProgramma" :Titolo="'Voci preventivi predefinite'" :Altezza="'500px'" :Larghezza="'1200px'"
             @onClickChiudiModal="OnClickAnnullaVociPreventiviPredefinite">
     <template v-slot:Body>
       <div style="clear:both;width:1%;">&nbsp;</div>
@@ -417,7 +421,8 @@
   </VUEModal>
 
 
-    <VUEModal v-if="PopupLsPreventivi" :Titolo="'Lista conferme d\'ordine '" :Altezza="'400px'" :Larghezza="'1000px'"
+    <VUEModal v-if="PopupLsPreventivi" :PathLogo="require('@/assets/images/LogoGemini2.png')"
+             :Programma="NomeProgramma" :Titolo="'Lista conferme d\'ordine '" :Altezza="'400px'" :Larghezza="'1000px'"
             @onClickChiudiModal="PopupLsPreventivi = false">
     <template v-slot:Body>
           <div style="width:45%;float:left">
@@ -479,7 +484,8 @@
     </template>
   </VUEModal>
 
-    <VUEModal v-if="PopupLsDDT" :Titolo="'Lista DDT'" :Altezza="'400px'" :Larghezza="'1000px'"
+    <VUEModal v-if="PopupLsDDT" :PathLogo="require('@/assets/images/LogoGemini2.png')"
+             :Programma="NomeProgramma" :Titolo="'Lista DDT'" :Altezza="'400px'" :Larghezza="'1000px'"
             @onClickChiudiModal="PopupLsDDT = false">
     <template v-slot:Body>
           <div style="width:45%;float:left">
@@ -541,7 +547,8 @@
     </template>
   </VUEModal>
 
-  <VUEModal v-if="PopupLsFatture" :Titolo="'Lista fatture'" :Altezza="'400px'" :Larghezza="'1000px'"
+  <VUEModal v-if="PopupLsFatture" :PathLogo="require('@/assets/images/LogoGemini2.png')"
+             :Programma="NomeProgramma" :Titolo="'Lista fatture'" :Altezza="'400px'" :Larghezza="'1000px'"
             @onClickChiudiModal="PopupLsFatture = false">
     <template v-slot:Body>
           <div style="width:45%;float:left">
@@ -614,7 +621,7 @@ import VUEInputUdm from '@/components/InputComponents/VUEInputUdm.vue'
 import { TZEconomicFunct } from '../../../../../../../../../Librerie/VUE/ZEconomicFunct.js';
 import { TZDateFunct } from '../../../../../../../../../Librerie/VUE/ZDateFunct.js'
 import { TSchedaGenerica } from '../../../../../../../../../Librerie/VUE/ZSchedaGenerica.js'
-import VUEModal from '@/components/Slots/VUEModal.vue';
+import VUEModal from '../../../../../../../../../Librerie/VUE/TemplateGestionale/VUEModal.vue';
 import VUEConfirm from '../../../../../../../../../Librerie/VUE/TemplateGestionale/VUEConfirm.vue';
 import { TZFatturaElettronica, TZFattElettronicaNaturaPagamenti } from '../../../../../../../../../Librerie/VUE/ZFatturaElettronica.js';
 

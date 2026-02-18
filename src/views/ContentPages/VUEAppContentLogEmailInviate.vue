@@ -1,5 +1,6 @@
 <template>
-  <VUEModal v-if="VisualizzaPopupListaAllegati" :Titolo="'Lista allegati'" :Altezza="'400px'" :Larghezza="'750px'"
+  <VUEModal v-if="VisualizzaPopupListaAllegati" :PathLogo="require('../../assets/images/LogoGemini2.png')"
+            :Programma="NomeProgramma" :Titolo="'Lista allegati'" :Altezza="'400px'" :Larghezza="'750px'"
             @onClickChiudiModal="VisualizzaPopupListaAllegati = false">
     <template v-slot:Body>
     <div class="form-row">
@@ -40,7 +41,8 @@
     </template>
   </VUEModal>
 
-  <VUEModal v-if="VisualizzaPopupErrore" :Titolo="'Errore durante l\'invio email'" :Altezza="'300px'" :Larghezza="'750px'"
+  <VUEModal v-if="VisualizzaPopupErrore" :PathLogo="require('../../assets/images/LogoGemini2.png')"
+            :Programma="NomeProgramma" :Titolo="'Errore durante l\'invio email'" :Altezza="'300px'" :Larghezza="'750px'"
             @onClickChiudiModal="OnClickChiudiPopupErrore" @onClickConfermaModal="OnClickChiudiPopupErrore">
     <template v-slot:Body>
     <div class="form-row">
@@ -55,7 +57,8 @@
     </template>
   </VUEModal>
 
-  <VUEModal v-if="VisualizzaPopupCorpoEmail" :Titolo="'Corpo Email'" :Altezza="'800px'" :Larghezza="'1200px'"
+  <VUEModal v-if="VisualizzaPopupCorpoEmail" :PathLogo="require('../../assets/images/LogoGemini2.png')"
+            :Programma="NomeProgramma" :Titolo="'Corpo Email'" :Altezza="'800px'" :Larghezza="'1200px'"
             @onClickChiudiModal="OnClickChiudiPopupCorpoEmail">
           <template v-slot:Body>
             <div v-html="CorpoEmail"></div>
@@ -65,7 +68,8 @@
     </template>
   </VUEModal>
 
-  <VUEModal v-if="VisualizzaPopupInoltro" :Titolo="'Inoltro email'" :Altezza="'550px'" :Larghezza="'60%'"
+  <VUEModal v-if="VisualizzaPopupInoltro" :PathLogo="require('../../assets/images/LogoGemini2.png')"
+            :Programma="NomeProgramma" :Titolo="'Inoltro email'" :Altezza="'550px'" :Larghezza="'60%'"
             @onClickChiudiModal="OnClickChiudiPopupInoltroEmail">
           <template v-slot:Body>
 
@@ -288,10 +292,10 @@
 </template>
 
 <script>
-import { SystemInformation, TIPOLOGIA_DOCUMENTI } from '@/SystemInformation';
+import { SystemInformation, TIPOLOGIA_DOCUMENTI, NOME_PROGRAMMA} from '@/SystemInformation';
 import { TZDateFunct } from '../../../../../../../../Librerie/VUE/ZDateFunct.js'
 import { TSchedaGenerica } from '../../../../../../../../Librerie/VUE/ZSchedaGenerica.js';
-import VUEModal from '@/components/Slots/VUEModal.vue';
+import VUEModal from '../../../../../../../../Librerie/VUE/TemplateGestionale/VUEModal.vue';
 
 export default
 {
@@ -304,6 +308,7 @@ export default
               VisualizzaPopupCorpoEmail: false,
               VisualizzaPopupInoltro   : false,
               ErroreVisualizzato       : '',
+              NomeProgramma            : NOME_PROGRAMMA,
               Filtro                   : {
                                           Email              : '',
                                           CorpoEmail         : '',

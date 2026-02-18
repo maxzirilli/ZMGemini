@@ -97,7 +97,7 @@
 <script>
 import { SystemInformation, RUOLI, NOME_PROGRAMMA } from '@/SystemInformation.js'
 import VUEConfirm from '../../../../../../../../Librerie/VUE/TemplateGestionale/VUEConfirm.vue';
-import VUEModal from '@/components/Slots/VUEModal.vue';
+import VUEModal from '../../../../../../../../Librerie/VUE/TemplateGestionale/VUEModal.vue';
 
 export default {
     name:'app',

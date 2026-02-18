@@ -1,6 +1,7 @@
 <template>
 
-<VUEModal v-if="PopupDataContoFornitore" :Titolo="'Inserire data per conto Fornitore'" :Altezza="'100px'" :Larghezza="'520px'"
+<VUEModal v-if="PopupDataContoFornitore" :PathLogo="require('../../assets/images/LogoGemini2.png')"
+             :Programma="NomeProgramma" :Titolo="'Inserire data per conto Fornitore'" :Altezza="'100px'" :Larghezza="'520px'"
           @onClickChiudiModal="PopupDataContoFornitore = false">
     <template v-slot:Body>
       <div class="form-row">
@@ -23,7 +24,8 @@
     </template>
 </VUEModal>
 
-<VUEModal v-if="PopupDocumento" :Titolo="'Visualizzazione documento'" :Altezza="'650px'" :Larghezza="'1500px'" 
+<VUEModal v-if="PopupDocumento" :PathLogo="require('../../assets/images/LogoGemini2.png')"
+             :Programma="NomeProgramma" :Titolo="'Visualizzazione documento'" :Altezza="'650px'" :Larghezza="'1500px'" 
           @onClickChiudiModal="ChiudiPopupDocumento">
     <template v-slot:Body>
       <div class="col-md-12"> 
@@ -316,6 +318,7 @@
                 </div>
                 <table style="margin-top: 1%;" class="table table-striped b-t b-light">
                     <thead>
+                      <tr>
                         <th style="width: 5%; text-align: left;">Data</th>
                         <th style="width: 5%; text-align: left;">Numero</th>
                         <th style="width: 20%; text-align: left;">Operazione</th>
@@ -324,6 +327,7 @@
                         <th style="width: 10%; text-align: left;">Avere</th>
                         <th style="width: 10%; text-align: left;">Saldo</th>
                         <th style="width: 5%; text-align: left;">Info</th>
+                      </tr>
                     </thead>
                      <tbody>
                           <tr v-for="Documento in SchedaFornitore.SchedaStatoContabile.ListaDocumenti" :key="Documento.CHIAVE">
@@ -376,11 +380,11 @@
 
 
 <script>
-import VUEModal from '@/components/Slots/VUEModal.vue';
+import VUEModal from '../../../../../../../../Librerie/VUE/TemplateGestionale/VUEModal.vue';
 import { TZDateFunct } from '../../../../../../../../Librerie/VUE/ZDateFunct.js'
 import VUEDataTable from '../../../../../../../../Librerie/VUE/TemplateGestionale/VUEDataTable2.vue';
 import { TZDataTable,TZDTableColumnType } from '../../../../../../../../Librerie/VUE/ZDataTable2.js'
-import { SystemInformation, DASHBOARD_FILTER_TYPES, TIPO_AUTOFATTURA, RUOLI } from '@/SystemInformation.js'
+import { SystemInformation, DASHBOARD_FILTER_TYPES, TIPO_AUTOFATTURA, RUOLI,NOME_PROGRAMMA } from '@/SystemInformation.js'
 import { TSchedaGenerica } from '../../../../../../../../Librerie/VUE/ZSchedaGenerica.js'
 import VUEInputCAP from '@/components/InputComponents/VUEInputCAP.vue';
 import VUEInputProvince from '@/components/InputComponents/VUEInputProvince.vue';
@@ -873,7 +877,8 @@ export default
             DocumentoSelezionato     : new TSchedaGenerica(SystemInformation.AdvQuery),
             PopupDocumento           : false,
             TipoDocumento            : '',
-            TestoPopupDocumento      : ''
+            TestoPopupDocumento      : '',
+            NomeProgramma            : NOME_PROGRAMMA
           };
   },
   props : ['SchedaFornitore'],

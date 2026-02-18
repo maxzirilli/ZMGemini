@@ -30,7 +30,8 @@
   </div>
 
 
-  <VUEModal v-if="PopupLsProdotti" :Titolo="'Lista Prodotti '" :Altezza="'500px'" :Larghezza="'1200px'"
+  <VUEModal v-if="PopupLsProdotti" :PathLogo="require('@/assets/images/LogoGemini2.png')"
+             :Programma="NomeProgramma" :Titolo="'Lista Prodotti '" :Altezza="'500px'" :Larghezza="'1200px'"
             @onClickChiudiModal="OnClickAnnullaProdotti">
     <template v-slot:Body>
         <input type="checkbox" style="width:15px;float:left;margin-left:15px" class="input-sm form-control" v-model="CercaPerSottostringaCodice">
@@ -102,7 +103,8 @@
   </VUEModal>
 
 
-  <VUEModal v-if="PopupNaturaPagamento.Visibile" :Titolo="'Natura Pagamento'" :Altezza="'500px'" :Larghezza="'1200px'"
+  <VUEModal v-if="PopupNaturaPagamento.Visibile" :PathLogo="require('@/assets/images/LogoGemini2.png')"
+             :Programma="NomeProgramma" :Titolo="'Natura Pagamento'" :Altezza="'500px'" :Larghezza="'1200px'"
             @onClickChiudiModal="PopupNaturaPagamento.Visibile ">
             <!-- = false -->
     <template v-slot:Body>
@@ -140,7 +142,8 @@
     </template>
   </VUEModal>
 
-  <VUEModal v-if="PopupLsVociPreventiviPredefinite" :Titolo="'Voci preventivi predefinite'" :Altezza="'500px'" :Larghezza="'1200px'"
+  <VUEModal v-if="PopupLsVociPreventiviPredefinite" :PathLogo="require('@/assets/images/LogoGemini2.png')"
+             :Programma="NomeProgramma" :Titolo="'Voci preventivi predefinite'" :Altezza="'500px'" :Larghezza="'1200px'"
             @onClickChiudiModal="OnClickAnnullaVociPreventiviPredefinite">
     <template v-slot:Body>
       <div style="clear:both;width:1%;">&nbsp;</div>
@@ -340,12 +343,12 @@
 </template>
 
 <script>
-import { SystemInformation, PAGAMENTO_BOLLO, TIPO_SCONTO } from '@/SystemInformation.js'
+import { SystemInformation, PAGAMENTO_BOLLO, TIPO_SCONTO, NOME_PROGRAMMA } from '@/SystemInformation.js'
 import VUEInputUdm from '@/components/InputComponents/VUEInputUdm.vue'
 import { TZEconomicFunct } from '../../../../../../../../../Librerie/VUE/ZEconomicFunct.js';
 import { TZDateFunct } from '../../../../../../../../../Librerie/VUE/ZDateFunct.js'
 import { TSchedaGenerica } from '../../../../../../../../../Librerie/VUE/ZSchedaGenerica.js'
-import VUEModal from '@/components/Slots/VUEModal.vue';
+import VUEModal from '../../../../../../../../../Librerie/VUE/TemplateGestionale/VUEModal.vue';
 import { TZFatturaElettronica, TZFattElettronicaNaturaPagamenti } from '../../../../../../../../../Librerie/VUE/ZFatturaElettronica.js';
 
 const DEFAULT_NATURA_PAGAMENTO = TZFattElettronicaNaturaPagamenti.natInversioneContabileSubappaltoEdile
@@ -1173,7 +1176,8 @@ export default {
                                                     clientY: undefined,
                                                     movementX: 0,
                                                     movementY: 0
-                                                  }
+                                                  },
+              NomeProgramma                     : NOME_PROGRAMMA
     }
   },
 

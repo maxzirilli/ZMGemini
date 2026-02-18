@@ -7,7 +7,9 @@
         <header class="panel-heading text-center">
           <strong>Sign in</strong>
         </header>
-         <VUEModal v-if="RecuperoPsw" :Titolo="'Recupero Password'" :Altezza="'200px'" :Larghezza="'800px'"
+         <VUEModal v-if="RecuperoPsw" :PathLogo="require('@/assets/images/LogoGemini2.png')"
+                                      :Programma="NomeProgramma"
+                                      :Titolo="'Recupero Password'" :Altezza="'200px'" :Larghezza="'800px'"
                    @onClickChiudiModal="AnnullaRecupero">
            <template v-slot:Body>
               <div class="col-md-12">                
@@ -53,8 +55,8 @@
 
 <script>
 import VUEHeader from '@/components/FrameComponentsMultiPurpose/VUEHeader.vue';
-import { LOCALSTORAGE, SystemInformation} from '../SystemInformation.js'
-import VUEModal from '../components/Slots/VUEModal.vue';
+import { LOCALSTORAGE, SystemInformation, NOME_PROGRAMMA} from '../SystemInformation.js'
+import VUEModal from '../../../../../../../Librerie/VUE/TemplateGestionale/VUEModal.vue';
 
 export default 
 {
@@ -62,12 +64,13 @@ export default
     data() 
     {
      return { 
-               UserName    : '',
-               Password    : '',
+               UserName      : '',
+               Password      : '',
               //  PartitaIVA  : '',
-               Ricordami   : true,
-               RecuperoPsw : false,
-               NomeUtente  : ''
+               Ricordami     : true,
+               RecuperoPsw   : false,
+               NomeUtente    : '',
+               NomeProgramma : NOME_PROGRAMMA
             };
     },
     components: 

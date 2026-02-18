@@ -289,7 +289,7 @@
             },
             "ForeignKeys": [
                 {
-                    "Nome": "FK1_ALLEGATI_CLIENTI_ID_CLIENTE",
+                    "Nome": "FK_allegati_clienti_anagrafiche",
                     "Campo": "ID_CLIENTE",
                     "RefTable": "anagrafiche",
                     "RefField": "CHIAVE"
@@ -888,7 +888,7 @@
             "Triggers": []
         },
         {
-            "Nome": "amministratori",
+            "Nome": "anagrafiche",
             "Campi": [
                 {
                     "Nome": "CHIAVE",
@@ -909,12 +909,57 @@
                     "SQLAfterAddedColumn": null
                 },
                 {
+                    "Nome": "CODICE",
+                    "IsNullable": true,
+                    "DataType": "varchar(10)",
+                    "AutoIncrement": false,
+                    "Commento": "",
+                    "DefaultValue": "",
+                    "SQLAfterAddedColumn": null
+                },
+                {
+                    "Nome": "ENTE_PUBBLICO",
+                    "IsNullable": true,
+                    "DataType": "enum('T','F')",
+                    "AutoIncrement": false,
+                    "Commento": "",
+                    "DefaultValue": null,
+                    "SQLAfterAddedColumn": null
+                },
+                {
                     "Nome": "COD_ENTE_SDI",
                     "IsNullable": true,
                     "DataType": "varchar(10)",
                     "AutoIncrement": false,
                     "Commento": "",
                     "DefaultValue": "0",
+                    "SQLAfterAddedColumn": null
+                },
+                {
+                    "Nome": "PARTITA_IVA",
+                    "IsNullable": true,
+                    "DataType": "varchar(255)",
+                    "AutoIncrement": false,
+                    "Commento": "",
+                    "DefaultValue": null,
+                    "SQLAfterAddedColumn": null
+                },
+                {
+                    "Nome": "NAZIONE_EM_PIVA",
+                    "IsNullable": true,
+                    "DataType": "int",
+                    "AutoIncrement": false,
+                    "Commento": "",
+                    "DefaultValue": null,
+                    "SQLAfterAddedColumn": null
+                },
+                {
+                    "Nome": "CODICE_FISCALE",
+                    "IsNullable": true,
+                    "DataType": "varchar(255)",
+                    "AutoIncrement": false,
+                    "Commento": "",
+                    "DefaultValue": null,
                     "SQLAfterAddedColumn": null
                 },
                 {
@@ -936,6 +981,15 @@
                     "SQLAfterAddedColumn": null
                 },
                 {
+                    "Nome": "PROVINCIA_FATTURAZIONE",
+                    "IsNullable": true,
+                    "DataType": "int",
+                    "AutoIncrement": false,
+                    "Commento": "",
+                    "DefaultValue": null,
+                    "SQLAfterAddedColumn": null
+                },
+                {
                     "Nome": "COMUNE_FATTURAZIONE",
                     "IsNullable": true,
                     "DataType": "varchar(255)",
@@ -947,43 +1001,7 @@
                 {
                     "Nome": "CAP_FATTURAZIONE",
                     "IsNullable": true,
-                    "DataType": "varchar(255)",
-                    "AutoIncrement": false,
-                    "Commento": "",
-                    "DefaultValue": null,
-                    "SQLAfterAddedColumn": null
-                },
-                {
-                    "Nome": "NAZIONE_FATTURAZIONE",
-                    "IsNullable": true,
-                    "DataType": "int",
-                    "AutoIncrement": false,
-                    "Commento": "",
-                    "DefaultValue": null,
-                    "SQLAfterAddedColumn": null
-                },
-                {
-                    "Nome": "PROVINCIA_FATTURAZIONE",
-                    "IsNullable": true,
-                    "DataType": "int",
-                    "AutoIncrement": false,
-                    "Commento": "",
-                    "DefaultValue": null,
-                    "SQLAfterAddedColumn": null
-                },
-                {
-                    "Nome": "PEC",
-                    "IsNullable": true,
-                    "DataType": "varchar(255)",
-                    "AutoIncrement": false,
-                    "Commento": "",
-                    "DefaultValue": null,
-                    "SQLAfterAddedColumn": null
-                },
-                {
-                    "Nome": "COD_UFFICIO_DEST",
-                    "IsNullable": true,
-                    "DataType": "varchar(6)",
+                    "DataType": "varchar(5)",
                     "AutoIncrement": false,
                     "Commento": "",
                     "DefaultValue": null,
@@ -999,124 +1017,34 @@
                     "SQLAfterAddedColumn": null
                 },
                 {
-                    "Nome": "NOTE",
+                    "Nome": "PRESSO",
                     "IsNullable": true,
                     "DataType": "varchar(255)",
                     "AutoIncrement": false,
                     "Commento": "",
-                    "DefaultValue": "",
-                    "SQLAfterAddedColumn": null
-                },
-                {
-                    "Nome": "DALLE_ORE",
-                    "IsNullable": true,
-                    "DataType": "time",
-                    "AutoIncrement": false,
-                    "Commento": "",
                     "DefaultValue": null,
                     "SQLAfterAddedColumn": null
                 },
                 {
-                    "Nome": "ALLE_ORE",
-                    "IsNullable": true,
-                    "DataType": "time",
-                    "AutoIncrement": false,
-                    "Commento": "",
-                    "DefaultValue": null,
-                    "SQLAfterAddedColumn": null
-                },
-                {
-                    "Nome": "DALLE_ORE2",
-                    "IsNullable": true,
-                    "DataType": "time",
-                    "AutoIncrement": false,
-                    "Commento": "",
-                    "DefaultValue": null,
-                    "SQLAfterAddedColumn": null
-                },
-                {
-                    "Nome": "ALLE_ORE2",
-                    "IsNullable": true,
-                    "DataType": "time",
-                    "AutoIncrement": false,
-                    "Commento": "",
-                    "DefaultValue": null,
-                    "SQLAfterAddedColumn": null
-                },
-                {
-                    "Nome": "DALLE_ORE3",
-                    "IsNullable": true,
-                    "DataType": "time",
-                    "AutoIncrement": false,
-                    "Commento": "",
-                    "DefaultValue": null,
-                    "SQLAfterAddedColumn": null
-                },
-                {
-                    "Nome": "ALLE_ORE3",
-                    "IsNullable": true,
-                    "DataType": "time",
-                    "AutoIncrement": false,
-                    "Commento": "",
-                    "DefaultValue": null,
-                    "SQLAfterAddedColumn": null
-                },
-                {
-                    "Nome": "DALLE_ORE4",
-                    "IsNullable": true,
-                    "DataType": "time",
-                    "AutoIncrement": false,
-                    "Commento": "",
-                    "DefaultValue": null,
-                    "SQLAfterAddedColumn": null
-                },
-                {
-                    "Nome": "ALLE_ORE4",
-                    "IsNullable": true,
-                    "DataType": "time",
-                    "AutoIncrement": false,
-                    "Commento": "",
-                    "DefaultValue": null,
-                    "SQLAfterAddedColumn": null
-                },
-                {
-                    "Nome": "GIORNO_APERTURA",
+                    "Nome": "INDIRIZZO_SPEDIZIONE",
                     "IsNullable": true,
                     "DataType": "varchar(255)",
                     "AutoIncrement": false,
                     "Commento": "",
-                    "DefaultValue": "",
+                    "DefaultValue": null,
                     "SQLAfterAddedColumn": null
                 },
                 {
-                    "Nome": "GIORNO_APERTURA2",
+                    "Nome": "NR_CIVICO_SPEDIZIONE",
                     "IsNullable": true,
                     "DataType": "varchar(255)",
                     "AutoIncrement": false,
                     "Commento": "",
-                    "DefaultValue": "",
+                    "DefaultValue": null,
                     "SQLAfterAddedColumn": null
                 },
                 {
-                    "Nome": "NOTE_NASCOSTE",
-                    "IsNullable": true,
-                    "DataType": "varchar(255)",
-                    "AutoIncrement": false,
-                    "Commento": "",
-                    "DefaultValue": "",
-                    "SQLAfterAddedColumn": null
-                },
-                {
-                    "Nome": "AVVISO_AMMINISTRATORE",
-                    "IsNullable": true,
-                    "DataType": "varchar(255)",
-                    "AutoIncrement": false,
-                    "Commento": "",
-                    "DefaultValue": "",
-                    "SQLAfterAddedColumn": null
-                },
-                {
-                    "Nome": "ID_TITOLO",
+                    "Nome": "PROVINCIA_SPEDIZIONE",
                     "IsNullable": true,
                     "DataType": "int",
                     "AutoIncrement": false,
@@ -1125,74 +1053,26 @@
                     "SQLAfterAddedColumn": null
                 },
                 {
-                    "Nome": "TIPO_FATTURAZIONE",
+                    "Nome": "COMUNE_SPEDIZIONE",
                     "IsNullable": true,
-                    "DataType": "enum('A','S')",
+                    "DataType": "varchar(255)",
                     "AutoIncrement": false,
                     "Commento": "",
-                    "DefaultValue": "A",
+                    "DefaultValue": null,
                     "SQLAfterAddedColumn": null
                 },
                 {
-                    "Nome": "GIORNO_FATTURAZIONE",
+                    "Nome": "CAP_SPEDIZIONE",
                     "IsNullable": true,
-                    "DataType": "int",
+                    "DataType": "varchar(5)",
                     "AutoIncrement": false,
                     "Commento": "",
-                    "DefaultValue": "1",
+                    "DefaultValue": null,
                     "SQLAfterAddedColumn": null
                 },
                 {
-                    "Nome": "MESE_FATTURAZIONE",
+                    "Nome": "ZONA_SPEDIZIONE",
                     "IsNullable": true,
-                    "DataType": "int",
-                    "AutoIncrement": false,
-                    "Commento": "",
-                    "DefaultValue": "1",
-                    "SQLAfterAddedColumn": null
-                }
-            ],
-            "PrimaryKey": {
-                "Campi": [
-                    "CHIAVE"
-                ]
-            },
-            "ForeignKeys": [
-                {
-                    "Nome": "FK_AMMINISTRATORI_ID_TITOLO",
-                    "Campo": "ID_TITOLO",
-                    "RefTable": "titoli",
-                    "RefField": "CHIAVE"
-                },
-                {
-                    "Nome": "FK_AMMINISTRATORI_NAZIONE_FATTURAZIONE",
-                    "Campo": "NAZIONE_FATTURAZIONE",
-                    "RefTable": "nazioni",
-                    "RefField": "CHIAVE"
-                },
-                {
-                    "Nome": "FK_AMMINISTRATORI_PROVINCIA_FATTURAZIONE",
-                    "Campo": "PROVINCIA_FATTURAZIONE",
-                    "RefTable": "province",
-                    "RefField": "CHIAVE"
-                },
-                {
-                    "Nome": "FK_AMMINISTRATORI_ZONA_FATTURAZIONE",
-                    "Campo": "ZONA_FATTURAZIONE",
-                    "RefTable": "zone",
-                    "RefField": "CHIAVE"
-                }
-            ],
-            "UniqueKeys": [],
-            "Indexes": [],
-            "Triggers": []
-        },
-        {
-            "Nome": "amministratori_telefono",
-            "Campi": [
-                {
-                    "Nome": "CHIAVE",
-                    "IsNullable": false,
                     "DataType": "int",
                     "AutoIncrement": false,
                     "Commento": "",
@@ -1200,7 +1080,97 @@
                     "SQLAfterAddedColumn": null
                 },
                 {
-                    "Nome": "DESCRIZIONE",
+                    "Nome": "NAZIONE_SPEDIZIONE",
+                    "IsNullable": true,
+                    "DataType": "int",
+                    "AutoIncrement": false,
+                    "Commento": "",
+                    "DefaultValue": null,
+                    "SQLAfterAddedColumn": null
+                },
+                {
+                    "Nome": "ESIGIBILITA_IVA",
+                    "IsNullable": true,
+                    "DataType": "char(1)",
+                    "AutoIncrement": false,
+                    "Commento": "",
+                    "DefaultValue": null,
+                    "SQLAfterAddedColumn": null
+                },
+                {
+                    "Nome": "NATURA_PAGAMENTO",
+                    "IsNullable": true,
+                    "DataType": "tinyint",
+                    "AutoIncrement": false,
+                    "Commento": "",
+                    "DefaultValue": null,
+                    "SQLAfterAddedColumn": null
+                },
+                {
+                    "Nome": "COND_PAGAMENTO",
+                    "IsNullable": true,
+                    "DataType": "int",
+                    "AutoIncrement": false,
+                    "Commento": "",
+                    "DefaultValue": null,
+                    "SQLAfterAddedColumn": null
+                },
+                {
+                    "Nome": "NOTE_IN_FATTURA",
+                    "IsNullable": true,
+                    "DataType": "varchar(255)",
+                    "AutoIncrement": false,
+                    "Commento": "",
+                    "DefaultValue": null,
+                    "SQLAfterAddedColumn": null
+                },
+                {
+                    "Nome": "IVA_FORNITORE",
+                    "IsNullable": true,
+                    "DataType": "int",
+                    "AutoIncrement": false,
+                    "Commento": "",
+                    "DefaultValue": "0",
+                    "SQLAfterAddedColumn": null
+                },
+                {
+                    "Nome": "ID_CONTO_CORRENTE",
+                    "IsNullable": true,
+                    "DataType": "int",
+                    "AutoIncrement": false,
+                    "Commento": "",
+                    "DefaultValue": null,
+                    "SQLAfterAddedColumn": null
+                },
+                {
+                    "Nome": "BANCA",
+                    "IsNullable": true,
+                    "DataType": "varchar(255)",
+                    "AutoIncrement": false,
+                    "Commento": "",
+                    "DefaultValue": null,
+                    "SQLAfterAddedColumn": null
+                },
+                {
+                    "Nome": "BANCA_APPOGGIO",
+                    "IsNullable": true,
+                    "DataType": "varchar(255)",
+                    "AutoIncrement": false,
+                    "Commento": "",
+                    "DefaultValue": null,
+                    "SQLAfterAddedColumn": null
+                },
+                {
+                    "Nome": "IBAN",
+                    "IsNullable": true,
+                    "DataType": "varchar(255)",
+                    "AutoIncrement": false,
+                    "Commento": "",
+                    "DefaultValue": null,
+                    "SQLAfterAddedColumn": null
+                },
+                {
+                    "Nome": "BIC",
                     "IsNullable": true,
                     "DataType": "varchar(255)",
                     "AutoIncrement": false,
@@ -1209,7 +1179,7 @@
                     "SQLAfterAddedColumn": null
                 },
                 {
-                    "Nome": "TELEFONO",
+                    "Nome": "SWIFT",
                     "IsNullable": true,
                     "DataType": "varchar(255)",
                     "AutoIncrement": false,
@@ -1223,20 +1193,92 @@
                     "DataType": "varchar(255)",
                     "AutoIncrement": false,
                     "Commento": "",
-                    "DefaultValue": "",
+                    "DefaultValue": null,
                     "SQLAfterAddedColumn": null
                 },
                 {
-                    "Nome": "ID_AMMINISTRATORE",
+                    "Nome": "PEC",
                     "IsNullable": true,
-                    "DataType": "int",
+                    "DataType": "varchar(255)",
                     "AutoIncrement": false,
                     "Commento": "",
                     "DefaultValue": null,
                     "SQLAfterAddedColumn": null
                 },
                 {
-                    "Nome": "PRINCIPALE",
+                    "Nome": "FAX",
+                    "IsNullable": true,
+                    "DataType": "varchar(255)",
+                    "AutoIncrement": false,
+                    "Commento": "",
+                    "DefaultValue": null,
+                    "SQLAfterAddedColumn": null
+                },
+                {
+                    "Nome": "ATTIVO",
+                    "IsNullable": true,
+                    "DataType": "enum('T','F')",
+                    "AutoIncrement": false,
+                    "Commento": "",
+                    "DefaultValue": "T",
+                    "SQLAfterAddedColumn": null
+                },
+                {
+                    "Nome": "BOLLO",
+                    "IsNullable": true,
+                    "DataType": "enum('N','P','C')",
+                    "AutoIncrement": false,
+                    "Commento": "",
+                    "DefaultValue": "N",
+                    "SQLAfterAddedColumn": null
+                },
+                {
+                    "Nome": "SPESE_INCASSO_DESCRIZIONE",
+                    "IsNullable": true,
+                    "DataType": "varchar(255)",
+                    "AutoIncrement": false,
+                    "Commento": "",
+                    "DefaultValue": "Spese per incasso",
+                    "SQLAfterAddedColumn": null
+                },
+                {
+                    "Nome": "SPESE_INCASSO_SUGGERITE",
+                    "IsNullable": true,
+                    "DataType": "int",
+                    "AutoIncrement": false,
+                    "Commento": "",
+                    "DefaultValue": "0",
+                    "SQLAfterAddedColumn": null
+                },
+                {
+                    "Nome": "COD_UFFICIO_DEST",
+                    "IsNullable": true,
+                    "DataType": "varchar(6)",
+                    "AutoIncrement": false,
+                    "Commento": "",
+                    "DefaultValue": "",
+                    "SQLAfterAddedColumn": null
+                },
+                {
+                    "Nome": "RITENUTA",
+                    "IsNullable": true,
+                    "DataType": "int",
+                    "AutoIncrement": false,
+                    "Commento": "",
+                    "DefaultValue": "0",
+                    "SQLAfterAddedColumn": null
+                },
+                {
+                    "Nome": "IVA_SUGGERITA_CLIENTE",
+                    "IsNullable": true,
+                    "DataType": "int",
+                    "AutoIncrement": false,
+                    "Commento": "",
+                    "DefaultValue": "0",
+                    "SQLAfterAddedColumn": null
+                },
+                {
+                    "Nome": "SOGLIA_PRESENTE",
                     "IsNullable": true,
                     "DataType": "enum('T','F')",
                     "AutoIncrement": false,
@@ -1245,7 +1287,115 @@
                     "SQLAfterAddedColumn": null
                 },
                 {
-                    "Nome": "PER_RAPPORTI",
+                    "Nome": "SOGLIA_X_NO_IVA",
+                    "IsNullable": true,
+                    "DataType": "int",
+                    "AutoIncrement": false,
+                    "Commento": "",
+                    "DefaultValue": "0",
+                    "SQLAfterAddedColumn": null
+                },
+                {
+                    "Nome": "SOGLIA_NAT_PAG",
+                    "IsNullable": true,
+                    "DataType": "int",
+                    "AutoIncrement": false,
+                    "Commento": "",
+                    "DefaultValue": null,
+                    "SQLAfterAddedColumn": null
+                },
+                {
+                    "Nome": "PASSATA_AD_AVVOCATO",
+                    "IsNullable": true,
+                    "DataType": "enum('T','F')",
+                    "AutoIncrement": false,
+                    "Commento": "",
+                    "DefaultValue": "F",
+                    "SQLAfterAddedColumn": null
+                },
+                {
+                    "Nome": "SCONTO_GENERALE",
+                    "IsNullable": true,
+                    "DataType": "int",
+                    "AutoIncrement": false,
+                    "Commento": "",
+                    "DefaultValue": null,
+                    "SQLAfterAddedColumn": null
+                },
+                {
+                    "Nome": "PRIORITA_INVERSA",
+                    "IsNullable": true,
+                    "DataType": "enum('T','F')",
+                    "AutoIncrement": false,
+                    "Commento": "",
+                    "DefaultValue": "F",
+                    "SQLAfterAddedColumn": null
+                },
+                {
+                    "Nome": "ID_CAT_CLIENTE",
+                    "IsNullable": true,
+                    "DataType": "int",
+                    "AutoIncrement": false,
+                    "Commento": "",
+                    "DefaultValue": null,
+                    "SQLAfterAddedColumn": null
+                },
+                {
+                    "Nome": "NOTE",
+                    "IsNullable": true,
+                    "DataType": "text",
+                    "AutoIncrement": false,
+                    "Commento": "",
+                    "DefaultValue": null,
+                    "SQLAfterAddedColumn": null
+                },
+                {
+                    "Nome": "EMITTENTE_PIVA",
+                    "IsNullable": true,
+                    "DataType": "int",
+                    "AutoIncrement": false,
+                    "Commento": "",
+                    "DefaultValue": null,
+                    "SQLAfterAddedColumn": null
+                },
+                {
+                    "Nome": "TIPO_RITENUTA",
+                    "IsNullable": true,
+                    "DataType": "int",
+                    "AutoIncrement": false,
+                    "Commento": "",
+                    "DefaultValue": "2",
+                    "SQLAfterAddedColumn": null
+                },
+                {
+                    "Nome": "TIPO_AUTOFATTURA",
+                    "IsNullable": true,
+                    "DataType": "enum('E','I','S','A','F','P')",
+                    "AutoIncrement": false,
+                    "Commento": "",
+                    "DefaultValue": "E",
+                    "SQLAfterAddedColumn": null
+                },
+                {
+                    "Nome": "REGIME_FISCALE",
+                    "IsNullable": true,
+                    "DataType": "varchar(255)",
+                    "AutoIncrement": false,
+                    "Commento": "",
+                    "DefaultValue": "RF01",
+                    "SQLAfterAddedColumn": null
+                },
+                {
+                    "Nome": "IS_FORNITORE",
+                    "IsNullable": true,
+                    "DataType": "enum('T','F')",
+                    "AutoIncrement": false,
+                    "Commento": "",
+                    "DefaultValue": "F",
+                    "SQLAfterAddedColumn": null
+                },
+                {
+                    "Nome": "IS_CLIENTE",
                     "IsNullable": true,
                     "DataType": "enum('T','F')",
                     "AutoIncrement": false,
@@ -1261,9 +1411,57 @@
             },
             "ForeignKeys": [
                 {
-                    "Nome": "FK_AMMINISTRATORI_TELEFONO_ID_AMM",
-                    "Campo": "ID_AMMINISTRATORE",
-                    "RefTable": "amministratori",
+                    "Nome": "FK_ANAGRAFICHE_COND_PAGAMENT",
+                    "Campo": "COND_PAGAMENTO",
+                    "RefTable": "cond_pagamento",
+                    "RefField": "CHIAVE"
+                },
+                {
+                    "Nome": "FK_ANAGRAFICHE_CONTO_CORRENTE",
+                    "Campo": "ID_CONTO_CORRENTE",
+                    "RefTable": "conti_correnti_casse",
+                    "RefField": "CHIAVE"
+                },
+                {
+                    "Nome": "FK_ANAGRAFICHE_ID_CAT_CLIENTE",
+                    "Campo": "ID_CAT_CLIENTE",
+                    "RefTable": "cat_clienti",
+                    "RefField": "CHIAVE"
+                },
+                {
+                    "Nome": "FK_ANAGRAFICHE_NAZ_EM_PIVA",
+                    "Campo": "NAZIONE_EM_PIVA",
+                    "RefTable": "nazioni",
+                    "RefField": "CHIAVE"
+                },
+                {
+                    "Nome": "FK_ANAGRAFICHE_NAZ_SPEDIZIONE",
+                    "Campo": "NAZIONE_SPEDIZIONE",
+                    "RefTable": "nazioni",
+                    "RefField": "CHIAVE"
+                },
+                {
+                    "Nome": "FK_ANAGRAFICHE_PROV_FATTURAZIONE",
+                    "Campo": "PROVINCIA_FATTURAZIONE",
+                    "RefTable": "province",
+                    "RefField": "CHIAVE"
+                },
+                {
+                    "Nome": "FK_ANAGRAFICHE_PROV_SPEDIZIONE",
+                    "Campo": "PROVINCIA_SPEDIZIONE",
+                    "RefTable": "province",
+                    "RefField": "CHIAVE"
+                },
+                {
+                    "Nome": "FK_ANAGRAFICHE_ZONA_FATTURAZIONE",
+                    "Campo": "ZONA_FATTURAZIONE",
+                    "RefTable": "zone",
+                    "RefField": "CHIAVE"
+                },
+                {
+                    "Nome": "FK_ANAGRAFICHE_ZONA_SPEDIZ",
+                    "Campo": "ZONA_SPEDIZIONE",
+                    "RefTable": "zone",
                     "RefField": "CHIAVE"
                 }
             ],
@@ -1543,15 +1741,15 @@
             },
             "ForeignKeys": [
                 {
-                    "Nome": "FK_AUTOFATTURE_CAUSALE",
-                    "Campo": "CAUSALE",
-                    "RefTable": "causali",
+                    "Nome": "FK_autofatture_anagrafiche",
+                    "Campo": "ID_FORNITORE",
+                    "RefTable": "anagrafiche",
                     "RefField": "CHIAVE"
                 },
                 {
-                    "Nome": "FK_AUTOFATTURE_ID_FORNITORE",
-                    "Campo": "ID_FORNITORE",
-                    "RefTable": "fornitori",
+                    "Nome": "FK_AUTOFATTURE_CAUSALE",
+                    "Campo": "CAUSALE",
+                    "RefTable": "causali",
                     "RefField": "CHIAVE"
                 },
                 {
@@ -2158,576 +2356,6 @@
             "Triggers": []
         },
         {
-            "Nome": "clienti",
-            "Campi": [
-                {
-                    "Nome": "CHIAVE",
-                    "IsNullable": false,
-                    "DataType": "int",
-                    "AutoIncrement": false,
-                    "Commento": "",
-                    "DefaultValue": null,
-                    "SQLAfterAddedColumn": null
-                },
-                {
-                    "Nome": "RAGIONE_SOCIALE",
-                    "IsNullable": true,
-                    "DataType": "varchar(255)",
-                    "AutoIncrement": false,
-                    "Commento": "",
-                    "DefaultValue": null,
-                    "SQLAfterAddedColumn": null
-                },
-                {
-                    "Nome": "CODICE_CLIENTE",
-                    "IsNullable": true,
-                    "DataType": "varchar(10)",
-                    "AutoIncrement": false,
-                    "Commento": "",
-                    "DefaultValue": "",
-                    "SQLAfterAddedColumn": null
-                },
-                {
-                    "Nome": "ID_AMMINISTRATORE",
-                    "IsNullable": true,
-                    "DataType": "int",
-                    "AutoIncrement": false,
-                    "Commento": "",
-                    "DefaultValue": null,
-                    "SQLAfterAddedColumn": null
-                },
-                {
-                    "Nome": "ENTE_PUBBLICO",
-                    "IsNullable": true,
-                    "DataType": "enum('T','F')",
-                    "AutoIncrement": false,
-                    "Commento": "",
-                    "DefaultValue": null,
-                    "SQLAfterAddedColumn": null
-                },
-                {
-                    "Nome": "IMPIANTO_REVERSE_CHARGE",
-                    "IsNullable": true,
-                    "DataType": "enum('T','F')",
-                    "AutoIncrement": false,
-                    "Commento": "",
-                    "DefaultValue": "F",
-                    "SQLAfterAddedColumn": null
-                },
-                {
-                    "Nome": "COD_ENTE_SDI",
-                    "IsNullable": true,
-                    "DataType": "varchar(10)",
-                    "AutoIncrement": false,
-                    "Commento": "",
-                    "DefaultValue": "0",
-                    "SQLAfterAddedColumn": null
-                },
-                {
-                    "Nome": "PARTITA_IVA",
-                    "IsNullable": true,
-                    "DataType": "varchar(255)",
-                    "AutoIncrement": false,
-                    "Commento": "",
-                    "DefaultValue": null,
-                    "SQLAfterAddedColumn": null
-                },
-                {
-                    "Nome": "NAZIONE_EM_PIVA",
-                    "IsNullable": true,
-                    "DataType": "int",
-                    "AutoIncrement": false,
-                    "Commento": "",
-                    "DefaultValue": null,
-                    "SQLAfterAddedColumn": null
-                },
-                {
-                    "Nome": "CODICE_FISCALE",
-                    "IsNullable": true,
-                    "DataType": "varchar(255)",
-                    "AutoIncrement": false,
-                    "Commento": "",
-                    "DefaultValue": null,
-                    "SQLAfterAddedColumn": null
-                },
-                {
-                    "Nome": "INDIRIZZO_FATTURAZIONE",
-                    "IsNullable": true,
-                    "DataType": "varchar(255)",
-                    "AutoIncrement": false,
-                    "Commento": "",
-                    "DefaultValue": null,
-                    "SQLAfterAddedColumn": null
-                },
-                {
-                    "Nome": "NR_CIVICO_FATTURAZIONE",
-                    "IsNullable": true,
-                    "DataType": "varchar(255)",
-                    "AutoIncrement": false,
-                    "Commento": "",
-                    "DefaultValue": null,
-                    "SQLAfterAddedColumn": null
-                },
-                {
-                    "Nome": "PROVINCIA_FATTURAZIONE",
-                    "IsNullable": true,
-                    "DataType": "int",
-                    "AutoIncrement": false,
-                    "Commento": "",
-                    "DefaultValue": null,
-                    "SQLAfterAddedColumn": null
-                },
-                {
-                    "Nome": "COMUNE_FATTURAZIONE",
-                    "IsNullable": true,
-                    "DataType": "varchar(255)",
-                    "AutoIncrement": false,
-                    "Commento": "",
-                    "DefaultValue": null,
-                    "SQLAfterAddedColumn": null
-                },
-                {
-                    "Nome": "CAP_FATTURAZIONE",
-                    "IsNullable": true,
-                    "DataType": "varchar(5)",
-                    "AutoIncrement": false,
-                    "Commento": "",
-                    "DefaultValue": null,
-                    "SQLAfterAddedColumn": null
-                },
-                {
-                    "Nome": "ZONA_FATTURAZIONE",
-                    "IsNullable": true,
-                    "DataType": "int",
-                    "AutoIncrement": false,
-                    "Commento": "",
-                    "DefaultValue": null,
-                    "SQLAfterAddedColumn": null
-                },
-                {
-                    "Nome": "PRESSO",
-                    "IsNullable": true,
-                    "DataType": "varchar(255)",
-                    "AutoIncrement": false,
-                    "Commento": "",
-                    "DefaultValue": null,
-                    "SQLAfterAddedColumn": null
-                },
-                {
-                    "Nome": "INDIRIZZO_SPEDIZIONE",
-                    "IsNullable": true,
-                    "DataType": "varchar(255)",
-                    "AutoIncrement": false,
-                    "Commento": "",
-                    "DefaultValue": null,
-                    "SQLAfterAddedColumn": null
-                },
-                {
-                    "Nome": "NR_CIVICO_SPEDIZIONE",
-                    "IsNullable": true,
-                    "DataType": "varchar(255)",
-                    "AutoIncrement": false,
-                    "Commento": "",
-                    "DefaultValue": null,
-                    "SQLAfterAddedColumn": null
-                },
-                {
-                    "Nome": "PROVINCIA_SPEDIZIONE",
-                    "IsNullable": true,
-                    "DataType": "int",
-                    "AutoIncrement": false,
-                    "Commento": "",
-                    "DefaultValue": null,
-                    "SQLAfterAddedColumn": null
-                },
-                {
-                    "Nome": "COMUNE_SPEDIZIONE",
-                    "IsNullable": true,
-                    "DataType": "varchar(255)",
-                    "AutoIncrement": false,
-                    "Commento": "",
-                    "DefaultValue": null,
-                    "SQLAfterAddedColumn": null
-                },
-                {
-                    "Nome": "CAP_SPEDIZIONE",
-                    "IsNullable": true,
-                    "DataType": "varchar(5)",
-                    "AutoIncrement": false,
-                    "Commento": "",
-                    "DefaultValue": null,
-                    "SQLAfterAddedColumn": null
-                },
-                {
-                    "Nome": "ZONA_SPEDIZIONE",
-                    "IsNullable": true,
-                    "DataType": "int",
-                    "AutoIncrement": false,
-                    "Commento": "",
-                    "DefaultValue": null,
-                    "SQLAfterAddedColumn": null
-                },
-                {
-                    "Nome": "NAZIONE_SPEDIZIONE",
-                    "IsNullable": true,
-                    "DataType": "int",
-                    "AutoIncrement": false,
-                    "Commento": "",
-                    "DefaultValue": null,
-                    "SQLAfterAddedColumn": null
-                },
-                {
-                    "Nome": "ESIGIBILITA_IVA",
-                    "IsNullable": true,
-                    "DataType": "char(1)",
-                    "AutoIncrement": false,
-                    "Commento": "",
-                    "DefaultValue": null,
-                    "SQLAfterAddedColumn": null
-                },
-                {
-                    "Nome": "NATURA_PAGAMENTO",
-                    "IsNullable": true,
-                    "DataType": "tinyint",
-                    "AutoIncrement": false,
-                    "Commento": "",
-                    "DefaultValue": null,
-                    "SQLAfterAddedColumn": null
-                },
-                {
-                    "Nome": "COND_PAGAMENTO",
-                    "IsNullable": true,
-                    "DataType": "int",
-                    "AutoIncrement": false,
-                    "Commento": "",
-                    "DefaultValue": null,
-                    "SQLAfterAddedColumn": null
-                },
-                {
-                    "Nome": "NOTE_IN_FATTURA",
-                    "IsNullable": true,
-                    "DataType": "varchar(255)",
-                    "AutoIncrement": false,
-                    "Commento": "",
-                    "DefaultValue": null,
-                    "SQLAfterAddedColumn": null
-                },
-                {
-                    "Nome": "ID_CONTO_CORRENTE",
-                    "IsNullable": true,
-                    "DataType": "int",
-                    "AutoIncrement": false,
-                    "Commento": "",
-                    "DefaultValue": null,
-                    "SQLAfterAddedColumn": null
-                },
-                {
-                    "Nome": "BANCA_APPOGGIO",
-                    "IsNullable": true,
-                    "DataType": "varchar(255)",
-                    "AutoIncrement": false,
-                    "Commento": "",
-                    "DefaultValue": null,
-                    "SQLAfterAddedColumn": null
-                },
-                {
-                    "Nome": "IBAN",
-                    "IsNullable": true,
-                    "DataType": "varchar(255)",
-                    "AutoIncrement": false,
-                    "Commento": "",
-                    "DefaultValue": null,
-                    "SQLAfterAddedColumn": null
-                },
-                {
-                    "Nome": "BIC",
-                    "IsNullable": true,
-                    "DataType": "varchar(255)",
-                    "AutoIncrement": false,
-                    "Commento": "",
-                    "DefaultValue": "",
-                    "SQLAfterAddedColumn": null
-                },
-                {
-                    "Nome": "SWIFT",
-                    "IsNullable": true,
-                    "DataType": "varchar(255)",
-                    "AutoIncrement": false,
-                    "Commento": "",
-                    "DefaultValue": "",
-                    "SQLAfterAddedColumn": null
-                },
-                {
-                    "Nome": "EMAIL",
-                    "IsNullable": true,
-                    "DataType": "varchar(255)",
-                    "AutoIncrement": false,
-                    "Commento": "",
-                    "DefaultValue": null,
-                    "SQLAfterAddedColumn": null
-                },
-                {
-                    "Nome": "PEC",
-                    "IsNullable": true,
-                    "DataType": "varchar(255)",
-                    "AutoIncrement": false,
-                    "Commento": "",
-                    "DefaultValue": null,
-                    "SQLAfterAddedColumn": null
-                },
-                {
-                    "Nome": "FAX",
-                    "IsNullable": true,
-                    "DataType": "varchar(255)",
-                    "AutoIncrement": false,
-                    "Commento": "",
-                    "DefaultValue": null,
-                    "SQLAfterAddedColumn": null
-                },
-                {
-                    "Nome": "ATTIVO",
-                    "IsNullable": true,
-                    "DataType": "enum('T','F')",
-                    "AutoIncrement": false,
-                    "Commento": "",
-                    "DefaultValue": "T",
-                    "SQLAfterAddedColumn": null
-                },
-                {
-                    "Nome": "BOLLO",
-                    "IsNullable": true,
-                    "DataType": "enum('N','P','C')",
-                    "AutoIncrement": false,
-                    "Commento": "",
-                    "DefaultValue": "N",
-                    "SQLAfterAddedColumn": null
-                },
-                {
-                    "Nome": "SPESE_INCASSO_DESCRIZIONE",
-                    "IsNullable": true,
-                    "DataType": "varchar(255)",
-                    "AutoIncrement": false,
-                    "Commento": "",
-                    "DefaultValue": "Spese per incasso",
-                    "SQLAfterAddedColumn": null
-                },
-                {
-                    "Nome": "SPESE_INCASSO_SUGGERITE",
-                    "IsNullable": true,
-                    "DataType": "int",
-                    "AutoIncrement": false,
-                    "Commento": "",
-                    "DefaultValue": "0",
-                    "SQLAfterAddedColumn": null
-                },
-                {
-                    "Nome": "COD_UFFICIO_DEST",
-                    "IsNullable": true,
-                    "DataType": "varchar(6)",
-                    "AutoIncrement": false,
-                    "Commento": "",
-                    "DefaultValue": "",
-                    "SQLAfterAddedColumn": null
-                },
-                {
-                    "Nome": "RITENUTA",
-                    "IsNullable": true,
-                    "DataType": "int",
-                    "AutoIncrement": false,
-                    "Commento": "",
-                    "DefaultValue": "0",
-                    "SQLAfterAddedColumn": null
-                },
-                {
-                    "Nome": "IVA_SUGGERITA_CLIENTE",
-                    "IsNullable": true,
-                    "DataType": "int",
-                    "AutoIncrement": false,
-                    "Commento": "",
-                    "DefaultValue": "0",
-                    "SQLAfterAddedColumn": null
-                },
-                {
-                    "Nome": "CONDOMINIO_CON_FATTURAZIONE",
-                    "IsNullable": true,
-                    "DataType": "enum('T','F')",
-                    "AutoIncrement": false,
-                    "Commento": "",
-                    "DefaultValue": "F",
-                    "SQLAfterAddedColumn": null
-                },
-                {
-                    "Nome": "IS_A_CONDOMINIO",
-                    "IsNullable": true,
-                    "DataType": "enum('T','F')",
-                    "AutoIncrement": false,
-                    "Commento": "",
-                    "DefaultValue": "F",
-                    "SQLAfterAddedColumn": null
-                },
-                {
-                    "Nome": "SOGLIA_PRESENTE",
-                    "IsNullable": true,
-                    "DataType": "enum('T','F')",
-                    "AutoIncrement": false,
-                    "Commento": "",
-                    "DefaultValue": "F",
-                    "SQLAfterAddedColumn": null
-                },
-                {
-                    "Nome": "SOGLIA_X_NO_IVA",
-                    "IsNullable": true,
-                    "DataType": "int",
-                    "AutoIncrement": false,
-                    "Commento": "",
-                    "DefaultValue": "0",
-                    "SQLAfterAddedColumn": null
-                },
-                {
-                    "Nome": "SOGLIA_NAT_PAG",
-                    "IsNullable": true,
-                    "DataType": "int",
-                    "AutoIncrement": false,
-                    "Commento": "",
-                    "DefaultValue": null,
-                    "SQLAfterAddedColumn": null
-                },
-                {
-                    "Nome": "PASSATA_AD_AVVOCATO",
-                    "IsNullable": true,
-                    "DataType": "enum('T','F')",
-                    "AutoIncrement": false,
-                    "Commento": "",
-                    "DefaultValue": "F",
-                    "SQLAfterAddedColumn": null
-                },
-                {
-                    "Nome": "ATTREZZATURE_INTERCAMBIABILI",
-                    "IsNullable": true,
-                    "DataType": "enum('T','F')",
-                    "AutoIncrement": false,
-                    "Commento": "",
-                    "DefaultValue": "F",
-                    "SQLAfterAddedColumn": null
-                },
-                {
-                    "Nome": "SCONTO_GENERALE",
-                    "IsNullable": true,
-                    "DataType": "int",
-                    "AutoIncrement": false,
-                    "Commento": "",
-                    "DefaultValue": null,
-                    "SQLAfterAddedColumn": null
-                },
-                {
-                    "Nome": "PRIORITA_INVERSA",
-                    "IsNullable": true,
-                    "DataType": "enum('T','F')",
-                    "AutoIncrement": false,
-                    "Commento": "",
-                    "DefaultValue": "F",
-                    "SQLAfterAddedColumn": null
-                },
-                {
-                    "Nome": "ID_CAT_CLIENTE",
-                    "IsNullable": true,
-                    "DataType": "int",
-                    "AutoIncrement": false,
-                    "Commento": "",
-                    "DefaultValue": null,
-                    "SQLAfterAddedColumn": null
-                },
-                {
-                    "Nome": "NOTE",
-                    "IsNullable": true,
-                    "DataType": "text",
-                    "AutoIncrement": false,
-                    "Commento": "",
-                    "DefaultValue": null,
-                    "SQLAfterAddedColumn": null
-                },
-                {
-                    "Nome": "RITIRO_CON_SOSTITUZIONE_EST",
-                    "IsNullable": true,
-                    "DataType": "enum('T','F')",
-                    "AutoIncrement": false,
-                    "Commento": "",
-                    "DefaultValue": "F",
-                    "SQLAfterAddedColumn": null
-                }
-            ],
-            "PrimaryKey": {
-                "Campi": [
-                    "CHIAVE"
-                ]
-            },
-            "ForeignKeys": [
-                {
-                    "Nome": "FK_CLIENTI_COND_PAGAMENT",
-                    "Campo": "COND_PAGAMENTO",
-                    "RefTable": "cond_pagamento",
-                    "RefField": "CHIAVE"
-                },
-                {
-                    "Nome": "FK_CLIENTI_CONTO_CORRENTE",
-                    "Campo": "ID_CONTO_CORRENTE",
-                    "RefTable": "conti_correnti_casse",
-                    "RefField": "CHIAVE"
-                },
-                {
-                    "Nome": "FK_CLIENTI_ID_AMMINISTRATORE",
-                    "Campo": "ID_AMMINISTRATORE",
-                    "RefTable": "amministratori",
-                    "RefField": "CHIAVE"
-                },
-                {
-                    "Nome": "FK_CLIENTI_ID_CAT_CLIENTE",
-                    "Campo": "ID_CAT_CLIENTE",
-                    "RefTable": "cat_clienti",
-                    "RefField": "CHIAVE"
-                },
-                {
-                    "Nome": "FK_CLIENTI_NAZ_EM_PIVA",
-                    "Campo": "NAZIONE_EM_PIVA",
-                    "RefTable": "nazioni",
-                    "RefField": "CHIAVE"
-                },
-                {
-                    "Nome": "FK_CLIENTI_NAZ_SPEDIZIONE",
-                    "Campo": "NAZIONE_SPEDIZIONE",
-                    "RefTable": "nazioni",
-                    "RefField": "CHIAVE"
-                },
-                {
-                    "Nome": "FK_CLIENTI_PROV_FATTURAZIONE",
-                    "Campo": "PROVINCIA_FATTURAZIONE",
-                    "RefTable": "province",
-                    "RefField": "CHIAVE"
-                },
-                {
-                    "Nome": "FK_CLIENTI_PROV_SPEDIZIONE",
-                    "Campo": "PROVINCIA_SPEDIZIONE",
-                    "RefTable": "province",
-                    "RefField": "CHIAVE"
-                },
-                {
-                    "Nome": "FK_CLIENTI_ZONA_FATTURAZIONE",
-                    "Campo": "ZONA_FATTURAZIONE",
-                    "RefTable": "zone",
-                    "RefField": "CHIAVE"
-                },
-                {
-                    "Nome": "FK_CLIENTI_ZONA_SPEDIZ",
-                    "Campo": "ZONA_SPEDIZIONE",
-                    "RefTable": "zone",
-                    "RefField": "CHIAVE"
-                }
-            ],
-            "UniqueKeys": [],
-            "Indexes": [],
-            "Triggers": []
-        },
-        {
             "Nome": "clienti_agenda",
             "Campi": [
                 {
@@ -2774,9 +2402,9 @@
             },
             "ForeignKeys": [
                 {
-                    "Nome": "FK_AGENDA_ID_CLIENTE",
+                    "Nome": "FK_clienti_agenda_anagrafiche",
                     "Campo": "ID_CLIENTE",
-                    "RefTable": "clienti",
+                    "RefTable": "anagrafiche",
                     "RefField": "CHIAVE"
                 }
             ],
@@ -2872,9 +2500,9 @@
             },
             "ForeignKeys": [
                 {
-                    "Nome": "FK_CLIENTE_SCONTO",
+                    "Nome": "FK_clienti_listino_sconti_anagrafiche",
                     "Campo": "ID_CLIENTE",
-                    "RefTable": "clienti",
+                    "RefTable": "anagrafiche",
                     "RefField": "CHIAVE"
                 },
                 {
@@ -2953,9 +2581,9 @@
             },
             "ForeignKeys": [
                 {
-                    "Nome": "FK_TELEFONO_ID_CLIENTE",
+                    "Nome": "FK_clienti_telefono_anagrafiche",
                     "Campo": "ID_CLIENTE",
-                    "RefTable": "clienti",
+                    "RefTable": "anagrafiche",
                     "RefField": "CHIAVE"
                 }
             ],
@@ -3016,9 +2644,9 @@
                     "RefField": "CHIAVE"
                 },
                 {
-                    "Nome": "FK2_CODICE_ID_FORNITORE",
+                    "Nome": "FK_codici_fornitore_anagrafiche",
                     "Campo": "ID_FORNITORE",
-                    "RefTable": "fornitori",
+                    "RefTable": "anagrafiche",
                     "RefField": "CHIAVE"
                 }
             ],
@@ -3309,16 +2937,7 @@
                     "SQLAfterAddedColumn": null
                 },
                 {
-                    "Nome": "ID_CLIENTE",
-                    "IsNullable": true,
-                    "DataType": "int",
-                    "AutoIncrement": false,
-                    "Commento": "",
-                    "DefaultValue": null,
-                    "SQLAfterAddedColumn": null
-                },
-                {
-                    "Nome": "ID_FORNITORE",
+                    "Nome": "ID_ANAGRAFICA",
                     "IsNullable": true,
                     "DataType": "int",
                     "AutoIncrement": false,
@@ -3649,12 +3268,6 @@
             },
             "ForeignKeys": [
                 {
-                    "Nome": "FK_CLIENTE",
-                    "Campo": "ID_CLIENTE",
-                    "RefTable": "clienti",
-                    "RefField": "CHIAVE"
-                },
-                {
                     "Nome": "FK_DDT_ENTRANTE_MAGAZZINO",
                     "Campo": "ID_MAGAZZINO",
                     "RefTable": "magazzini",
@@ -3667,9 +3280,9 @@
                     "RefField": "CHIAVE"
                 },
                 {
-                    "Nome": "FK_FORNITORE",
-                    "Campo": "ID_FORNITORE",
-                    "RefTable": "fornitori",
+                    "Nome": "FK_ID_ANAGRAFICA",
+                    "Campo": "ID_ANAGRAFICA",
+                    "RefTable": "anagrafiche",
                     "RefField": "CHIAVE"
                 },
                 {
@@ -3724,16 +3337,7 @@
                     "SQLAfterAddedColumn": null
                 },
                 {
-                    "Nome": "ID_CLIENTE",
-                    "IsNullable": true,
-                    "DataType": "int",
-                    "AutoIncrement": false,
-                    "Commento": "",
-                    "DefaultValue": null,
-                    "SQLAfterAddedColumn": null
-                },
-                {
-                    "Nome": "ID_FORNITORE",
+                    "Nome": "ID_ANAGRAFICA",
                     "IsNullable": true,
                     "DataType": "int",
                     "AutoIncrement": false,
@@ -4046,21 +3650,9 @@
             },
             "ForeignKeys": [
                 {
-                    "Nome": "FK1_DDT_ID_CLIENTE",
-                    "Campo": "ID_CLIENTE",
-                    "RefTable": "clienti",
-                    "RefField": "CHIAVE"
-                },
-                {
                     "Nome": "FK3_DDT_FILIALI",
                     "Campo": "FILIALE",
                     "RefTable": "filiali_clienti",
-                    "RefField": "CHIAVE"
-                },
-                {
-                    "Nome": "FK4_DDT_ID_FORNITORE",
-                    "Campo": "ID_FORNITORE",
-                    "RefTable": "fornitori",
                     "RefField": "CHIAVE"
                 },
                 {
@@ -4085,6 +3677,12 @@
                     "Nome": "FK_DDT_NAZIONE_EM_PIVA",
                     "Campo": "NAZIONE_EM_PIVA",
                     "RefTable": "nazioni",
+                    "RefField": "CHIAVE"
+                },
+                {
+                    "Nome": "FK_ID_ANAGRAFICA_DDT",
+                    "Campo": "ID_ANAGRAFICA",
+                    "RefTable": "anagrafiche",
                     "RefField": "CHIAVE"
                 }
             ],
@@ -4719,15 +4317,6 @@
                     "SQLAfterAddedColumn": null
                 },
                 {
-                    "Nome": "ID_RAPPORTO",
-                    "IsNullable": true,
-                    "DataType": "int",
-                    "AutoIncrement": false,
-                    "Commento": "",
-                    "DefaultValue": null,
-                    "SQLAfterAddedColumn": null
-                },
-                {
                     "Nome": "ANTICIPO",
                     "IsNullable": true,
                     "DataType": "enum('F','T')",
@@ -4825,6 +4414,12 @@
             },
             "ForeignKeys": [
                 {
+                    "Nome": "FK_fatture_anagrafiche",
+                    "Campo": "ID_CLIENTE",
+                    "RefTable": "anagrafiche",
+                    "RefField": "CHIAVE"
+                },
+                {
                     "Nome": "FK_FATTURE_CAUSALI",
                     "Campo": "CAUSALE",
                     "RefTable": "causali",
@@ -4834,12 +4429,6 @@
                     "Nome": "FK_FATTURE_COND_PAGAMENTO",
                     "Campo": "COND_PAGAMENTO",
                     "RefTable": "cond_pagamento",
-                    "RefField": "CHIAVE"
-                },
-                {
-                    "Nome": "FK_FATTURE_ID_CLIENTE",
-                    "Campo": "ID_CLIENTE",
-                    "RefTable": "clienti",
                     "RefField": "CHIAVE"
                 },
                 {
@@ -5016,9 +4605,9 @@
             },
             "ForeignKeys": [
                 {
-                    "Nome": "FK_FATTURE_INSOLUTE_PREGRESSE_ID_CLIENTE",
+                    "Nome": "FK_fatture_insolute_pregresse_anagrafiche",
                     "Campo": "ID_CLIENTE",
-                    "RefTable": "clienti",
+                    "RefTable": "anagrafiche",
                     "RefField": "CHIAVE"
                 },
                 {
@@ -5139,15 +4728,15 @@
             },
             "ForeignKeys": [
                 {
-                    "Nome": "FK_FATTURE_INSOLUTE_PREGRESSE_FORNITORI_ID_CONTO",
-                    "Campo": "ID_CONTO_PAGAMENTO",
-                    "RefTable": "conti_correnti_casse",
+                    "Nome": "FK_fatture_insolute_pregresse_fornitori_anagrafiche",
+                    "Campo": "ID_FORNITORE",
+                    "RefTable": "anagrafiche",
                     "RefField": "CHIAVE"
                 },
                 {
-                    "Nome": "FK_FATTURE_INSOLUTE_PREGRESSE_FORNITORI_ID_FORNITORE",
-                    "Campo": "ID_FORNITORE",
-                    "RefTable": "fornitori",
+                    "Nome": "FK_FATTURE_INSOLUTE_PREGRESSE_FORNITORI_ID_CONTO",
+                    "Campo": "ID_CONTO_PAGAMENTO",
+                    "RefTable": "conti_correnti_casse",
                     "RefField": "CHIAVE"
                 },
                 {
@@ -5361,15 +4950,15 @@
             },
             "ForeignKeys": [
                 {
-                    "Nome": "FK1_FATTURE_PASSIVE_FORNITORE",
-                    "Campo": "ID_FORNITORE",
-                    "RefTable": "fornitori",
-                    "RefField": "CHIAVE"
-                },
-                {
                     "Nome": "FK3_FATTURE_PASSIVE_PROVINCE",
                     "Campo": "PROVINCIA_FATTURAZIONE",
                     "RefTable": "province",
+                    "RefField": "CHIAVE"
+                },
+                {
+                    "Nome": "FK_fatture_passive_anagrafiche",
+                    "Campo": "ID_FORNITORE",
+                    "RefTable": "anagrafiche",
                     "RefField": "CHIAVE"
                 },
                 {
@@ -5633,9 +5222,9 @@
             },
             "ForeignKeys": [
                 {
-                    "Nome": "FK_FILIALI_CLIENTE",
+                    "Nome": "FK_filiali_clienti_anagrafiche",
                     "Campo": "CLIENTE",
-                    "RefTable": "clienti",
+                    "RefTable": "anagrafiche",
                     "RefField": "CHIAVE"
                 },
                 {
@@ -5909,381 +5498,6 @@
             "Triggers": []
         },
         {
-            "Nome": "fornitori",
-            "Campi": [
-                {
-                    "Nome": "CHIAVE",
-                    "IsNullable": false,
-                    "DataType": "int",
-                    "AutoIncrement": false,
-                    "Commento": "",
-                    "DefaultValue": null,
-                    "SQLAfterAddedColumn": null
-                },
-                {
-                    "Nome": "RAGIONE_SOCIALE",
-                    "IsNullable": true,
-                    "DataType": "varchar(255)",
-                    "AutoIncrement": false,
-                    "Commento": "",
-                    "DefaultValue": null,
-                    "SQLAfterAddedColumn": null
-                },
-                {
-                    "Nome": "CODICE_FORNITORE",
-                    "IsNullable": true,
-                    "DataType": "tinytext",
-                    "AutoIncrement": false,
-                    "Commento": "",
-                    "DefaultValue": null,
-                    "SQLAfterAddedColumn": null
-                },
-                {
-                    "Nome": "PARTITA_IVA",
-                    "IsNullable": true,
-                    "DataType": "varchar(255)",
-                    "AutoIncrement": false,
-                    "Commento": "",
-                    "DefaultValue": null,
-                    "SQLAfterAddedColumn": null
-                },
-                {
-                    "Nome": "CODICE_FISCALE",
-                    "IsNullable": true,
-                    "DataType": "varchar(255)",
-                    "AutoIncrement": false,
-                    "Commento": "",
-                    "DefaultValue": null,
-                    "SQLAfterAddedColumn": null
-                },
-                {
-                    "Nome": "TITOLO",
-                    "IsNullable": true,
-                    "DataType": "varchar(10)",
-                    "AutoIncrement": false,
-                    "Commento": "",
-                    "DefaultValue": null,
-                    "SQLAfterAddedColumn": null
-                },
-                {
-                    "Nome": "INDIRIZZO_FATTURAZIONE",
-                    "IsNullable": true,
-                    "DataType": "varchar(255)",
-                    "AutoIncrement": false,
-                    "Commento": "",
-                    "DefaultValue": null,
-                    "SQLAfterAddedColumn": null
-                },
-                {
-                    "Nome": "NR_CIVICO_FATTURAZIONE",
-                    "IsNullable": true,
-                    "DataType": "varchar(255)",
-                    "AutoIncrement": false,
-                    "Commento": "",
-                    "DefaultValue": null,
-                    "SQLAfterAddedColumn": null
-                },
-                {
-                    "Nome": "COMUNE_FATTURAZIONE",
-                    "IsNullable": true,
-                    "DataType": "varchar(255)",
-                    "AutoIncrement": false,
-                    "Commento": "",
-                    "DefaultValue": null,
-                    "SQLAfterAddedColumn": null
-                },
-                {
-                    "Nome": "CAP_FATTURAZIONE",
-                    "IsNullable": true,
-                    "DataType": "varchar(10)",
-                    "AutoIncrement": false,
-                    "Commento": "",
-                    "DefaultValue": null,
-                    "SQLAfterAddedColumn": null
-                },
-                {
-                    "Nome": "PROVINCIA_FATTURAZIONE",
-                    "IsNullable": true,
-                    "DataType": "int",
-                    "AutoIncrement": false,
-                    "Commento": "",
-                    "DefaultValue": null,
-                    "SQLAfterAddedColumn": null
-                },
-                {
-                    "Nome": "RITENUTA",
-                    "IsNullable": true,
-                    "DataType": "int",
-                    "AutoIncrement": false,
-                    "Commento": "",
-                    "DefaultValue": null,
-                    "SQLAfterAddedColumn": null
-                },
-                {
-                    "Nome": "INARCASSA",
-                    "IsNullable": true,
-                    "DataType": "int",
-                    "AutoIncrement": false,
-                    "Commento": "",
-                    "DefaultValue": null,
-                    "SQLAfterAddedColumn": null
-                },
-                {
-                    "Nome": "REA_UFFICIO",
-                    "IsNullable": true,
-                    "DataType": "varchar(255)",
-                    "AutoIncrement": false,
-                    "Commento": "",
-                    "DefaultValue": null,
-                    "SQLAfterAddedColumn": null
-                },
-                {
-                    "Nome": "NUMERO_REA",
-                    "IsNullable": true,
-                    "DataType": "varchar(255)",
-                    "AutoIncrement": false,
-                    "Commento": "",
-                    "DefaultValue": null,
-                    "SQLAfterAddedColumn": null
-                },
-                {
-                    "Nome": "CAPITALE_SOCIALE",
-                    "IsNullable": true,
-                    "DataType": "bigint",
-                    "AutoIncrement": false,
-                    "Commento": "",
-                    "DefaultValue": null,
-                    "SQLAfterAddedColumn": null
-                },
-                {
-                    "Nome": "SOCIO_UNICO_REA",
-                    "IsNullable": true,
-                    "DataType": "enum('T','F')",
-                    "AutoIncrement": false,
-                    "Commento": "",
-                    "DefaultValue": null,
-                    "SQLAfterAddedColumn": null
-                },
-                {
-                    "Nome": "STATO_LIQUIDAZIONE_REA",
-                    "IsNullable": true,
-                    "DataType": "enum('T','F')",
-                    "AutoIncrement": false,
-                    "Commento": "",
-                    "DefaultValue": null,
-                    "SQLAfterAddedColumn": null
-                },
-                {
-                    "Nome": "REA_PRESENTE",
-                    "IsNullable": true,
-                    "DataType": "enum('T','F')",
-                    "AutoIncrement": false,
-                    "Commento": "",
-                    "DefaultValue": null,
-                    "SQLAfterAddedColumn": null
-                },
-                {
-                    "Nome": "EMITTENTE_PIVA",
-                    "IsNullable": true,
-                    "DataType": "int",
-                    "AutoIncrement": false,
-                    "Commento": "",
-                    "DefaultValue": null,
-                    "SQLAfterAddedColumn": null
-                },
-                {
-                    "Nome": "PRESSO",
-                    "IsNullable": true,
-                    "DataType": "varchar(255)",
-                    "AutoIncrement": false,
-                    "Commento": "",
-                    "DefaultValue": null,
-                    "SQLAfterAddedColumn": null
-                },
-                {
-                    "Nome": "INDIRIZZO_SPEDIZIONE",
-                    "IsNullable": true,
-                    "DataType": "varchar(255)",
-                    "AutoIncrement": false,
-                    "Commento": "",
-                    "DefaultValue": null,
-                    "SQLAfterAddedColumn": null
-                },
-                {
-                    "Nome": "NR_CIVICO_SPEDIZIONE",
-                    "IsNullable": true,
-                    "DataType": "varchar(255)",
-                    "AutoIncrement": false,
-                    "Commento": "",
-                    "DefaultValue": null,
-                    "SQLAfterAddedColumn": null
-                },
-                {
-                    "Nome": "COMUNE_SPEDIZIONE",
-                    "IsNullable": true,
-                    "DataType": "varchar(255)",
-                    "AutoIncrement": false,
-                    "Commento": "",
-                    "DefaultValue": null,
-                    "SQLAfterAddedColumn": null
-                },
-                {
-                    "Nome": "CAP_SPEDIZIONE",
-                    "IsNullable": true,
-                    "DataType": "varchar(10)",
-                    "AutoIncrement": false,
-                    "Commento": "",
-                    "DefaultValue": null,
-                    "SQLAfterAddedColumn": null
-                },
-                {
-                    "Nome": "PROVINCIA_SPEDIZIONE",
-                    "IsNullable": true,
-                    "DataType": "int",
-                    "AutoIncrement": false,
-                    "Commento": "",
-                    "DefaultValue": null,
-                    "SQLAfterAddedColumn": null
-                },
-                {
-                    "Nome": "NAZIONE_SPEDIZIONE",
-                    "IsNullable": true,
-                    "DataType": "int",
-                    "AutoIncrement": false,
-                    "Commento": "",
-                    "DefaultValue": null,
-                    "SQLAfterAddedColumn": null
-                },
-                {
-                    "Nome": "BANCA",
-                    "IsNullable": true,
-                    "DataType": "varchar(255)",
-                    "AutoIncrement": false,
-                    "Commento": "",
-                    "DefaultValue": null,
-                    "SQLAfterAddedColumn": null
-                },
-                {
-                    "Nome": "IBAN",
-                    "IsNullable": true,
-                    "DataType": "varchar(255)",
-                    "AutoIncrement": false,
-                    "Commento": "",
-                    "DefaultValue": null,
-                    "SQLAfterAddedColumn": null
-                },
-                {
-                    "Nome": "BIC",
-                    "IsNullable": true,
-                    "DataType": "varchar(255)",
-                    "AutoIncrement": false,
-                    "Commento": "",
-                    "DefaultValue": "",
-                    "SQLAfterAddedColumn": null
-                },
-                {
-                    "Nome": "SWIFT",
-                    "IsNullable": true,
-                    "DataType": "varchar(255)",
-                    "AutoIncrement": false,
-                    "Commento": "",
-                    "DefaultValue": "",
-                    "SQLAfterAddedColumn": null
-                },
-                {
-                    "Nome": "ID_CONTO_CORRENTE",
-                    "IsNullable": true,
-                    "DataType": "int",
-                    "AutoIncrement": false,
-                    "Commento": "",
-                    "DefaultValue": null,
-                    "SQLAfterAddedColumn": null
-                },
-                {
-                    "Nome": "PEC",
-                    "IsNullable": true,
-                    "DataType": "varchar(255)",
-                    "AutoIncrement": false,
-                    "Commento": "",
-                    "DefaultValue": null,
-                    "SQLAfterAddedColumn": null
-                },
-                {
-                    "Nome": "BANCA_APPOGGIO",
-                    "IsNullable": true,
-                    "DataType": "varchar(255)",
-                    "AutoIncrement": false,
-                    "Commento": "",
-                    "DefaultValue": null,
-                    "SQLAfterAddedColumn": null
-                },
-                {
-                    "Nome": "TIPO_AUTOFATTURA",
-                    "IsNullable": true,
-                    "DataType": "enum('E','I','S','A','F','P')",
-                    "AutoIncrement": false,
-                    "Commento": "",
-                    "DefaultValue": "E",
-                    "SQLAfterAddedColumn": null
-                },
-                {
-                    "Nome": "REGIME_FISCALE",
-                    "IsNullable": true,
-                    "DataType": "varchar(255)",
-                    "AutoIncrement": false,
-                    "Commento": "",
-                    "DefaultValue": "RF01",
-                    "SQLAfterAddedColumn": null
-                },
-                {
-                    "Nome": "TIPO_RITENUTA",
-                    "IsNullable": true,
-                    "DataType": "int",
-                    "AutoIncrement": false,
-                    "Commento": "",
-                    "DefaultValue": "2",
-                    "SQLAfterAddedColumn": null
-                },
-                {
-                    "Nome": "IVA_FORNITORE",
-                    "IsNullable": true,
-                    "DataType": "int",
-                    "AutoIncrement": false,
-                    "Commento": "",
-                    "DefaultValue": "0",
-                    "SQLAfterAddedColumn": null
-                }
-            ],
-            "PrimaryKey": {
-                "Campi": [
-                    "CHIAVE"
-                ]
-            },
-            "ForeignKeys": [
-                {
-                    "Nome": "FK1_PROVINCIA_FATTURAZIONE",
-                    "Campo": "PROVINCIA_FATTURAZIONE",
-                    "RefTable": "province",
-                    "RefField": "CHIAVE"
-                },
-                {
-                    "Nome": "FK3_FORNITORI_PROVINCIA_DEST",
-                    "Campo": "PROVINCIA_SPEDIZIONE",
-                    "RefTable": "province",
-                    "RefField": "CHIAVE"
-                },
-                {
-                    "Nome": "FK_FORNITORI_ID_CONTO_CORRENTE",
-                    "Campo": "ID_CONTO_CORRENTE",
-                    "RefTable": "conti_correnti_casse",
-                    "RefField": "CHIAVE"
-                }
-            ],
-            "UniqueKeys": [],
-            "Indexes": [],
-            "Triggers": []
-        },
-        {
             "Nome": "fornitori_telefono",
             "Campi": [
                 {
@@ -6348,9 +5562,9 @@
             },
             "ForeignKeys": [
                 {
-                    "Nome": "FK_FORNITORI_TELEFONO_ID_FORNITORE",
+                    "Nome": "FK_fornitori_telefono_anagrafiche",
                     "Campo": "ID_FORNITORE",
-                    "RefTable": "fornitori",
+                    "RefTable": "anagrafiche",
                     "RefField": "CHIAVE"
                 }
             ],
@@ -7531,15 +6745,6 @@
                     "Commento": "",
                     "DefaultValue": null,
                     "SQLAfterAddedColumn": null
-                },
-                {
-                    "Nome": "ID_AMMINISTRATORE",
-                    "IsNullable": true,
-                    "DataType": "int",
-                    "AutoIncrement": false,
-                    "Commento": "",
-                    "DefaultValue": null,
-                    "SQLAfterAddedColumn": null
                 }
             ],
             "PrimaryKey": {
@@ -7549,15 +6754,9 @@
             },
             "ForeignKeys": [
                 {
-                    "Nome": "FK_LOG_EMAIL_ID_AMMINISTRATORE",
-                    "Campo": "ID_AMMINISTRATORE",
-                    "RefTable": "amministratori",
-                    "RefField": "CHIAVE"
-                },
-                {
-                    "Nome": "FK_LOG_EMAIL_ID_CLIENTE",
+                    "Nome": "FK_log_email_anagrafiche",
                     "Campo": "ID_CLIENTE",
-                    "RefTable": "clienti",
+                    "RefTable": "anagrafiche",
                     "RefField": "CHIAVE"
                 }
             ],
@@ -7951,15 +7150,6 @@
                     "Commento": "",
                     "DefaultValue": null,
                     "SQLAfterAddedColumn": null
-                },
-                {
-                    "Nome": "ID_AMMINISTRATORE",
-                    "IsNullable": true,
-                    "DataType": "int",
-                    "AutoIncrement": false,
-                    "Commento": "",
-                    "DefaultValue": null,
-                    "SQLAfterAddedColumn": null
                 }
             ],
             "PrimaryKey": {
@@ -7969,15 +7159,9 @@
             },
             "ForeignKeys": [
                 {
-                    "Nome": "FK_LOG_SOLLECITI_AMMINISTRATORI",
-                    "Campo": "ID_AMMINISTRATORE",
-                    "RefTable": "amministratori",
-                    "RefField": "CHIAVE"
-                },
-                {
-                    "Nome": "FK_LOG_SOLLECITI_CLIENTI",
+                    "Nome": "FK_log_solleciti_anagrafiche",
                     "Campo": "ID_CLIENTE",
-                    "RefTable": "clienti",
+                    "RefTable": "anagrafiche",
                     "RefField": "CHIAVE"
                 }
             ],
@@ -8249,16 +7433,7 @@
                     "SQLAfterAddedColumn": null
                 },
                 {
-                    "Nome": "ID_FORNITORE",
-                    "IsNullable": true,
-                    "DataType": "int",
-                    "AutoIncrement": false,
-                    "Commento": "",
-                    "DefaultValue": null,
-                    "SQLAfterAddedColumn": null
-                },
-                {
-                    "Nome": "ID_CLIENTE",
+                    "Nome": "ID_ANAGRAFICA",
                     "IsNullable": true,
                     "DataType": "int",
                     "AutoIncrement": false,
@@ -8310,15 +7485,9 @@
                     "RefField": "CHIAVE"
                 },
                 {
-                    "Nome": "FK_MOV_CLIENTI",
-                    "Campo": "ID_CLIENTE",
-                    "RefTable": "clienti",
-                    "RefField": "CHIAVE"
-                },
-                {
-                    "Nome": "FK_MOV_FORNITORI",
-                    "Campo": "ID_FORNITORE",
-                    "RefTable": "fornitori",
+                    "Nome": "FK4_ID_ANAGRAFICA",
+                    "Campo": "ID_ANAGRAFICA",
+                    "RefTable": "anagrafiche",
                     "RefField": "CHIAVE"
                 }
             ],
@@ -8936,12 +8105,6 @@
             },
             "ForeignKeys": [
                 {
-                    "Nome": "FK1_NOTA_CREDITO_CLIENTE",
-                    "Campo": "ID_CLIENTE",
-                    "RefTable": "clienti",
-                    "RefField": "CHIAVE"
-                },
-                {
                     "Nome": "FK2_NOTA_CREDITO_PROVINCIA_FATT",
                     "Campo": "PROVINCIA_FATTURAZIONE",
                     "RefTable": "province",
@@ -8975,6 +8138,12 @@
                     "Nome": "FK_NOTA_CREDITO_NAZIONE_EM_PIVA",
                     "Campo": "NAZIONE_EM_PIVA",
                     "RefTable": "nazioni",
+                    "RefField": "CHIAVE"
+                },
+                {
+                    "Nome": "FK_note_di_credito_anagrafiche",
+                    "Campo": "ID_CLIENTE",
+                    "RefTable": "anagrafiche",
                     "RefField": "CHIAVE"
                 },
                 {
@@ -9565,9 +8734,9 @@
                     "RefField": "CHIAVE"
                 },
                 {
-                    "Nome": "FK_PREVENTIVI_ID_CLIENTE",
+                    "Nome": "FK_preventivi_anagrafiche",
                     "Campo": "ID_CLIENTE",
-                    "RefTable": "clienti",
+                    "RefTable": "anagrafiche",
                     "RefField": "CHIAVE"
                 },
                 {
@@ -10443,12 +9612,6 @@
                     "RefField": "CHIAVE"
                 },
                 {
-                    "Nome": "FK_PREVENTIVI_MULTI_ID_CLIENTE",
-                    "Campo": "ID_CLIENTE",
-                    "RefTable": "clienti",
-                    "RefField": "CHIAVE"
-                },
-                {
                     "Nome": "FK_PREVENTIVI_MULTI_ID_COND_PAGAMENTO",
                     "Campo": "COND_PAGAMENTO",
                     "RefTable": "cond_pagamento",
@@ -10494,6 +9657,12 @@
                     "Nome": "FK_PREVENTIVI_MULTI_NAZIONE_EM_PIVA",
                     "Campo": "NAZIONE_EM_PIVA",
                     "RefTable": "nazioni",
+                    "RefField": "CHIAVE"
+                },
+                {
+                    "Nome": "FK_preventivi_multiparametrici_anagrafiche",
+                    "Campo": "ID_CLIENTE",
+                    "RefTable": "anagrafiche",
                     "RefField": "CHIAVE"
                 }
             ],
@@ -11490,9 +10659,9 @@
             },
             "ForeignKeys": [
                 {
-                    "Nome": "FK_RITENUTE_ID_CLIENTE",
+                    "Nome": "FK_ritenute_acconto_clienti_anagrafiche",
                     "Campo": "ID_CLIENTE",
-                    "RefTable": "clienti",
+                    "RefTable": "anagrafiche",
                     "RefField": "CHIAVE"
                 }
             ],
@@ -11543,9 +10712,9 @@
             "PrimaryKey": null,
             "ForeignKeys": [
                 {
-                    "Nome": "FK1_RITENUTA_ID_CLIENTE",
+                    "Nome": "FK_ritenute_cliente_anagrafiche",
                     "Campo": "ID_CLIENTE",
-                    "RefTable": "clienti",
+                    "RefTable": "anagrafiche",
                     "RefField": "CHIAVE"
                 }
             ],
@@ -11623,7 +10792,7 @@
             "Nome": "saldi_chiusure_annuali",
             "Campi": [
                 {
-                    "Nome": "ID_CLIENTE",
+                    "Nome": "ID_ANAGRAFICA",
                     "IsNullable": true,
                     "DataType": "int",
                     "AutoIncrement": false,
@@ -11642,15 +10811,6 @@
                 },
                 {
                     "Nome": "CIFRA_CHIUSURA",
-                    "IsNullable": true,
-                    "DataType": "int",
-                    "AutoIncrement": false,
-                    "Commento": "",
-                    "DefaultValue": null,
-                    "SQLAfterAddedColumn": null
-                },
-                {
-                    "Nome": "ID_FORNITORE",
                     "IsNullable": true,
                     "DataType": "int",
                     "AutoIncrement": false,
@@ -11680,15 +10840,9 @@
             "PrimaryKey": null,
             "ForeignKeys": [
                 {
-                    "Nome": "FK_SALDI_CHISURE_ANNUALI_ID_CLIENTE",
-                    "Campo": "ID_CLIENTE",
-                    "RefTable": "clienti",
-                    "RefField": "CHIAVE"
-                },
-                {
-                    "Nome": "FK_SALDI_CHIUSURE_ID_FORNITORE",
-                    "Campo": "ID_FORNITORE",
-                    "RefTable": "fornitori",
+                    "Nome": "FK1_ID_CLIENTE_SALDI",
+                    "Campo": "ID_ANAGRAFICA",
+                    "RefTable": "anagrafiche",
                     "RefField": "CHIAVE"
                 }
             ],
@@ -11951,41 +11105,6 @@
             "Triggers": []
         },
         {
-            "Nome": "tubi_co2",
-            "Campi": [
-                {
-                    "Nome": "ID_ATTREZZATURA",
-                    "IsNullable": true,
-                    "DataType": "int",
-                    "AutoIncrement": false,
-                    "Commento": "",
-                    "DefaultValue": null,
-                    "SQLAfterAddedColumn": null
-                },
-                {
-                    "Nome": "MATRICOLA",
-                    "IsNullable": true,
-                    "DataType": "varchar(255)",
-                    "AutoIncrement": false,
-                    "Commento": "",
-                    "DefaultValue": null,
-                    "SQLAfterAddedColumn": null
-                }
-            ],
-            "PrimaryKey": null,
-            "ForeignKeys": [
-                {
-                    "Nome": "FK_TUBI_CO2_ID_ATTREZZATURA",
-                    "Campo": "ID_ATTREZZATURA",
-                    "RefTable": "attrezzature",
-                    "RefField": "CHIAVE"
-                }
-            ],
-            "UniqueKeys": [],
-            "Indexes": [],
-            "Triggers": []
-        },
-        {
             "Nome": "unita_di_misura",
             "Campi": [
                 {
@@ -12141,24 +11260,6 @@
                     "Commento": "",
                     "DefaultValue": "T",
                     "SQLAfterAddedColumn": null
-                },
-                {
-                    "Nome": "ID_CLIENTE",
-                    "IsNullable": true,
-                    "DataType": "int",
-                    "AutoIncrement": false,
-                    "Commento": "",
-                    "DefaultValue": null,
-                    "SQLAfterAddedColumn": null
-                },
-                {
-                    "Nome": "ID_AMMINISTRATORE",
-                    "IsNullable": true,
-                    "DataType": "int",
-                    "AutoIncrement": false,
-                    "Commento": "",
-                    "DefaultValue": null,
-                    "SQLAfterAddedColumn": null
                 }
             ],
             "PrimaryKey": {
@@ -12166,20 +11267,7 @@
                     "CHIAVE"
                 ]
             },
-            "ForeignKeys": [
-                {
-                    "Nome": "FK_UTENTI_AMMINISTRATORI",
-                    "Campo": "ID_AMMINISTRATORE",
-                    "RefTable": "amministratori",
-                    "RefField": "CHIAVE"
-                },
-                {
-                    "Nome": "FK_UTENTI_CLIENTI",
-                    "Campo": "ID_CLIENTE",
-                    "RefTable": "clienti",
-                    "RefField": "CHIAVE"
-                }
-            ],
+            "ForeignKeys": [],
             "UniqueKeys": [],
             "Indexes": [],
             "Triggers": []
@@ -13767,7 +12855,7 @@
             "Nome": "CLIENTI_CON_FATTURE_INSOLUTE",
             "Type": "PROCEDURE",
             "ReturnType": null,
-            "Body": "BEGIN\r\nDECLARE NUMERO_MESI_PER_CONDOMINI INT DEFAULT 0;\r\n  DECLARE NUMERO_MESI_PER_PRIVATI INT DEFAULT 0;\r\n  \r\n  SELECT NUMERO_MESI_PER_FATTURE_INSOLUTE_PER_CONDOMINI, NUMERO_MESI_PER_FATTURE_INSOLUTE_PER_PRIVATI\r\n    INTO NUMERO_MESI_PER_CONDOMINI, NUMERO_MESI_PER_PRIVATI\r\n    FROM impostazioni;\r\n  \r\n  SELECT clienti.CHIAVE AS CHIAVE,\r\n         clienti.RAGIONE_SOCIALE AS RAGIONE_SOCIALE, \r\n         clienti.IS_A_CONDOMINIO, \r\n         clienti.CODICE_CLIENTE AS CODICE_CLIENTE\r\n    FROM clienti\r\n         INNER JOIN fatture ON clienti.CHIAVE = fatture.ID_CLIENTE\r\n   WHERE fatture.CHIAVE IN (SELECT fatture.CHIAVE\t\r\n                              FROM fatture\r\n                             WHERE fatture.NUMERO IS NOT NULL\r\n\t\t\t\t\t\t\t\t\t    AND fatture.CHIAVE IN (SELECT rate_fattura.ID_FATTURA\r\n                                                        FROM rate_fattura\r\n                                                       WHERE rate_fattura.DATA_PAGAMENTO IS NULL\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t   AND rate_fattura.ID_MOVIMENTO IS NULL))\r\n     AND CURDATE() > DATE_ADD(fatture.DATA, INTERVAL IF(clienti.IS_A_CONDOMINIO = 'T', NUMERO_MESI_PER_CONDOMINI, NUMERO_MESI_PER_PRIVATI) MONTH)\r\n     AND (CHIAVE_CLIENTE = -1 OR fatture.ID_CLIENTE = CHIAVE_CLIENTE)\r\n     AND clienti.CHIAVE IN (SELECT contratti.ID_CLIENTE\r\n                              FROM contratti\r\n                             WHERE contratti.NON_CONFERMATO = 'F'\r\n                               AND contratti.DISDETTATO = 'F'\r\n                               AND contratti.SOSPENSIONE_TEMPORANEA = 'F'\r\n                               AND contratti.TIPOLOGIA = 'M')\r\nUNION\r\n  SELECT clienti.CHIAVE AS CHIAVE,\r\n         clienti.RAGIONE_SOCIALE AS RAGIONE_SOCIALE, \r\n         clienti.IS_A_CONDOMINIO, \r\n         clienti.CODICE_CLIENTE AS CODICE_CLIENTE\r\n    FROM fatture_insolute_pregresse\r\n         LEFT OUTER JOIN clienti ON fatture_insolute_pregresse.ID_CLIENTE = clienti.CHIAVE\r\n   WHERE CURDATE() > DATE_ADD(fatture_insolute_pregresse.DATA, INTERVAL IF(clienti.IS_A_CONDOMINIO = 'T', NUMERO_MESI_PER_CONDOMINI, NUMERO_MESI_PER_PRIVATI) MONTH)\r\n     AND (CHIAVE_CLIENTE = -1 OR fatture_insolute_pregresse.ID_CLIENTE = CHIAVE_CLIENTE)\r\n     AND fatture_insolute_pregresse.DATA_PAGAMENTO IS NULL\r\n     AND fatture_insolute_pregresse.ID_MOVIMENTO IS NULL\r\n     AND clienti.CHIAVE IN (SELECT contratti.ID_CLIENTE\r\n                              FROM contratti\r\n                             WHERE contratti.NON_CONFERMATO = 'F'\r\n                               AND contratti.DISDETTATO = 'F'\r\n                               AND contratti.SOSPENSIONE_TEMPORANEA = 'F'\r\n                               AND contratti.TIPOLOGIA = 'M')\r\n   ORDER BY CHIAVE, RAGIONE_SOCIALE ASC;\r\nEND",
+            "Body": "BEGIN\r\nDECLARE NUMERO_MESI_PER_CONDOMINI INT DEFAULT 0;\r\n  DECLARE NUMERO_MESI_PER_PRIVATI INT DEFAULT 0;\r\n  \r\n  SELECT NUMERO_MESI_PER_FATTURE_INSOLUTE_PER_CONDOMINI, NUMERO_MESI_PER_FATTURE_INSOLUTE_PER_PRIVATI\r\n    INTO NUMERO_MESI_PER_CONDOMINI, NUMERO_MESI_PER_PRIVATI\r\n    FROM impostazioni;\r\n  \r\n  SELECT anagrafiche.CHIAVE AS CHIAVE,\r\n         anagrafiche.RAGIONE_SOCIALE AS RAGIONE_SOCIALE, \r\n         anagrafiche.IS_A_CONDOMINIO, \r\n         anagrafiche.CODICE_CLIENTE AS CODICE_CLIENTE\r\n    FROM anagrafiche\r\n         INNER JOIN fatture ON anagrafiche.CHIAVE = fatture.ID_CLIENTE\r\n   WHERE fatture.CHIAVE IN (SELECT fatture.CHIAVE\t\r\n                              FROM fatture\r\n                             WHERE fatture.NUMERO IS NOT NULL\r\n\t\t\t\t\t\t\t\t\t    AND fatture.CHIAVE IN (SELECT rate_fattura.ID_FATTURA\r\n                                                        FROM rate_fattura\r\n                                                       WHERE rate_fattura.DATA_PAGAMENTO IS NULL\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t   AND rate_fattura.ID_MOVIMENTO IS NULL))\r\n     AND CURDATE() > DATE_ADD(fatture.DATA, INTERVAL IF(anagrafiche.IS_A_CONDOMINIO = 'T', NUMERO_MESI_PER_CONDOMINI, NUMERO_MESI_PER_PRIVATI) MONTH)\r\n     AND (CHIAVE_CLIENTE = -1 OR fatture.ID_CLIENTE = CHIAVE_CLIENTE)\r\n     AND anagrafiche.CHIAVE IN (SELECT contratti.ID_CLIENTE\r\n                              FROM contratti\r\n                             WHERE contratti.NON_CONFERMATO = 'F'\r\n                               AND contratti.DISDETTATO = 'F'\r\n                               AND contratti.SOSPENSIONE_TEMPORANEA = 'F'\r\n                               AND contratti.TIPOLOGIA = 'M')\r\nUNION\r\n  SELECT anagrafiche.CHIAVE AS CHIAVE,\r\n         anagrafiche.RAGIONE_SOCIALE AS RAGIONE_SOCIALE, \r\n         anagrafiche.IS_A_CONDOMINIO, \r\n         anagrafiche.CODICE_CLIENTE AS CODICE_CLIENTE\r\n    FROM fatture_insolute_pregresse\r\n         LEFT OUTER JOIN anagrafiche ON fatture_insolute_pregresse.ID_CLIENTE = anagrafiche.CHIAVE\r\n   WHERE CURDATE() > DATE_ADD(fatture_insolute_pregresse.DATA, INTERVAL IF(anagrafiche.IS_A_CONDOMINIO = 'T', NUMERO_MESI_PER_CONDOMINI, NUMERO_MESI_PER_PRIVATI) MONTH)\r\n     AND (CHIAVE_CLIENTE = -1 OR fatture_insolute_pregresse.ID_CLIENTE = CHIAVE_CLIENTE)\r\n     AND fatture_insolute_pregresse.DATA_PAGAMENTO IS NULL\r\n     AND fatture_insolute_pregresse.ID_MOVIMENTO IS NULL\r\n     AND anagrafiche.CHIAVE IN (SELECT contratti.ID_CLIENTE\r\n                              FROM contratti\r\n                             WHERE contratti.NON_CONFERMATO = 'F'\r\n                               AND contratti.DISDETTATO = 'F'\r\n                               AND contratti.SOSPENSIONE_TEMPORANEA = 'F'\r\n                               AND contratti.TIPOLOGIA = 'M')\r\n   ORDER BY CHIAVE, RAGIONE_SOCIALE ASC;\r\nEND",
             "Parametri": [
                 {
                     "Nome": "CHIAVE_CLIENTE",

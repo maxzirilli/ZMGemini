@@ -1,5 +1,7 @@
 <template>
   <VUEModal v-if="PopupRecapitiFiliali" 
+            :PathLogo="require('@/assets/images/LogoGemini2.png')"
+            :Programma="NomeProgramma"
             :Titolo="'Recapiti Filiali '" 
             :Altezza="'500px'" 
             :Larghezza="'1200px'"
@@ -76,8 +78,8 @@
 </template>
   
 <script>
-  import VUEModal               from '@/components/Slots/VUEModal.vue';
-  import { SystemInformation }  from '@/SystemInformation';
+  import VUEModal from '../../../../../../../Librerie/VUE/TemplateGestionale/VUEModal.vue';
+  import { SystemInformation, NOME_PROGRAMMA }  from '@/SystemInformation';
   import { TSchedaGenerica }    from './../../../../../../../Librerie/VUE/ZSchedaGenerica.js';
 
   export default
@@ -93,8 +95,9 @@
                 PopupRecapitiFiliali    : false,
                 Filiali                 : [],
                 Province                : SystemInformation.Configurazioni.Province,
-                FilialeSelezionata: -1,
-                FiltroFiliali : '',
+                FilialeSelezionata      : -1,
+                FiltroFiliali           : '',
+                NomeProgramma           : NOME_PROGRAMMA
 
               }
     },

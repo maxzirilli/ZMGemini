@@ -67,7 +67,8 @@
       </template>
   </VUEModal>
 
-  <VUEModal v-if="PopupConfermaStampaRibaFatture" :Titolo="'Opzioni stampa ri.ba.'" :Altezza="'100px'" :Larghezza="'400px'"
+  <VUEModal v-if="PopupConfermaStampaRibaFatture" :PathLogo="require('../../assets/images/LogoGemini2.png')"
+            :Programma="NomeProgramma" :Titolo="'Opzioni stampa ri.ba.'" :Altezza="'100px'" :Larghezza="'400px'"
           @onClickChiudiModal="PopupConfermaStampaRibaFatture = false">
     <template v-slot:Body>
       <div class="form-row">
@@ -86,10 +87,11 @@
     </template>
   </VUEModal>
 
-  <VUEModal v-if="PopupScaricoFileZip"
-    Titolo="Scarica file ZIP con fatt., fatt. pass. e note di credito"
-    @onClickConfermaModal="OnClickScaricoFileZip()"
-    @onClickChiudiModal="OnClickAnnullaScaricoFileZip()">
+  <VUEModal v-if="PopupScaricoFileZip" :PathLogo="require('../../assets/images/LogoGemini2.png')"
+            :Programma="NomeProgramma" 
+            Titolo="Scarica file ZIP con fatt., fatt. pass. e note di credito"
+            @onClickConfermaModal="OnClickScaricoFileZip()"
+            @onClickChiudiModal="OnClickAnnullaScaricoFileZip()">
     <template v-slot:Body>
       <label>Scegli un intervallo</label>
       <div style="display: flex; justify-content: center; gap: 10px">
@@ -122,7 +124,8 @@
   </VUEConfirm>
 
 
-  <VUEModal v-if="PopupCreazioneDDTEntrante.Visualizza" :Titolo=" 'Creazione DDT Entrante' " :Altezza="'550px'" :Larghezza="'1250px'"
+  <VUEModal v-if="PopupCreazioneDDTEntrante.Visualizza" :PathLogo="require('../../assets/images/LogoGemini2.png')"
+            :Programma="NomeProgramma" :Titolo=" 'Creazione DDT Entrante' " :Altezza="'550px'" :Larghezza="'1250px'"
             @onClickChiudiModal="PopupCreazioneDDTEntrante.Visualizza ">
             <!-- = false -->
     <template v-slot:Body>
@@ -136,7 +139,8 @@
     </template>
   </VUEModal>
 
-  <VUEModal v-if="PopupVisualizzaScheda" :Titolo="'Visualizzazione scheda'" :Altezza="'550px'" :Larghezza="'1250px'"
+  <VUEModal v-if="PopupVisualizzaScheda" :PathLogo="require('../../assets/images/LogoGemini2.png')"
+            :Programma="NomeProgramma" :Titolo="'Visualizzazione scheda'" :Altezza="'550px'" :Larghezza="'1250px'"
             @onClickChiudiModal="PopupVisualizzaScheda = false">
     <template v-slot:Body>
       <div class="form-row">
@@ -153,7 +157,8 @@
     </template>
   </VUEModal>
 
-  <VUEModal v-if="PopupCreazioneFattura.Visualizza" :Titolo=" 'Creazione Fattura' " :Altezza="'550px'" :Larghezza="'1250px'"
+  <VUEModal v-if="PopupCreazioneFattura.Visualizza" :PathLogo="require('../../assets/images/LogoGemini2.png')"
+            :Programma="NomeProgramma" :Titolo=" 'Creazione Fattura' " :Altezza="'550px'" :Larghezza="'1250px'"
             @onClickChiudiModal="PopupCreazioneFattura.Visualizza ">
             <!-- = false -->
     <template v-slot:Body>
@@ -170,10 +175,13 @@
     </template>
   </VUEModal>
 
-  <VUEModal v-if="PopupComunicazioni" :Titolo="'Comunicazioni importanti'" :Altezza="'500px'" :Larghezza="'1200px'"
+  <VUEModal v-if="PopupComunicazioni" :PathLogo="require('../../assets/images/LogoGemini2.png')"
+            :Programma="NomeProgramma" :Titolo="'Comunicazioni importanti'" :Altezza="'500px'" :Larghezza="'1200px'"
             @onClickChiudiModal="PopupComunicazioni = false ; ControlloPresenzaComunicazioni()">
     <template v-slot:Body>
-      <VUEModal v-if="PopupInformazioniAggiuntive" :Titolo="'Info aggiuntive'" :Altezza="'300px'" :Larghezza="'750px'"
+
+      <VUEModal v-if="PopupInformazioniAggiuntive" :PathLogo="require('../../assets/images/LogoGemini2.png')"
+            :Programma="NomeProgramma" :Titolo="'Info aggiuntive'" :Altezza="'300px'" :Larghezza="'750px'"
                 @onClickChiudiModal="OnClickChiudiPopupInformazioniAggiuntive">
         <template v-slot:Body>
         <div class="form-row">
@@ -252,7 +260,8 @@
     </template>
   </VUEModal>
   
-  <VUEModal v-if="PopupFornitori" :Titolo="'Cambia soglia del prodotto'" :Altezza="'100px'" :Larghezza="'400px'"
+  <VUEModal v-if="PopupFornitori" :PathLogo="require('../../assets/images/LogoGemini2.png')"
+            :Programma="NomeProgramma" :Titolo="'Cambia soglia del prodotto'" :Altezza="'100px'" :Larghezza="'400px'"
             @onClickChiudiModal="PopupFornitori = false">
     <template v-slot:Body>
       <!-- <select style="float:left;width:100%;" class="form-control" v-model="IdFornitoreXDDT">
@@ -273,7 +282,8 @@
     </template>
   </VUEModal>
 
-    <VUEModal v-if="AnnoStampaRitenutaClienti" :Titolo="'Inserire anno per stampa ritenuta'" :Altezza="'100px'" :Larghezza="'400px'"
+    <VUEModal v-if="AnnoStampaRitenutaClienti" :PathLogo="require('../../assets/images/LogoGemini2.png')"
+                    :Programma="NomeProgramma" :Titolo="'Inserire anno per stampa ritenuta'" :Altezza="'100px'" :Larghezza="'400px'"
             @onClickChiudiModal="AnnoStampaRitenutaClienti = false">
       <template v-slot:Body>
         <div class="form-row">
@@ -302,7 +312,8 @@
       </template>
     </VUEModal>
 
-    <VUEModal v-if="DataSaldoClienti" :Titolo="'Inserire data per saldo clienti'" :Altezza="'150px'" :Larghezza="'520px'"
+    <VUEModal v-if="DataSaldoClienti" :PathLogo="require('../../assets/images/LogoGemini2.png')"
+            :Programma="NomeProgramma" :Titolo="'Inserire data per saldo clienti'" :Altezza="'150px'" :Larghezza="'520px'"
               @onClickChiudiModal="DataSaldoClienti = false">
         <template v-slot:Body>
           <div class="form-row">
@@ -335,7 +346,8 @@
         </template>
     </VUEModal>
 
-    <VUEModal v-if="DataSaldoFornitori" :Titolo="'Inserire data per saldo fornitori'" :Altezza="'150px'" :Larghezza="'520px'"
+    <VUEModal v-if="DataSaldoFornitori" :PathLogo="require('../../assets/images/LogoGemini2.png')"
+                   :Programma="NomeProgramma" :Titolo="'Inserire data per saldo fornitori'" :Altezza="'150px'" :Larghezza="'520px'"
               @onClickChiudiModal="DataSaldoFornitori = false">
         <template v-slot:Body>
           <div class="form-row">

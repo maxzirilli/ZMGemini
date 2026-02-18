@@ -5,7 +5,8 @@
  <VUEConfirm :Popup="PopupCorreggiNota"  :PathLogo="require('../../assets/images/LogoGemini2.png')"
              :Programma="NomeProgramma"  :Richiesta="'Vuoi correggere la nota di credito?'" @onClickConfermaPopup="ConfermaCorrezione" @onClickChiudiPopup="AnnullaPopup">
  </VUEConfirm>
-  <VUEModal v-if="PopupScegliFileXML" :Titolo="'Lista file .xml'" :Altezza="'200px'" :Larghezza="'600px'"
+  <VUEModal v-if="PopupScegliFileXML" :PathLogo="require('../../assets/images/LogoGemini2.png')"
+             :Programma="NomeProgramma" :Titolo="'Lista file .xml'" :Altezza="'200px'" :Larghezza="'600px'"
             @onClickChiudiModal="OnClickChiudiPopupScegliFile">
         <template v-slot:Body>
               <div class="row wrapper" style="height:100%">
@@ -477,7 +478,7 @@ import { ID_NODO_NOTE_DI_CREDITO } from '@/NodiVuoti'
 import VUELogDocumentiEconomici, { TSchedaLogDocumentiEconomici } from '@/views/SchedeDatabase/ComponentMultiScheda/VUELogDocumentiEconomici.vue';
 import VUEConfirm from '../../../../../../../../Librerie/VUE/TemplateGestionale/VUEConfirm.vue';
 import { saveAs } from 'file-saver';
-import VUEModal from '@/components/Slots/VUEModal.vue';
+import VUEModal from '../../../../../../../../Librerie/VUE/TemplateGestionale/VUEModal.vue';
 import VUERateNote, {TSchedaRateNota} from './ComponentSchedaNota/VUERateNote.vue';
 
 export class TSchedaNotaDiCredito extends TSchedaGenerica

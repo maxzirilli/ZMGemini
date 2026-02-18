@@ -4,6 +4,7 @@
                          :PathGif="require('@/assets/images/CaricamentoDatiGif.gif')"/>
 
   <VUEModalInvioEmail v-if="PopupEmailVisibile"
+                      :Titolo ="'Invio sollecito'"
                       :AttivazionePopup="PopupEmailVisibile" 
                       :OggettoEmail="OggettoEmail"
                       :ListaEmailCliente="ListaEmailCliente"

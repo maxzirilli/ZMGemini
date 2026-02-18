@@ -27,7 +27,8 @@
               @onClickChiudiPopup="PopupDisattivaCliente = false">
   </VUEConfirm>
 
-  <VUEModal v-if="DataContoCliente" :Titolo="'Inserire data per conto cliente'" :Altezza="'100px'" :Larghezza="'520px'"
+  <VUEModal v-if="DataContoCliente" :PathLogo="require('../../assets/images/LogoGemini2.png')"
+            :Programma="NomeProgramma" :Titolo="'Inserire data per conto cliente'" :Altezza="'100px'" :Larghezza="'520px'"
             @onClickChiudiModal="DataContoCliente = false">
       <template v-slot:Body>
         <div class="form-row">
@@ -50,7 +51,8 @@
       </template>
   </VUEModal>
 
-  <VUEModal v-if="PopupConfermaCaricamento" :Titolo="'Importa Filiali'" :Altezza="'100px'" :Larghezza="'450px'"
+  <VUEModal v-if="PopupConfermaCaricamento" :PathLogo="require('../../assets/images/LogoGemini2.png')"
+            :Programma="NomeProgramma" :Titolo="'Importa Filiali'" :Altezza="'100px'" :Larghezza="'450px'"
             @onClickChiudiModal="ClosePopup">
     <template v-slot:Body>
       <div class="form-row">
@@ -62,7 +64,8 @@
     </template>
   </VUEModal>
 
-  <VUEModal v-if="PopupVisualizzaFattura" :Titolo="'Visualizzazione fattura'" :Altezza="'650px'" :Larghezza="'1500px'" 
+  <VUEModal v-if="PopupVisualizzaFattura" :PathLogo="require('../../assets/images/LogoGemini2.png')"
+            :Programma="NomeProgramma" :Titolo="'Visualizzazione fattura'" :Altezza="'650px'" :Larghezza="'1500px'" 
             @onClickChiudiModal="ChiudiPopupVisualizzaFattura">
             <template v-slot:Body>
               <div class="col-md-12"> 
@@ -100,7 +103,8 @@
             </template>
   </VUEModal>
 
-  <VUEModal v-if="PopupDocumento" :Titolo="'Visualizzazione documento'" :Altezza="'650px'" :Larghezza="'1500px'" 
+  <VUEModal v-if="PopupDocumento" :PathLogo="require('../../assets/images/LogoGemini2.png')"
+            :Programma="NomeProgramma" :Titolo="'Visualizzazione documento'" :Altezza="'650px'" :Larghezza="'1500px'" 
             @onClickChiudiModal="ChiudiPopupDocumento">
             <template v-slot:Body>
               <div class="col-md-12"> 
@@ -912,7 +916,7 @@
  import { TZDateFunct } from '../../../../../../../../Librerie/VUE/ZDateFunct.js'
  import { TZFatturaElettronica } from '../../../../../../../../Librerie/VUE/ZFatturaElettronica.js'
  import { TZGenericFunct } from '../../../../../../../../Librerie/VUE/ZGenericFunct';
- import VUEModal from '@/components/Slots/VUEModal.vue';
+ import VUEModal from '../../../../../../../../Librerie/VUE/TemplateGestionale/VUEModal.vue';
  import VUEConfirm from '../../../../../../../../Librerie/VUE/TemplateGestionale/VUEConfirm.vue';
  import VUEDataRowFilialiClienti from '@/components/DataRows/VUEDataRowFilialiClienti.vue';
  import * as XLSX from 'xlsx';

@@ -4,7 +4,8 @@
              :Richiesta="'Vuoi correggere l\'autofattura?'" @onClickConfermaPopup="ConfermaCorrezione" @onClickChiudiPopup="AnnullaPopup">
   </VUEConfirm>
 
-     <VUEModal v-if="PopupScegliFileXML" :Titolo="'Lista file .xml'" :Altezza="'200px'" :Larghezza="'600px'"
+     <VUEModal v-if="PopupScegliFileXML" :PathLogo="require('../../assets/images/LogoGemini2.png')"
+                    :Programma="NomeProgramma" :Titolo="'Lista file .xml'" :Altezza="'200px'" :Larghezza="'600px'"
             @onClickChiudiModal="OnClickChiudiPopupScegliFile">
         <template v-slot:Body>
               <div class="row wrapper" style="height:100%">
@@ -281,7 +282,7 @@ import { TZEconomicFunct, TZCheckDatiFiscali } from '../../../../../../../../Lib
 import { TZStringConvFunct } from '../../../../../../../../Librerie/VUE/ZStringConvFunct.js'
 import VUEConfirm from '../../../../../../../../Librerie/VUE/TemplateGestionale/VUEConfirm.vue';
 import { saveAs } from 'file-saver';
-import VUEModal from '@/components/Slots/VUEModal.vue';
+import VUEModal from '../../../../../../../../Librerie/VUE/TemplateGestionale/VUEModal.vue';
 
 export class TSchedaAutoFattura extends TSchedaGenerica
 {

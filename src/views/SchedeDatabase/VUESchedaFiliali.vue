@@ -1,11 +1,12 @@
 <template>
 <VUEModalCaricamentoDati v-if="PopupAttesaCalcolo" :PathGif="require('@/assets/images/CaricamentoDatiGif.gif')"/>
 
-<VUEModal v-if="LsLogFiliali"
-            :Titolo="'Lista Log Filiale'" 
-            :Altezza="'250px'" 
-            :Larghezza="'900px'"
-            @onClickChiudiModal="OnClickChiudiLista">
+<VUEModal v-if="LsLogFiliali" :PathLogo="require('../../assets/images/LogoGemini2.png')"
+                               :Programma="NomeProgramma"
+                               :Titolo="'Lista Log Filiale'" 
+                               :Altezza="'250px'" 
+                               :Larghezza="'900px'"
+                               @onClickChiudiModal="OnClickChiudiLista">
  <template v-slot:Body>
   <div class="row wrapper">
         <section class="panel panel-default" style="background-color:white;">
@@ -185,12 +186,12 @@
 </template>
 
 <script>
-import { SystemInformation } from '@/SystemInformation.js';
+import { SystemInformation, NOME_PROGRAMMA } from '@/SystemInformation.js';
 import VUEInputProvince from '@/components/InputComponents/VUEInputProvince.vue';
 import VUEInputRegioni from '@/components/InputComponents/VUEInputRegioni.vue';
 import VUEInputClienti from '@/components/InputComponents/VUEInputClienti.vue';
 import VUEInputMese from '@/components/InputComponents/VUEInputMese.vue';
-import VUEModal from '@/components/Slots/VUEModal.vue';
+import VUEModal from '../../../../../../../../Librerie/VUE/TemplateGestionale/VUEModal.vue';
 import { TZDateFunct } from '../../../../../../../../Librerie/VUE/ZDateFunct.js';
 import XLSX from 'xlsx-js-style/dist/xlsx.min.js';
 import VUEModalCaricamentoDati from '../../../../../../../../Librerie/VUE/TemplateGestionale/VUEModalCaricamentoDati.vue';
@@ -222,6 +223,7 @@ export default
             LsClienti                : [],
             LsClientiTotali          : [],
             ElencoLogFiliali         : [],
+            NomeProgramma            : NOME_PROGRAMMA,
             Paginazione              : {
                                           NrRighePerPagina  : 30,
                                           NrPagina          : 1,

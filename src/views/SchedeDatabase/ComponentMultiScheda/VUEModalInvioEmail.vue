@@ -1,7 +1,7 @@
 <template>
  <VUEModal v-if="AttivazionePopup" :PathLogo="require('@/assets/images/LogoGemini2.png')"
                                    :Programma="NomeProgramma" 
-                                   :Titolo="Titolo" :Altezza="'500px'" :Larghezza="'60%'"
+                                   :Titolo=  "Titolo" :Altezza="'500px'" :Larghezza="'60%'"
           @onClickChiudiModal="OnClickChiudiModal">
     <template v-slot:Body>
         <div class="ZMNuovaRigaScheda">

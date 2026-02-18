@@ -1,5 +1,6 @@
 <template>
-    <VUEModal v-if="PopupGestisciImporti" 
+    <VUEModal v-if="PopupGestisciImporti" :PathLogo="require('../../assets/images/LogoGemini2.png')"
+             :Programma="NomeProgramma"
             :Titolo="'Gestisci importo'" 
             :Altezza="'500px'" 
             :Larghezza="'900px'"
@@ -54,7 +55,8 @@
     </template>
   </VUEModal> 
 
-  <VUEModal v-if="PopupGestisciImportiFornitori" 
+  <VUEModal v-if="PopupGestisciImportiFornitori" :PathLogo="require('../../assets/images/LogoGemini2.png')"
+             :Programma="NomeProgramma"
             :Titolo="'Gestisci importo'" 
             :Altezza="'500px'" 
             :Larghezza="'900px'"
@@ -109,7 +111,8 @@
     </template>
   </VUEModal>
 
-  <VUEModal v-if="PopupMovimentoCorrelatoARateFattureFornitori" 
+  <VUEModal v-if="PopupMovimentoCorrelatoARateFattureFornitori" :PathLogo="require('../../assets/images/LogoGemini2.png')"
+             :Programma="NomeProgramma"
             :Titolo="'Movimento correlato'" 
             :Altezza="'500px'" 
             :Larghezza="'900px'"
@@ -163,7 +166,8 @@
     </template>
   </VUEModal> 
 
-  <VUEModal v-if="PopupMovimentoCorrelato" 
+  <VUEModal v-if="PopupMovimentoCorrelato" :PathLogo="require('../../assets/images/LogoGemini2.png')"
+             :Programma="NomeProgramma"
             :Titolo="'Movimento correlato'" 
             :Altezza="'500px'" 
             :Larghezza="'900px'"
@@ -217,7 +221,8 @@
     </template>
   </VUEModal> 
 
-    <VUEModal v-if="PopupMovimentoCorrelatoAFatturePregresseFornitori" 
+    <VUEModal v-if="PopupMovimentoCorrelatoAFatturePregresseFornitori"  :PathLogo="require('../../assets/images/LogoGemini2.png')"
+             :Programma="NomeProgramma"
             :Titolo="'Movimento correlato'" 
             :Altezza="'500px'" 
             :Larghezza="'900px'"
@@ -271,7 +276,8 @@
     </template>
   </VUEModal> 
 
-  <VUEModal v-if="PopupMovimentoCorrelatoAFatturePregresse" 
+  <VUEModal v-if="PopupMovimentoCorrelatoAFatturePregresse" :PathLogo="require('../../assets/images/LogoGemini2.png')"
+             :Programma="NomeProgramma"
             :Titolo="'Movimento correlato'" 
             :Altezza="'500px'" 
             :Larghezza="'900px'"
@@ -326,7 +332,8 @@
   </VUEModal> 
 
 
-  <VUEModal v-if="PopupAssociazione" :Titolo="'Associazione'" :Altezza="'305px'" :Larghezza="'700px'"
+  <VUEModal v-if="PopupAssociazione" :Titolo="'Associazione'" :PathLogo="require('../../assets/images/LogoGemini2.png')"
+             :Programma="NomeProgramma" :Altezza="'305px'" :Larghezza="'700px'"
          @onClickChiudiModal="OnClickChiudiPopupAssociazione">
     <template v-slot:Body>
        <div> {{ TipoSelezione }}</div>
@@ -615,9 +622,9 @@
 
 <script>
 import { TSchedaGenerica } from '../../../../../../../../Librerie/VUE/ZSchedaGenerica.js'
-import { SystemInformation, DASHBOARD_FILTER_TYPES, RUOLI } from '@/SystemInformation.js'
+import { SystemInformation, DASHBOARD_FILTER_TYPES, RUOLI , NOME_PROGRAMMA} from '@/SystemInformation.js'
 import { TZDateFunct } from '../../../../../../../../Librerie/VUE/ZDateFunct.js'
-import VUEModal from '@/components/Slots/VUEModal.vue';
+import VUEModal from '../../../../../../../../Librerie/VUE/TemplateGestionale/VUEModal.vue';
 import { TZStringFunct } from '../../../../../../../../Librerie/VUE/ZStringFunct.js';
 import { TZGenericFunct } from '../../../../../../../../Librerie/VUE/ZGenericFunct.js';
 import VUEInputFornitore from '@/components/InputComponents/VUEInputFornitore.vue';
@@ -1395,7 +1402,8 @@ export default
                     IDClienteTemporaneo                               : -1,
                     IDFornitoreTemporaneo                             : -1,
                     PopupGestisciImporti                              : false,
-                    PopupGestisciImportiFornitori                     : false
+                    PopupGestisciImportiFornitori                     : false,
+                    NomeProgramma                                     : NOME_PROGRAMMA
              };
   },
   props : ['SchedaMovimento'],
