@@ -204,7 +204,9 @@
       <div v-if="!NascondiRecapiti && !NascondiTimes" style="float:left;width:1%;">&nbsp;</div>
 
       <div v-if="!NascondiTimes" :style="{ width : TimesWidth + '%' }" style="float:left">
-         <VUEDataTableSecondaria :DataTableSecondaria="CurrentDataTableSecondaria"/>
+         <VUEDataTableSecondaria :DataTable="CurrentDataTableSecondaria"
+                                 :NomeProgramma="'Gemini'" 
+                                 :PathLogo="require('../../assets/images/LogoGemini2.png')"/>
       </div>
       
       <div class="ZMSeparatoreFiltri">&nbsp;</div>
@@ -242,7 +244,7 @@ import VUEInputCAP from '@/components/InputComponents/VUEInputCAP.vue';
 import VUEInputZone from '@/components/InputComponents/VUEInputZone.vue';
 import VUEInputProvince from '@/components/InputComponents/VUEInputProvince.vue';
 import VUEInputNazioni from '@/components/InputComponents/VUEInputNazioni.vue';
-import VUEDataTableSecondaria from '@/components/VUEDataTableSecondaria.vue'
+import VUEDataTableSecondaria from '../../../../../../../../Librerie/VUE/TemplateGestionale/VUEDataTable2Secondaria.vue';
 import VUEConfirm from '@/components/VUEConfirm.vue';
 import VUEModal from '@/components/Slots/VUEModal.vue';
 import VUERecapiti from '@/views/SchedeDatabase/ComponentMultiScheda/VUERecapiti.vue';
@@ -279,12 +281,34 @@ export default
               ElencoLogFiliali           : []
             }
   },
+  
+  watch: 
+  {
+    CurrentDataTableSecondaria :
+    { 
+        handler(NewValue,OldValue)
+        {
+          if(NewValue != OldValue && NewValue != undefined)
+          {
+            this.CurrentDataTableSecondaria.AssignOnRowChange(() =>
+            {
+              this.CurrentRiga.OnChange()
+            })
+
+            this.CurrentDataTableSecondaria.AssignOnRowDelete(() =>
+            {
+              this.CurrentRiga.OnChange()
+            })
+          } 
+        },
+        immediate : true
+    },
+  },
+
   methods: 
   {
     OnRecapitiChange()
     {
-      console.log(this.CurrentDataTableRecapiti.DataTableTelefono);
-      
       this.CurrentRiga.OnChange()
     },
 
