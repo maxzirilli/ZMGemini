@@ -1,12 +1,20 @@
 <template>
     <div>
-      <VUEConfirm :Popup="PopupContentAmm" :Richiesta="'Vuoi inviare ' + (ListaDocumentiSelezionati.length != 1? 'i documenti' : 'il documento') + ' allo SdI?'" @onClickConfermaPopup="ConfermaInvioFatt" @onClickChiudiPopup="AnnullaInvioFatt">
+      <VUEConfirm :Popup="PopupContentAmm" 
+                  :PathLogo="require('../../assets/images/LogoGemini2.png')"
+                  :Programma="NomeProgramma"
+                  :Richiesta="'Vuoi inviare ' + (ListaDocumentiSelezionati.length != 1? 'i documenti' : 'il documento') + ' allo SdI?'" @onClickConfermaPopup="ConfermaInvioFatt" @onClickChiudiPopup="AnnullaInvioFatt">
       </VUEConfirm>
 
-      <VUEConfirm :Popup="PopupContentAmmPagina" :Richiesta="'Vuoi inviare ' + (ListaDocumentiSelezionati.length != 1? 'i documenti' : 'il documento') + ' di questa pagina allo SdI?'" @onClickConfermaPopup="ConfermaInvioFattPagina" @onClickChiudiPopup="AnnullaInvioFattPagina">
+      <VUEConfirm :Popup="PopupContentAmmPagina" :PathLogo="require('../../assets/images/LogoGemini2.png')"
+                  :Programma="NomeProgramma"
+                  :Richiesta="'Vuoi inviare ' + (ListaDocumentiSelezionati.length != 1? 'i documenti' : 'il documento') + ' di questa pagina allo SdI?'" @onClickConfermaPopup="ConfermaInvioFattPagina" @onClickChiudiPopup="AnnullaInvioFattPagina">
       </VUEConfirm>
 
-      <VUEModal v-if="ConfermaDocumentiInviati" :Titolo="'Comunicazione'" :Altezza="'130px'" :Larghezza="'400px'"
+      <VUEModal v-if="ConfermaDocumentiInviati" :PathLogo="require('../../assets/images/LogoGemini2.png')"
+                                                :Programma="NomeProgramma"
+                                                :Titolo="'Comunicazione'" 
+                                                :Altezza="'130px'" :Larghezza="'400px'"
                    @onClickChiudiModal="ConfermaDocumentiInviati = false" @onClickConfermaModal="ConfermaDocumentiInviati = false">
         <template v-slot:Body>
         <div class="form-row">
@@ -125,11 +133,11 @@
 </template>
 
 <script>
-import { SystemInformation } from '@/SystemInformation.js'
+import { SystemInformation, NOME_PROGRAMMA } from '@/SystemInformation.js'
 import { TZDateFunct } from '../../../../../../../../Librerie/VUE/ZDateFunct.js'
 import { saveAs } from 'file-saver';
-import VUEConfirm from '@/components/VUEConfirm.vue';
-import VUEModal from '@/components/Slots/VUEModal.vue';
+import VUEConfirm from '../../../../../../../../Librerie/VUE/TemplateGestionale/VUEConfirm.vue';
+import VUEModal from '../../../../../../../../Librerie/VUE/TemplateGestionale/VUEModal.vue';
 import { TSchedaFattura } from '../SchedeDatabase/VUESchedaFattura.vue';
 import { TSchedaNotaDiCredito } from '../SchedeDatabase/VUESchedaNotaDiCredito.vue';
 import VUEModalCaricamentoDati, { TOggettoModalCaricamentoDati } from '../../../../../../../../Librerie/VUE/TemplateGestionale/VUEModalCaricamentoDati.vue';
@@ -147,6 +155,7 @@ export default
             ControlloInvioFatture       : false,
             ConfermaDocumentiInviati    : false,
             OggettoModalCaricamentoDati : new TOggettoModalCaricamentoDati(),
+            NomeProgramma               : NOME_PROGRAMMA,
             Paginazione                 : {
                                             NrRighe           : 30,
                                             NrPagina          : 1,

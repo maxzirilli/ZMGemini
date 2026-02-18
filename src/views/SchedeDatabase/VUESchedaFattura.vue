@@ -1,22 +1,30 @@
 <template ref="refTemplate">
   <VUEModalCaricamentoDati v-if="PopupAttesaCalcolo" :PathGif="require('@/assets/images/CaricamentoDatiGif.gif')"/>
   
- <VUEConfirm :Popup="PopupSchedaFattura" :Richiesta="'Vuoi numerare la fattura?'" @onClickConfermaPopup="ConfermaNumerazioneFattura" @onClickChiudiPopup="AnnullaPopup">
+ <VUEConfirm :Popup="PopupSchedaFattura" 
+              :PathLogo="require('../../assets/images/LogoGemini2.png')"
+              :Programma="NomeProgramma"
+              :Richiesta="'Vuoi numerare la fattura?'" @onClickConfermaPopup="ConfermaNumerazioneFattura" @onClickChiudiPopup="AnnullaPopup">
  </VUEConfirm>
 
  <VUEConfirm :Popup="SchedaFattura.PopupAnticipoCliente" 
+             :PathLogo="require('../../assets/images/LogoGemini2.png')"
+            :Programma="NomeProgramma"
              :Richiesta="'Il cliente ha un anticipo da scalare. Vuoi aggiungere ' + SchedaFattura.AnticipoCliente + ' € di anticipo alla fattura?'" 
              @onClickConfermaPopup="ConfermaAnticipoInFattura" 
              @onClickChiudiPopup="OnClickRifiutaAnticipo">
  </VUEConfirm>
 
  <VUEConfirm :Popup="SchedaFattura.PopupNotaDiCreditoApertaCliente" 
+             :PathLogo="require('../../assets/images/LogoGemini2.png')"
+             :Programma="NomeProgramma"
              :Richiesta="'Il cliente ha una nota di credito da scalare. Vuoi andare alla nota?'" 
              @onClickConfermaPopup="OnClickConfermaVaiAllaNotaDiCreditoAperta" 
              @onClickChiudiPopup="OnClickRifiutaVaiAllaNotaDiCreditoAperta">
  </VUEConfirm>
 
- <VUEConfirm :Popup="PopupCorreggiFattura" :Richiesta="'Vuoi correggere la fattura?'" @onClickConfermaPopup="ConfermaCorrezione" @onClickChiudiPopup="AnnullaPopup">
+ <VUEConfirm :Popup="PopupCorreggiFattura"  :PathLogo="require('../../assets/images/LogoGemini2.png')"
+             :Programma="NomeProgramma" :Richiesta="'Vuoi correggere la fattura?'" @onClickConfermaPopup="ConfermaCorrezione" @onClickChiudiPopup="AnnullaPopup">
  </VUEConfirm>
  <VUEModal v-if="PopupScegliFileXML" :Titolo="'Lista file .xml'" :Altezza="'20%'" :Larghezza="'50%'"
           @onClickChiudiModal="OnClickChiudiPopupScegliFile">
@@ -757,7 +765,8 @@ import { SystemInformation,
          PAGAMENTO_BOLLO,
          FATT_ELE_ESIGIBILITA_IVA, 
          DOCUMENTO_CORRELATO,
-         RUOLI } from '@/SystemInformation.js'
+         RUOLI,
+         NOME_PROGRAMMA } from '@/SystemInformation.js'
 import VUEModalButtonRecapitiFiliali from '@/components/VUEModalButtonRecapitiFiliali.vue'
 import VUEInputCondPagamenti from '@/components/InputComponents/VUEInputCondPagamenti.vue';
 import VUEInputClienti from '@/components/InputComponents/VUEInputClienti.vue';
@@ -777,7 +786,7 @@ import VUEInputEsigibilitaIVA from '@/components/InputComponents/VUEInputEsigibi
 import { TZEconomicFunct, TZCheckDatiFiscali } from '../../../../../../../../Librerie/VUE/ZEconomicFunct.js';
 import VUELogDocumentiEconomici, { TSchedaLogDocumentiEconomici } from '@/views/SchedeDatabase/ComponentMultiScheda/VUELogDocumentiEconomici.vue';
 import { TZStringConvFunct } from '../../../../../../../../Librerie/VUE/ZStringConvFunct.js'
-import VUEConfirm from '@/components/VUEConfirm.vue';
+import VUEConfirm from '../../../../../../../../Librerie/VUE/TemplateGestionale/VUEConfirm.vue';
 import { saveAs } from 'file-saver';
 import VUEModal from '@/components/Slots/VUEModal.vue';
 import VUEInputContoCorrente from '@/components/InputComponents/VUEInputContoCorrente.vue'
@@ -2160,6 +2169,7 @@ export default
               CostantePagamentoBollo            : PAGAMENTO_BOLLO,
               VisibilitaLogVariazioni           : SystemInformation.AccessRights.VisibilitaLogVariazioni(),
               VisibilitaNotaDiDebito            : SystemInformation.AccessRights.VisibilitaNotaDiDebito(),
+              NomeProgramma                     : NOME_PROGRAMMA,
               PopupAttesaCalcolo                : false,
               NumerazioneAvviata                : false,
               Tabs                              : {

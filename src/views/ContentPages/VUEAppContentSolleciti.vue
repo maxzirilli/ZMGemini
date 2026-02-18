@@ -16,10 +16,14 @@
                       @onClickTerzoLivello='SelezionaTerzoLivello()'>
   </VUEModalInvioEmail>
    
-  <VUEConfirm :Popup="PopupAnnullamento" :Richiesta="'Sei sicuro di voler eliminare la nota?'" @onClickConfermaPopup="ConfermaEliminazione" @onClickChiudiPopup="AnnullaAnnullamento">
+  <VUEConfirm :Popup="PopupAnnullamento" :PathLogo="require('../../assets/images/LogoGemini2.png')"
+              :Programma="NomeProgramma"
+              :Richiesta="'Sei sicuro di voler eliminare la nota?'" @onClickConfermaPopup="ConfermaEliminazione" @onClickChiudiPopup="AnnullaAnnullamento">
   </VUEConfirm>
 
-  <VUEConfirm :Popup="PopupEventi" :Richiesta="'Annullare le modifiche agli eventi?'" @onClickConfermaPopup="ConfermaAnnullamentoEventi" @onClickChiudiPopup="AnnullaAnnullamentoEventi">
+  <VUEConfirm :Popup="PopupEventi" :PathLogo="require('../../assets/images/LogoGemini2.png')"
+              :Programma="NomeProgramma"
+              :Richiesta="'Annullare le modifiche agli eventi?'" @onClickConfermaPopup="ConfermaAnnullamentoEventi" @onClickChiudiPopup="AnnullaAnnullamentoEventi">
   </VUEConfirm>
 
     <div @keydown="KeyDownF2($event)">
@@ -211,14 +215,12 @@
   </div>
 </template>
 
-
-
 <script>
 import VUEInputClienti from '@/components/InputComponents/VUEInputClienti.vue';
-import VUEConfirm from '@/components/VUEConfirm.vue';
+import VUEConfirm from '../../../../../../../../Librerie/VUE/TemplateGestionale/VUEConfirm.vue';
 import VUEDataTable from '../../../../../../../../Librerie/VUE/TemplateGestionale/VUEDataTable2.vue';
 import { TZDataTable, TZDTableColumnType } from '../../../../../../../../Librerie/VUE/ZDataTable2.js';
-import { SystemInformation } from '@/SystemInformation.js';
+import { SystemInformation, NOME_PROGRAMMA } from '@/SystemInformation.js';
 import VUEModalInvioEmail from '@/views/SchedeDatabase/ComponentMultiScheda/VUEModalInvioEmail.vue';
 import VUEModalCaricamentoDati from '../../../../../../../../Librerie/VUE/TemplateGestionale/VUEModalCaricamentoDati.vue';
 import { TZDateFunct } from '../../../../../../../../Librerie/VUE/ZDateFunct.js';
@@ -301,7 +303,8 @@ export default
                                                Allegato      : []
                                              }, 
             LsChiavi                        : [],
-            AllegatoMancante                : false
+            AllegatoMancante                : false,
+            NomeProgramma                   : NOME_PROGRAMMA
           }                         
   },
 

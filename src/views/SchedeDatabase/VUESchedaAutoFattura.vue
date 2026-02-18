@@ -1,6 +1,9 @@
 <template>
- <VUEConfirm :Popup="PopupCorreggiAutoFattura" :Richiesta="'Vuoi correggere l\'autofattura?'" @onClickConfermaPopup="ConfermaCorrezione" @onClickChiudiPopup="AnnullaPopup">
+ <VUEConfirm :Popup="PopupCorreggiAutoFattura" :PathLogo="require('../../assets/images/LogoGemini2.png')"
+             :Programma="NomeProgramma"
+             :Richiesta="'Vuoi correggere l\'autofattura?'" @onClickConfermaPopup="ConfermaCorrezione" @onClickChiudiPopup="AnnullaPopup">
   </VUEConfirm>
+
      <VUEModal v-if="PopupScegliFileXML" :Titolo="'Lista file .xml'" :Altezza="'200px'" :Larghezza="'600px'"
             @onClickChiudiModal="OnClickChiudiPopupScegliFile">
         <template v-slot:Body>
@@ -256,7 +259,8 @@ import { SystemInformation,
          DASHBOARD_FILTER_TYPES,
          TIPO_AUTOFATTURA,
          RIFERIMENTO_CAUSALI,
-         RUOLI } from '@/SystemInformation.js'
+         RUOLI,
+         NOME_PROGRAMMA } from '@/SystemInformation.js'
 import { TZFatturaElettronica,
          TZFattElettronicaRegimeFiscale,
          TZFatturaTipoRitenuta } from '../../../../../../../../Librerie/VUE/ZFatturaElettronica.js';
@@ -275,7 +279,7 @@ import { ID_NODO_AUTOFATTURE } from '@/NodiVuoti'
 import VUEInputEsigibilitaIVA from '@/components/InputComponents/VUEInputEsigibilitaIVA.vue';
 import { TZEconomicFunct, TZCheckDatiFiscali } from '../../../../../../../../Librerie/VUE/ZEconomicFunct.js';
 import { TZStringConvFunct } from '../../../../../../../../Librerie/VUE/ZStringConvFunct.js'
-import VUEConfirm from '@/components/VUEConfirm.vue';
+import VUEConfirm from '../../../../../../../../Librerie/VUE/TemplateGestionale/VUEConfirm.vue';
 import { saveAs } from 'file-saver';
 import VUEModal from '@/components/Slots/VUEModal.vue';
 
@@ -624,6 +628,7 @@ export default
               LsRegimiFiscali           : TZFatturaElettronica.GetLsRegimiFiscali(),
               LsTipoRitenuta            : TZFatturaElettronica.GetLsTipoRitenuta(),
               VisibilitaLogVariazioni   : SystemInformation.AccessRights.VisibilitaLogVariazioni(),
+              NomeProgramma             : NOME_PROGRAMMA,
 
               Tabs                      : {
                                             ActiveTab : 'AutoFattura',

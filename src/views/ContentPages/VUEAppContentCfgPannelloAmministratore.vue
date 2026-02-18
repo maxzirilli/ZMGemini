@@ -1,5 +1,7 @@
 <template>
-  <VUEConfirm :Popup="PopupCfgAmministratore" :Richiesta="'Annullare le modifiche effettuate?'" @onClickConfermaPopup="ConfermaElimina" @onClickChiudiPopup="AnnullaElimina">
+  <VUEConfirm :Popup="PopupCfgAmministratore" :PathLogo="require('../../assets/images/LogoGemini2.png')"
+              :Programma="NomeProgramma"
+              :Richiesta="'Annullare le modifiche effettuate?'" @onClickConfermaPopup="ConfermaElimina" @onClickChiudiPopup="AnnullaElimina">
   </VUEConfirm>
   <div v-if="ModificheDaApplicare" style="text-align:right;padding-top:2px;padding-bottom:2px">
       <a v-if="CanRecord()" class="btn btn-s-md btn-success" style="margin-right:20px" @click="Registra()">Conferma</a>
@@ -199,7 +201,7 @@
             <label style="font-weight: bold;">SMTP from name</label>
             <input style="text-transform: none!important" type="text" class="form-control" v-model="Dati.MailAvvisi.FromName" placeholder="SMTP from name"/>
         </div>
-        <div v-if="VisibilitaImap" style="float:left;width:100%">
+        <div style="float:left;width:100%">
             <label style="font-weight: bold;">IMAP configuration avvisi</label>
             <input style="text-transform: none!important" type="text" class="form-control" v-model="Dati.MailAvvisi.ImapAvvisi" placeholder="Imap solleciti"/>
         </div>
@@ -245,7 +247,7 @@
             <label style="font-weight: bold;">SMTP from name</label>
             <input style="text-transform: none!important" type="text" class="form-control" v-model="Dati.MailSolleciti.FromName" placeholder="SMTP from name"/>
         </div>
-        <div v-if="VisibilitaImap" style="float:left;width:100%">
+        <div style="float:left;width:100%">
             <label style="font-weight: bold;">IMAP configuration solleciti</label>
             <input style="text-transform: none!important" type="text" class="form-control" v-model="Dati.MailSolleciti.ImapSolleciti" placeholder="Imap avvisi"/>
         </div>
@@ -293,7 +295,7 @@
             <label style="font-weight: bold;">SMTP from name</label>
             <input style="text-transform: none!important" type="text" class="form-control" v-model="Dati.MailFatture.FromName" placeholder="SMTP from name"/>
         </div>
-        <div v-if="VisibilitaImap" style="float:left;width:100%">
+        <div style="float:left;width:100%">
             <label style="font-weight: bold;">IMAP configuration fatture</label>
             <input style="text-transform: none!important" type="text" class="form-control" v-model="Dati.MailFatture.ImapFatture" placeholder="Imap fatture"/>
         </div>
@@ -359,8 +361,8 @@
 </template>
 
 <script>
-import { SystemInformation } from '@/SystemInformation';
-import VUEConfirm from '@/components/VUEConfirm.vue';
+import { SystemInformation, NOME_PROGRAMMA } from '@/SystemInformation';
+import VUEConfirm from '../../../../../../../../Librerie/VUE/TemplateGestionale/VUEConfirm.vue';
 import { TSchedaGenerica } from '../../../../../../../../Librerie/VUE/ZSchedaGenerica.js'
 import { TSchedaGenericaCharCase } from '@/../../../../../../Librerie/VUE/ZSchedaGenerica.js'
 
@@ -475,6 +477,7 @@ export default
               PopupCfgAmministratore          : false,
               OpzioniStileGrafico             : TSchedaGenericaCharCase,
               ListaMagazzini                  : SystemInformation.Configurazioni.Magazzini,
+              NomeProgramma                   : NOME_PROGRAMMA
      }
   },
 
@@ -563,7 +566,7 @@ export default
           SystemInformation.GetConfigurazioni(function()
           {
             ObjQuery = {};
-            Self.Annulla();
+            // Self.Annulla();
             Self.CaricaDatiMySond();
           })
       },
@@ -682,7 +685,7 @@ export default
     //    SystemInformation.AdvQuery.GetSQL('Testi',{},
     //                                      function(Results)
     //                                      {
-    //                                        let ArrayInfo = SystemInformation.AdvQuery.FindResults(Results,"TuttiTesti");
+    //                                        ArrayInfo = SystemInformation.AdvQuery.FindResults(Results,"TuttiTesti");
                                            
     //                                        Self.Snapshot = JSON.stringify(Self.Dati)                                        
     //                                      },
@@ -705,13 +708,9 @@ export default
 
   beforeMount() 
   {
-    // let Self = this
-    // SystemInformation.ControlloUtenteTecnico(function()
-    // {
-    //   Self.ActiveTab = 'MySond'
-    //   Self.CaricaDatiMySond();
-    //   Self.Annulla();
-    // })
+    this.ActiveTab = 'MySond'
+    this.CaricaDatiMySond();
+    // this.Annulla();
   },
 }
 </script>

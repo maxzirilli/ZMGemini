@@ -1,6 +1,8 @@
 <template>
 
   <VUEConfirm :Popup="PopupIncrementaRevisione" 
+              :PathLogo="require('../../assets/images/LogoGemini2.png')"
+              :Programma="NomeProgramma"
               :Richiesta="'Sei sicuro di voler incrementare il numero di revisione?'" 
               @onClickConfermaPopup="ConfermaIncrementaRevisione"
               @onClickChiudiPopup="AnnullaIncrementaRevisione">
@@ -547,7 +549,8 @@ import { SystemInformation,
                              
                             DASHBOARD_FILTER_TYPES, 
                             DOCUMENTO_CORRELATO,
-                            RUOLI } from '@/SystemInformation.js'
+                            RUOLI,
+                            NOME_PROGRAMMA } from '@/SystemInformation.js'
 import VUEInputCondPagamenti from '@/components/InputComponents/VUEInputCondPagamenti.vue';
 import VUEInputClienti from '@/components/InputComponents/VUEInputClienti.vue';
 import VUEInputCodiceFiscale from '@/components/InputComponents/VUEInputCodiceFiscale.vue';
@@ -555,7 +558,7 @@ import VUEInputPartitaIVA from '@/components/InputComponents/VUEInputPartitaIVA.
 import VUEInputCausali from '@/components/InputComponents/VUEInputCausali.vue';
 import VUEInputProvince from '@/components/InputComponents/VUEInputProvince.vue';
 import VUEInputCAP from '@/components/InputComponents/VUEInputCAP.vue';
-import VUEConfirm from '@/components/VUEConfirm.vue';
+import VUEConfirm from '../../../../../../../../Librerie/VUE/TemplateGestionale/VUEConfirm.vue';
 import VUEInputNazioni from '@/components/InputComponents/VUEInputNazioni.vue';
 import VUEInputZone from '@/components/InputComponents/VUEInputZone.vue';
 import VUEVociPreventivoMultiparametrico, { TSchedaVociPreventivoMultiparametrico } from '@/views/SchedeDatabase/ComponentMultiScheda/VUEVociPreventivoMultiparametrico.vue';
@@ -700,10 +703,6 @@ export class TSchedaPreventivoMultiparametrico extends TSchedaGenerica
                                       },
                                       {
                                         Query     : "EliminaVociSoluzioniCollegateAlPreventivo",
-                                        Parametri : { CHIAVE : this.Chiave }
-                                      },
-                                      {
-                                        Query     : "EliminaAttrezzSoluzioniCollegateAlPreventivo",
                                         Parametri : { CHIAVE : this.Chiave }
                                       },
                                       {
@@ -1454,6 +1453,7 @@ export default
               SchedaPreventivoCreataDaConferma   : null,
               RevisioneScelta                    : null,
               RevisioneSelezionata               : null,
+              NomeProgramma                      : NOME_PROGRAMMA,
               OggettoEmail                       : {
                                                     CorpoEmail   : '',
                                                     Cc           : '',

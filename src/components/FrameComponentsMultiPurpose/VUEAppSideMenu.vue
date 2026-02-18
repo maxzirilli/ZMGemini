@@ -368,14 +368,6 @@ export default
                               IconCfgExpanded : "fa-angle-up", 
                               IconCfgShrinked : "fa-angle-down"
                             });
-
-            AMenu.AddChild("Gestione dispositivi",
-                            { 
-                              IdMenu          : TIdSideMenu.AMM_GESTIONE_DISPOSITIVI, 
-                              IconCfg         : "fa-angle-right", 
-                              IconCfgExpanded : "fa-angle-up", 
-                              IconCfgShrinked : "fa-angle-down"
-                            });
             }
             if (SystemInformation.UserInformation.Ruolo == RUOLI.Amministratore)
             {

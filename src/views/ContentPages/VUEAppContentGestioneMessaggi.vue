@@ -1,7 +1,8 @@
 <template>
     
     <div class="container" style="width:100%">
-      <VUEConfirm :Popup="PopupContentGestioneMessaggi" :Richiesta="PopupDescr" @onClickConfermaPopup="ConfermaElimina" @onClickChiudiPopup="AnnullaElimina">
+      <VUEConfirm :Popup="PopupContentGestioneMessaggi" :PathLogo="require('../../assets/images/LogoGemini2.png')"
+                  :Programma="NomeProgramma" :Richiesta="PopupDescr" @onClickConfermaPopup="ConfermaElimina" @onClickChiudiPopup="AnnullaElimina">
     </VUEConfirm>
 
         <div class="row"> 
@@ -66,8 +67,8 @@
 
 
 <script>
-import { SystemInformation} from '@/SystemInformation.js'
-import VUEConfirm from '@/components/VUEConfirm.vue';
+import { SystemInformation, NOME_PROGRAMMA} from '@/SystemInformation.js'
+import VUEConfirm from '../../../../../../../../Librerie/VUE/TemplateGestionale/VUEConfirm.vue';
 
 export default {
     name:'app',
@@ -80,7 +81,8 @@ export default {
                 ListaMessaggi                : [],
                 PopupContentGestioneMessaggi : false,
                 MessaggioPopup               : {},
-                PopupDescr                   : ''
+                PopupDescr                   : '',
+                NomeProgramma                : NOME_PROGRAMMA
               }
     },
     methods :

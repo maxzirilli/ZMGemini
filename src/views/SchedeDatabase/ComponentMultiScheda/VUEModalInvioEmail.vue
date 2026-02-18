@@ -1,5 +1,7 @@
 <template>
- <VUEModal v-if="AttivazionePopup" :Titolo="Titolo" :Altezza="'500px'" :Larghezza="'60%'"
+ <VUEModal v-if="AttivazionePopup" :PathLogo="require('@/assets/images/LogoGemini2.png')"
+                                   :Programma="NomeProgramma" 
+                                   :Titolo="Titolo" :Altezza="'500px'" :Larghezza="'60%'"
           @onClickChiudiModal="OnClickChiudiModal">
     <template v-slot:Body>
         <div class="ZMNuovaRigaScheda">
@@ -52,7 +54,8 @@
 </template>
 
 <script>
-import VUEModal from '@/components/Slots/VUEModal.vue';
+import VUEModal from '../../../../../../../../../Librerie/VUE/TemplateGestionale/VUEModal.vue';
+import { NOME_PROGRAMMA } from '@/SystemInformation';
 
 export default 
 {
@@ -66,6 +69,7 @@ export default
   data()
   {
     return { 
+             NomeProgramma : NOME_PROGRAMMA
            }
   },
 

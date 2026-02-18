@@ -446,6 +446,27 @@ h4 {
   }
 }
 
+/* IMPOSTAZIONI FINESTRE MODALI */
 
+.btn-close-modal {
+  color: #fff !important;
+  background-color: #4cc0c1;
+  border-color: #4cc0c1;
+}
+.btn-close-modal:hover,
+.btn-close-modal:focus,
+.btn-close-modal:active,
+.btn-close-modal.active,
+.open .dropdown-toggle.btn-close-modal {
+  color: #fff !important;
+  background-color: #3fb4b5;
+  border-color: #3ba9a9;
+}
 
-  /* HOMEPAGE */
+.custom-modal-header-footer {
+  background-color: #1d94c3;
+}
+
+.custom-modal-content {
+  background-color: #accce8;
+}

@@ -1,23 +1,30 @@
 <template>
   <VUEConfirm :Popup="PopupStampa" 
               :Richiesta="TestoPopupStampa" 
+              :PathLogo="require('@/assets/images/LogoGemini2.png')"
+              :Programma="NomeProgramma"
               @onClickConfermaPopup="ConfermaStampa"
               @onClickChiudiPopup="AnnullaStampa">
   </VUEConfirm>
 
   <VUEConfirm :Popup="PopupElimina" 
               :Richiesta="TestoPopupElimina" 
+              :PathLogo="require('@/assets/images/LogoGemini2.png')"
+              :Programma="NomeProgramma"
               @onClickConfermaPopup="ConfermaElimina" 
               @onClickChiudiPopup="AnnullaElimina">
   </VUEConfirm>
 
   <VUEConfirm :Popup="PopupFunzNodo1" 
               :Richiesta="TestoPopupFunzNodo1" 
+              :PathLogo="require('@/assets/images/LogoGemini2.png')"
+              :Programma="NomeProgramma"
               @onClickConfermaPopup="ConfermaFunzNodo1()" 
               @onClickChiudiPopup="AnnullaFunzNodo1">
   </VUEConfirm>
 
-  <VUEModal v-if="PopupRevisione" :Titolo="'Conferma'" :Altezza="'700px'" :Larghezza="'1500px'" 
+  <VUEModal v-if="PopupRevisione" :PathLogo="require('@/assets/images/LogoGemini2.png')"
+            :Programma="NomeProgramma" :Titolo="'Conferma'" :Altezza="'700px'" :Larghezza="'1500px'" 
             @onClickChiudiModal="AnnullaStampa" @onClickConfermaModal="ConfermaStampa">
             <template v-slot:Body>
               <div class="col-md-12">                
@@ -43,6 +50,8 @@
 
   <VUEModalInvioEmail v-if="Nodo != undefined"
                       :Titolo ="TitoloMail"
+                      :PathLogo="require('@/assets/images/LogoGemini2.png')"
+                      :Programma="NomeProgramma"
                       :AttivazionePopup="PopupInviaEmail" 
                       :OggettoEmail="OggettoEmail"
                       :ListaEmailCliente="Nodo.Data.ListaEmailCliente"
@@ -137,9 +146,9 @@
 </template>
 
 <script>
-import { SystemInformation, CAPTION_FILTERS, LIMITA_RIGHE_CARICATE } from '@/SystemInformation'
-import VUEConfirm from '@/components/VUEConfirm.vue';
-import VUEModal from '@/components/Slots/VUEModal.vue';
+import { SystemInformation, CAPTION_FILTERS, LIMITA_RIGHE_CARICATE, NOME_PROGRAMMA} from '@/SystemInformation'
+import VUEConfirm from '../../../../../../../Librerie/VUE/TemplateGestionale/VUEConfirm.vue';
+import VUEModal from '../../../../../../../Librerie/VUE/TemplateGestionale/VUEModal.vue';
 import VUESchedaPreventivoMultiparametrico, { TSchedaPreventivoMultiparametrico } from '@/views/SchedeDatabase/VUESchedaPreventivoMultiparametrico.vue';
 import VUEModalInvioEmail from '@/views/SchedeDatabase/ComponentMultiScheda/VUEModalInvioEmail.vue';
 import { TFilterFattura } from '@/ListaFiltri.js'
@@ -174,6 +183,7 @@ import { TFilterFattura } from '@/ListaFiltri.js'
                 FilterFattura             : new TFilterFattura(),
                 CaptionFilters            : CAPTION_FILTERS,
                 NRigheCaricate            : LIMITA_RIGHE_CARICATE,
+                NomeProgramma             : NOME_PROGRAMMA
      }
     },
     components: { VUEConfirm, VUEModalInvioEmail, VUEModal, VUESchedaPreventivoMultiparametrico },

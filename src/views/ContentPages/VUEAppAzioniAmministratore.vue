@@ -2,12 +2,14 @@
 <VUEModalCaricamentoDati v-if="PopupAttesaCalcolo" :PathGif="require('@/assets/images/CaricamentoDatiGif.gif')"/>
 
 <VUEConfirm :Popup="PopupConfermaAggiornamentoCoordinateFiliali" 
+            :PathLogo="require('@/assets/images/LogoGemini2.png')"
+            :Programma="NomeProgramma"
             :Richiesta="'Sei sicuro di voler recuperare le coordinate delle filiali che non le hanno?'" 
             @onClickConfermaPopup="ConfermaAggiornamentoCoordinateFiliali" 
             @onClickChiudiPopup="Annulla">
 </VUEConfirm>
 
-<VUEModal v-if="PopupMostraRisultati" :Titolo="'[ADMIN] Funzionalità per admin'" :Altezza="'500px'" :Larghezza="'850px'"
+<VUEModal v-if="PopupMostraRisultati" :PathLogo="require('@/assets/images/LogoGemini2.png')" :Programma="NomeProgramma" :Titolo="'[ADMIN] Funzionalità per admin'" :Altezza="'500px'" :Larghezza="'850px'"
           @onClickChiudiModal="Annulla">
    <template v-slot:Body>
     <div class="form-row" style="max-height:320px; overflow-y:auto; padding:10px;">
@@ -23,7 +25,8 @@
   </template>
 </VUEModal>
 
-<VUEModal v-if="PopupImportazioneLogRapportoAdmin" :Titolo="'[ADMIN] Funzionalità per admin'" :Altezza="'150px'" :Larghezza="'550px'"
+<VUEModal v-if="PopupImportazioneLogRapportoAdmin" :PathLogo="require('@/assets/images/LogoGemini2.png')"
+                 :Programma="NomeProgramma" :Titolo="'[ADMIN] Funzionalità per admin'" :Altezza="'150px'" :Larghezza="'550px'"
           @onClickChiudiModal="PopupImportazioneLogRapportoAdmin = false">
   <template v-slot:Body>
     <div class="form-row">
@@ -73,9 +76,9 @@
 </template>
   
 <script>
-  import { SystemInformation, RUOLI } from '@/SystemInformation';
-  import VUEConfirm from '@/components/VUEConfirm.vue';
-  import VUEModal from '@/components/Slots/VUEModal.vue';
+  import { SystemInformation, RUOLI, NOME_PROGRAMMA } from '@/SystemInformation';
+  import VUEConfirm from '../../../../../../../../Librerie/VUE/TemplateGestionale/VUEConfirm.vue';
+  import VUEModal from '../../../../../../../../Librerie/VUE/TemplateGestionale/VUEModal.vue';
   import VUEModalCaricamentoDati from '../../../../../../../../Librerie/VUE/TemplateGestionale/VUEModalCaricamentoDati.vue';
   import { TZDateFunct } from '../../../../../../../../Librerie/VUE/ZDateFunct';
   
@@ -93,6 +96,7 @@
                 RisultatiCreazione                          : null,
                 PopupMostraRisultati                        : false,
                 PopupConfermaAggiornamentoCoordinateFiliali : false,
+                NomeProgramma                               : NOME_PROGRAMMA
       }
     },
     components : 

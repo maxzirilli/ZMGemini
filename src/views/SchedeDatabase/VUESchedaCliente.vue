@@ -1,11 +1,15 @@
 <template>
   <VUEConfirm :Popup="SchedaCliente.PopupConfermaDoppioCodiceFiscale" 
+              :PathLogo="require('../../assets/images/LogoGemini2.png')"
+              :Programma="NomeProgramma"
               :Richiesta="'Attenzione: il codice fiscale è già presente.\n\nSei sicuro di voler inserire il nuovo cliente?'" 
               @onClickConfermaPopup="SchedaCliente.PopupConfermaDoppioCodiceOnSuccess" 
               @onClickChiudiPopup="AnnullaPopUpCF">
   </VUEConfirm>
   
   <VUEConfirm :Popup="SchedaCliente.PopupAggiornaAvvisoFattura.Visibile" 
+              :PathLogo="require('../../assets/images/LogoGemini2.png')"
+              :Programma="NomeProgramma"
               :Altezza="'130px'"
               :Richiesta="SchedaCliente.PopupAggiornaAvvisoFattura.MessaggioPopup" 
               @onClickConfermaPopup="OnChangeDatiAvviso()" 
@@ -14,6 +18,8 @@
   </VUEConfirm>
   
   <VUEConfirm :Popup="PopupDisattivaCliente" 
+              :PathLogo="require('../../assets/images/LogoGemini2.png')"
+              :Programma="NomeProgramma"    
               :Altezza="'130px'"
               :Richiesta="'Stai disattivando questo cliente.'"  
               @onClickConfermaPopup="OnClickConfermaPopupDisattivaCliente" 
@@ -887,7 +893,7 @@
  import { TSchedaGenerica } from '../../../../../../../../Librerie/VUE/ZSchedaGenerica.js'
  import { TZDataTable,TZDTableColumnType } from '../../../../../../../../Librerie/VUE/ZDataTable2.js'
  import VUEDataTable from '../../../../../../../../Librerie/VUE/TemplateGestionale/VUEDataTable2.vue'
- import { SystemInformation, DASHBOARD_FILTER_TYPES, PAGAMENTO_BOLLO, RUOLI, TIPO_SCONTO, TIPOLOGIA_RIGHE_CONTO_CLIENTE } from '@/SystemInformation.js' 
+ import { SystemInformation, DASHBOARD_FILTER_TYPES, PAGAMENTO_BOLLO, RUOLI, TIPO_SCONTO, TIPOLOGIA_RIGHE_CONTO_CLIENTE, NOME_PROGRAMMA } from '@/SystemInformation.js' 
  import VUEInputCAP from '@/components/InputComponents/VUEInputCAP.vue';
  import VUEInputProvince from '@/components/InputComponents/VUEInputProvince.vue';
  import VUEInputNazioni from '@/components/InputComponents/VUEInputNazioni.vue';
@@ -907,7 +913,7 @@
  import { TZFatturaElettronica } from '../../../../../../../../Librerie/VUE/ZFatturaElettronica.js'
  import { TZGenericFunct } from '../../../../../../../../Librerie/VUE/ZGenericFunct';
  import VUEModal from '@/components/Slots/VUEModal.vue';
- import VUEConfirm from '@/components/VUEConfirm.vue';
+ import VUEConfirm from '../../../../../../../../Librerie/VUE/TemplateGestionale/VUEConfirm.vue';
  import VUEDataRowFilialiClienti from '@/components/DataRows/VUEDataRowFilialiClienti.vue';
  import * as XLSX from 'xlsx';
 //  import { TZStringFunct } from '../../../../../../../../Librerie/VUE/ZStringFunct.js';
@@ -2618,8 +2624,7 @@ import VUEAllegati, { TSchedaAllegati } from '../../components/VUEAllegati.vue';
                 PopupDisattivaCliente                 : false,
                 TipiSconti                            : TIPO_SCONTO,
                 VisibilitaCategorieClienti            : SystemInformation.AccessRights.VisibilitaCategorieClienti(),
-                // FiltroProdottiCodice                  : '',
-                // FiltroProdottiDescrizione             : '',
+                NomeProgramma                         : NOME_PROGRAMMA,
                 PopupVisualizzaFattura   : false,
                 PopupDocumento           : false,
                 TipoDocumento            : '',

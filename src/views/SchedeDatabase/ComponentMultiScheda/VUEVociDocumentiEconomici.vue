@@ -2,18 +2,24 @@
 
 <template>
   <VUEConfirm :Popup="PopupVociDocumentiEconomici" 
+              :PathLogo="require('@/assets/images/LogoGemini2.png')"
+              :Programma="NomeProgramma"
               :Richiesta="'Vuoi inserire le spese di trasporto tra le voci della fattura?'" 
               @onClickConfermaPopup="OnClickConfermaPopup" 
               @onClickChiudiPopup="PopupVociDocumentiEconomici = false">
   </VUEConfirm>
 
   <VUEConfirm :Popup="PopupCondPagamentoNonOmogeneeNeiPreventiviCaricati" 
+              :PathLogo="require('@/assets/images/LogoGemini2.png')"
+              :Programma="NomeProgramma"
               :Richiesta="'Stai caricando delle conferme che hanno condizioni di pagamento non omogenee, vuoi continuare o annulli e crei più fatture?'" 
               @onClickConfermaPopup="OnClickPopupCondPagamentoNonOmogeneeNeiPreventiviCaricati" 
               @onClickChiudiPopup="PopupCondPagamentoNonOmogeneeNeiPreventiviCaricati = false">
   </VUEConfirm>
 
   <VUEConfirm :Popup="PopupGeneraNotaDiCredito" 
+              :PathLogo="require('@/assets/images/LogoGemini2.png')"
+              :Programma="NomeProgramma"
               :Richiesta="RichiestaPopupNota" 
               @onClickConfermaPopup="ConfermaGenerazioneNota" 
               @onClickChiudiPopup="PopupGeneraNotaDiCredito = false">
@@ -603,13 +609,13 @@
 </template>
 
 <script>
-import { SystemInformation, PAGAMENTO_BOLLO, TIPO_SCONTO } from '@/SystemInformation.js'
+import { SystemInformation, PAGAMENTO_BOLLO, TIPO_SCONTO, NOME_PROGRAMMA } from '@/SystemInformation.js'
 import VUEInputUdm from '@/components/InputComponents/VUEInputUdm.vue'
 import { TZEconomicFunct } from '../../../../../../../../../Librerie/VUE/ZEconomicFunct.js';
 import { TZDateFunct } from '../../../../../../../../../Librerie/VUE/ZDateFunct.js'
 import { TSchedaGenerica } from '../../../../../../../../../Librerie/VUE/ZSchedaGenerica.js'
 import VUEModal from '@/components/Slots/VUEModal.vue';
-import VUEConfirm from '@/components/VUEConfirm.vue';
+import VUEConfirm from '../../../../../../../../../Librerie/VUE/TemplateGestionale/VUEConfirm.vue';
 import { TZFatturaElettronica, TZFattElettronicaNaturaPagamenti } from '../../../../../../../../../Librerie/VUE/ZFatturaElettronica.js';
 
 const DEFAULT_NATURA_PAGAMENTO = TZFattElettronicaNaturaPagamenti.natInversioneContabileSubappaltoEdile
@@ -1346,6 +1352,7 @@ export default {
               LsPagamentoBollo                  : SystemInformation.GetLsPagamentoBollo(),
               VisibilitaListinoPrezziCliente    : SystemInformation.AccessRights.VisibilitaListinoPrezziCliente(),
               VisibilitaNumeroAnticipo          : SystemInformation.AccessRights.VisibilitaNumeroAnticipo(),
+              NomeProgramma                     : NOME_PROGRAMMA,
               positions                         : {
                                                     clientX: undefined,
                                                     clientY: undefined,

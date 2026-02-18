@@ -1,5 +1,7 @@
 <template>
-  <VUEConfirm :Popup="PopupContentCfgTesti" :Richiesta="'Annullare le modifiche effettuate?'" @onClickConfermaPopup="ConfermaElimina" @onClickChiudiPopup="AnnullaElimina">
+  <VUEConfirm :Popup="PopupContentCfgTesti" :PathLogo="require('../../assets/images/LogoGemini2.png')"
+              :Programma="NomeProgramma" 
+              :Richiesta="'Annullare le modifiche effettuate?'" @onClickConfermaPopup="ConfermaElimina" @onClickChiudiPopup="AnnullaElimina">
   </VUEConfirm>
   
   <div v-if="ModificheDaApplicare" style="text-align:right;padding-top:2px;padding-bottom:2px">
@@ -25,8 +27,8 @@
 </template>
 
 <script>
-import { SystemInformation } from '@/SystemInformation';
-import VUEConfirm from '@/components/VUEConfirm.vue';
+import { SystemInformation, NOME_PROGRAMMA } from '@/SystemInformation';
+import VUEConfirm from '../../../../../../../../Librerie/VUE/TemplateGestionale/VUEConfirm.vue';
 import { TSchedaGenerica } from '../../../../../../../../Librerie/VUE/ZSchedaGenerica.js'
 
 export default 
@@ -40,7 +42,8 @@ export default
                                   DescrizioneCanoneAnnuale          : ''
                                },
         Iniziale             : '',
-        PopupContentCfgTesti : false
+        PopupContentCfgTesti : false,
+        NomeProgramma        : NOME_PROGRAMMA
     }
   },
   components : 

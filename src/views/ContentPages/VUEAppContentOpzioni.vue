@@ -1,5 +1,7 @@
 <template>
- <VUEConfirm :Popup="PopupContentOpzioni" :Richiesta="'Annullare le modifiche effettuate?'" @onClickConfermaPopup="ConfermaElimina" @onClickChiudiPopup="AnnullaElimina">
+ <VUEConfirm :Popup="PopupContentOpzioni" :PathLogo="require('../../assets/images/LogoGemini2.png')"
+             :Programma="NomeProgramma"
+             :Richiesta="'Annullare le modifiche effettuate?'" @onClickConfermaPopup="ConfermaElimina" @onClickChiudiPopup="AnnullaElimina">
  </VUEConfirm>
  <div class="col-md-12">
   <div v-if="ModificheDaApplicare" style="text-align:right;padding-top:2px;padding-bottom:2px">
@@ -246,11 +248,11 @@
 </template>
 
 <script>
-import { SystemInformation } from '@/SystemInformation';
+import { SystemInformation, NOME_PROGRAMMA } from '@/SystemInformation';
 import VUEInputEsigibilitaIVA from '@/components/InputComponents/VUEInputEsigibilitaIVA.vue';
 import VUEInputUdm from '@/components/InputComponents/VUEInputUdm.vue';
 import { TZImageFunct } from '@/../../../../../../Librerie/VUE/ZImageFunct.js'
-import VUEConfirm from '@/components/VUEConfirm.vue';
+import VUEConfirm from '../../../../../../../../Librerie/VUE/TemplateGestionale/VUEConfirm.vue';
 
 export default 
 {
@@ -310,6 +312,7 @@ export default
 
              PopupContentOpzioni    : false,
              VisibilitaNotaDiDebito : SystemInformation.AccessRights.VisibilitaNotaDiDebito(),
+             NomeProgramma          : NOME_PROGRAMMA
            }
   },
   computed :

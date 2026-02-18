@@ -110,11 +110,15 @@
   <VUEConfirm
     :Popup="PopupAnnullamento"
     :Richiesta="'Annullare le modifiche effettuate?'"
+    :PathLogo="require('../../assets/images/LogoGemini2.png')"
+    :Programma="NomeProgramma"
     @onClickConfermaPopup="ConfermaAnnullamento()"
     @onClickChiudiPopup="AnnullaAnnullamento()"
   />
   
-  <VUEConfirm :Popup="PopupAnnullamentoAvvisoFatture" :Richiesta="'Sei sicuro di voler eliminare l\'avviso?'" @onClickConfermaPopup="ConfermaEliminazioneAvvisoFatturePassive" @onClickChiudiPopup="AnnullaAnnullamento">
+  <VUEConfirm :Popup="PopupAnnullamentoAvvisoFatture" :PathLogo="require('../../assets/images/LogoGemini2.png')"
+              :Programma="NomeProgramma"
+              :Richiesta="'Sei sicuro di voler eliminare l\'avviso?'" @onClickConfermaPopup="ConfermaEliminazioneAvvisoFatturePassive" @onClickChiudiPopup="AnnullaAnnullamento">
   </VUEConfirm>
 
 
@@ -2277,7 +2281,7 @@ import VUEInputRegioni from '@/components/InputComponents/VUEInputRegioni.vue';
 import VUEInputZone from '@/components/InputComponents/VUEInputZone.vue';
 import VUEInputProdotti from '@/components/InputComponents/VUEInputProdotti.vue';
 import VUEModal from '../../../../../../../../Librerie/VUE/TemplateGestionale/VUEModal.vue';
-import VUEConfirm from '@/components/VUEConfirm.vue';
+import VUEConfirm from '../../../../../../../../Librerie/VUE/TemplateGestionale/VUEConfirm.vue';
 import VUETreeViewLevel from '@/components/VUETreeViewLevel.vue';
 import {
           TFilterAutofattura,

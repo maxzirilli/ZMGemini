@@ -184,8 +184,6 @@ export default
 
             case TIdSideMenu.AMM_GESTIONE_UTENTI              : this.$router.push('/appMainWindow/GestioneUtenti');
                                                                 break;
-            case TIdSideMenu.AMM_GESTIONE_DISPOSITIVI         : this.$router.push('/appMainWindow/GestioneDispositivi');
-                                                                break;
             case TIdSideMenu.AMM_GESTIONE_MESSAGGI            : this.$router.push('/appMainWindow/GestioneMessaggi');
                                                                 break;
             case TIdSideMenu.LOG_EMAIL_INVIATE                : this.$router.push('/appMainWindow/LogEmailInviate');

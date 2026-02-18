@@ -1,6 +1,10 @@
 <template>
-<VUEConfirm :Popup="PopupFatturaElettronica" :Richiesta="'Annullare le modifiche effettuate?'" @onClickConfermaPopup="ConfermaElimina" @onClickChiudiPopup="AnnullaElimina">
+<VUEConfirm :Popup="PopupFatturaElettronica" 
+            :PathLogo="require('../../assets/images/LogoGemini2.png')"
+            :Programma="NomeProgramma"
+            :Richiesta="'Annullare le modifiche effettuate?'" @onClickConfermaPopup="ConfermaElimina" @onClickChiudiPopup="AnnullaElimina">
 </VUEConfirm>
+
 <div v-if="ModificheDaApplicare" style="text-align:right;padding-top:2px;padding-bottom:2px">
     <a v-if="CanRecord()" class="btn btn-s-md btn-success" style="margin-right:20px" @click="Registra()">Conferma</a>
     <a class="btn btn-s-md btn-danger" @click="PopupFatturaElettronica = true">Annulla</a>
@@ -306,11 +310,11 @@
 </template>
 
 <script>
-import { SystemInformation } from '@/SystemInformation';
+import { SystemInformation, NOME_PROGRAMMA } from '@/SystemInformation';
 import VUEInputNazioni from '@/components/InputComponents/VUEInputNazioni.vue';
 import VUEInputCodiceFiscale from '@/components/InputComponents/VUEInputCodiceFiscale.vue';
 import VUEInputProvince from '@/components/InputComponents/VUEInputProvince.vue';
-import VUEConfirm from '@/components/VUEConfirm.vue';
+import VUEConfirm from '../../../../../../../../Librerie/VUE/TemplateGestionale/VUEConfirm.vue';
 import { TZFatturaElettronica,
          TZFatturaTipoRitenuta, 
          TZFattElettronicaCausaleRitenuta, 
@@ -399,7 +403,8 @@ export default
               LsTipoRitenutaPrestatore : TZFatturaElettronica.GetLsTipoRitenuta(),
               LsCausaleRitenuta        : TZFatturaElettronica.GetLsCausaliRitenuta(),
               LsRegimiFiscali          : TZFatturaElettronica.GetLsRegimiFiscali(),
-              PopupFatturaElettronica  : false
+              PopupFatturaElettronica  : false,
+              NomeProgramma            : NOME_PROGRAMMA
             }
    },
 
@@ -540,11 +545,13 @@ export default
 
         AnnullaElimina()
         {
+          this.PopupFatturaElettronica = false
           this.Annulla()
         },
 
         Annulla()
         {
+          
         var Self = this;
         SystemInformation.AdvQuery.GetSQL("ImpostazioniFatturaElettronica",{},
                                             function(Results)

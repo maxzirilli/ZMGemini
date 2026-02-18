@@ -1,7 +1,9 @@
 <template>
- <VUEConfirm :Popup="PopupNotaDiCredito" :Richiesta="'Vuoi numerare la nota di credito?'" @onClickConfermaPopup="ConfermaInvioNota" @onClickChiudiPopup="AnnullaInvioNota">
+ <VUEConfirm :Popup="PopupNotaDiCredito"  :PathLogo="require('../../assets/images/LogoGemini2.png')"
+             :Programma="NomeProgramma"   :Richiesta="'Vuoi numerare la nota di credito?'" @onClickConfermaPopup="ConfermaInvioNota" @onClickChiudiPopup="AnnullaInvioNota">
  </VUEConfirm>
- <VUEConfirm :Popup="PopupCorreggiNota" :Richiesta="'Vuoi correggere la nota di credito?'" @onClickConfermaPopup="ConfermaCorrezione" @onClickChiudiPopup="AnnullaPopup">
+ <VUEConfirm :Popup="PopupCorreggiNota"  :PathLogo="require('../../assets/images/LogoGemini2.png')"
+             :Programma="NomeProgramma"  :Richiesta="'Vuoi correggere la nota di credito?'" @onClickConfermaPopup="ConfermaCorrezione" @onClickChiudiPopup="AnnullaPopup">
  </VUEConfirm>
   <VUEModal v-if="PopupScegliFileXML" :Titolo="'Lista file .xml'" :Altezza="'200px'" :Larghezza="'600px'"
             @onClickChiudiModal="OnClickChiudiPopupScegliFile">
@@ -455,7 +457,7 @@
 
 <script>
 import { TSchedaGenerica } from '../../../../../../../../Librerie/VUE/ZSchedaGenerica.js'
-import { SystemInformation, FATT_ELE_ESIGIBILITA_IVA, DASHBOARD_FILTER_TYPES, DOCUMENTO_CORRELATO, RUOLI, PAGAMENTO_BOLLO } from '@/SystemInformation.js'
+import { SystemInformation, FATT_ELE_ESIGIBILITA_IVA, DASHBOARD_FILTER_TYPES, DOCUMENTO_CORRELATO, RUOLI, PAGAMENTO_BOLLO, NOME_PROGRAMMA } from '@/SystemInformation.js'
 import VUEInputCondPagamenti from '@/components/InputComponents/VUEInputCondPagamenti.vue';
 import VUEInputClienti from '@/components/InputComponents/VUEInputClienti.vue';
 import VUEInputCodiceFiscale from '@/components/InputComponents/VUEInputCodiceFiscale.vue';
@@ -473,7 +475,7 @@ import { TZEconomicFunct, TZCheckDatiFiscali } from '../../../../../../../../Lib
 import { TZStringConvFunct } from '../../../../../../../../Librerie/VUE/ZStringConvFunct.js'
 import { ID_NODO_NOTE_DI_CREDITO } from '@/NodiVuoti'
 import VUELogDocumentiEconomici, { TSchedaLogDocumentiEconomici } from '@/views/SchedeDatabase/ComponentMultiScheda/VUELogDocumentiEconomici.vue';
-import VUEConfirm from '@/components/VUEConfirm.vue';
+import VUEConfirm from '../../../../../../../../Librerie/VUE/TemplateGestionale/VUEConfirm.vue';
 import { saveAs } from 'file-saver';
 import VUEModal from '@/components/Slots/VUEModal.vue';
 import VUERateNote, {TSchedaRateNota} from './ComponentSchedaNota/VUERateNote.vue';
@@ -1261,6 +1263,7 @@ export default
               AvviataNumerazione          : false,
               CostantePagamentoBollo      : PAGAMENTO_BOLLO,
               VisibilitaLogVariazioni     : SystemInformation.AccessRights.VisibilitaLogVariazioni(),
+              NomeProgramma               : NOME_PROGRAMMA,
 
               Tabs                 : {
                                         ActiveTab : 'Nota di credito',

@@ -1,15 +1,20 @@
 <template>    
     <div class="container" style="width:100%">
-        <VUEConfirm :Popup="PopupContentGestioneUtenti" :Richiesta="DescrPopup" @onClickConfermaPopup="ConfermaElimina" @onClickChiudiPopup="AnnullaElimina">
+        <VUEConfirm :Popup="PopupContentGestioneUtenti" :PathLogo="require('../../assets/images/LogoGemini2.png')"
+                    :Programma="NomeProgramma"
+                    :Richiesta="DescrPopup" @onClickConfermaPopup="ConfermaElimina" @onClickChiudiPopup="AnnullaElimina">
         </VUEConfirm>
       
-        <VUEConfirm :Popup="PopupResettaPassword" 
+        <VUEConfirm :Popup="PopupResettaPassword" :PathLogo="require('../../assets/images/LogoGemini2.png')"
+                    :Programma="NomeProgramma"
                     :Richiesta="'Sei sicuro di voler resettare la password a ' + ObjResettaPassword.RAGIONE_SOCIALE + '?'" 
                     @onClickConfermaPopup="ConfermaResetPassword" 
                     @onClickChiudiPopup="AnnullaResetPassword">
         </VUEConfirm>
 
-        <VUEModal v-if="PopupConfermaReset" :Titolo="'Comunicazione'" :Altezza="'100px'" :Larghezza="'500px'" 
+        <VUEModal v-if="PopupConfermaReset" :PathLogo="require('../../assets/images/LogoGemini2.png')"
+                                            :Programma="NomeProgramma"
+                                            :Titolo="'Comunicazione'" :Altezza="'100px'" :Larghezza="'500px'" 
                 @onClickChiudiModal="PopupConfermaReset = false">
             <template v-slot:Body>
                 <p style="white-space: pre-line">Passord resettata</p>
@@ -90,8 +95,8 @@
 
 
 <script>
-import { SystemInformation, RUOLI } from '@/SystemInformation.js'
-import VUEConfirm from '@/components/VUEConfirm.vue';
+import { SystemInformation, RUOLI, NOME_PROGRAMMA } from '@/SystemInformation.js'
+import VUEConfirm from '../../../../../../../../Librerie/VUE/TemplateGestionale/VUEConfirm.vue';
 import VUEModal from '@/components/Slots/VUEModal.vue';
 
 export default {
@@ -114,7 +119,8 @@ export default {
                 PopupResettaPassword         : false,
                 ObjResettaPassword           : {},
                 PopupConfermaReset           : false,
-                SelfRole                     : SystemInformation.UserInformation.Ruolo
+                SelfRole                     : SystemInformation.UserInformation.Ruolo,
+                NomeProgramma                : NOME_PROGRAMMA
               }
     },
     methods :

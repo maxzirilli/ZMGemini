@@ -43,10 +43,6 @@
             <li>
               <a style="cursor:pointer" @click="OnClickPopupPassword">Modifica Password</a>
             </li>
-            <li v-if="UserInformation.Ruolo == Ruoli.Amministratore || UserInformation.Ruolo == Ruoli.SuperUtente" class="divider"></li>
-            <li v-if="UserInformation.Ruolo == Ruoli.Amministratore || UserInformation.Ruolo == Ruoli.SuperUtente">
-              <a style="cursor:pointer" @click="OnClickPopupDCPM">Scarica i tuoi dati</a>
-            </li>
             <li class="divider"></li>
             <li>
               <a @click="OnClick">Chiudi</a>
@@ -58,7 +54,10 @@
 
   <body>
 
-       <VUEModal v-if="profilomodifica" :Titolo="'Modifica profilo'" :Altezza="'400px'" :Larghezza="'1000px'"
+       <VUEModal v-if="profilomodifica" :PathLogo="require('../../assets/images/LogoGemini2.png')"
+                                        :Programma="NomeProgramma" 
+                                        :Titolo="'Modifica profilo'" 
+                                        :Altezza="'400px'" :Larghezza="'1000px'"
                    @onClickChiudiModal="AnnullaModificaProfilo" @onClickConfermaModal="ConfermaModificaProfilo">
            <template v-slot:Body>
             <div class="form-row">
@@ -89,7 +88,10 @@
            </template>
          </VUEModal> 
          
-       <VUEModal v-if="passwordmodifica" :Titolo="'Modifica password'" :Altezza="'400px'" :Larghezza="'1000px'"
+       <VUEModal v-if="passwordmodifica" :PathLogo="require('../../assets/images/LogoGemini2.png')"
+                                         :Programma="NomeProgramma"
+                                         :Titolo="'Modifica password'" 
+                                         :Altezza="'400px'" :Larghezza="'1000px'"
                    @onClickChiudiModal="AnnullaModificaPassword">
            <template v-slot:Body>
             <div class="form-row" style="font-size:14px">
@@ -129,71 +131,20 @@
            </template>
          </VUEModal>
 
-         <VUEModal v-if="ScaricaDatiDCPM" :Titolo="'Scarica dati personali'" :Altezza="'250px'" :Larghezza="'600px'"
-                   @onClickChiudiModal="ScaricaDatiDCPM = false, BottoneRichiestaDisabilitato = false">
-           <template v-slot:Body>
-                <VUEConfirm :Popup="PopupConfermaRichiestaDati" 
-                            :Richiesta="'Attenzione!\nSe confermi, non potrai più scaricare i dati richiesti in precedenza.\nSei sicuro di voler procedere?'" 
-                            @onClickConfermaPopup="OnClickRichiestaDownloadDati" 
-                            @onClickChiudiPopup="OnClickAnnullaRichiestaDati">
-                </VUEConfirm>
-
-                <button style="float:left;margin-right:5px;margin-left:5px;" @click="OnClickConfermaRichiestaDati()" class="btn btn-info" :disabled="BottoneRichiestaDisabilitato">Richiedi Dati</button>
-
-                <div class="col-md-12">
-                  <div class="row wrapper">
-                    <section class="panel panel-default" style="background-color:white;">
-                      <div class="table-responsive" style="max-height:100%;width:100%;">
-                        <table class="table table-striped b-t b-light">
-                          <thead>
-                            <tr>    
-                              <th style="width:20%">Data Richiesta</th>
-                              <th style="width:20%">Stato</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            <tr v-if="ListaStatusGDPR.length == 0">
-                              <td colspan="9">Nessuna richiesta di dati presente</td>
-                            </tr>
-                            <!-- <tr v-for="Dati in ListaStatusGDPR" :key="Dati.DATA_RICHIESTA" style="font-size:15px">
-                              <td> {{ Dati.DATA_RICHIESTA }} </td>
-                              <td v-if="Dati.STATO_DOWNLOAD == StatoDownloadGDPR.Pronto">
-                                <button @click="OnClickScaricaZip(Dati)" class="btn btn-success" style="min-width: 100px">Scarica file zip</button>
-                              </td>
-                              <td v-else> In elaborazione </td>
-                            </tr> -->
-                          </tbody>
-                        </table>
-                      </div>
-                    </section>
-                  </div>
-                </div>
-              <!-- </ul>
-            </div> -->
-           </template>
-           <template v-slot:Footer>
-            <button type="button" class="btn btn-info" style="float:right;margin-left:10px;font-weight:bold;width:18%" @click="ScaricaDatiDCPM = false, BottoneRichiestaDisabilitato = false" data-dismiss="modal">Chiudi</button>
-           </template>
-         </VUEModal>
-
   </body>
 </template>
 
 <script>
 import { SystemInformation,
-         RUOLI} from '@/SystemInformation';
+         RUOLI,
+         NOME_PROGRAMMA} from '@/SystemInformation';
 import { TZImageFunct } from '../../../../../../../..\\Librerie\\VUE\\ZImageFunct.js'
-import VUEModal from '@/components/Slots/VUEModal.vue';
-import { TZStringConvFunct } from '../../../../../../../../Librerie/VUE/ZStringConvFunct.js'
-import { saveAs } from 'file-saver'
-import { TZDateFunct } from '../../../../../../../../Librerie/VUE/ZDateFunct.js'
-import VUEConfirm from '@/components/VUEConfirm.vue';
+import VUEModal from '../../../../../../../../Librerie/VUE/TemplateGestionale/VUEModal.vue';
 
 export default
 {
    name: "VUEAppHeader",
-   components: { VUEModal,
-                 VUEConfirm},
+   components: { VUEModal},
    data()
    {
       return {
@@ -201,18 +152,14 @@ export default
               aperto                      : false,
               profilomodifica             : false,
               passwordmodifica            : false,
-              ScaricaDatiDCPM             : false,
               BottoneRichiestaDisabilitato: false,
-              PresenzaFileGiàScaricato    : false,
-              PopupConfermaRichiestaDati  : false,
               Ruoli                       : RUOLI,
-              // StatoDownloadGDPR           : STATO_DOWNLOAD_GDPR,
-              ListaStatusGDPR             : [],
               UserInformationEdit         : {},
               Password                    : {},
               Notifiche                   : 0,
               MessaggiCount               : 0,
               DeveloperMode               : SystemInformation.DeveloperMode,
+              NomeProgramma              : NOME_PROGRAMMA
               
       };
    },
@@ -307,91 +254,6 @@ export default
         function(Riga1,Riga2)
         {
           console.error(Riga1 + "\n" + Riga2);
-        });
-      },
-
-      OnClickPopupDCPM()
-      {
-        const Self = this;
-        SystemInformation.AdvQuery.GetSQL('EsportaDatiPerGDPR', { CHIAVE_CLIENTE : this.IdCliente }, 
-                                          function (Results) 
-                                          {
-                                            let ArrayInfo = SystemInformation.AdvQuery.FindResults(Results, "StatusDownload");
-                                            if (ArrayInfo != undefined) 
-                                            {
-                                              Self.ListaStatusGDPR = ArrayInfo;
-                                              if(Self.ListaStatusGDPR[0] != undefined)
-                                              {
-                                                if(Self.ListaStatusGDPR[0].STATO_DOWNLOAD == 'F' )
-                                                  Self.BottoneRichiestaDisabilitato = true
-                                                else Self.PresenzaFileGiàScaricato = true
-                                              }
-                                              else Self.PresenzaFileGiàScaricato = false
-
-                                              Self.ScaricaDatiDCPM = true
-                                              Self.aperto          = false
-                                            }
-                                            else SystemInformation.HandleError('Impossibile ottenere lista Status GDPR');
-                                          },
-                                          function (HTTPError, SubHTTPError, Response) 
-                                          {
-                                            SystemInformation.HandleError(HTTPError, SubHTTPError, Response);
-                                          },
-                                          'SelectSQL');
-      },
-
-      OnClickScaricaZip(Dati)
-      {
-        var Parametri = { NomeFIle : 'Download' + Dati.DATA_RICHIESTA }
-        SystemInformation.AdvQuery.ExecuteExternalScript('GetZipDatiPersonali',Parametri,function(JSONAnswer)
-                                        {
-                                          saveAs(TZStringConvFunct.Base64AsBlob(JSONAnswer.FileZip), "Datipersonali_"+ Dati.DATA_RICHIESTA+ ".zip")
-                                        },
-                                        function(HTTPError,SubHTTPError,Response)
-                                        {
-                                          SystemInformation.HandleError(HTTPError,SubHTTPError,Response);
-                                        })
-      },
-
-      OnClickConfermaRichiestaDati()
-      {
-        if(this.PresenzaFileGiàScaricato)
-        {
-          this.PopupConfermaRichiestaDati = true
-        }
-        else this.OnClickRichiestaDownloadDati()
-      },
-
-      OnClickAnnullaRichiestaDati()
-      {
-        this.PopupConfermaRichiestaDati = false
-        this.ScaricaDatiDCPM = true
-      },
-
-      OnClickRichiestaDownloadDati()
-      {
-        var Self = this;
-        this.PopupConfermaRichiestaDati = false
-
-        var ObjQuery = { Operazioni : [] };
-        ObjQuery.Operazioni.push({
-                                    Query     : "Delete",
-                                    Parametri : {}
-                                })
-        var Data = new Date()
-        Data = TZDateFunct.FormatDateTime('yyyy-mm-dd', Data)
-        ObjQuery.Operazioni.push({
-                                    Query     : "NewRequest",
-                                    Parametri : { DATA : Data }
-                                })
-
-        SystemInformation.AdvQuery.PostSQL('EsportaDatiPerGDPR',ObjQuery,function()
-        {
-            Self.OnClickPopupDCPM()
-        },
-        function(HTTPError,SubHTTPError,Response)
-        {
-          SystemInformation.HandleError(HTTPError,SubHTTPError,Response);
         });
       },
 

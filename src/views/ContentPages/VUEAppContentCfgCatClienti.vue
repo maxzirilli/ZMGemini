@@ -1,5 +1,7 @@
 <template>
-  <VUEConfirm :Popup="PopupContentCfgCatClienti" :Richiesta="'Annullare le modifiche effettuate?'" @onClickConfermaPopup="ConfermaElimina" @onClickChiudiPopup="AnnullaElimina">
+  <VUEConfirm :Popup="PopupContentCfgCatClienti" :PathLogo="require('../../assets/images/LogoGemini2.png')"
+              :Programma="NomeProgramma"
+              :Richiesta="'Annullare le modifiche effettuate?'" @onClickConfermaPopup="ConfermaElimina" @onClickChiudiPopup="AnnullaElimina">
   </VUEConfirm>
   
 
@@ -12,10 +14,10 @@
 </template>
 
 <script>
-import { SystemInformation } from '@/SystemInformation';
+import { SystemInformation, NOME_PROGRAMMA } from '@/SystemInformation';
 import VUEDataTable from '../../../../../../../../Librerie/VUE/TemplateGestionale/VUEDataTable2.vue';
 import { TZDataTable,TZDTableColumnType } from '../../../../../../../../Librerie/VUE/ZDataTable2.js'
-import VUEConfirm from '@/components/VUEConfirm.vue';
+import VUEConfirm from '../../../../../../../../Librerie/VUE/TemplateGestionale/VUEConfirm.vue';
 
 export default 
 {
@@ -33,7 +35,8 @@ export default
     return {
         DataTable                    : DataTable,
         ModificheDaApplicare         : false,
-        PopupContentCfgCatClienti : false
+        PopupContentCfgCatClienti    : false,
+        NomeProgramma                : NOME_PROGRAMMA
     }
   },
   components : 

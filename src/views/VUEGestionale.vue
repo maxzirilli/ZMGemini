@@ -1,6 +1,7 @@
 <template>
   <div>
-    <VUEConfirm  :Popup="PopupCambiaPagina" :Richiesta="'Annullare le modifiche effettuate ed uscire dalla pagina?'" @onClickConfermaPopup="ConfermaCambiaPagina" @onClickChiudiPopup="AnnullaCambiaPagina">
+    <VUEConfirm  :Popup="PopupCambiaPagina" :PathLogo="require('@/assets/images/LogoGemini2.png')"
+                 :Programma="NomeProgramma" :Richiesta="'Annullare le modifiche effettuate ed uscire dalla pagina?'" @onClickConfermaPopup="ConfermaCambiaPagina" @onClickChiudiPopup="AnnullaCambiaPagina">
     </VUEConfirm>
      <section>
        <VUEAppHeader></VUEAppHeader>
@@ -16,7 +17,6 @@
                 <VUEAppContentDashboard                            v-if="Pages.Dashboard" :Altezza="Altezza"></VUEAppContentDashboard>
                 <VUEAppContentOpzioni                              v-if="Pages.Opzioni"></VUEAppContentOpzioni>
                 <VUEAppContentCondPagamento                        v-if="Pages.CondizioniPagamento" :Altezza="Altezza"></VUEAppContentCondPagamento>
-                <!-- <VUEAppContentCfgDescrizione v-if="Pages.ScissionePagamenti" NomeModello="ScissionePagamenti" :Altezza="Altezza"/> -->
                 <VUEAppContentCfgDescrizione                       v-if="Pages.ModalitaPagamento" NomeModello="ModalitaPagamento" :Altezza="Altezza" />
                 <VUEAppContentCfgUnitaDiMisura                     v-if="Pages.UnitaDiMisura" NomeModello="UnitaDiMisura" :Altezza="Altezza"></VUEAppContentCfgUnitaDiMisura>
                 <VUEAppContentCfgCatClienti                        v-if="Pages.CatClienti" NomeModello="CategorieClienti" :Altezza="Altezza"></VUEAppContentCfgCatClienti>
@@ -40,7 +40,6 @@
                 <VUEAppContentCfgMagazzini            v-if="Pages.Magazzini" NomeModello="Magazzini" :Altezza="Altezza" />
                 <VUEAppContentCfgZone                 v-if="Pages.Zone" NomeModello="Zone" :Altezza="Altezza" />
                 <VUEAppContentGestioneUtenti          v-if="Pages.GestioneUtenti" :Altezza="Altezza"></VUEAppContentGestioneUtenti>
-                <VUEAppContentGestioneDispositivi     v-if="Pages.GestioneDispositivi" :Altezza="Altezza"></VUEAppContentGestioneDispositivi>
                 <VUEAppContentGestioneMessaggi        v-if="Pages.GestioneMessaggi" :Altezza="Altezza"></VUEAppContentGestioneMessaggi>
                 <VUEAppContentAggiungiMessaggio       v-if="Pages.AggiungiMessaggio" :Altezza="Altezza"></VUEAppContentAggiungiMessaggio>
                 <VUEAppContentSchedaMessaggi          v-if="Pages.SchedaMessaggi"></VUEAppContentSchedaMessaggi>
@@ -61,8 +60,8 @@
 </template>
 
 <script>
-import { SystemInformation, RUOLI } from '@/SystemInformation';
-import VUEConfirm from  '@/components/VUEConfirm.vue'
+import { SystemInformation, RUOLI , NOME_PROGRAMMA } from '@/SystemInformation';
+import VUEConfirm from '../../../../../../../Librerie/VUE/TemplateGestionale/VUEConfirm.vue';
 import VUEAppSideMenu from '@/components/FrameComponentsMultiPurpose/VUEAppSideMenu.vue';
 import VUEAppHeader from '@/components/FrameComponentsMultiPurpose/VUEAppHeader.vue';
 import VUEAppContentCondPagamento from '@/views/ContentPages/VUEAppContentCondPagamento.vue';
@@ -91,7 +90,6 @@ import VUEAppAzioniAmministratore from './ContentPages/VUEAppAzioniAmministrator
 import VUEVersioneGemini from './Versione/VUEVersioneGemini.vue';
 import VUEAppContentCausali from './ContentPages/VUEAppContentCausali.vue';
 import VUEAppContentGestioneUtenti from './ContentPages/VUEAppContentGestioneUtenti.vue';
-import VUEAppContentGestioneDispositivi from './ContentPages/VUEAppContentGestioneDispositivi.vue';
 import VUEAppContentGestioneMessaggi from './ContentPages/VUEAppContentGestioneMessaggi.vue';
 import VUEAppContentAggiungiMessaggio  from './ContentPages/VUEAppContentAggiungiMessaggio.vue';
 import VUEAppContentSchedaMessaggi     from './ContentPages/VUEAppContentSchedaMessaggi.vue';
@@ -112,6 +110,7 @@ export default
               PopupCambiaPagina      : false,
               LasciaPagina           : false,
               PaginaInEditing        : false,
+              NomeProgramma          : NOME_PROGRAMMA,
               InvioManualeCheck      : TSchedaGenerica.DisponiFromBoolean(SystemInformation.Configurazioni.Impostazioni.ESPORTAZIONE_MANUALE_FATTURE),
               Pages                  : {
                                           Dashboard                 : false,
@@ -141,7 +140,6 @@ export default
                                           Zone                      : false, 
                                           VersioneGemini            : false, 
                                           GestioneUtenti            : false,
-                                          GestioneDispositivi       : false,
                                           GestioneMessaggi          : false,
                                           AggiungiMessaggio         : false,
                                           SchedaMessaggi            : false,
@@ -178,7 +176,6 @@ export default
       VUEAppContentCfgEmailSegnalazioni,
       VUEAppContentCfgPannelloAmministratore,
       VUEAppContentGestioneUtenti,
-      VUEAppContentGestioneDispositivi,
       VUEAppContentGestioneMessaggi,
       VUEAppContentAggiungiMessaggio,
       VUEAppContentSchedaMessaggi,
@@ -284,8 +281,6 @@ export default
         if(this.Pages.Zone) this.TitoloPagina = 'Zone';
         this.Pages.GestioneUtenti = this.$route.params.pagina == 'GestioneUtenti';
         if(this.Pages.GestioneUtenti) this.TitoloPagina = 'Gestione utenti';
-        this.Pages.GestioneDispositivi = this.$route.params.pagina == 'GestioneDispositivi';
-        if(this.Pages.GestioneDispositivi) this.TitoloPagina = 'Gestione dispositivi';
         this.Pages.GestioneMessaggi = this.$route.params.pagina == 'GestioneMessaggi';
         if(this.Pages.GestioneMessaggi) this.TitoloPagina = 'Gestione messaggi';
         this.Pages.AggiungiMessaggio = this.$route.params.pagina == 'AggiungiMessaggio';
@@ -299,7 +294,7 @@ export default
     {
       this.AggiornaTipoPagina();
     },
-    beforeUpdate()
+    beforeUpdate() 
     {
       this.AggiornaTipoPagina();
     },

@@ -1,5 +1,6 @@
 <template>
-    <VUEConfirm :Popup="PopupAnnulla" :Richiesta="'Annullare le modifiche effettuate ed uscire dalla pagina?'" @onClickConfermaPopup="ConfermaAnnulla" @onClickChiudiPopup="AnnullaAnnulla">
+    <VUEConfirm :Popup="PopupAnnulla" :PathLogo="require('@/assets/images/LogoGemini2.png')"
+                :Programma="NomeProgramma" :Richiesta="'Annullare le modifiche effettuate ed uscire dalla pagina?'" @onClickConfermaPopup="ConfermaAnnulla" @onClickChiudiPopup="AnnullaAnnulla">
     </VUEConfirm> 
     <div>           
        <section>
@@ -31,18 +32,20 @@
 import VUEAppHeader from '@/components/FrameComponentsMultiPurpose/VUEAppHeader.vue';
 import VUEAppSideMenu from '../components/FrameComponentsMultiPurpose/VUEAppSideMenu.vue';
 import VUEAppContentAggiungiMessaggio from './ContentPages/VUEAppContentAggiungiMessaggio.vue';
-import VUEConfirm from '@/components/VUEConfirm.vue'
+import VUEConfirm from '../../../../../../../Librerie/VUE/TemplateGestionale/VUEConfirm.vue';
+import { NOME_PROGRAMMA } from '@/SystemInformation';
 export default 
 {
       name: "VUEMessaggio",
       data() 
       {
        return {
-                Altezza : document.documentElement.clientHeight,
-                TitoloPagina : 'Messaggio',
-                PopupAnnulla : false,
-                LasciaPagina : false,
-                Destinazione : ''
+                Altezza       : document.documentElement.clientHeight,
+                TitoloPagina  : 'Messaggio',
+                PopupAnnulla  : false,
+                LasciaPagina  : false,
+                Destinazione  : '',
+                NomeProgramma : NOME_PROGRAMMA
               };
       },
       components: 

@@ -44,18 +44,6 @@
 			"SQL" : "DELETE from log_preventivi_multiparametrici\n WHERE ID_PREVENTIVO = :CHIAVE\n"
 		},
 		{
-			"Name" : "DeleteAttrezzatureDaPreventivo",
-			"SQL" : "DELETE FROM preventivi_multi_attrezzature \n          WHERE preventivi_multi_attrezzature.ID_PREVENTIVO_MULTI = :CHIAVE_PREVENTIVO_MULTI\n"
-		},
-		{
-			"Name" : "InserisciAttrezzatureInPreventivo",
-			"SQL" : "INSERT INTO preventivi_multi_attrezzature (ID_ATTREZZATURA, ID_PREVENTIVO_MULTI)\n                                                  VALUES (:ID_ATTREZZATURA, :NewKey1!ID_PREVENTIVO_MULTI)\n"
-		},
-		{
-			"Name" : "EliminaAttrezzatureCollegateAlPreventivo",
-			"SQL" : "DELETE from preventivi_multi_attrezzature\n WHERE ID_PREVENTIVO_MULTI = :CHIAVE\n"
-		},
-		{
 			"Name" : "InserisciSezione",
 			"SQL" : "INSERT INTO preventivi_multi_sezione (CHIAVE, ID_PREVENTIVO_MULTI)\n                                           VALUES (:NewKey2, :NewKey1!ID_PREVENTIVO_MULTI)\n"
 		},
@@ -118,18 +106,6 @@
 		{
 			"Name" : "UpdateConservaIsInviato",
 			"SQL" : "UPDATE preventivi_multiparametrici SET IS_INVIATO = 'T' WHERE CHIAVE = :CHIAVE\n"
-		},
-		{
-			"Name" : "EliminaAttrezzatureSoluzione",
-			"SQL" : "DELETE FROM preventivi_multi_attrezzature_soluzioni\n          WHERE ID_SOLUZIONE = :ID_SOLUZIONE\n"
-		},
-		{
-			"Name" : "InserisciAttrezzatureSoluzione",
-			"SQL" : "INSERT INTO preventivi_multi_attrezzature_soluzioni(ID_ATTREZZATURA, ID_SOLUZIONE, ID_PREVENTIVO_MULTI)\n                                                  VALUES (:ID_ATTREZZATURA, :NewKey3!ID_SOLUZIONE, :NewKey1!ID_PREVENTIVO_MULTI)\n"
-		},
-		{
-			"Name" : "EliminaAttrezzSoluzioniCollegateAlPreventivo",
-			"SQL" : "DELETE from preventivi_multi_attrezzature_soluzioni\n WHERE ID_PREVENTIVO_MULTI = :CHIAVE\n"
 		}
 	],
 	"FiltroPreventivo" : [
@@ -184,16 +160,8 @@
 			"SQL" : "SELECT CHIAVE, DESCRIZIONE, ID_PREVENTIVO_MULTI, ALLEGATO\n  FROM allegati_preventivi_multiparametrici\n WHERE ID_PREVENTIVO_MULTI = :CHIAVE\n"
 		},
 		{
-			"Name" : "AttrezzaturePreventivo",
-			"SQL" : "SELECT preventivi_multi_attrezzature.ID_ATTREZZATURA AS CHIAVE,\n            attrezzature.FAMIGLIA,\n            attrezzature.PROGRESSIVO,\n            cat_estintori.DESCRIZIONE\n   FROM preventivi_multi_attrezzature\n             JOIN attrezzature ON attrezzature.CHIAVE = preventivi_multi_attrezzature.ID_ATTREZZATURA\n             LEFT OUTER JOIN estintori ON estintori.ID_ATTREZZATURA = attrezzature.CHIAVE\n             LEFT OUTER JOIN cat_estintori ON cat_estintori.CHIAVE = estintori.ID_CAT_ESTINTORE\n WHERE preventivi_multi_attrezzature.ID_PREVENTIVO_MULTI = :CHIAVE\n     AND attrezzature.FAMIGLIA = 'E'\nUNION \nSELECT preventivi_multi_attrezzature.ID_ATTREZZATURA AS CHIAVE,\n            attrezzature.FAMIGLIA,\n            attrezzature.PROGRESSIVO,\n            tipi_idranti.DESCRIZIONE\n   FROM preventivi_multi_attrezzature\n             LEFT OUTER JOIN idranti ON idranti.ID_ATTREZZATURA = preventivi_multi_attrezzature.ID_ATTREZZATURA\n             LEFT OUTER JOIN impianti_idranti ON impianti_idranti.ID_ATTREZZATURA = idranti.ID_IMPIANTO\n             LEFT OUTER JOIN attrezzature ON idranti.ID_ATTREZZATURA = attrezzature.CHIAVE\n             LEFT OUTER JOIN tipi_idranti ON tipi_idranti.CHIAVE = idranti.ID_TIPO_IDRANTE\n WHERE preventivi_multi_attrezzature.ID_PREVENTIVO_MULTI = :CHIAVE\n      AND attrezzature.FAMIGLIA = 'B'\nUNION \nSELECT preventivi_multi_attrezzature.ID_ATTREZZATURA AS CHIAVE,\n            attrezzature.FAMIGLIA,\n            attrezzature.PROGRESSIVO,\n            '' AS DESCRIZIONE  \n   FROM preventivi_multi_attrezzature\n             JOIN attrezzature ON attrezzature.CHIAVE = preventivi_multi_attrezzature.ID_ATTREZZATURA\n             LEFT OUTER JOIN luci_emergenza ON luci_emergenza.ID_ATTREZZATURA = attrezzature.CHIAVE\n WHERE preventivi_multi_attrezzature.ID_PREVENTIVO_MULTI = :CHIAVE\n      AND attrezzature.FAMIGLIA = 'L'\nUNION\nSELECT preventivi_multi_attrezzature.ID_ATTREZZATURA AS CHIAVE,\n            attrezzature.FAMIGLIA,\n            attrezzature.PROGRESSIVO,\n            '' AS DESCRIZIONE  \n   FROM preventivi_multi_attrezzature\n             JOIN attrezzature ON attrezzature.CHIAVE = preventivi_multi_attrezzature.ID_ATTREZZATURA\n             LEFT OUTER JOIN porte_emergenza ON porte_emergenza.ID_ATTREZZATURA = attrezzature.CHIAVE\n WHERE preventivi_multi_attrezzature.ID_PREVENTIVO_MULTI = :CHIAVE\n      AND attrezzature.FAMIGLIA = 'P'\nUNION\nSELECT preventivi_multi_attrezzature.ID_ATTREZZATURA AS CHIAVE,\n            attrezzature.FAMIGLIA,\n            -1 AS PROGRESSIVO,\n            sprinkler.DESCRIZIONE\n   FROM preventivi_multi_attrezzature\n             JOIN attrezzature ON attrezzature.CHIAVE = preventivi_multi_attrezzature.ID_ATTREZZATURA\n             LEFT OUTER JOIN sprinkler ON sprinkler.ID_ATTREZZATURA = attrezzature.CHIAVE\n WHERE preventivi_multi_attrezzature.ID_PREVENTIVO_MULTI = :CHIAVE\n      AND attrezzature.FAMIGLIA = 'S'\nUNION\nSELECT preventivi_multi_attrezzature.ID_ATTREZZATURA AS CHIAVE,\n            attrezzature.FAMIGLIA,\n            -1 AS PROGRESSIVO,\n            evacuatori_fumo_calore.DESCRIZIONE\n   FROM preventivi_multi_attrezzature\n             JOIN attrezzature ON attrezzature.CHIAVE = preventivi_multi_attrezzature.ID_ATTREZZATURA\n             LEFT OUTER JOIN evacuatori_fumo_calore ON evacuatori_fumo_calore.ID_ATTREZZATURA = attrezzature.CHIAVE\n WHERE preventivi_multi_attrezzature.ID_PREVENTIVO_MULTI = :CHIAVE\n      AND attrezzature.FAMIGLIA = 'V'\nUNION\nSELECT preventivi_multi_attrezzature.ID_ATTREZZATURA AS CHIAVE,\n            attrezzature.FAMIGLIA,\n            -1 AS PROGRESSIVO,\n            impianti_evac.DESCRIZIONE\n   FROM preventivi_multi_attrezzature\n             JOIN attrezzature ON attrezzature.CHIAVE = preventivi_multi_attrezzature.ID_ATTREZZATURA\n             LEFT OUTER JOIN impianti_evac ON impianti_evac.ID_ATTREZZATURA = attrezzature.CHIAVE\n WHERE preventivi_multi_attrezzature.ID_PREVENTIVO_MULTI = :CHIAVE\n      AND attrezzature.FAMIGLIA = 'C'\nUNION\nSELECT preventivi_multi_attrezzature.ID_ATTREZZATURA AS CHIAVE,\n            attrezzature.FAMIGLIA,\n            -1 AS PROGRESSIVO,\n            rilevatori_fumo.DESCRIZIONE\n   FROM preventivi_multi_attrezzature\n             JOIN attrezzature ON attrezzature.CHIAVE = preventivi_multi_attrezzature.ID_ATTREZZATURA\n             LEFT OUTER JOIN rilevatori_fumo ON rilevatori_fumo.ID_ATTREZZATURA = attrezzature.CHIAVE\n WHERE preventivi_multi_attrezzature.ID_PREVENTIVO_MULTI = :CHIAVE\n      AND attrezzature.FAMIGLIA = 'F'\nUNION\nSELECT preventivi_multi_attrezzature.ID_ATTREZZATURA AS CHIAVE,\n            attrezzature.FAMIGLIA,\n            -1 AS PROGRESSIVO,\n            gruppi_pressurizzazione.DESCRIZIONE\n   FROM preventivi_multi_attrezzature\n             JOIN attrezzature ON attrezzature.CHIAVE = preventivi_multi_attrezzature.ID_ATTREZZATURA\n             LEFT OUTER JOIN gruppi_pressurizzazione ON gruppi_pressurizzazione.ID_ATTREZZATURA = attrezzature.CHIAVE\n WHERE preventivi_multi_attrezzature.ID_PREVENTIVO_MULTI = :CHIAVE\n      AND attrezzature.FAMIGLIA = 'G'\nORDER BY FAMIGLIA, PROGRESSIVO\n"
-		},
-		{
 			"Name" : "SezioniPreventivo",
 			"SQL" : "SELECT preventivi_multi_sezione.CHIAVE AS CHIAVE_SEZIONE,\n            preventivi_multi_sezione.ID_PREVENTIVO_MULTI,\n            preventivi_multi_soluzioni.CHIAVE AS CHIAVE_SOLUZIONE,\n            preventivi_multi_voci_soluzione.CHIAVE AS CHIAVE_VOCE,\n            preventivi_multi_voci_soluzione.*\n  FROM preventivi_multi_sezione \n            LEFT OUTER JOIN preventivi_multi_soluzioni ON preventivi_multi_soluzioni.ID_SEZIONE = preventivi_multi_sezione.CHIAVE\n            LEFT OUTER JOIN preventivi_multi_voci_soluzione ON preventivi_multi_voci_soluzione.ID_SOLUZIONE = preventivi_multi_soluzioni.CHIAVE\nWHERE preventivi_multi_sezione.ID_PREVENTIVO_MULTI = :CHIAVE\nORDER BY preventivi_multi_sezione.CHIAVE, preventivi_multi_soluzioni.CHIAVE, preventivi_multi_voci_soluzione.ORDINAMENTO \n"
-		},
-		{
-			"Name" : "AltreLavorazioni",
-			"SQL" : "SELECT preventivi_multi_attrezzature_soluzioni.*,\n            attrezzature.FAMIGLIA,\n            attrezzature.PROGRESSIVO,\n            COALESCE(cat_estintori.DESCRIZIONE,\n            tipi_idranti.DESCRIZIONE,\n            sprinkler.DESCRIZIONE,\n            evacuatori_fumo_calore.DESCRIZIONE,\n            impianti_evac.DESCRIZIONE,\n            rilevatori_fumo.DESCRIZIONE,\n            gruppi_pressurizzazione.DESCRIZIONE,\n            '') AS DESCRIZIONE\n  FROM preventivi_multi_attrezzature_soluzioni\n    JOIN attrezzature ON attrezzature.CHIAVE = preventivi_multi_attrezzature_soluzioni.ID_ATTREZZATURA\n    LEFT JOIN estintori ON estintori.ID_ATTREZZATURA = attrezzature.CHIAVE\n    LEFT JOIN cat_estintori ON cat_estintori.CHIAVE = estintori.ID_CAT_ESTINTORE\n    LEFT JOIN idranti ON idranti.ID_ATTREZZATURA = attrezzature.CHIAVE\n    LEFT JOIN tipi_idranti ON tipi_idranti.CHIAVE = idranti.ID_TIPO_IDRANTE\n    LEFT JOIN luci_emergenza ON luci_emergenza.ID_ATTREZZATURA = attrezzature.CHIAVE\n    LEFT JOIN porte_emergenza ON porte_emergenza.ID_ATTREZZATURA = attrezzature.CHIAVE\n    LEFT JOIN sprinkler ON sprinkler.ID_ATTREZZATURA = attrezzature.CHIAVE\n    LEFT JOIN evacuatori_fumo_calore ON evacuatori_fumo_calore.ID_ATTREZZATURA = attrezzature.CHIAVE\n    LEFT JOIN impianti_evac ON impianti_evac.ID_ATTREZZATURA = attrezzature.CHIAVE\n    LEFT JOIN rilevatori_fumo ON rilevatori_fumo.ID_ATTREZZATURA = attrezzature.CHIAVE\n    LEFT JOIN gruppi_pressurizzazione ON gruppi_pressurizzazione.ID_ATTREZZATURA = attrezzature.CHIAVE\n    LEFT JOIN preventivi_multiparametrici ON preventivi_multiparametrici.CHIAVE = preventivi_multi_attrezzature_soluzioni.ID_PREVENTIVO_MULTI\nWHERE preventivi_multiparametrici.CHIAVE = :CHIAVE\nORDER BY attrezzature.FAMIGLIA, attrezzature.PROGRESSIVO\n"
 		}
 	],
 	"SelectRevisione" : [

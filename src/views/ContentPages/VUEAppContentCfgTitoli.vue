@@ -1,5 +1,7 @@
 <template>
-  <VUEConfirm :Popup="PopupContentCfgTitoli" :Richiesta="'Annullare le modifiche effettuate?'" @onClickConfermaPopup="ConfermaElimina" @onClickChiudiPopup="AnnullaElimina">
+  <VUEConfirm :Popup="PopupContentCfgTitoli" :PathLogo="require('../../assets/images/LogoGemini2.png')"
+              :Programma="NomeProgramma"
+              :Richiesta="'Annullare le modifiche effettuate?'" @onClickConfermaPopup="ConfermaElimina" @onClickChiudiPopup="AnnullaElimina">
   </VUEConfirm>
   <div v-if="ModificheDaApplicare" style="text-align:right;padding-top:2px;padding-bottom:2px">
       <a class="btn btn-s-md btn-success" style="margin-right:20px" v-if="DataTable.AllDataOk()" @click="Registra()">Conferma</a>
@@ -10,10 +12,10 @@
 </template>
 
 <script>
-import { SystemInformation } from '@/SystemInformation';
+import { SystemInformation, NOME_PROGRAMMA } from '@/SystemInformation';
 import VUEDataTable from '../../../../../../../../Librerie/VUE/TemplateGestionale/VUEDataTable2.vue';
 import { TZDataTable,TZDTableColumnType } from '../../../../../../../../Librerie/VUE/ZDataTable2.js'
-import VUEConfirm from '@/components/VUEConfirm.vue';
+import VUEConfirm from '../../../../../../../../Librerie/VUE/TemplateGestionale/VUEConfirm.vue';
 
 export default 
 {
@@ -31,7 +33,8 @@ export default
     return {
         DataTable             : DataTable,
         ModificheDaApplicare  : false,
-        PopupContentCfgTitoli : false
+        PopupContentCfgTitoli : false,
+        NomeProgramma         : NOME_PROGRAMMA
     }
   },
   components : 
