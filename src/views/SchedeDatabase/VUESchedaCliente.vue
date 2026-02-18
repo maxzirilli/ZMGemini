@@ -1861,7 +1861,7 @@ import VUEAllegati, { TSchedaAllegati } from '../../components/VUEAllegati.vue';
                                       Self.Dati.ModificaTabellaFiliali      = false;
                                       Self.Dati.ModificaTabellaOrariFiliali = false;
                                       Self.Dati.ModificaTabelle             = false;
-                                      Self.Dati.ModificaTabellaAllegati     =   false;
+                                      Self.Dati.ModificaTabellaAllegati     = false;
                                       Self.CreateSnapshot();
                                       OnSuccess();
                                     })
@@ -2696,59 +2696,57 @@ import VUEAllegati, { TSchedaAllegati } from '../../components/VUEAllegati.vue';
          immediate : true
       },
       
-      'SchedaCliente.SchedaFiliali' :
+      'SchedaCliente.SchedaFiliali.DataTableFiliali' :
       { 
          handler(NewValue)
          {          
             if(NewValue != undefined)
             {              
-                this.SchedaCliente.SchedaFiliali.DataTableFiliali.AssignOnRowChange(() =>
+              this.SchedaCliente.SchedaFiliali.DataTableFiliali.AssignOnRowChange(() =>
+              {
+                this.SchedaCliente.Dati.ModificaTabellaFiliali = true
+
+                for(let i = 0; i < this.DataTableFiliali.Righe.length; i++)
                 {
-              console.log(this.SchedaCliente);
-                  this.SchedaCliente.Dati.ModificaTabellaFiliali = true
-                  this.SchedaCliente.Dati.ModificaTabelle = true
-
-                  for(let i = 0; i < this.DataTableFiliali.Righe.length; i++)
+                  if(this.DataTableFiliali.Righe[i].DataTableOrari.Modificato())
                   {
-                    if(this.DataTableFiliali.Righe[i].DataTableOrari.Modificato())
-                    {
-                      this.SchedaCliente.Dati.ModificaTabellaOrariFiliali = true
-                      break;
-                    }
+                    this.SchedaCliente.Dati.ModificaTabellaOrariFiliali = true
+                    break;
                   }
+                }
 
-                  for(let i = 0; i < this.DataTableFiliali.Righe.length; i++)
-                  {
-                    if(this.DataTableFiliali.Righe[i].SchedaRecapitiFiliali.DataTableTelefono.Modificato())
-                    {
-                      this.SchedaCliente.Dati.ModificaTabellaTelefonoFiliali = true
-                      break;
-                    }
-                  }
-                })
-
-                this.SchedaCliente.SchedaFiliali.DataTableFiliali.AssignOnRowDelete(() =>
+                for(let i = 0; i < this.DataTableFiliali.Righe.length; i++)
                 {
-                  this.SchedaCliente.Dati.ModificaTabellaFiliali = true
-
-                  for(let i = 0; i < this.DataTableFiliali.Righe.length; i++)
+                  if(this.DataTableFiliali.Righe[i].SchedaRecapitiFiliali.DataTableTelefono.Modificato())
                   {
-                    if(this.DataTableFiliali.Righe[i].DataTableOrari.Modificato())
-                    {
-                      this.SchedaCliente.Dati.ModificaTabellaOrariFiliali = true
-                      break;
-                    }
+                    this.SchedaCliente.Dati.ModificaTabellaTelefonoFiliali = true
+                    break;
                   }
+                }
+              })
 
-                  for(let i = 0; i < this.DataTableFiliali.Righe.length; i++)
+              this.SchedaCliente.SchedaFiliali.DataTableFiliali.AssignOnRowDelete(() =>
+              {
+                this.SchedaCliente.Dati.ModificaTabellaFiliali = true
+
+                for(let i = 0; i < this.DataTableFiliali.Righe.length; i++)
+                {
+                  if(this.DataTableFiliali.Righe[i].DataTableOrari.Modificato())
                   {
-                    if(this.DataTableFiliali.Righe[i].SchedaRecapitiFiliali.DataTableTelefono.Modificato())
-                    {
-                      this.SchedaCliente.Dati.ModificaTabellaTelefonoFiliali = true
-                      break;
-                    }
+                    this.SchedaCliente.Dati.ModificaTabellaOrariFiliali = true
+                    break;
                   }
-                })
+                }
+
+                for(let i = 0; i < this.DataTableFiliali.Righe.length; i++)
+                {
+                  if(this.DataTableFiliali.Righe[i].SchedaRecapitiFiliali.DataTableTelefono.Modificato())
+                  {
+                    this.SchedaCliente.Dati.ModificaTabellaTelefonoFiliali = true
+                    break;
+                  }
+                }
+              })
             } 
          },
          immediate : true
