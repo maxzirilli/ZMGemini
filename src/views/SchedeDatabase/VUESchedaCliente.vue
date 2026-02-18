@@ -675,21 +675,30 @@
 
       </div>
       <div v-if="Tabs.ActiveTab == 'Filiali'">
-        <div style="float: left;font-size:14px;width:10%;text-align: right; padding-right: 10px;padding-top: 5px;">
-        <label style="margin-bottom: 0px;">Stato filiali</label>
+
+        <div style="margin-top: 1%;">
+          <div class="ZMNuovaRigaScheda" style="float: left;font-size:14px; padding-right: 10px;padding-top: 5px;">
+            <label style="margin-bottom: 0px;">Stato filiali</label>
+          </div>
+          <div style="float:left;width:11%;">
+            <select style="float:left;width:100%;margin-right:5px" class="form-control" v-model="FiltroFiliali">
+              <option value="Tutte">Tutte</option>
+              <option value="Attive">Attive</option>           
+              <option value="Disattive">Disattive</option>           
+            </select>
+          </div>
         </div>
-        <div style="float:left;width:11%;">
-          <select style="float:left;width:100%;margin-right:5px" class="form-control" v-model="FiltroFiliali">
-            <option value="Tutte">Tutte</option>
-            <option value="Attive">Attive</option>           
-            <option value="Disattive">Disattive</option>           
-          </select>
-        </div>
+
         <div class="ZMNuovaRigaScheda">
-          <!-- FilialiFiltrate -->
+          
           <VUEDataTable :DataTable="DataTableFiliali" :NomeProgramma="'Gemini'" :PathLogo="require('../../assets/images/LogoGemini2.png')">
             <template v-slot:RowAlternativa="{ Riga, DataTable }">
-              <VUEDataRowFilialiClienti :Riga="Riga" :DataTable="DataTable" :SchedaCliente="SchedaCliente"/>
+              <div></div>
+              <div v-if="FiltroFiliali == 'Tutte' || 
+                         (FiltroFiliali == 'Attive' && !Riga.Dati.FILIALE_DISATTIVATA.Valore) ||
+                         (FiltroFiliali == 'Disattive' && Riga.Dati.FILIALE_DISATTIVATA.Valore)" >
+                <VUEDataRowFilialiClienti :Riga="Riga" :DataTable="DataTable" :SchedaCliente="SchedaCliente"/>
+              </div>
             </template>
           </VUEDataTable>
         </div>
@@ -2616,7 +2625,7 @@ import VUEAllegati, { TSchedaAllegati } from '../../components/VUEAllegati.vue';
                 TipoDocumento            : '',
                 TestoPopupDocumento      : '',
                 DocumentoSelezionato     : null,
-                FiltroFiliali            : '',              
+                FiltroFiliali            : 'Tutte',              
                 FatturaSelezionata       : null,
                 Filtro                                : {
                                                           xNome : '',
@@ -2687,15 +2696,17 @@ import VUEAllegati, { TSchedaAllegati } from '../../components/VUEAllegati.vue';
          immediate : true
       },
       
-      'SchedaCliente.SchedaFiliali.DataTableFiliali' :
+      'SchedaCliente.SchedaFiliali' :
       { 
          handler(NewValue)
          {          
             if(NewValue != undefined)
-            {
+            {              
                 this.SchedaCliente.SchedaFiliali.DataTableFiliali.AssignOnRowChange(() =>
                 {
+              console.log(this.SchedaCliente);
                   this.SchedaCliente.Dati.ModificaTabellaFiliali = true
+                  this.SchedaCliente.Dati.ModificaTabelle = true
 
                   for(let i = 0; i < this.DataTableFiliali.Righe.length; i++)
                   {
@@ -2746,36 +2757,6 @@ import VUEAllegati, { TSchedaAllegati } from '../../components/VUEAllegati.vue';
 
     computed :
     {
-      FilialiFiltrate :
-      {
-        get()
-        {
-          var FiltroFiliali = this.FiltroFiliali;
-          let ListaFiltrata = this.DataTableFiliali;
-          if(FiltroFiliali == 'Attive')
-          {
-             let ListraRighe = ListaFiltrata.Righe
-             ListraRighe = ListraRighe.filter(function(Riga)
-             {
-               return Riga.Dati.FILIALE_DISATTIVATA.Valore == false;
-             });
-             ListaFiltrata.Righe = ListraRighe
-          }
-      
-          if(FiltroFiliali == 'Disattive')
-          {
-             let ListraRighe = ListaFiltrata.Righe
-             ListraRighe = ListraRighe.filter(function(Riga)
-             {
-               return Riga.Dati.FILIALE_DISATTIVATA.Valore == true;
-             });
-             ListaFiltrata.Righe = ListraRighe
-          }
-      
-          return ListaFiltrata;
-        }
-      },
-
       DataTableFiliali :
       {
         get()
