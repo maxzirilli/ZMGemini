@@ -159,6 +159,7 @@
                       </tr>
                     </thead>
                     <tbody v-for="Rata in Fattura.LsRate" :key="Rata.Chiave">
+                      <tr>
                         <i v-if="Rata.DataPagamento !== '-' || Rata.IdMovimento !== '-' " class="fa fa-circle" style="padding-top:2px;font-size:18px; color: green;margin-left: 20px;"></i>
                         <i v-else class="fa fa-circle" style="padding-top:2px;font-size:18px; color:red; margin-left: 20px"></i>
                         <i v-if="Rata.DataScadenza > new Date()" class="fa fa-circle" style="padding-top:2px;font-size:18px; color:yellow; margin-left: 20px"></i>
@@ -174,6 +175,7 @@
                         <th style="font-weight: initial;"> 
                           {{ FormattaImporto(Rata.Importo) }}
                         </th>
+                      </tr>
                     </tbody>
                   </table>
                </div>

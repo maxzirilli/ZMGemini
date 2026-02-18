@@ -580,6 +580,7 @@
                               </tr>
                             </thead>
                             <tbody v-for="Fattura in Ritenuta.LsFatture" :key="Fattura.IdFattura">
+                              <tr>
                               <td>
                               {{ Fattura.Numero }} / {{ Fattura.Anno }}
                               </td>
@@ -611,6 +612,7 @@
                               <td v-else>
                               Pagata
                               </td>
+                            </tr>
                             </tbody>
                         </table>
                         </td>
@@ -640,9 +642,11 @@
               <div class="table-responsive">
                   <table class="table table-striped b-t b-light">
                       <thead>
+                        <tr>
                           <th style="width: 13%; text-align: left;">Anno</th>
                           <th style="width: 77%; text-align: left;">Totale</th>
                           <th style="width: 10%; text-align: left;"></th>
+                        </tr>
                       </thead>
                       <tbody>
                           <tr v-for="(Oggetto,index) in GetTotaleRitenute()" :key="index">
@@ -662,10 +666,12 @@
               <div class="table-responsive">
                   <table class="table table-striped b-t b-light">
                       <thead>
+                        <tr>
                           <th style="width: 40%; text-align: left;">Data</th>
                           <th style="width: 25%; text-align: left;">Numero</th>
                           <th style="width: 25%; text-align: left;">Totale</th>
                           <th style="width: 10%; text-align: left;">Info</th>
+                        </tr>
                       </thead>
                       <tbody>
                           <tr v-for="Fattura in SchedaCliente.ListaFattureCliente" :key="Fattura.CHIAVE">
@@ -743,10 +749,12 @@
               <div class="table-responsive">
                   <table class="table table-striped b-t b-light">
                       <thead>
+                        <tr>
                           <th style="width: 15%; text-align: left;">Codice</th>
                           <th style="width: 50%; text-align: left;">Prodotti</th>
                           <th style="width: 10%; text-align: left;">Opzioni</th>
                           <th style="width: 10%; text-align: left;"></th>
+                        </tr>
                       </thead>
                       <tbody>
                           <tr v-for="Prodotto in ProdottiFiltratiEPaginati" :key="Prodotto.CODICE">
@@ -827,6 +835,7 @@
                   </div>
                   <table style="margin-top: 1%;" class="table table-striped b-t b-light">
                       <thead>
+                        <tr>
                           <th style="width: 5%; text-align: left;">Data</th>
                           <th style="width: 5%; text-align: left;">Numero</th>
                           <th style="width: 20%; text-align: left;">Operazione</th>
@@ -835,6 +844,7 @@
                           <th style="width: 10%; text-align: left;">Avere</th>
                           <th style="width: 10%; text-align: left;">Saldo</th>
                           <th style="width: 5%; text-align: left;">Info</th>
+                        </tr>
                       </thead>
                       <tbody>
                           <tr v-for="Documento in SchedaCliente.SchedaStatoContabile.ListaDocumenti" :key="Documento.CHIAVE">

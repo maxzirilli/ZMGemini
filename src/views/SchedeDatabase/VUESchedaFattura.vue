@@ -734,7 +734,9 @@
               </tr>
             </thead>
             <tbody v-if="this.SchedaFattura.SchedaVociFattura.PreventiviCorrelati === undefined">
+              <tr>
               <td style="font-size:20px">Non sono presenti preventivi collegati</td>
+              </tr>
             </tbody>
             <tbody v-else-if="this.SchedaFattura.SchedaVociFattura.PreventiviCorrelati.length != 0">
               <tr v-for="Preventivo in this.SchedaFattura.SchedaVociFattura.PreventiviCorrelati" :key="Preventivo.NUMERO">
@@ -750,7 +752,9 @@
               </tr>
             </tbody>
             <tbody v-else>
+              <tr>
               <td style="font-size:20px">Non sono presenti preventivi collegati</td>
+              </tr>
             </tbody>
           </table>
         </div>

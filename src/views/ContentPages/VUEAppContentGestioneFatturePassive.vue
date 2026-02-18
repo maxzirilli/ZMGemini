@@ -55,69 +55,118 @@
       <div class="panel-default" v-for="OggettoFatturaPassiva in LSFatturePassive" :key="OggettoFatturaPassiva.Chiave">
         <div class="panel-group m-b" style="font-size:14px">
           <div class="panel panel-default" style="background-color:#d0e9ff">
-            <div class="panel-heading" @click="OnClickEspandiFatturaPassiva(OggettoFatturaPassiva)" style="cursor:pointer;min-height:55px;">
-              <div style="width:5%;float:left;margin-top:5px">
-                  <a>
-                    <img src="@/assets/images/IconeAlbero/FatturaPassiva2.png" style="width:25px;height:25px;float:left;margin-top:-3px;margin-right:2px"> 
-                  </a>
-              </div>
-              <div style="width:30%;float:left;margin-top:5px;">
-                <a style="font-weight:bold;white-space: nowrap;">
-                  Fattura passiva n.  
-                    <a style="font-weight:normal;overflow-x:hidden">{{ OggettoFatturaPassiva.Numero }}</a>
-                </a>
-              </div>
-              <div style="width:25%;float:left;margin-top:5px;">
-                <a style="font-weight:bold;white-space: nowrap;">
-                    Data:   
-                      <a style="font-weight:normal;overflow-x:hidden">{{ OggettoFatturaPassiva.Data }}</a>
-                </a>
-              </div>
-              <div style="width:25%;float:left;margin-top:5px;">
-                <a style="font-weight:bold;white-space: nowrap;">
-                  Fornitore:   
-                    <a style="font-weight:normal;overflow-x:hidden">{{ OggettoFatturaPassiva.RagioneSocialeFornitore }}</a>
-                </a>
-              </div>
-              <div v-if="OggettoFatturaPassiva.DaGestire" style="width:10%;float:right;margin-top:5px;">
-                <a style="font-weight:bold;white-space: nowrap;">
-                  Fattura da gestire   
-                    <img src="@\assets\images\IconeAlbero\LuciEmergenza.png" style="width:20px;height:25px;float:right;margin-top:-3px;margin-right:2px">
-                </a>
-              </div>
+          <div
+            class="panel-heading"
+            @click="OnClickEspandiFatturaPassiva(OggettoFatturaPassiva)"
+            style="cursor:pointer;min-height:55px;"
+          >
+            <div style="width:5%;float:left;margin-top:5px">
+              <span>
+                <img
+                  src="@/assets/images/IconeAlbero/FatturaPassiva2.png"
+                  style="width:25px;height:25px;float:left;margin-top:-3px;margin-right:2px"
+                />
+              </span>
             </div>
-            <div v-if="OggettoFatturaPassiva.Espanso" style="background-color:rgb(230 230 230);font-weight:bold;margin-top:3px" class="panel-heading">
-              <div class="panel-collapse collapse in">
-                <div class="panel-body text-sm" style="background-color:white">
-                  <table class="table table-striped b-t b-light">
-                    <thead>
-                      <tr>
-                        <th style="width:10%;">CODICE</th>
-                        <th style="width:45%;">DESCRIZIONE</th>
-                        <th style="width:45%;">PRODOTTO</th>
-                        <th style="width:5%;">GESTITO</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr v-for="VoceFatturaPassiva in OggettoFatturaPassiva.ListaVociFatturaPassiva" :key="VoceFatturaPassiva.CHIAVE_VOCE_FATTURA_PASSIVA">  
-                        <td><text style="font-weight: initial">{{ VoceFatturaPassiva.CODICE_ARTICOLO }}</text></td>
-                        <td><text style="font-weight: initial">{{ VoceFatturaPassiva.BENE_SERVIZIO }}</text></td>
-                        <td><VUEInputProdotti v-model="VoceFatturaPassiva.ID_PRODOTTO"  
-                                              @onUpdate="newValue => InserisciProdottoVoceFattura(OggettoFatturaPassiva, VoceFatturaPassiva, newValue)"
-                                              :disabled="VoceFatturaPassiva.CODICE_ARTICOLO == '' || VoceFatturaPassiva.CODICE_ARTICOLO == null"/></td>
-                        <td style="text-align: center; vertical-align: middle;">
-                          <input v-if="VoceFatturaPassiva.CODICE_ARTICOLO != '' && (VoceFatturaPassiva.ID_PRODOTTO === -1 || VoceFatturaPassiva.ID_PRODOTTO === undefined)"
-                                type="checkbox"  
-                                :checked="VoceFatturaPassiva.GESTITO == 'T'"
-                                @change="event => GestisciVoceFattura(OggettoFatturaPassiva, VoceFatturaPassiva, event.target.checked)"/>
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
+
+            <div style="width:30%;float:left;margin-top:5px;">
+              <span style="font-weight:bold;white-space: nowrap;">
+                Fattura passiva n.&nbsp;
+              </span>
+              <span style="font-weight:normal;overflow-x:hidden">
+                {{ OggettoFatturaPassiva.Numero }}
+              </span>
+            </div>
+
+            <div style="width:25%;float:left;margin-top:5px;">
+              <span style="font-weight:bold;white-space: nowrap;">
+                Data:&nbsp;
+              </span>
+              <span style="font-weight:normal;overflow-x:hidden">
+                {{ OggettoFatturaPassiva.Data }}
+              </span>
+            </div>
+
+            <div style="width:25%;float:left;margin-top:5px;">
+              <span style="font-weight:bold;white-space: nowrap;">
+                Fornitore:&nbsp;
+              </span>
+              <span style="font-weight:normal;overflow-x:hidden">
+                {{ OggettoFatturaPassiva.RagioneSocialeFornitore }}
+              </span>
+            </div>
+
+            <div
+              v-if="OggettoFatturaPassiva.DaGestire"
+              style="width:10%;float:right;margin-top:5px;"
+            >
+              <span style="font-weight:bold;white-space: nowrap;">
+                Fattura da gestire
+                <img
+                  src="@/assets/images/IconeAlbero/LuciEmergenza.png"
+                  style="width:20px;height:25px;float:right;margin-top:-3px;margin-right:2px"
+                />
+              </span>
+            </div>
+          </div>
+
+          <div
+            v-if="OggettoFatturaPassiva.Espanso"
+            style="background-color:rgb(230 230 230);font-weight:bold;margin-top:3px"
+            class="panel-heading"
+          >
+            <div class="panel-collapse collapse in">
+              <div class="panel-body text-sm" style="background-color:white">
+                <table class="table table-striped b-t b-light">
+                  <thead>
+                    <tr>
+                      <th style="width:10%;">CODICE</th>
+                      <th style="width:45%;">DESCRIZIONE</th>
+                      <th style="width:45%;">PRODOTTO</th>
+                      <th style="width:5%;">GESTITO</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr
+                      v-for="VoceFatturaPassiva in OggettoFatturaPassiva.ListaVociFatturaPassiva"
+                      :key="VoceFatturaPassiva.CHIAVE_VOCE_FATTURA_PASSIVA"
+                    >
+                      <td>
+                        <span style="font-weight: initial">
+                          {{ VoceFatturaPassiva.CODICE_ARTICOLO }}
+                        </span>
+                      </td>
+
+                      <td>
+                        <span style="font-weight: initial">
+                          {{ VoceFatturaPassiva.BENE_SERVIZIO }}
+                        </span>
+                      </td>
+
+                      <td>
+                        <VUEInputProdotti
+                          v-model="VoceFatturaPassiva.ID_PRODOTTO"
+                          @onUpdate="newValue => InserisciProdottoVoceFattura(OggettoFatturaPassiva, VoceFatturaPassiva, newValue)"
+                          :disabled="!VoceFatturaPassiva.CODICE_ARTICOLO"
+                        />
+                      </td>
+
+                      <td style="text-align: center; vertical-align: middle;">
+                        <input
+                          v-if="VoceFatturaPassiva.CODICE_ARTICOLO && (VoceFatturaPassiva.ID_PRODOTTO === -1 || VoceFatturaPassiva.ID_PRODOTTO === undefined)"
+                          type="checkbox"
+                          :checked="VoceFatturaPassiva.GESTITO == 'T'"
+                          @change="event => GestisciVoceFattura(OggettoFatturaPassiva, VoceFatturaPassiva, event.target.checked)"
+                        />
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
               </div>
             </div>
           </div>
+          </div>
+
         </div>
       </div>
     </div>
