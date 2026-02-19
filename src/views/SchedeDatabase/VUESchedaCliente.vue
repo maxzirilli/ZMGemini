@@ -691,20 +691,6 @@
 
       </div>
       <div v-if="Tabs.ActiveTab == 'Filiali'">
-
-        <div style="margin-top: 1%;">
-          <div class="ZMNuovaRigaScheda" style="float: left;font-size:14px; padding-right: 10px;padding-top: 5px;">
-            <label style="margin-bottom: 0px;">Stato filiali</label>
-          </div>
-          <div style="float:left;width:11%;">
-            <select style="float:left;width:100%;margin-right:5px" class="form-control" v-model="FiltroFiliali">
-              <option value="Tutte">Tutte</option>
-              <option value="Attive">Attive</option>           
-              <option value="Disattive">Disattive</option>           
-            </select>
-          </div>
-        </div>
-
         <div class="ZMNuovaRigaScheda">
           
           <VUEDataTable :DataTable="DataTableFiliali" :NomeProgramma="'Gemini'" :PathLogo="require('../../assets/images/LogoGemini2.png')">
@@ -714,6 +700,18 @@
                          (FiltroFiliali == 'Attive' && !Riga.Dati.FILIALE_DISATTIVATA.Valore) ||
                          (FiltroFiliali == 'Disattive' && Riga.Dati.FILIALE_DISATTIVATA.Valore)" >
                 <VUEDataRowFilialiClienti :Riga="Riga" :DataTable="DataTable" :SchedaCliente="SchedaCliente"/>
+              </div>
+            </template>
+            <template v-slot:AddFiltro>
+              <div style="display:flex; justify-content:flex-end;">
+                <div style="display:flex; align-items:center; gap:5px;">
+                  <label style="font-size:14px; margin:0;">Stato filiali</label>
+                  <select  style="margin-right:5px" class="form-control" v-model="FiltroFiliali">
+                    <option value="Tutte">Tutte</option>
+                    <option value="Attive">Attive</option>           
+                    <option value="Disattive">Disattive</option>           
+                  </select>
+                </div>
               </div>
             </template>
           </VUEDataTable>
