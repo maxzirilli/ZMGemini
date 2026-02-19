@@ -2170,7 +2170,9 @@
           <button style="float:right;margin-right:15px;width:5%;min-width: 100px" @click="FiltraDati" class="btn btn-info">[F2] Cerca</button>
           <div class="btn-group open" style="float:right;margin-right:5px">
 
-            <!-- <img src="@/assets/images/Stampa.png" style="margin-top:-8px;cursor:pointer" @click="OnClickStampa(false,false,false, false,false,true, false)">
+           <img src="@/assets/images/MenuExcel.png" style="margin-top:-8px;cursor:pointer;" @click="OnClickPopupProdottiExcel()">
+
+            <img src="@/assets/images/Stampa.png" style="margin-top:-8px;cursor:pointer" @click="OnClickStampa(false,false,false, false,false,true, false)">
               <ul v-if="MenuStampa.length != 0" class="dropdown-menu" style="width:200%">
                 <li v-for="(AMenu,index) in MenuStampa" :Key="index">
                   <a v-if="AMenu.Caption != ''" @click="OnNextMenuStampa(AMenu)">
@@ -2185,7 +2187,7 @@
                 <li>
                   <a @click="MenuStampa = []">Chiudi</a>
                 </li>
-              </ul> -->
+              </ul>
           </div>
         </div>
      </div>
@@ -3262,6 +3264,8 @@ export default
                                                                 TotalePrezzi += (TSchedaGenerica.DisponiFromInteger(ARecord.PREZZO_ULTIMO_ACQUISTO) * (TSchedaGenerica.DisponiFromInteger(ARecord.QUANTITA_MAGAZZINO))) / 100
                                                               })
 
+                                                              
+
 
                                                               let RigheVuote = [
                                                                           { v: "", t: "s", s: { font: { bold: true, name: 'Liberation Sans', sz: 10, Width: 10 }}},
@@ -3376,7 +3380,6 @@ export default
 
           if(FiltroSelezionato == undefined)
           {
-            console.log('sss')
             let SubMenuTrovato
             let MenuFilterTrovato = Self.MenuFilter.find(function(AMenu)
                                     {

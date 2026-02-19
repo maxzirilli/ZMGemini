@@ -25,6 +25,7 @@
 
       class TDatiProdotto
       {
+        public $LB_MAGAZZINO         =  null;
         public $LB_DESCRIZIONE        = null;
         public $LB_QUANTITA           = null;
         public $LB_SOGLIA_DI_ALLARME  = null;
@@ -91,11 +92,13 @@
           $SQLBody = "SELECT prodotti.DESCRIZIONE,
 		                         qnt_x_magazzino.QUANTITA_MAGAZZINO,
 		                         qnt_x_magazzino.SOGLIA_ALLARME,
-                             prodotti.PRODOTTO_COMPOSTO,
-                             settori.DESCRIZIONE AS SETTORE
+                            --  prodotti.PRODOTTO_COMPOSTO,
+                             settori.DESCRIZIONE AS SETTORE,
+                             magazzini.DESCRIZIONE AS NOME_MAGAZZINO
                         FROM prodotti 
                              JOIN settori ON settori.CHIAVE = prodotti.ID_SETTORE
                              LEFT JOIN qnt_x_magazzino ON qnt_x_magazzino.ID_PRODOTTO = prodotti.CHIAVE
+                             LEFT OUTER JOIN magazzini ON magazzini.CHIAVE = qnt_x_magazzino.ID_MAGAZZINO
                     ORDER BY settori.DESCRIZIONE,prodotti.DESCRIZIONE";
 
           if($Query = $PDODBase->query($SQLBody))
@@ -108,15 +111,13 @@
                 $PrimaRiga = false;
                 $Result->BAND_HEADER_PRODOTTI[0]->LB_SETTORE = $Row['SETTORE'];
               } 
-              if($Row['PRODOTTO_COMPOSTO'] != 'T')
-              {
                 $DatiProdotto = new TDatiProdotto();
+                $DatiProdotto->LB_MAGAZZINO = $Row['NOME_MAGAZZINO'];
                 $DatiProdotto->LB_DESCRIZIONE = $Row['DESCRIZIONE'];
                 $DatiProdotto->LB_QUANTITA = number_format($Row['QUANTITA_MAGAZZINO']/100,2, ',', '.');
                 $DatiProdotto->LB_SOGLIA_DI_ALLARME = $Row['SOGLIA_ALLARME'];
                 $DatiProdotto->SETTORE = $Row['SETTORE'];
                 array_push($Result->BAND_PRODOTTI,$DatiProdotto);
-              }
             }
           }
 
