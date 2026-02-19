@@ -114,7 +114,7 @@
                 $DatiProdotto = new TDatiProdotto();
                 $DatiProdotto->LB_MAGAZZINO = $Row['NOME_MAGAZZINO'];
                 $DatiProdotto->LB_DESCRIZIONE = $Row['DESCRIZIONE'];
-                $DatiProdotto->LB_QUANTITA = number_format($Row['QUANTITA_MAGAZZINO']/100,2, ',', '.');
+                $DatiProdotto->LB_QUANTITA = number_format($Row['QUANTITA_MAGAZZINO']/100);
                 $DatiProdotto->LB_SOGLIA_DI_ALLARME = $Row['SOGLIA_ALLARME'];
                 $DatiProdotto->SETTORE = $Row['SETTORE'];
                 array_push($Result->BAND_PRODOTTI,$DatiProdotto);
