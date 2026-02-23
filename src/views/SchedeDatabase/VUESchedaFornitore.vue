@@ -760,6 +760,10 @@ export class TSchedaFornitore extends TSchedaGenerica
                                       Parametri : { CHIAVE_FORNITORE : this.Chiave }
                                     },
                                     {
+                                      Query     : "DeleteSaldiAnnualiTramiteFornitore",
+                                      Parametri : { CHIAVE_FORNITORE : this.Chiave }
+                                    },
+                                    {
                                       Query     : "EliminaFornitore",
                                       Parametri : { CHIAVE_FORNITORE : this.Chiave }
                                     }

@@ -218,8 +218,7 @@
             {
               while($Row = $Query->fetch(PDO::FETCH_ASSOC))
               {  
-                $DatiIntestazione->INTESTATARIO = array( 'ID_FORNITORE: ' . $Row['ID_FORNITORE'], 
-                                                         $Row['RAGIONE_SOCIALE'], 
+                $DatiIntestazione->INTESTATARIO = array( $Row['RAGIONE_SOCIALE'], 
                                                          $Row['INDIRIZZO_FATTURAZIONE'] . ' ' . $Row['NR_CIVICO_FATTURAZIONE'], 
                                                          $Row['CAP_FATTURAZIONE'] . ' ' . $Row['COMUNE_FATTURAZIONE'] . (isset($Row['TARGA_PROVINCIA_DESTINAZIONE'])? ' (' . $Row['TARGA_PROVINCIA_FATTURAZIONE'] . ')' : ''),
                                                          $Row['PARTITA_IVA'] != ''?'P.IVA: ' . $Row['PARTITA_IVA'] : '',

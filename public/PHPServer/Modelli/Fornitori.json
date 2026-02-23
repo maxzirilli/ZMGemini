@@ -52,6 +52,10 @@
 		{
 			"Name" : "UpdateCodiciFornitore",
 			"SQL" : "UPDATE codici_fornitore\n      SET ID_PRODOTTO = :ID_PRODOTTO,\n             CODICE_PRODOTTO = #CODICE_PRODOTTO\n WHERE CHIAVE = :CHIAVE\n"
+		},
+		{
+			"Name" : "DeleteSaldiAnnualiTramiteFornitore",
+			"SQL" : "DELETE FROM saldi_chiusure_annuali\n          WHERE ID_ANAGRAFICA = :CHIAVE_FORNITORE\n"
 		}
 	],
 	"FindFornitore" : [
