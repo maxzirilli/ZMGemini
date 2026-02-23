@@ -51,8 +51,8 @@
                               cat_movimenti.DESCRIZIONE AS CATEGORIA_MOVIMENTO,
                               '' AS DATA_DOCUMENTO,
                               '' AS NOTE,
-                              COALESCE(anagrafiche.CODICE, anagrafiche.CODICE, '') AS CODICE,
-                              COALESCE(anagrafiche.RAGIONE_SOCIALE, anagrafiche.RAGIONE_SOCIALE) AS RAGIONE_SOCIALE_MOVIM_INFORMALE,
+                              COALESCE(anagrafiche.CODICE, '') AS CODICE,
+                              anagrafiche.RAGIONE_SOCIALE AS RAGIONE_SOCIALE_MOVIM_INFORMALE,
                               NULL as IS_NON_SCARICATA 
                          FROM movimenti
                               LEFT OUTER JOIN cat_movimenti ON cat_movimenti.CHIAVE     = movimenti.ID_CATEGORIA_MOVIMENTO
@@ -71,8 +71,8 @@
                               cat_movimenti.DESCRIZIONE AS CATEGORIA_MOVIMENTO,
                               '' AS DATA_DOCUMENTO,
                               '' AS NOTE,
-                              COALESCE(anagrafiche.CODICE, anagrafiche.CODICE, '') AS CODICE,
-                              COALESCE(anagrafiche.RAGIONE_SOCIALE, anagrafiche.RAGIONE_SOCIALE) AS RAGIONE_SOCIALE_MOVIM_INFORMALE,
+                              COALESCE(anagrafiche.CODICE, '') AS CODICE,
+                              anagrafiche.RAGIONE_SOCIALE AS RAGIONE_SOCIALE_MOVIM_INFORMALE,
                               NULL as IS_NON_SCARICATA
                          FROM movimenti
                               LEFT OUTER JOIN cat_movimenti ON  cat_movimenti.CHIAVE    = movimenti.ID_CATEGORIA_MOVIMENTO

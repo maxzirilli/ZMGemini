@@ -100,14 +100,12 @@
                             nazioni.SIGLA AS SIGLIA_NAZIONE_EM_PIVA,
                             (SELECT TARGA FROM province WHERE ddt_uscenti.PROVINCIA_DESTINAZIONE = province.CHIAVE) AS TARGA_PROVINCIA_DESTINAZIONE,
                             causali.DESCRIZIONE AS DESCRIZIONE_CAUSALE,
-                            anagrafiche.CODICE,
                             anagrafiche.CODICE
                        FROM ddt_uscenti
                             LEFT OUTER JOIN province  ON province.CHIAVE = ddt_uscenti.PROVINCIA_FATTURAZIONE
                             LEFT OUTER JOIN nazioni   ON nazioni.CHIAVE = ddt_uscenti.NAZIONE_EM_PIVA
                             LEFT OUTER JOIN causali   ON causali.CHIAVE = ddt_uscenti.CAUSALE
-                            LEFT OUTER JOIN anagrafiche   ON anagrafiche.CHIAVE = ddt_uscenti.ID_CLIENTE
-                            LEFT OUTER JOIN anagrafiche ON anagrafiche.CHIAVE = ddt_uscenti.ID_FORNITORE
+                            LEFT OUTER JOIN anagrafiche   ON anagrafiche.CHIAVE = ddt_uscenti.ID_ANAGRAFICA
                       WHERE ddt_uscenti.CHIAVE = $ChiaveDDT";
 
                 if($Query = $PDODBase->query($SQLBody))

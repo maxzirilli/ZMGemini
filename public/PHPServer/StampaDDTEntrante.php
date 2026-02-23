@@ -100,7 +100,6 @@
                             nazioni.SIGLA AS SIGLIA_NAZIONE_EM_PIVA,
                             (SELECT TARGA FROM province WHERE ddt_entranti.PROVINCIA_DESTINAZIONE = province.CHIAVE) AS TARGA_PROVINCIA_DESTINAZIONE,
                             causali.DESCRIZIONE AS DESCRIZIONE_CAUSALE,
-                            anagrafiche.CODICE,
                             anagrafiche.CODICE
                        FROM ddt_entranti
                             LEFT OUTER JOIN province  ON province.CHIAVE = ddt_entranti.PROVINCIA_FATTURAZIONE

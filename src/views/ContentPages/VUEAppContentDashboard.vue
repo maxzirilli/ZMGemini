@@ -87,6 +87,10 @@
     </template>
   </VUEModal>
 
+   <VUEAppImportazioneClientiGuidata v-if="PopupInserimentoClienteGuidato" 
+                                    @onClickAttivaModalInsermentoClienteGuidato="OnClickAttivaModalInsermentoClienteGuidato"/>
+
+
   <VUEModal v-if="PopupScaricoFileZip" :PathLogo="require('../../assets/images/LogoGemini2.png')"
             :Programma="NomeProgramma" 
             Titolo="Scarica file ZIP con fatt., fatt. pass. e note di credito"
@@ -2352,6 +2356,7 @@ import VUESchedaMovimento, { TSchedaMovimento } from '../SchedeDatabase/VUESched
 import VUESchedaPreventivoMultiparametrico, { TSchedaPreventivoMultiparametrico } from '../SchedeDatabase/VUESchedaPreventivoMultiparametrico.vue';
 import VUESchedaPrimaNota from '../SchedeDatabase/VUESchedaPrimaNota.vue';
 import VUESchedaProdotto, { TSchedaProdotto } from '../SchedeDatabase/VUESchedaProdotto.vue';
+import VUEAppImportazioneClientiGuidata from './VUEAppImportazioneClientiGuidata.vue';
 
 export default
 {
@@ -2388,6 +2393,7 @@ export default
                   VUESchedaFattureInsolutePregresseFornitori,
                   VUEModalCaricamentoDati,
                   VUESchedaPreventivoMultiparametrico,
+                  VUEAppImportazioneClientiGuidata
                 },
     data() 
     {
@@ -5188,80 +5194,6 @@ export default
         this.PopupLogRichiestaModificaAnagrafica = true
         this.NuoviDatiCliente   = []
       },
-
-      // ConfermaRichiestaModificaDatiCliente()
-      // {
-      //   var ObjQuery  = { Operazioni : [] }
-      //   var Self      = this
-      //   var ChiaveLog = Self.LsDatiClienteOriginali.ChiaveLog
-
-      //   ObjQuery.Operazioni.push({
-      //                               Query     : "ModificaAnagraficaClienteDaApp",
-      //                               Parametri : { 
-      //                                             CHIAVE                 : this.LsDatiClienteOriginali.CHIAVE,
-      //                                             PARTITA_IVA            : TSchedaGenerica.PrepareForRecordString(this.NuoviDatiCliente.PARTITA_IVA),
-      //                                             CODICE_FISCALE         : TSchedaGenerica.PrepareForRecordString(this.NuoviDatiCliente.CODICE_FISCALE),
-      //                                             INDIRIZZO_FATTURAZIONE : TSchedaGenerica.PrepareForRecordString(this.NuoviDatiCliente.INDIRIZZO_FATTURAZIONE),
-      //                                             COMUNE_FATTURAZIONE    : TSchedaGenerica.PrepareForRecordString(this.NuoviDatiCliente.COMUNE_FATTURAZIONE),
-      //                                             CAP_FATTURAZIONE       : TSchedaGenerica.PrepareForRecordString(this.NuoviDatiCliente.CAP_FATTURAZIONE),
-      //                                             NR_CIVICO_FATTURAZIONE : TSchedaGenerica.PrepareForRecordString(this.NuoviDatiCliente.NR_CIVICO_FATTURAZIONE),
-      //                                             PROVINCIA_FATTURAZIONE : TSchedaGenerica.PrepareForRecordListIndex(this.NuoviDatiCliente.PROVINCIA_FATTURAZIONE != null 
-      //                                                                         ? this.NuoviDatiCliente.PROVINCIA_FATTURAZIONE : -1),
-      //                                             ZONA_FATTURAZIONE      : TSchedaGenerica.PrepareForRecordListIndex(this.NuoviDatiCliente.ZONA_FATTURAZIONE != null 
-      //                                                                         ? this.NuoviDatiCliente.ZONA_FATTURAZIONE : -1),
-      //                                             INDIRIZZO_SPEDIZIONE   : TSchedaGenerica.PrepareForRecordString(this.NuoviDatiCliente.INDIRIZZO_SPEDIZIONE),
-      //                                             COMUNE_SPEDIZIONE      : TSchedaGenerica.PrepareForRecordString(this.NuoviDatiCliente.COMUNE_SPEDIZIONE),
-      //                                             CAP_SPEDIZIONE         : TSchedaGenerica.PrepareForRecordString(this.NuoviDatiCliente.CAP_SPEDIZIONE),
-      //                                             NR_CIVICO_SPEDIZIONE   : TSchedaGenerica.PrepareForRecordString(this.NuoviDatiCliente.NR_CIVICO_SPEDIZIONE),
-      //                                             PROVINCIA_SPEDIZIONE   : TSchedaGenerica.PrepareForRecordListIndex(this.NuoviDatiCliente.PROVINCIA_SPEDIZIONE != null 
-      //                                                                         ? this.NuoviDatiCliente.PROVINCIA_SPEDIZIONE : -1),
-      //                                             ZONA_SPEDIZIONE        : TSchedaGenerica.PrepareForRecordListIndex(this.NuoviDatiCliente.ZONA_SPEDIZIONE != null 
-      //                                                                         ? this.NuoviDatiCliente.ZONA_SPEDIZIONE : -1),
-      //                                           }
-      //                             })
-
-
-      //   ObjQuery.Operazioni.push({
-      //                               Query     : "EliminaLogRichiestaModificaDatiClienteDaApp",
-      //                               Parametri : {
-      //                                             ChiaveLog : ChiaveLog
-      //                                           }
-      //                           })
-
-
-      //   SystemInformation.AdvQuery.PostSQL('AppClienti', ObjQuery, 
-      //                                       function () 
-      //                                       {
-      //                                         Self.GetLogAppClienti()
-      //                                         Self.PopupLogRichiestaModificaCliente = false
-      //                                         Self.PopupLogApp = true
-      //                                       },
-      //                                       SystemInformation.HandleError);
-      // },
-
-      // RifiutaRichiestaModificaDatiCliente()
-      // {
-      //   var ObjQuery  = { Operazioni : [] }
-      //   var Self      = this
-      //   var ChiaveLog = Self.LsDatiClienteOriginali.ChiaveLog
-
-      //   ObjQuery.Operazioni.push({
-      //                               Query     : "EliminaLogRichiestaModificaDatiClienteDaApp",
-      //                               Parametri : {
-      //                                             ChiaveLog : ChiaveLog
-      //                                           }
-      //                           })
-
-
-      //   SystemInformation.AdvQuery.PostSQL('AppClienti', ObjQuery, 
-      //                                       function () 
-      //                                       {
-      //                                         Self.GetLogAppClienti()
-      //                                         Self.PopupLogRichiestaModificaCliente = false
-      //                                         Self.PopupLogApp = true
-      //                                       },
-      //                                       SystemInformation.HandleError);
-      // },
 
       OnClickAttivaModalInsermentoClienteGuidato()
       {

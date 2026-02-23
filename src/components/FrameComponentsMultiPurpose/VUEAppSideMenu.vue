@@ -201,6 +201,14 @@ export default
                                       IconCfgExpanded : "fa-angle-up", 
                                       IconCfgShrinked : "fa-angle-down"
                                     });
+                      
+            AMenu2 = AMenu.AddChild("Inserimento cliente guidato",
+                                    { 
+                                      IdMenu          : TIdSideMenu.INSERIMENTO_CLIENTE_GUIDATO, 
+                                      IconCfg         : "fa-angle-right", 
+                                      IconCfgExpanded : "fa-angle-up", 
+                                      IconCfgShrinked : "fa-angle-down"
+                                    });
 
           }
           
@@ -369,16 +377,16 @@ export default
                               IconCfgShrinked : "fa-angle-down"
                             });
             }
-            if (SystemInformation.UserInformation.Ruolo == RUOLI.Amministratore)
-            {
-              AMenu.AddChild("Gestione messaggi",
-                              {
-                                IdMenu          : TIdSideMenu.GESTIONE_PROGRAMMAZIONE, 
-                                IconCfg         : "fa-angle-right", 
-                                IconCfgExpanded : "fa-angle-up", 
-                                IconCfgShrinked : "fa-angle-down"
-                              });
-            }
+            // if (SystemInformation.UserInformation.Ruolo == RUOLI.Amministratore)
+            // {
+            //   AMenu.AddChild("Gestione messaggi",
+            //                   {
+            //                     IdMenu          : TIdSideMenu.GESTIONE_PROGRAMMAZIONE, 
+            //                     IconCfg         : "fa-angle-right", 
+            //                     IconCfgExpanded : "fa-angle-up", 
+            //                     IconCfgShrinked : "fa-angle-down"
+            //                   });
+            // }
           if (SystemInformation.UserInformation.Ruolo == RUOLI.Amministratore)
           {
             AMenu.AddChild("Azioni amministratore",

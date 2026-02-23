@@ -85,6 +85,8 @@ export const TIdSideMenu =
 
    LOG_MODIFICHE_UTENTI            : 58,
 
+   INSERIMENTO_CLIENTE_GUIDATO     : 59,
+
    ATTR_ALTRI_PREZZI               : 60,
 
    CFG_ESITO_SORVEGLIANZA          : 61,
@@ -193,6 +195,9 @@ export default
             case TIdSideMenu.AMM_IMPORTAZIONE_FATT_PASS       : this.$router.push('/appMainWindow/ImportazioneFatturePassive');
                                                                 break;
             case TIdSideMenu.CFG_OPENSTREETMAP                : this.$router.push('/appMainWindow/ConfigurazioneOpenStreetMap');
+                                                                break;
+            case TIdSideMenu.INSERIMENTO_CLIENTE_GUIDATO      : this.$router.push("/appMainWindow/Dashboard");
+                                                                setTimeout(() => {this.InserimentoClienteGuidatoTrigger.TriggerInserimentoGuidato = true}, 100)
                                                                 break;
             case TIdSideMenu.AMM_SCARICO_FILE_ZIP_CON_XML     : this.MenuTrigger.TriggerPopupScaricoFileZip++;
                                                                 break;
