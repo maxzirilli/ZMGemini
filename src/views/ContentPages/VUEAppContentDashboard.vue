@@ -3520,7 +3520,6 @@ export default
           let Self = this
           this.MenuFilterVisible = false
           this.MenuFilterRicercheVisible = false
-          this.MeseSelezionatoPerFilialeAttrezzature = -1
           this.MeseFiltroPerXML = []
           this.MenuNuovo  = []
           this.MenuStampa = []

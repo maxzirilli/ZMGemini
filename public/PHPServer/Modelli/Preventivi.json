@@ -60,18 +60,6 @@
 			"SQL" : "DELETE from log_preventivi\n WHERE ID_PREVENTIVO = :CHIAVE\n"
 		},
 		{
-			"Name" : "DeleteAttrezzatureDaPreventivo",
-			"SQL" : "DELETE FROM preventivi_attrezzature \n          WHERE preventivi_attrezzature.ID_PREVENTIVO = :CHIAVE_PREVENTIVO\n"
-		},
-		{
-			"Name" : "InserisciAttrezzatureInPreventivo",
-			"SQL" : "INSERT INTO preventivi_attrezzature (ID_ATTREZZATURA, ID_PREVENTIVO)\n                                         VALUES (:ID_ATTREZZATURA, :NewKey1!ID_PREVENTIVO)\n"
-		},
-		{
-			"Name" : "EliminaAttrezzatureCollegateAlPreventivo",
-			"SQL" : "DELETE from preventivi_attrezzature\n WHERE ID_PREVENTIVO = :CHIAVE\n"
-		},
-		{
 			"Name" : "EliminaCollegamentiAiPreventiviMultiparametrici",
 			"SQL" : "UPDATE preventivi_multiparametrici\n     SET ID_PREVENTIVO_CONFERMA = NULL\n WHERE ID_PREVENTIVO_CONFERMA = :CHIAVE\n"
 		},
@@ -82,18 +70,6 @@
 		{
 			"Name" : "ModificaPrimoPreventivo",
 			"SQL" : "UPDATE preventivi_multiparametrici\n      SET PRIMO_PREVENTIVO = :CHIAVE_PREVENTIVO\n WHERE CHIAVE = :PRIMO_PREVENTIVO\n       OR PRIMO_PREVENTIVO = :PRIMO_PREVENTIVO\n"
-		},
-		{
-			"Name" : "EliminaAttrezzAltreLavorazioni",
-			"SQL" : "DELETE FROM preventivi_attrezzature_soluzioni\n          WHERE preventivi_attrezzature_soluzioni.ID_PREVENTIVO = :ID_PREVENTIVO\n"
-		},
-		{
-			"Name" : "InserisciElaborazioneAttrezzatura",
-			"SQL" : "INSERT INTO attrezzature_altre_lavorazioni (CHIAVE, ID_CONFERMA, ID_ATTREZZATURA, DESCRIZIONE_LAVORAZIONE)\n                                                   VALUES (:NewKey1, :ID_CONFERMA, :ID_ATTREZZATURA, #DESCRIZIONE_LAVORAZIONE)\n"
-		},
-		{
-			"Name" : "InserisciAttrezzAltreLavorazioni",
-			"SQL" : "INSERT INTO preventivi_attrezzature_soluzioni (CHIAVE, ID_ATTREZZATURA, ID_PREVENTIVO, DESCRIZIONE_LAVORAZIONE)\n                                         VALUES (:NewKey2, :ID_ATTREZZATURA, :NewKey1!ID_PREVENTIVO, #DESCRIZIONE_LAVORAZIONE)\n"
 		}
 	],
 	"FiltroPreventivo" : [

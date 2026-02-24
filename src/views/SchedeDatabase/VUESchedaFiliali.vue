@@ -520,34 +520,7 @@ export default
             ];
 
             let LastRegione   = -1
-            // let LastProvincia = -1
-            // let LastComune    = -1
-            let TotaleAttrezzature = { 
-                                        Estintori  : 0,
-                                        Porte      : 0,
-                                        Luci       : 0,
-                                        Evacuatori : 0,
-                                        EVAC       : 0,
-                                        Fumi       : 0,
-                                        Sprinkler  : 0,
-                                        Gruppi     : 0,
-                                        ImpIdr     : 0,
-                                        Idranti    : 0,
-                                        Totale     :0,
-                                        AggiungiAttrezzature(NumEst, NumPorte, NumLuci, NumEvacuatori, NumEVAC, NumFumi, NumSprinkler, NumGruppi, NumImpIdr, NumIdranti)
-                                        {
-                                          this.Estintori  += NumEst
-                                          this.Porte      += NumPorte
-                                          this.Luci       += NumLuci
-                                          this.Evacuatori += NumEvacuatori
-                                          this.EVAC       += NumEVAC
-                                          this.Fumi       += NumFumi
-                                          this.Sprinkler  += NumSprinkler
-                                          this.Gruppi     += NumGruppi
-                                          this.ImpIdr     += NumImpIdr
-                                          this.Idranti    += NumIdranti
-                                        }
-                                     }
+
             ArrayInfo.forEach(function(ARecord)
             {
               // if(LastRegione != ARecord.REGIONE)
@@ -569,30 +542,10 @@ export default
                   { v: ARecord.NOME, t: "s", s: {font: {name: 'Liberation Sans', sz: 10  }}},
                   { v: ARecord.RAGIONE_SOCIALE_CLIENTE, t: "s", s: {font: {name: 'Liberation Sans', sz: 10  }}},
                   { v: ARecord.MESE_VISITA != null? TZDateFunct.GetMesiInItaliano()[ARecord.MESE_VISITA - 1] : "NON PRESENTE", t: "s", s: {font: {name: 'Liberation Sans', sz: 10  }}},
-                  { v: ARecord.NumeroEstintori, t: "s", s: {name: 'Liberation Sans', sz: 10  }},
-                  { v: ARecord.NumeroPorte, t: "s", s: {name: 'Liberation Sans', sz: 10  }},
-                  { v: ARecord.NumeroLuci, t: "s", s: {name: 'Liberation Sans', sz: 10  }},
-                  { v: ARecord.NumeroEvacuatori, t: "s", s: {name: 'Liberation Sans', sz: 10  }},
-                  { v: ARecord.NumeroEVAC, t: "s", s: {name: 'Liberation Sans', sz: 10  }},
-                  { v: ARecord.NumeroFumi, t: "s", s: {name: 'Liberation Sans', sz: 10  }},
-                  { v: ARecord.NumeroSprinkler, t: "s", s: {name: 'Liberation Sans', sz: 10  }},
-                  { v: ARecord.NumeroGruppi, t: "s", s: {name: 'Liberation Sans', sz: 10  }},
-                  { v: ARecord.NumeroImpIdr, t: "s", s: {name: 'Liberation Sans', sz: 10  }},
-                  { v: ARecord.NumeroIdranti, t: "s", s: {name: 'Liberation Sans', sz: 10  }},
                 ];
                 ArrayContenitore.push(RowRegione)
                 LastRegione   = ARecord.REGIONE
 
-                TotaleAttrezzature.AggiungiAttrezzature(ARecord.NumeroEstintori,
-                                                        ARecord.NumeroPorte,
-                                                        ARecord.NumeroLuci,
-                                                        ARecord.NumeroEvacuatori,
-                                                        ARecord.NumeroEVAC,
-                                                        ARecord.NumeroFumi,
-                                                        ARecord.NumeroSprinkler,
-                                                        ARecord.NumeroGruppi,
-                                                        ARecord.NumeroImpIdr,
-                                                        ARecord.NumeroIdranti)
             });
             ArrayContenitore.push([
                                     { v: '', t: "s", s: {font: {name: 'Liberation Sans', sz: 10 }}},
@@ -608,16 +561,6 @@ export default
                                     { v: '', t: "s", s: {name: 'Liberation Sans', sz: 10  }},
                                     { v: '', t: "s", s: {name: 'Liberation Sans', sz: 10  }},
                                     { v: "Totale:", t: "s", s: { font: { bold: true, name: 'Liberation Sans', sz: 10  }}},
-                                    { v: TotaleAttrezzature.Estintori, t: "s", s: {name: 'Liberation Sans', sz: 10  }},
-                                    { v: TotaleAttrezzature.Porte, t: "s", s: {name: 'Liberation Sans', sz: 10  }},
-                                    { v: TotaleAttrezzature.Luci, t: "s", s: {name: 'Liberation Sans', sz: 10  }},
-                                    { v: TotaleAttrezzature.Evacuatori, t: "s", s: {name: 'Liberation Sans', sz: 10  }},
-                                    { v: TotaleAttrezzature.EVAC, t: "s", s: {name: 'Liberation Sans', sz: 10  }},
-                                    { v: TotaleAttrezzature.Fumi, t: "s", s: {name: 'Liberation Sans', sz: 10  }},
-                                    { v: TotaleAttrezzature.Sprinkler, t: "s", s: {name: 'Liberation Sans', sz: 10  }},
-                                    { v: TotaleAttrezzature.Gruppi, t: "s", s: {name: 'Liberation Sans', sz: 10  }},
-                                    { v: TotaleAttrezzature.ImpIdr, t: "s", s: {name: 'Liberation Sans', sz: 10  }},
-                                    { v: TotaleAttrezzature.Idranti, t: "s", s: {name: 'Liberation Sans', sz: 10  }},
                                   ])
 
             // STEP 3: Create worksheet with rows; Add worksheet to workbook

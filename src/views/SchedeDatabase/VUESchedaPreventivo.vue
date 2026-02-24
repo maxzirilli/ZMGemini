@@ -1267,8 +1267,7 @@ export default
     TabsVisibili()
     {
       return this.Tabs.Tabs.filter(tab => 
-                                   (tab.Id !== 'LogPreventivo' || this.VisibilitaLogVariazioni) &&
-                                   (tab.Id !== 'AltreLavorazioni' || this.VisibilitaAttrezzatureSoluzioniPreventivi));
+                                   (tab.Id !== 'LogPreventivo' || this.VisibilitaLogVariazioni));
     }
    },
    watch:

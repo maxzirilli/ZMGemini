@@ -312,32 +312,26 @@ import { TFilterFattura } from '@/ListaFiltri.js'
          this.OggettoEmail.Ccn          = ''
          this.OggettoEmail.CorpoEmail   = ""
 
-         if(this.Nodo.Data.IsRapportoIntervento)
-            this.TitoloMail                = 'Invio rapporto di intervento tramite mail'
-         else
-         {
-            if(this.Nodo.Data.IsFattura)
+          if(this.Nodo.Data.IsFattura)
+          {
+            this.TitoloMail                = 'Invio fattura tramite mail'
+            this.OggettoEmail.Oggetto      = SystemInformation.Configurazioni.Impostazioni.OGGETTO_EMAIL_FATTURE
+            this.OggettoEmail.CorpoEmail   = SystemInformation.Configurazioni.Impostazioni.CORPO_EMAIL_FATTURE
+            
+          }
+          else
+          {
+            if(this.Nodo.Data.IsPreventivo)
             {
-              this.TitoloMail                = 'Invio fattura tramite mail'
-              this.OggettoEmail.Oggetto      = SystemInformation.Configurazioni.Impostazioni.OGGETTO_EMAIL_FATTURE
-              this.OggettoEmail.CorpoEmail   = SystemInformation.Configurazioni.Impostazioni.CORPO_EMAIL_FATTURE
-              
+              this.TitoloMail               = 'Invio preventivo tramite mail'
+              this.OggettoEmail.Oggetto     = SystemInformation.Configurazioni.Impostazioni.OGGETTO_EMAIL_PREVENTIVI
+              this.OggettoEmail.CorpoEmail  = SystemInformation.Configurazioni.Impostazioni.CORPO_EMAIL_PREVENTIVI    
             }
             else
             {
-              if(this.Nodo.Data.IsPreventivo)
+              if(this.Nodo.Data.IsNotaDiCredito)
               {
-                this.TitoloMail               = 'Invio preventivo tramite mail'
-                this.OggettoEmail.Oggetto     = SystemInformation.Configurazioni.Impostazioni.OGGETTO_EMAIL_PREVENTIVI
-                this.OggettoEmail.CorpoEmail  = SystemInformation.Configurazioni.Impostazioni.CORPO_EMAIL_PREVENTIVI    
-
-              }
-              else
-              {
-                if(this.Nodo.Data.IsNotaDiCredito)
-                {
-                  this.TitoloMail                = 'Invio nota di credito tramite mail'
-                }
+                this.TitoloMail                = 'Invio nota di credito tramite mail'
               }
             }
           }
