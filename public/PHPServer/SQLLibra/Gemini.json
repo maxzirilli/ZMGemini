@@ -1,6 +1,6 @@
 {
     "Version": {
-        "Major": 0,
+        "Major": 1,
         "Minor": 0,
         "Release": 0
     },
@@ -7284,80 +7284,6 @@
             "Triggers": []
         },
         {
-            "Nome": "modifiche_anagrafiche_importazione",
-            "Campi": [
-                {
-                    "Nome": "CHIAVE",
-                    "IsNullable": false,
-                    "DataType": "int",
-                    "AutoIncrement": false,
-                    "Commento": "",
-                    "DefaultValue": null,
-                    "SQLAfterAddedColumn": null
-                },
-                {
-                    "Nome": "ID_RAPPORTO",
-                    "IsNullable": true,
-                    "DataType": "int",
-                    "AutoIncrement": false,
-                    "Commento": "",
-                    "DefaultValue": null,
-                    "SQLAfterAddedColumn": null
-                },
-                {
-                    "Nome": "TIPOLOGIA",
-                    "IsNullable": true,
-                    "DataType": "enum('C','A','F')",
-                    "AutoIncrement": false,
-                    "Commento": "",
-                    "DefaultValue": null,
-                    "SQLAfterAddedColumn": null
-                },
-                {
-                    "Nome": "PROPOSTA_MODIFICA",
-                    "IsNullable": true,
-                    "DataType": "longtext",
-                    "AutoIncrement": false,
-                    "Commento": "",
-                    "DefaultValue": null,
-                    "SQLAfterAddedColumn": null
-                },
-                {
-                    "Nome": "DATA",
-                    "IsNullable": true,
-                    "DataType": "datetime",
-                    "AutoIncrement": false,
-                    "Commento": "",
-                    "DefaultValue": null,
-                    "SQLAfterAddedColumn": null
-                }
-            ],
-            "PrimaryKey": {
-                "Campi": [
-                    "CHIAVE"
-                ]
-            },
-            "ForeignKeys": [
-                {
-                    "Nome": "FK_MODIFICHE_ANAGRAFICA_ID_RAPPORTO",
-                    "Campo": "ID_RAPPORTO",
-                    "RefTable": "rapporti_intervento",
-                    "RefField": "CHIAVE"
-                }
-            ],
-            "UniqueKeys": [
-                {
-                    "Campi": [
-                        "ID_RAPPORTO",
-                        "TIPOLOGIA"
-                    ],
-                    "Nome": "ID_RAPPORTO"
-                }
-            ],
-            "Indexes": [],
-            "Triggers": []
-        },
-        {
             "Nome": "movimenti",
             "Campi": [
                 {
@@ -9410,15 +9336,6 @@
                     "SQLAfterAddedColumn": null
                 },
                 {
-                    "Nome": "ID_RAPPORTO",
-                    "IsNullable": true,
-                    "DataType": "int",
-                    "AutoIncrement": false,
-                    "Commento": "",
-                    "DefaultValue": null,
-                    "SQLAfterAddedColumn": null
-                },
-                {
                     "Nome": "ID_FILIALE",
                     "IsNullable": true,
                     "DataType": "int",
@@ -9639,12 +9556,6 @@
                     "Nome": "FK_PREVENTIVI_MULTI_ID_PROVINCIA_FATT",
                     "Campo": "PROVINCIA_FATTURAZIONE",
                     "RefTable": "province",
-                    "RefField": "CHIAVE"
-                },
-                {
-                    "Nome": "FK_PREVENTIVI_MULTI_ID_RAPPORTO",
-                    "Campo": "ID_RAPPORTO",
-                    "RefTable": "rapporti_intervento",
                     "RefField": "CHIAVE"
                 },
                 {
@@ -13184,7 +13095,9 @@
     "__CommentCampiDaEliminare": "Vettore di oggetti con Campo e Tabella",
     "CampiDaEliminare": [],
     "__CommentTabelleDaEliminare": "Vettore di stringhe con i nomi delle tabelle",
-    "TabelleDaEliminare": [],
+    "TabelleDaEliminare": [
+        "modifiche_anagrafiche_importazione"
+    ],
     "__CommentQueryAllCreazione": "Vettore di stringhe contenente la lista di query",
     "QryOnDBaseCreation": []
 }
