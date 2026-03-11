@@ -90,6 +90,12 @@
 			"SQL" : "SELECT CHIAVE,\n            DESCRIZIONE,\n            PRODOTTO_COMPOSTO\n  FROM prodotti\n  WHERE UPPER(SUBSTRING(DESCRIZIONE,1,1)) = UPPER(#Iniziale)\n    AND ID_SETTORE = :ChiaveSettore\nORDER BY UPPER(DESCRIZIONE)\n"
 		}
 	],
+	"ProdottiCompostiMagazzino" : [
+		{
+			"Name" : "ListaProdottiComposti",
+			"SQL" : "SELECT prodotti.*,\n            qnt_x_magazzino.ID_MAGAZZINO,\n            settori.DESCRIZIONE AS SETTORE\n  FROM prodotti    \n  LEFT OUTER JOIN settori ON settori.CHIAVE = prodotti.ID_SETTORE    \n  LEFT JOIN qnt_x_magazzino ON qnt_x_magazzino.ID_PRODOTTO = prodotti.CHIAVE\n    AND qnt_x_magazzino.ID_MAGAZZINO = :ID_MAGAZZINO\nWHERE prodotti.PRODOTTO_COMPOSTO = 'T'\n"
+		}
+	],
 	"SelectDettaglio" : [
 		{
 			"Name" : "SelectProdotto",

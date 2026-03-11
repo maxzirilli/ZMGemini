@@ -729,8 +729,13 @@ export default {
               return
           }
   
-          this.ListaProdotti = SystemInformation.GetProdottiCompostiXMagazzino(this.IdMagazzino)
-          Self.PopupLsProdotti = true
+          SystemInformation.GetProdottiCompostiXMagazzino(this.IdMagazzino,function(Lista)
+          {
+            Self.ListaProdotti = Lista
+            Self.PopupLsProdotti = true
+          })
+
+          
       }
     },
 

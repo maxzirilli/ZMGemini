@@ -7,7 +7,6 @@ import { TAccessRights } from './AccessRights.js';
                       
 export const LOCALSTORAGE = { 
                               TokenRememberMe : "XFG2lo",
-                              TokenPartitaIVA : "GeminiPartitaIVA"
                             }  
 
 export const NUMERO_VERSIONE_GEMINI = '0.000.000'
@@ -585,9 +584,8 @@ class TSystemInformation
     {
       self.AdvQuery.UrlServer = UrlServer;
       let Token       = localStorage.getItem(LOCALSTORAGE.TokenRememberMe);
-      let PartitaIVA  = localStorage.getItem(LOCALSTORAGE.TokenPartitaIVA);
 
-      if(Token != null && PartitaIVA != null)
+      if(Token != null)
       {
          self.AdvQuery.LoginWithToken(Token,
                                       function()
@@ -602,13 +600,11 @@ class TSystemInformation
                                            OnEndFunction();
                                          });
                                          self.AdvQuery.LastToken = Token
-                                         self.AdvQuery.LastPIVA  = PartitaIVA
                                       },
                                       function()
                                       {
                                          OnNoLogin()
-                                      },
-                                      PartitaIVA);
+                                      },);
       }
       else OnNoLogin();
 
@@ -691,40 +687,26 @@ class TSystemInformation
     return Result
   }
 
-  GetProdottiCompostiXMagazzino(IdMagazzino)
+  GetProdottiCompostiXMagazzino(IdMagazzino, OnSuccess)
   {
-    var ListaProdottiComposti = []
-    var TuttiProdotti = this.Configurazioni.Prodotti
-
-    for(var i = 0; i < TuttiProdotti.length; i++)
-    {
-        var ProdottoCorrente = TuttiProdotti[i]
-
-        if(ProdottoCorrente.PRODOTTO_COMPOSTO != 'F')
+    SystemInformation.AdvQuery.GetSQL("Magazzino",{ ID_MAGAZZINO: IdMagazzino },
+        function(Results)
         {
-            if(ProdottoCorrente.ID_MAGAZZINO != undefined && ProdottoCorrente.ID_MAGAZZINO == IdMagazzino)
-                ListaProdottiComposti.push(ProdottoCorrente)
-        }
-    }
+            let ArrayInfo = SystemInformation.AdvQuery.FindResults(Results, "ListaProdottiComposti");
+            console.log(ArrayInfo)
+            let ListaProdottiComposti = [];
+            if(ArrayInfo != undefined)
+                ListaProdottiComposti = ArrayInfo;
 
-    return ListaProdottiComposti
+            OnSuccess(ListaProdottiComposti);
+        },
+        function(HTTPError, SubHTTPError, Response)
+        {
+            SystemInformation.HandleError(HTTPError, SubHTTPError, Response);
+        },
+        "ProdottiCompostiMagazzino"
+    );
   }
-
-  // GetRagioneSocialeCliente(IdCliente)
-  // {
-  //   for(let i = 0; i < this.Configurazioni.Clienti.length; i++)
-  //     if(this.Configurazioni.Clienti[i].CHIAVE == IdCliente)
-  //       return this.Configurazioni.Clienti[i].RAGIONE_SOCIALE
-  //   return 'cliente non trovato'
-  // }
-
-  // GetRagioneSocialeFornitore(IdFornitore)
-  // {
-  //   for(let i = 0; i < this.Configurazioni.Fornitori.length; i++)
-  //     if(this.Configurazioni.Fornitori[i].CHIAVE == IdFornitore)
-  //       return this.Configurazioni.Fornitori[i].RAGIONE_SOCIALE
-  //   return 'fornitore non trovato'
-  // }
 
   GetRagioneSociale(IdAnagrafica)
   {

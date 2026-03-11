@@ -42,4 +42,6 @@
     // Configurazione access controll
     define('ACCESS_CONTROLL_SHARED', 'Access-Control-Allow-Origin: *');
 
+    define('PATH_SESSION_FOLDER','');
+
 ?>
