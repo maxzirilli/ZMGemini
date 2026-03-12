@@ -505,7 +505,7 @@
       <div style="width: 40%; display: flex; justify-content: flex-end; align-items: center; gap: 15px; float: right">
         
         <div style="max-width: 500px; display: flex; justify-content: flex-end; flex-wrap: wrap">
-          <!-- <button class="btn btn-s-md btn-default btn-rounded btn-xs" style="width: 10%" @click="OnClickNuovoClienteRapido">Cliente</button> -->
+          <button class="btn btn-s-md btn-default btn-rounded btn-xs" style="width: 10%" @click="OnClickNuovoClienteRapido">Cliente</button>
           <button class="btn btn-s-md btn-default btn-rounded btn-xs" style="width: 10%" @click="OnClickNuovoFornitoreRapido">Fornitore</button>
           <button class="btn btn-s-md btn-default btn-rounded btn-xs" style="width: 10%" @click="OnClickNuovoProdottoRapido">Prodotto</button>
           <button class="btn btn-s-md btn-default btn-rounded btn-xs" style="width: 10%" @click="OnClickNuovoDDTEntranteRapido">DDT entrante</button>
@@ -1943,19 +1943,19 @@
         
         <div style="float:left;width:1%;">&nbsp;</div>
 
-        <div style="float:left;font-size:14px;margin-top: 5px;width:6%;text-align: right; padding-right: 15px;">
+        <div style="float:left;font-size:14px;margin-top: 5px;width:7%;text-align: right; padding-right: 15px;">
           <label>Dalla data </label>
         </div>
-        <div style="float:left;width:10%;">
+        <div style="float:left;width:13%;">
           <input type="date" class="form-control" v-model="FilterMovimentiMagazzini.DallaData"/>
         </div>
 
         <div style="float:left;width:1%;">&nbsp;</div>
 
-        <div style="float:left;font-size:14px;margin-top: 5px;width:6%;text-align: right; padding-right: 15px;">
+        <div style="float:left;font-size:14px;margin-top: 5px;width:7%;text-align: right; padding-right: 15px;">
           <label>Alla data</label>
         </div>
-        <div style="float:left;width:10%;">
+        <div style="float:left;width:13%;">
           <input type="date"  class="form-control" v-model="FilterMovimentiMagazzini.AllaData"/>
         </div>
 
@@ -2127,8 +2127,8 @@
      <div v-if="!DatiInModifica && CurrentFilter.GetFilterId() == 'Prodotti'" class="breadcrumb no-border no-radius b-b b-light pull-in" style="height:50px;">
         <div class="col-md-10" style="padding:0px">
         
-          <div style="float: left;font-size:14px;padding-top: 5px;width:10%;text-align: right; padding-right: 15px;">
-            <label>Nome prodotto</label>
+          <div style="float: left;font-size:14px;padding-top: 5px;width:5%;text-align: right; padding-right: 15px;">
+            <label>Nome</label>
           </div>
           <div style="float:left;width:20%">
             <VUEInputProdotti v-model="FilterProdotto.NomeProdotto"
@@ -2136,7 +2136,7 @@
             </VUEInputProdotti>
           </div> 
 
-          <div style="float: left;font-size:14px;padding-top: 5px;width:7%;text-align: right; padding-right: 15px;">
+          <div style="float: left;font-size:14px;padding-top: 5px;width:9%;text-align: right; padding-right: 15px;">
             <label>Part number</label>
           </div>
           <div style="float:left;width:10%">
@@ -2155,7 +2155,7 @@
                   </option>
               </select>
             </div> 
-            <div style="float: left;font-size:14px;padding-top: 5px;width:7%;text-align: right; padding-right: 15px;">
+            <div style="float: left;font-size:14px;padding-top: 5px;width:8%;text-align: right; padding-right: 15px;">
               <label>Magazzino</label>
             </div>
             <div style="float:left;width:11%">
@@ -2168,9 +2168,9 @@
             </div> 
             <!-- Filtro Prodotti Sottosoglia-->
             <div style="float: left;font-size:14px;padding-top: 5px;width:14%;text-align: right; padding-right: 15px;">
-              <label>Solo prodotti sottosoglia</label>
+              <label>Prodotti sottosoglia</label>
             </div>
-            <div style="float:left;width:3%;padding-top: 1px">
+            <div style="float:left;width:2%;padding-top: 1px">
               <input type="checkbox" style="height:20px" class="form-control" v-model="FilterProdotto.SoloSottosoglia" />
             </div> 
           </div>
@@ -3049,11 +3049,11 @@ export default
        
       },
 
-      // OnClickNuovoClienteRapido()
-      // {
-      //   this.SchedaSelezionata = new TSchedaCliente(SystemInformation.AdvQuery);
-      //   this.SchedaSelezionata.Nuovo();
-      // },
+      OnClickNuovoClienteRapido()
+      {
+        this.SchedaSelezionata = new TSchedaCliente(SystemInformation.AdvQuery);
+        this.SchedaSelezionata.Nuovo();
+      },
 
       OnClickNuovoFornitoreRapido()
       {
@@ -3232,13 +3232,14 @@ export default
         this.PopupAttesaCalcolo = true
         var Self = this
         let Parametri = this.FilterProdotto.GetParametriXProdotto()
+
         if(this.PopupMagazzinoSelezionato != -1)
           Parametri.IdMagazzino = this.PopupMagazzinoSelezionato
-
         SystemInformation.AdvQuery.GetSQL('Magazzino', Parametri,
                                                           function(Results)
                                                           {
                                                             let ArrayInfo = SystemInformation.AdvQuery.FindResults(Results,"ExcelListaProdotti")
+                                                            
                                                             if(ArrayInfo != undefined)
                                                             {
 
@@ -3260,21 +3261,25 @@ export default
 
                                                               ArrayInfo.forEach(function(ARecord)
                                                               {
+                                                                let QNT = TSchedaGenerica.DisponiFromInteger(ARecord.QUANTITA_MAGAZZINO) || 0;
+                                                                let SOGLIA = (ARecord.SOGLIA_ALLARME != null ? ARecord.SOGLIA_ALLARME : 0) / 100;
+                                                                let PREZZO = TSchedaGenerica.DisponiFromInteger(ARecord.PREZZO_ULTIMO_ACQUISTO) || 0;
+                                                                
                                                                 let RowProdotto = 
                                                                 [
                                                                   { v: ARecord.PART_NUMBER,          t: "s", s: {font: {bold: true, name: 'Liberation Sans', sz: 10  }}},
                                                                   { v: ARecord.NOME_PRODOTTO,        t: "s", s: {font: {bold: true, name: 'Liberation Sans', sz: 10  }}},
                                                                   { v: ARecord.SETTORE,              t: "s", s: {font: {name: 'Liberation Sans', sz: 10  }}},
                                                                   { v: ARecord.DESCRIZIONE_MAGAZZINO || "", t: "s", s: {font: {name: 'Liberation Sans', sz: 10  }}},
-                                                                  { v: (TSchedaGenerica.DisponiFromInteger(ARecord.QUANTITA_MAGAZZINO) / 100),  t: "n", s: {font: {name: 'Liberation Sans', sz: 10  }}},
-                                                                  { v: (ARecord.SOGLIA_ALLARME / 100),     t: "n", s: {font: {name: 'Liberation Sans', sz: 10  }}},
-                                                                  { v: (TSchedaGenerica.DisponiFromInteger(ARecord.PREZZO_ULTIMO_ACQUISTO) / 100), t: "n", s: {font: {name: 'Liberation Sans', sz: 10  }}},
+                                                                  { v: QNT / 100,                           t: "n", s: {font: {name: 'Liberation Sans', sz: 10  }}},
+                                                                  { v: SOGLIA,                              t: "n", s: {font: {name: 'Liberation Sans', sz: 10  }}},
+                                                                  { v: PREZZO / 100,                        t: "n", s: {font: {name: 'Liberation Sans', sz: 10  }}},
                                                                 ]
 
                                                                 ArrayContenitore.push(RowProdotto)
 
                                                                 // 🔹 Calcolo corretto del totale
-                                                                TotalePrezzi += (TSchedaGenerica.DisponiFromInteger(ARecord.PREZZO_ULTIMO_ACQUISTO) * (TSchedaGenerica.DisponiFromInteger(ARecord.QUANTITA_MAGAZZINO))) / 100
+                                                                TotalePrezzi += (PREZZO * QNT) / 100;
                                                               })
 
                                                               
