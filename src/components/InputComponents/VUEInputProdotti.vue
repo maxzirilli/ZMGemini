@@ -24,7 +24,7 @@ import Autocomplete from '../../../../../../../../Librerie/VUE/ZAutocomplete.vue
     {
        return {
                  ChiaveProdotto : -1,
-                 Prodotti       : SystemInformation.GetProdottiSemplici()
+                 Prodotti       : SystemInformation.Configurazioni.Prodotti
               }
     },
     props : [ 'modelValue' ,'disabled'],
@@ -46,10 +46,10 @@ import Autocomplete from '../../../../../../../../Librerie/VUE/ZAutocomplete.vue
           var Result = []
           this.Prodotti.forEach(function(Prodotto)
           {
-            if(Prodotto.DESCRIZIONE != '')
+            if(Prodotto.NOME_PRODOTTO != '')
             {
               Result.push({
-                            IDENTIFICATIVO : Prodotto.DESCRIZIONE,
+                            IDENTIFICATIVO : Prodotto.NOME_PRODOTTO,
                             CHIAVE         : Prodotto.CHIAVE
                           })
             }

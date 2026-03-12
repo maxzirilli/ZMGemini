@@ -1959,16 +1959,16 @@
           <input type="date"  class="form-control" v-model="FilterMovimentiMagazzini.AllaData"/>
         </div>
 
-        <div style="float:left;width:1%;">&nbsp;</div>
-
-        <div style="float:left;width:1%;">&nbsp;</div>
+        <!-- <div style="float:left;width:1%;">&nbsp;</div> -->
 
         <div style="float:left;font-size:14px;margin-top: 5px;width:11%;text-align: right; padding-right: 15px;">
-          <label>Descrizione prodotto</label>
+          <label>Nome prodotto</label>
         </div>
-        <div style="float:left;width:10%;">
-          <input type="text"  class="form-control" v-model="FilterMovimentiMagazzini.DescrizioneProdotto"/>
-        </div>
+        <div style="float:left;width:20%;">
+         <VUEInputProdotti v-model="FilterMovimentiMagazzini.NomeProdotto"
+             @onUpdate="newValue => FilterMovimentiMagazzini.NomeProdotto = newValue">
+            </VUEInputProdotti>
+            </div>
 
       </div>
 
@@ -2127,13 +2127,20 @@
      <div v-if="!DatiInModifica && CurrentFilter.GetFilterId() == 'Prodotti'" class="breadcrumb no-border no-radius b-b b-light pull-in" style="height:50px;">
         <div class="col-md-10" style="padding:0px">
         
-          <div style="float: left;font-size:14px;padding-top: 5px;width:8%;text-align: right; padding-right: 15px;">
-            <label>Descrizione</label>
+          <div style="float: left;font-size:14px;padding-top: 5px;width:10%;text-align: right; padding-right: 15px;">
+            <label>Nome prodotto</label>
           </div>
-          <div style="float:left;width:11%">
-            <!-- <input type="text" class="form-control" v-model="FilterProdotto.Descrizione" />
-              -->
-            <VUEInputProdotti v-model="FilterProdotto.Descrizione"></VUEInputProdotti>
+          <div style="float:left;width:20%">
+            <VUEInputProdotti v-model="FilterProdotto.NomeProdotto"
+             @onUpdate="newValue => FilterProdotto.NomeProdotto = newValue">
+            </VUEInputProdotti>
+          </div> 
+
+          <div style="float: left;font-size:14px;padding-top: 5px;width:7%;text-align: right; padding-right: 15px;">
+            <label>Part number</label>
+          </div>
+          <div style="float:left;width:10%">
+            <input type="text" class="form-control" v-model="FilterProdotto.PartNumber">
           </div> 
           <div>
             <!-- Filtro Settore-->
@@ -2148,7 +2155,7 @@
                   </option>
               </select>
             </div> 
-            <div style="float: left;font-size:14px;padding-top: 5px;width:6%;text-align: right; padding-right: 15px;">
+            <div style="float: left;font-size:14px;padding-top: 5px;width:7%;text-align: right; padding-right: 15px;">
               <label>Magazzino</label>
             </div>
             <div style="float:left;width:11%">
@@ -3240,8 +3247,8 @@ export default
                                                               const wb = XLSX.utils.book_new();
                                                               let ArrayContenitore = []
                                                               let Row = [
-                                                                          { v: "Codice",                t: "s", s: { font: { bold: true, name: 'Liberation Sans', sz: 10, Width: 10 }}},
-                                                                          { v: "Descrizione",           t: "s", s: { font: { bold: true, name: 'Liberation Sans', sz: 10, Width: 10 }}},
+                                                                          { v: "Part number",           t: "s", s: { font: { bold: true, name: 'Liberation Sans', sz: 10, Width: 10 }}},
+                                                                          { v: "Nome prodotto",         t: "s", s: { font: { bold: true, name: 'Liberation Sans', sz: 10, Width: 10 }}},
                                                                           { v: "Settore",               t: "s", s: { font: { bold: true, name: 'Liberation Sans', sz: 10  }}},
                                                                           { v: "Magazzino",             t: "s", s: { font: { bold: true, name: 'Liberation Sans', sz: 10  }}},
                                                                           { v: "Qnt. magazzino",        t: "s", s: { font: { bold: true, name: 'Liberation Sans', sz: 10  }}},
@@ -3255,8 +3262,8 @@ export default
                                                               {
                                                                 let RowProdotto = 
                                                                 [
-                                                                  { v: ARecord.CODICE,               t: "s", s: {font: {bold: true, name: 'Liberation Sans', sz: 10  }}},
-                                                                  { v: ARecord.DESCRIZIONE,          t: "s", s: {font: {bold: true, name: 'Liberation Sans', sz: 10  }}},
+                                                                  { v: ARecord.PART_NUMBER,          t: "s", s: {font: {bold: true, name: 'Liberation Sans', sz: 10  }}},
+                                                                  { v: ARecord.NOME_PRODOTTO,        t: "s", s: {font: {bold: true, name: 'Liberation Sans', sz: 10  }}},
                                                                   { v: ARecord.SETTORE,              t: "s", s: {font: {name: 'Liberation Sans', sz: 10  }}},
                                                                   { v: ARecord.DESCRIZIONE_MAGAZZINO || "", t: "s", s: {font: {name: 'Liberation Sans', sz: 10  }}},
                                                                   { v: (TSchedaGenerica.DisponiFromInteger(ARecord.QUANTITA_MAGAZZINO) / 100),  t: "n", s: {font: {name: 'Liberation Sans', sz: 10  }}},
@@ -3307,8 +3314,8 @@ export default
                                                               XLSX.utils.book_append_sheet(wb, ws, "readme demo");
 
                                                               var wscols = [
-                                                                              {wch:25},   // Codice
-                                                                              {wch:80},   // Descrizione
+                                                                              {wch:25},   // PartNumber
+                                                                              {wch:80},   // NomeProdotto
                                                                               {wch:20},   // Settore
                                                                               {wch:30},   // Magazzino
                                                                               {wch:15},   // Qnt

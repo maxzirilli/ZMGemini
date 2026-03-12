@@ -757,7 +757,7 @@
                       <tbody>
                           <tr v-for="Prodotto in ProdottiFiltratiEPaginati" :key="Prodotto.CODICE">
                             <td style="text-align: left;">{{ Prodotto.CODICE }}</td>
-                            <td style="text-align: left;">{{ Prodotto.DESCRIZIONE }}</td>
+                            <td style="text-align: left;">{{ Prodotto.NOME_PRODOTTO }}</td>
 
                             <td style="text-align: left;">
                               <select class="form-control" v-model="Prodotto.TIPO_SCONTO" @change="OnChangeSconto(Prodotto)">
@@ -2903,7 +2903,7 @@ import VUEAllegati, { TSchedaAllegati } from '../../components/VUEAllegati.vue';
 
       FiltraPerDescrizione(Prodotto, ListaParoleDescr)
       {
-        let ListaParoleProdotto = Prodotto.DESCRIZIONE.split(' ')
+        let ListaParoleProdotto = Prodotto.NOME_PRODOTTO.split(' ')
         let Trovato             = false
         for(let i = 0; i < ListaParoleDescr.length; i++)
         {

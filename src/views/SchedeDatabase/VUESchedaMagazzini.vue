@@ -6,10 +6,10 @@
         <div style="float:left;width:1%"></div>
         <!-- <button style="float:left" class="btn btn-s-md btn-info" @click="OnClickStampaFiliali">Stampa</button> -->
         <div style="float:left;font-size:14px;padding-top: 5px;margin-right:5px">
-          <label>Prodotto</label>
+          <label>Nome prodotto</label>
         </div>
-        <div style="float:left;width:13%;margin-right:20px">
-          <VUEInputProdotti v-model="NomeProdotto"/>
+        <div style="float:left;width:25%;margin-right:20px">
+          <VUEInputProdotti v-model="ChiaveProdotto" @onUpdate="newValue => ChiaveProdotto = newValue"/>
         </div> 
 
           <div style="float: left;font-size:14px;padding-top: 5px;width:6%;text-align: right; padding-right: 15px;">
@@ -25,7 +25,7 @@
             </div> 
       </div>
       <div class="col-md-1" style="display: flex; justify-content: flex-end; align-items: flex-start; gap: 10px">
-        <button @click="OnClickCaricaListaProdotti()" class="btn btn-s-md btn-info" style="margin-right: 5px;">[F2] Cerca</button>
+        <button @click="OnClickCaricaListaProdotti()" class="btn btn-s-md btn-info" style="margin-right: 5px;"> Cerca</button>
       </div>
 
       <div class="ZMSeparatoreFiltri">&nbsp;</div>
@@ -46,13 +46,13 @@
                         </tr>
                       </thead>
                       <tbody>
-  <tr v-if="!Magazzino.Prodotti || Magazzino.Prodotti.length === 0">
+  <tr v-if="!Magazzino.Prodotti || Magazzino.Prodotti.length == 0">
     <td colspan="2" style="font-style: italic; color: #999;">
       Nessun prodotto in questo magazzino
     </td>
   </tr>
   <tr v-for="Prodotto in Magazzino.Prodotti" :key="Prodotto.CHIAVE">
-    <td>{{ Prodotto.DESCRIZIONE_PRODOTTO }}</td>
+    <td>{{ Prodotto.NOME_PRODOTTO }}</td>
     <td>{{ Prodotto.QUANTITA_MAGAZZINO }}</td>
   </tr>
 </tbody>
@@ -106,7 +106,7 @@ export default
  data()
  {
    return { 
-            NomeProdotto               : '',
+            ChiaveProdotto               : -1,
             PopupAttesaCalcolo         : false,
             LsMagazzini                : [],
             LsMagazziniTotali          : [],
@@ -204,8 +204,8 @@ export default
                         Limite : this.Paginazione.NrRighePerPagina,
                         Offset : (this.Paginazione.NrPagina -1) * this.Paginazione.NrRighePerPagina
                       }
-      if(this.NomeProdotto != '')
-         Parametri.NomeProdotto = '%' + this.NomeProdotto.toUpperCase() + '%';
+      if(this.ChiaveProdotto > 0)
+         Parametri.ChiaveProdotto = this.ChiaveProdotto
 
       if(this.NomeMagazzino != -1)
          Parametri.NomeMagazzino = this.NomeMagazzino;
@@ -254,7 +254,7 @@ export default
             {
               LastMagazzino.Prodotti.push({
                                             CHIAVE               : Riga.CHIAVE_PRODOTTO,
-                                            DESCRIZIONE_PRODOTTO : Riga.DESCRIZIONE_PRODOTTO,
+                                            NOME_PRODOTTO        : Riga.NOME_PRODOTTO,
                                             QUANTITA_MAGAZZINO   : (Riga.QUANTITA_MAGAZZINO ?? 0) / 100})
             }
           })

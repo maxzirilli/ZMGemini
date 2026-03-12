@@ -51,7 +51,7 @@
 	"ListaProdottiMagazzino" : [
 		{
 			"Name" : "SelectProdottiMagazzino",
-			"SQL" : "SELECT prodotti.DESCRIZIONE,\n            prodotti.PREZZO_IMPONIBILE,\n            prodotti.IVA, \n            prodotti.CHIAVE, \n            prodotti.UNITA_DI_MISURA,\n            prodotti.PRODOTTO_COMPOSTO,\n            prodotti.DATA_ULTIMO_ACQUISTO,\n            prodotti.PREZZO_ULTIMO_ACQUISTO,\n            settori.DESCRIZIONE AS SETTORE,\n            COALESCE(qnt_x_magazzino.QUANTITA_MAGAZZINO, 0) AS QUANTITA_MAGAZZINO,\n            qnt_x_magazzino.ID_MAGAZZINO\n            FROM prodotti\n            LEFT OUTER JOIN settori ON settori.CHIAVE = prodotti.ID_SETTORE\n            LEFT OUTER JOIN qnt_x_magazzino ON qnt_x_magazzino.ID_PRODOTTO = prodotti.CHIAVE\n       \n"
+			"SQL" : "SELECT prodotti.NOME_PRODOTTO,\n            prodotti.PREZZO_IMPONIBILE,\n            prodotti.IVA, \n            prodotti.CHIAVE, \n            prodotti.UNITA_DI_MISURA,\n            prodotti.PRODOTTO_COMPOSTO,\n            prodotti.DATA_ULTIMO_ACQUISTO,\n            prodotti.PREZZO_ULTIMO_ACQUISTO,\n            settori.DESCRIZIONE AS SETTORE,\n            COALESCE(qnt_x_magazzino.QUANTITA_MAGAZZINO, 0) AS QUANTITA_MAGAZZINO,\n            qnt_x_magazzino.ID_MAGAZZINO\n            FROM prodotti\n            LEFT OUTER JOIN settori ON settori.CHIAVE = prodotti.ID_SETTORE\n            LEFT OUTER JOIN qnt_x_magazzino ON qnt_x_magazzino.ID_PRODOTTO = prodotti.CHIAVE\n       \n"
 		}
 	],
 	"SelectDettaglio" : [

@@ -38,13 +38,23 @@
       </div>
 
       <div class="ZMNuovaRigaScheda" style="padding-top:5px">
-          <div style="float:left;width:59%">
-              <label style="font-weight: bold;">Descrizione </label>
-              <input type="text" class="form-control" v-model="SchedaProdotto.Dati.DESCRIZIONE" placeholder="Descrizione"/>
-              <label v-if="SchedaProdotto.Dati.DESCRIZIONE.trim() == ''" class="ZMFormLabelError">Campo obbligatorio</label>
+          <div style="float:left;width:32%">
+              <label style="font-weight: bold;">Nome prodotto </label>
+              <input type="text" class="form-control" v-model="SchedaProdotto.Dati.NOME_PRODOTTO" placeholder="Nome prodotto"/>
+              <label v-if="SchedaProdotto.Dati.NOME_PRODOTTO.trim() == ''" class="ZMFormLabelError">Campo obbligatorio</label>
           </div> 
           <div style="float:left;width:1%;">&nbsp;</div>
-          <div style="float:left;width:19%">
+          <div style="float:left;width:10%">
+              <label style="font-weight: bold;">Part number</label>
+              <input type="text" class="form-control" v-model="SchedaProdotto.Dati.PART_NUMBER" placeholder="Part number"/>
+          </div> 
+          <div style="float:left;width:1%;">&nbsp;</div>
+          <div style="float:left;width:30%">
+              <label style="font-weight: bold;">Descrizione </label>
+              <input type="text" class="form-control" v-model="SchedaProdotto.Dati.DESCRIZIONE" placeholder="Descrizione"/>
+          </div> 
+          <div style="float:left;width:1%;">&nbsp;</div>
+          <div style="float:left;width:15%">
               <label style="font-weight: bold;">Settore</label>
               <select class="form-control" v-model="SchedaProdotto.Dati.ID_SETTORE">
                 <option :selected="SchedaProdotto.Dati.ID_SETTORE == -1" value="-1">-</option>
@@ -195,22 +205,22 @@
 
     CaricaRiassunto(Riassunto)
     {
-        this.Chiave                 = Riassunto.CHIAVE;
-        this.Dati.DESCRIZIONE       = TSchedaGenerica.DisponiFromString(Riassunto.DESCRIZIONE);
-        this.Dati.PRODOTTO_COMPOSTO = TSchedaGenerica.DisponiFromBoolean(Riassunto.PRODOTTO_COMPOSTO);
+        this.Chiave                   = Riassunto.CHIAVE;
+        this.Dati.NOME_PRODOTTO       = TSchedaGenerica.DisponiFromString(Riassunto.NOME_PRODOTTO);
+        this.Dati.PRODOTTO_COMPOSTO   = TSchedaGenerica.DisponiFromBoolean(Riassunto.PRODOTTO_COMPOSTO);
         this.CreateSnapshot();
     }
 
     GetDescrizione()
     {
-        return this.Dati.DESCRIZIONE;
+        return this.Dati.NOME_PRODOTTO;
     }
 
     CanRecord()
     {
-      return this.Dati.DESCRIZIONE.trim() != '' &&
-              this.Dati.ID_SETTORE != -1 &&
-              this.DataTableProdottiMontaggio.AllDataOk();
+      return this.Dati.NOME_PRODOTTO.trim() != '' &&
+             this.Dati.ID_SETTORE != -1 &&
+             this.DataTableProdottiMontaggio.AllDataOk();
     }
 
     Registra(OnSuccess,OnError)
@@ -222,7 +232,9 @@
                                   Query     : this.IsNuovo() ? "Insert" : "Update",
                                   Parametri : {
                                                   CHIAVE                  : this.IsNuovo() ? undefined : this.Chiave, 
-                                                  DESCRIZIONE             : TSchedaGenerica.PrepareForRecordString(this.Dati.DESCRIZIONE),
+                                                  NOME_PRODOTTO           : TSchedaGenerica.PrepareForRecordString(this.Dati.NOME_PRODOTTO),
+                                                  DESCRIZIONE             : TSchedaGenerica.PrepareForRecordString(this.Dati.DESCRIZIONE), 
+                                                  PART_NUMBER             : TSchedaGenerica.PrepareForRecordString(this.Dati.PART_NUMBER),
                                                   PREZZO_IMPONIBILE       : TSchedaGenerica.PrepareForRecordInteger(this.Dati.PREZZO_IMPONIBILE * 100) ,
                                                   IVA                     : TSchedaGenerica.PrepareForRecordInteger(this.Dati.IVA * 10) ,
                                                   ID_SETTORE              : TSchedaGenerica.PrepareForRecordListIndex(this.Dati.ID_SETTORE),
@@ -319,9 +331,9 @@
             Parametri.CHIAVE        = undefined
             Parametri.QUANTITA      = DeltaQNT * 100
             let Data = new Date()
-            Parametri.DATA          = TZDateFunct.FormatDateTime('yyyy-mm-dd hh:nn:ss', Data)
-            Parametri.DESCRIZIONE   = 'Modificata quantità in magazzino ' + Self.Dati.ListaMagazzini[k].DESCRIZIONE
-            Parametri.ID_PRODOTTO   = Self.Chiave,
+            Parametri.DATA            = TZDateFunct.FormatDateTime('yyyy-mm-dd hh:nn:ss', Data)
+            Parametri.NOME_PRODOTTO   = 'Modificata quantità in magazzino ' + Self.Dati.ListaMagazzini[k].NOME_PRODOTTO
+            Parametri.ID_PRODOTTO     = Self.Chiave,
           
             ObjQuery.Operazioni.push({
                                         Query     : "InsertLogQntMagazzino",
@@ -450,8 +462,9 @@
                                                 if(ArrayInfo.length != 0)
                                                 {
                                                   Self.Dati = { 
+                                                                NOME_PRODOTTO           : TSchedaGenerica.DisponiFromString(ArrayInfo[0].NOME_PRODOTTO),
                                                                 DESCRIZIONE             : TSchedaGenerica.DisponiFromString(ArrayInfo[0].DESCRIZIONE),
-                                                                PREZZO_IMPONIBILE       : TSchedaGenerica.DisponiFromInteger(ArrayInfo[0].PREZZO_IMPONIBILE)  / 100,
+                                                                PART_NUMBER             : TSchedaGenerica.DisponiFromString(ArrayInfo[0].PART_NUMBER),                                                                PREZZO_IMPONIBILE       : TSchedaGenerica.DisponiFromInteger(ArrayInfo[0].PREZZO_IMPONIBILE)  / 100,
                                                                 IVA                     : TSchedaGenerica.DisponiFromInteger(ArrayInfo[0].IVA)  / 10,
                                                                 ID_SETTORE              : TSchedaGenerica.DisponiFromListIndex(ArrayInfo[0].ID_SETTORE),                                                               
                                                                 UNITA_DI_MISURA         : TSchedaGenerica.DisponiFromListIndex(ArrayInfo[0].UNITA_DI_MISURA),                                                               
@@ -509,7 +522,9 @@
         this.SchedaLogProdotto.AssignDati([])
 
         this.Dati = { 
+                      NOME_PRODOTTO           : '',
                       DESCRIZIONE             : '',
+                      PART_NUMBER             : '',
                       ID_SETTORE              : -1,
                       UNITA_DI_MISURA         : -1,
                       PREZZO_IMPONIBILE       : 0,
@@ -558,7 +573,7 @@
                         Name : DASHBOARD_FILTER_TYPES.Prodotti,
                         Positions : [
                                         this.Dati.ID_SETTORE,
-                                        this.Dati.DESCRIZIONE.substring(0,1).toUpperCase(),
+                                        this.Dati.NOME_PRODOTTO.substring(0,1).toUpperCase(),
                                         this.Chiave
                                     ]
               }])

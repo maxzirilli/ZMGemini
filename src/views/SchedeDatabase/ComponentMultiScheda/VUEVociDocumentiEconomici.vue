@@ -285,7 +285,7 @@
                         {{ Prodotto.CODICE }}
                       </td>
                       <td style="padding:2px;border:1px solid #ddd; border-bottom:0; background-color:white;font-size:16px;text-align:center;vertical-align: middle;">
-                        {{ Prodotto.DESCRIZIONE }}
+                        {{ Prodotto.NOME_PRODOTTO }}
                       </td>
                       <td style="padding:2px;border:1px solid #ddd; border-bottom:0; background-color:white;font-size:16px;text-align:center;vertical-align: middle;">
                         {{ Prodotto.SETTORE }}
@@ -1589,7 +1589,7 @@ export default {
 
     FiltraPerDescrizione(Prodotto, ListaParoleDescr)
     {
-      let ListaParoleProdotto = Prodotto.DESCRIZIONE.split(' ')
+      let ListaParoleProdotto = Prodotto.NOME_PRODOTTO.split(' ')
       let Trovato             = false
       for(let i = 0; i < ListaParoleDescr.length; i++)
       {

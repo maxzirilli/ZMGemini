@@ -1089,10 +1089,11 @@ export class TFilterMovimentiMagazzini extends TZFilter
     constructor()
     {
       super()
-      this.DallaData            ='',
-      this.AllaData             ='',
-      this.CodiceProdotto       ='',
-      this.DescrizioneProdotto  =''
+      this.DallaData            = '',
+      this.AllaData             = '',
+      this.CodiceProdotto       = '',
+      this.NomeProdotto         = -1
+
     }
 
     GetFilterId()
@@ -1111,11 +1112,11 @@ export class TFilterMovimentiMagazzini extends TZFilter
       if(this.DallaData != '')
         Parametri.DallaData = this.DallaData
       if(this.AllaData != '')
-        Parametri.AllaData = this.AllaData    
+        Parametri.AllaData = this.AllaData   
+      if(this.NomeProdotto != -1)
+        Parametri.NomeProdotto =  this.NomeProdotto; 
       if(this.CodiceProdotto.trim() != '')
         Parametri.CodiceProdotto = '%' + this.CodiceProdotto + '%';
-      if(this.DescrizioneProdotto.trim() != '')
-        Parametri.DescrizioneProdotto = '%' + this.DescrizioneProdotto + '%';
       return Parametri;
     } 
 
@@ -1264,10 +1265,12 @@ export class TFilterNotaDiCreditoPassiva extends TZFilter
     constructor()
     {
       super()
-      this.Codice      = '',
-      this.Descrizione = ''
-      this.Settore     = -1
-      this.IdMagazzino = -1
+      this.Codice          = '',
+      this.NomeProdotto    = -1,
+      this.PartNumber      = '',
+      this.Descrizione     = ''
+      this.Settore         = -1
+      this.IdMagazzino     = -1
       this.SoloSottosoglia = false
     }
 
@@ -1285,7 +1288,11 @@ export class TFilterNotaDiCreditoPassiva extends TZFilter
     {
       var Parametri = {}
       if(this.Codice.trim() != '')
-        Parametri.Codice = '%' + this.Codice + '%';
+        Parametri.Codice = '%' + this.Codice + '%'; 
+      if(this.NomeProdotto != -1)
+        Parametri.NomeProdotto =  this.NomeProdotto;
+      if(this.PartNumber.trim() != '')
+        Parametri.PartNumber = '%' + this.PartNumber + '%';
       if(this.Descrizione.trim() != '')
         Parametri.Descrizione = '%' + this.Descrizione + '%';
       if(this.Settore && this.Settore != -1)
@@ -1300,7 +1307,7 @@ export class TFilterNotaDiCreditoPassiva extends TZFilter
     
     Apply(Component, OnSuccess, OnError, FromPosition = 0)
     {
-      if(this.Codice != '' || this.Descrizione != '' || this.Settore != -1 || this.SoloSottosoglia || this.IdMagazzino != -1 )
+      if(this.NomeProdotto != -1 || this.PartNumber != '' || this.Settore != -1 || this.SoloSottosoglia || this.IdMagazzino != -1 )
       {
         let Self      = this
         let Parametri = {}

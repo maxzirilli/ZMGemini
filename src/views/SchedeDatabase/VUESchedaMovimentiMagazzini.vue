@@ -24,7 +24,7 @@
                         <input type="checkbox" style="height: 20px;" class="form-control" v-model="Prodotto.Presente">
                       </td>
                       <td style="padding:2px;border:1px solid #ddd; border-bottom:0; background-color:white;font-size:16px;text-align:center;vertical-align: middle;">
-                        {{ Prodotto.DESCRIZIONE }}
+                        {{ Prodotto.NOME_PRODOTTO }}
                       </td>
                        <td style="padding:2px;border:1px solid #ddd; border-bottom:0; background-color:white;font-size:16px;text-align:center;vertical-align: middle;">
                         {{ Prodotto.QUANTITA_MAGAZZINO / 100 }}
@@ -119,7 +119,7 @@
               <tbody>
                 <tr v-for="Prodotto in ProdottiNonEliminati" :key="Prodotto.CHIAVE">
                   <td style="padding:2px;border:1px solid #ddd; border-bottom:0; background-color:white;font-size:16px;text-align:center;vertical-align: middle;">
-                    {{ Prodotto.DESCRIZIONE_PRODOTTO }}
+                    {{ Prodotto.NOME_PRODOTTO }}
                   </td>
                   <td style="padding:2px;border:1px solid #ddd; border-bottom:0; background-color:white;font-size:16px;text-align:center;vertical-align: middle;">
                     <input type="number" min="0" v-model="Prodotto.QUANTITA_PRODOTTO" class="form-control" step="0.01"/>
@@ -379,7 +379,7 @@ export class TSchedaMovimentiMagazzini extends TSchedaGenerica
                                                 {
                                                   let Prodotto =  {
                                                                     CHIAVE               : ArrayInfoProdotti[i].CHIAVE,
-                                                                    DESCRIZIONE_PRODOTTO : ArrayInfoProdotti[i].DESCRIZIONE,
+                                                                    NOME_PRODOTTO        : ArrayInfoProdotti[i].NOME_PRODOTTO,
                                                                     QUANTITA_PRODOTTO    : ArrayInfoProdotti[i].QUANTITA_PRODOTTO / 100,
                                                                     ID_PRODOTTO          : ArrayInfoProdotti[i].ID_PRODOTTO,
                                                                     Eliminato            : false
@@ -432,7 +432,7 @@ export class TSchedaMovimentiMagazzini extends TSchedaGenerica
 
     this.Dati.ListaProdottiMovimentati.forEach(function(Prodotto)
     {
-      Parametri.Descrizione.push("• n. " + Prodotto.QUANTITA_PRODOTTO + " - " + Prodotto.DESCRIZIONE_PRODOTTO)
+      Parametri.Descrizione.push("• n. " + Prodotto.QUANTITA_PRODOTTO + " - " + Prodotto.NOME_PRODOTTO)
     })
 
     SystemInformation.AdvQuery.ExecuteExternalScript('StampaDocumentoGenerico', Parametri,
@@ -570,7 +570,7 @@ export default
           {            
             let ProdottoAggiunto = {
                                       CHIAVE               : -1,
-                                      DESCRIZIONE_PRODOTTO : CurrentProdotto.DESCRIZIONE,
+                                      NOME_PRODOTTO        : CurrentProdotto.NOME_PRODOTTO,
                                       ID_PRODOTTO          : CurrentProdotto.CHIAVE,
                                       QUANTITA_PRODOTTO    : 0,
                                       Eliminato            : false
@@ -590,7 +590,7 @@ export default
 
       FiltraPerDescrizione(Prodotto, ListaParoleDescr)
       {
-        let ListaParoleProdotto = Prodotto.DESCRIZIONE.split(' ')
+        let ListaParoleProdotto = Prodotto.NOME_PRODOTTO.split(' ')
         let Trovato             = false
         for(let i = 0; i < ListaParoleDescr.length; i++)
         {
@@ -660,7 +660,7 @@ export default
                                                                                       if(Prodotto.CHIAVE != -1)
                                                                                         ListaProdottiSelezionati.push({
                                                                                                                         CHIAVE               : -1,
-                                                                                                                        DESCRIZIONE_PRODOTTO : Prodotto.DESCRIZIONE_PRODOTTO,
+                                                                                                                        NOME_PRODOTTO        : Prodotto.NOME_PRODOTTO,
                                                                                                                         QUANTITA_PRODOTTO    : Prodotto.QUANTITA_PRODOTTO,
                                                                                                                         ID_PRODOTTO          : Prodotto.ID_PRODOTTO,
                                                                                                                         Eliminato            : Prodotto.Eliminato

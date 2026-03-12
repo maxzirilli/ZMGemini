@@ -29,7 +29,7 @@
 	"FiltroMovimentiMagazzini" : [
 		{
 			"Name" : "FiltroMovimentiMagazzini",
-			"SQL" : "SELECT DISTINCT movimenti_magazzini.*\n  FROM movimenti_magazzini\n  LEFT OUTER JOIN prodotti_x_movimenti_magazzini ON prodotti_x_movimenti_magazzini.ID_MOVIMENTO_MAGAZZINO  = movimenti_magazzini.CHIAVE\n  LEFT OUTER JOIN prodotti            ON prodotti.CHIAVE  = prodotti_x_movimenti_magazzini.ID_PRODOTTO\n  {W~DallaData~movimenti_magazzini.DATA >= #DallaData\n      ~AllaData~movimenti_magazzini.DATA <= #AllaData\n     ~DescrizioneProdotto~UPPER(prodotti.DESCRIZIONE) LIKE UPPER(#DescrizioneProdotto)}\nORDER BY movimenti_magazzini.DATA DESC, movimenti_magazzini.CHIAVE DESC\nLIMIT :LimitNumRows OFFSET :LimitStart\n\n"
+			"SQL" : "SELECT DISTINCT movimenti_magazzini.*\n  FROM movimenti_magazzini\n  LEFT OUTER JOIN prodotti_x_movimenti_magazzini ON prodotti_x_movimenti_magazzini.ID_MOVIMENTO_MAGAZZINO  = movimenti_magazzini.CHIAVE\n  LEFT OUTER JOIN prodotti            ON prodotti.CHIAVE  = prodotti_x_movimenti_magazzini.ID_PRODOTTO\n  {W~DallaData~movimenti_magazzini.DATA >= #DallaData\n      ~AllaData~movimenti_magazzini.DATA <= #AllaData\n     ~NomeProdotto~prodotti.CHIAVE = :NomeProdotto}\nORDER BY movimenti_magazzini.DATA DESC, movimenti_magazzini.CHIAVE DESC\nLIMIT :LimitNumRows OFFSET :LimitStart\n\n"
 		}
 	],
 	"ListaProdottiMagazzino" : [
@@ -45,7 +45,7 @@
 		},
 		{
 			"Name" : "SelectPodottiMovimentatiMagazzini",
-			"SQL" : "               SELECT prodotti_x_movimenti_magazzini.CHIAVE,\n                           prodotti_x_movimenti_magazzini.QUANTITA_PRODOTTO,\n                           prodotti_x_movimenti_magazzini.ID_PRODOTTO,\n                           prodotti.DESCRIZIONE\n                 FROM prodotti_x_movimenti_magazzini\nLEFT OUTER JOIN movimenti_magazzini ON movimenti_magazzini.CHIAVE = prodotti_x_movimenti_magazzini.ID_MOVIMENTO_MAGAZZINO\nLEFT OUTER JOIN prodotti            ON prodotti.CHIAVE            = prodotti_x_movimenti_magazzini.ID_PRODOTTO\nWHERE movimenti_magazzini.CHIAVE = :CHIAVE\n"
+			"SQL" : "               SELECT prodotti_x_movimenti_magazzini.CHIAVE,\n                           prodotti_x_movimenti_magazzini.QUANTITA_PRODOTTO,\n                           prodotti_x_movimenti_magazzini.ID_PRODOTTO,\n                           prodotti.NOME_PRODOTTO\n                 FROM prodotti_x_movimenti_magazzini\nLEFT OUTER JOIN movimenti_magazzini ON movimenti_magazzini.CHIAVE = prodotti_x_movimenti_magazzini.ID_MOVIMENTO_MAGAZZINO\nLEFT OUTER JOIN prodotti            ON prodotti.CHIAVE            = prodotti_x_movimenti_magazzini.ID_PRODOTTO\nWHERE movimenti_magazzini.CHIAVE = :CHIAVE\n"
 		}
 	],
 	"SelectSQL" : [

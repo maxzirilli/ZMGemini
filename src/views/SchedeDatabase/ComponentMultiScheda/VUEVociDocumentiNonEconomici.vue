@@ -187,7 +187,7 @@
                         <input type="checkbox" style="height: 20px;" class="form-control" v-model="Prodotto.Presente">
                       </td>
                       <td style="padding:2px;border:1px solid #ddd; border-bottom:0; background-color:white;font-size:16px;text-align:center;vertical-align: middle;">
-                        {{ Prodotto.DESCRIZIONE }}
+                        {{ Prodotto.NOME_PRODOTTO }}
                       </td>
                       <td style="padding:2px;border:1px solid #ddd; border-bottom:0; background-color:white;font-size:16px;text-align:center;vertical-align: middle;">
                         {{ Prodotto.SETTORE }}
@@ -581,14 +581,14 @@ export default {
           {
             if(FiltroDescr != '')
             {
-              if((Prodotto.DESCRIZIONE).includes(FiltroDescr))
+              if((Prodotto.NOME_PRODOTTO).includes(FiltroDescr))
                   return true;
               return false
             }
             
             if(FiltroDescr != '')
             {
-              if(Prodotto.DESCRIZIONE.includes(FiltroDescr))
+              if(Prodotto.NOME_PRODOTTO.includes(FiltroDescr))
                 return true
               return false
             }
@@ -747,7 +747,7 @@ export default {
         {
           let InserimentoNuovaRiga = new TSingoloVociDocumentiNonEconomici(-1,
                                                                           
-                                                                           TSchedaGenerica.DisponiFromString(this.ListaProdotti[i].DESCRIZIONE),
+                                                                           TSchedaGenerica.DisponiFromString(this.ListaProdotti[i].NOME_PRODOTTO),
                                                                           
                                                                            TSchedaGenerica.DisponiFromInteger(this.ListaProdotti[i].QUANTITA_SUGGERITA),
                                                                           
@@ -850,7 +850,7 @@ export default {
                                                   Self.SchedaVociDocumentiNonEconomici.LsVociDocumentiNonEconomici.push(InserimentoNuovaSeparatore)
                                                 }
                                                 let InserimentoNuovaRiga = new TSingoloVociDocumentiNonEconomici(-1,
-                                                                                                                ArrayInfo[i].DESCRIZIONE,
+                                                                                                                ArrayInfo[i].NOME_PRODOTTO,
                                                                                                                 ArrayInfo[i].QUANTITA / 100,
                                                                                                                 Self.SchedaVociDocumentiNonEconomici.IdDocumento,
                                                                                                                 ArrayInfo[i].UNITA_DI_MISURA == null? SystemInformation.Configurazioni.Impostazioni.UNITA_DI_MISURA_SUGGERITA : ArrayInfo[i].UNITA_DI_MISURA,

@@ -693,7 +693,6 @@ class TSystemInformation
         function(Results)
         {
             let ArrayInfo = SystemInformation.AdvQuery.FindResults(Results, "ListaProdottiComposti");
-            console.log(ArrayInfo)
             let ListaProdottiComposti = [];
             if(ArrayInfo != undefined)
                 ListaProdottiComposti = ArrayInfo;

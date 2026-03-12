@@ -157,7 +157,7 @@
             private function FGetAllarmeProdotto($PDODBase, &$ListaComunicazioni)
             {
               $SQLBody = "SELECT  prodotti.CHIAVE,
-                                  prodotti.DESCRIZIONE,
+                                  prodotti.NOME_PRODOTTO,
                                   qnt_x_magazzino.QUANTITA_MAGAZZINO,
                                   qnt_x_magazzino.SOGLIA_ALLARME,
                                   magazzini.CHIAVE AS CHIAVE_MAGAZZINO,
@@ -186,7 +186,7 @@
                   if($LastProdotto != $Row['CHIAVE'])
                   {
                     $LastProdotto                         = $Row['CHIAVE'];
-                    $OggettoComunicazione                 = new TOggettoComunicazione(TIPO_COMUNICAZIONE_ALLARME_PRODOTTO, "La quantità (". round($Row['QUANTITA_MAGAZZINO'] / 100, 2) . ") di " . $Row['DESCRIZIONE'] . 
+                    $OggettoComunicazione                 = new TOggettoComunicazione(TIPO_COMUNICAZIONE_ALLARME_PRODOTTO, "La quantità (". round($Row['QUANTITA_MAGAZZINO'] / 100, 2) . ") di " . $Row['NOME_PRODOTTO'] . 
                                                                                       " è inferiore alla soglia di allarme (". round($Row['SOGLIA_ALLARME'] / 100, 2) . ") nel magazzino '" . $Row['DESCRIZIONE_MAGAZZINO'] . "'");
                     $OggettoComunicazione->Informazioni    = new TInformazioni();
                     $OggettoComunicazione->ChiaveProdotto  = $Row['CHIAVE'];

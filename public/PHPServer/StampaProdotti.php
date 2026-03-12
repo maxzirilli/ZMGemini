@@ -89,7 +89,7 @@
           $Result->QRSubDetail1        = array();
 
 
-          $SQLBody = "SELECT prodotti.DESCRIZIONE,
+          $SQLBody = "SELECT prodotti.NOME_PRODOTTO,
 		                         qnt_x_magazzino.QUANTITA_MAGAZZINO,
 		                         qnt_x_magazzino.SOGLIA_ALLARME,
                             --  prodotti.PRODOTTO_COMPOSTO,
@@ -99,7 +99,7 @@
                              JOIN settori ON settori.CHIAVE = prodotti.ID_SETTORE
                              LEFT JOIN qnt_x_magazzino ON qnt_x_magazzino.ID_PRODOTTO = prodotti.CHIAVE
                              LEFT OUTER JOIN magazzini ON magazzini.CHIAVE = qnt_x_magazzino.ID_MAGAZZINO
-                    ORDER BY settori.DESCRIZIONE,prodotti.DESCRIZIONE";
+                    ORDER BY settori.DESCRIZIONE,prodotti.NOME_PRODOTTO";
 
           if($Query = $PDODBase->query($SQLBody))
           {
@@ -113,7 +113,7 @@
               } 
                 $DatiProdotto = new TDatiProdotto();
                 $DatiProdotto->LB_MAGAZZINO = $Row['NOME_MAGAZZINO'];
-                $DatiProdotto->LB_DESCRIZIONE = $Row['DESCRIZIONE'];
+                $DatiProdotto->LB_DESCRIZIONE = $Row['NOME_PRODOTTO'];
                 $DatiProdotto->LB_QUANTITA = number_format($Row['QUANTITA_MAGAZZINO']/100);
                 $DatiProdotto->LB_SOGLIA_DI_ALLARME = $Row['SOGLIA_ALLARME'];
                 $DatiProdotto->SETTORE = $Row['SETTORE'];

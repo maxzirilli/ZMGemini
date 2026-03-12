@@ -315,7 +315,7 @@
 		},
 		{
 			"Name" : "ListaProdotti",
-			"SQL" : "SELECT prodotti.CHIAVE,\n            prodotti.DESCRIZIONE,\n            prodotti.CODICE,\n            ROUND(prodotti.PREZZO_IMPONIBILE / 100, 2) AS PREZZO_IMPONIBILE,\n            prodotti.IVA,\n            clienti_listino_sconti.TIPO_SCONTO,\n            ROUND(clienti_listino_sconti.VALORE / 100, 2) AS VALORE\n  FROM prodotti\nLEFT OUTER JOIN clienti_listino_sconti ON clienti_listino_sconti.ID_PRODOTTO = prodotti.CHIAVE \n                                                      AND clienti_listino_sconti.ID_CLIENTE = :CHIAVE\nORDER BY clienti_listino_sconti.TIPO_SCONTO DESC, prodotti.DESCRIZIONE \n"
+			"SQL" : "SELECT prodotti.CHIAVE,\n            prodotti.NOME_PRODOTTO,\n            prodotti.CODICE,\n            ROUND(prodotti.PREZZO_IMPONIBILE / 100, 2) AS PREZZO_IMPONIBILE,\n            prodotti.IVA,\n            clienti_listino_sconti.TIPO_SCONTO,\n            ROUND(clienti_listino_sconti.VALORE / 100, 2) AS VALORE\n  FROM prodotti\nLEFT OUTER JOIN clienti_listino_sconti ON clienti_listino_sconti.ID_PRODOTTO = prodotti.CHIAVE \n                                                      AND clienti_listino_sconti.ID_CLIENTE = :CHIAVE\nORDER BY clienti_listino_sconti.TIPO_SCONTO DESC, prodotti.NOME_PRODOTTO\n"
 		},
 		{
 			"Name" : "SituazioneContabile",
@@ -341,7 +341,7 @@
 		},
 		{
 			"Name" : "ListaProdotti",
-			"SQL" : "SELECT prodotti.DESCRIZIONE,\n            prodotti.CODICE,\n            prodotti.PREZZO_IMPONIBILE,\n            prodotti.IVA\n  FROM prodotti\nORDER BY prodotti.CHIAVE\n"
+			"SQL" : "SELECT prodotti.NOME_PRODOTTO,\n            prodotti.CODICE,\n            prodotti.PREZZO_IMPONIBILE,\n            prodotti.IVA\n  FROM prodotti\nORDER BY prodotti.CHIAVE\n"
 		}
 	],
 	"UltimoCodiceCliente" : [
