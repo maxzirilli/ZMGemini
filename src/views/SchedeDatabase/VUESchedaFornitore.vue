@@ -460,6 +460,7 @@ export class TSchedaFornitore extends TSchedaGenerica
                                       '60%');
       Colonna.Necessario       = true
       Colonna.Lista            = SystemInformation.Configurazioni.Prodotti
+      Colonna.SelCampoCaption  = "NOME_PRODOTTO" 
    }
 
    Clear()

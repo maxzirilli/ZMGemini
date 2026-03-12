@@ -112,9 +112,6 @@
             <th style="width:35%;position: sticky; top: 0">Descrizione</th>
             <th style="width:8%;position: sticky; top: 0">Udm</th>
             <th style="width:7%;position: sticky; top: 0">Qnt.</th>
-            <th style="width:6%;position: sticky; top: 0">Prezzo</th>
-            <th style="width:7%;position: sticky; top: 0">IVA</th>
-            <th style="width:8%;position: sticky; top: 0;">Sc. [%]</th>
 
             <th style="width:1%;position: sticky; top: 0"></th>
           </tr>
@@ -131,15 +128,6 @@
             </td>
             <td style="padding:2px;border:1px solid #ddd; border-bottom:0; background-color:white">
               <input :readonly="CurrentReadOnly" type="number" min="0" v-model="Voce.Dati.Quantita" class="form-control" step="0.01"/>
-            </td>
-            <td style="padding:2px;border:1px solid #ddd; border-bottom:0; background-color:white">
-              <input :readonly="CurrentReadOnly" type="number" min="0" v-model="Voce.Dati.Prezzo" class="form-control" step="0.01"/>
-            </td>
-            <td style="padding:2px;border:1px solid #ddd; border-bottom:0; background-color:white">
-              <input :readonly="CurrentReadOnly" type="number" min="0" v-model="Voce.Dati.Iva" class="form-control" step="0.01"/>
-            </td>
-            <td style="padding:2px;border:1px solid #ddd; border-bottom:0; background-color:white">
-              <input :readonly="CurrentReadOnly" type="number" min="0" v-model="Voce.Dati.Sconto" class="form-control" step="0.01"/>
             </td>
             <td style="padding:2px;border:1px solid #ddd;border-bottom:0; background-color:white">
               <a v-if="!CurrentReadOnly" @click="OnClickEliminaVoce(Voce)" data-toggle="class" style="font-size:17px;color:#fb6b5b; cursor:pointer;margin-top:5px;margin-left:8px" title="Elimina Voce"><i class="fa fa-trash-o"></i></a>
@@ -159,68 +147,123 @@
       </div>
   </div>
   
-   <VUEModal v-if="PopupLsProdotti" :PathLogo="require('@/assets/images/LogoGemini2.png')"
-             :Programma="NomeProgramma" :Titolo="'Lista prodotti'" :Altezza="'400px'" :Larghezza="'1000px'"
-            @onClickChiudiModal="PopupLsProdotti = false">
-      <template v-slot:Body>
-      <div style="width:1%;float:left">&nbsp;</div>
-      <input type="text" style="width:73%;float:left" class="input-sm form-control" placeholder="Cerca per descrizione" v-model="FiltroProdottiDescrizione">
-     <div style="clear:both;width:1%;height:10px">&nbsp;</div>
-          <div class="row wrapper">
-            <section class="panel panel-default" style="background-color:white;">
-              <div class="table-responsive" style="max-height:370px;width:100%;height: 60%;">
-                <table class="table table-striped b-t b-light" style="width:100%;height: 60%;">
-                  <thead>
-                    <tr>
-                      <th style="width:7%;position: sticky; top: 0;"></th>
-                      <th style="width:43%;position: sticky; top: 0;">Descrizione</th>
-                      <th style="width:15%;position: sticky; top: 0;">Settore</th>
-                      <th style="width:10%;position: sticky; top: 0;">Prezzo [€]</th>
-                      <th style="width:10%;position: sticky; top: 0;">IVA [%]</th>
-                      <th v-if="VisibilitaListinoPrezziCliente" style="width:10%;position: sticky; top: 0;">Sconto [€]</th>
-                      <th v-if="VisibilitaListinoPrezziCliente" style="width:10%;position: sticky; top: 0;">Sconto [%]</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr v-for="Prodotto in ProdottiFiltrati" :key="Prodotto.CHIAVE">
-                      <td style="padding:2px;border:1px solid #ddd; border-bottom:0; background-color:white;font-size:16px;text-align:center;vertical-align: middle;">
-                        <input type="checkbox" style="height: 20px;" class="form-control" v-model="Prodotto.Presente">
-                      </td>
-                      <td style="padding:2px;border:1px solid #ddd; border-bottom:0; background-color:white;font-size:16px;text-align:center;vertical-align: middle;">
-                        {{ Prodotto.NOME_PRODOTTO }}
-                      </td>
-                      <td style="padding:2px;border:1px solid #ddd; border-bottom:0; background-color:white;font-size:16px;text-align:center;vertical-align: middle;">
-                        {{ Prodotto.SETTORE }}
-                      </td>
-                      <td style="padding:2px;border:1px solid #ddd; border-bottom:0; background-color:white;font-size:16px;text-align:center;vertical-align: middle;">
-                        {{ Prodotto.PREZZO_IMPONIBILE / 100}}
-                      </td>
-                      <td style="padding:2px;border:1px solid #ddd; border-bottom:0; background-color:white;font-size:16px;text-align:center;vertical-align: middle;">
-                        {{ Prodotto.IVA / 10}}
-                      </td>
-                      <td v-if="VisibilitaListinoPrezziCliente" style="padding:2px;border:1px solid #ddd; border-bottom:0; background-color:white;font-size:16px;text-align:center;vertical-align: middle;">
-                        {{ Prodotto.PREZZO_SCONTATO != null ? Prodotto.PREZZO_SCONTATO : '-' }}
-                      </td>
-                      <td v-if="VisibilitaListinoPrezziCliente" style="padding:2px;border:1px solid #ddd; border-bottom:0; background-color:white;font-size:16px;text-align:center;vertical-align: middle;">
-                        {{ Prodotto.PREZZO_SCONTO_PERCENTUALE != null ? Prodotto.PREZZO_SCONTO_PERCENTUALE : '-' }}
-                      </td>
-                    </tr>
-                    <tr v-if="ProdottiFiltrati.length == NumeroMassimoProdotti">
-                      <td colspan="7" style="padding:2px;border:1px solid #ddd; border-bottom:0; background-color:white;font-size:16px;text-align:right;vertical-align: middle;color:red">
-                        Sono presenti più di 100 prodotti...
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </section>
-          </div>
-        </template>
-        <template v-slot:Footer>
-          <button class="btn btn-danger" @click="OnClickAnnullaProdotti" style="float:right;margin-right:20px; width:20%">Annulla</button>
-          <button class="btn btn-success" @click="OnClickConfermaProdotti" style="float:right;margin-right:20px; width:20%">Conferma</button>
-        </template>
-   </VUEModal>
+  <VUEModal v-if="PopupLsProdotti"
+          :PathLogo="require('@/assets/images/LogoGemini2.png')"
+          :Programma="NomeProgramma"
+          :Titolo="'Lista prodotti'"
+          :Altezza="'400px'"
+          :Larghezza="'1000px'"
+          @onClickChiudiModal="PopupLsProdotti = false">
+
+  <!-- BODY -->
+  <template v-slot:Body>
+    <div style="width:1%;float:left">&nbsp;</div>
+    <input type="text"
+           style="width:73%;float:left"
+           class="input-sm form-control"
+           placeholder="Cerca per descrizione"
+           v-model="FiltroProdottiDescrizione">
+    <div style="clear:both;width:1%;height:10px">&nbsp;</div>
+
+    <div class="row wrapper">
+      <section class="panel panel-default" style="background-color:white;">
+        <div class="table-responsive" style="max-height:370px;width:100%;height:60%;">
+          <table class="table table-striped b-t b-light" style="width:100%;table-layout:fixed;">
+            <thead>
+              <tr>
+                <th style="width:7%;position: sticky; top: 0;"></th>
+
+                <!-- Descrizione -->
+                <th :style="{width: MostraPrezzi ? '45%' : '65%', position:'sticky', top:0}">
+                  Descrizione
+                </th>
+
+                <!-- Settore -->
+                <th :style="{width: MostraPrezzi ? '20%' : '28%', position:'sticky', top:0}">
+                  Settore
+                </th>
+
+                <!-- Prezzo e IVA -->
+                <th v-if="MostraPrezzi" style="width:10%;position: sticky; top: 0;">Prezzo [€]</th>
+                <th v-if="MostraPrezzi" style="width:10%;position: sticky; top: 0;">IVA [%]</th>
+
+                <!-- Sconti -->
+                <th v-if="VisibilitaListinoPrezziCliente && MostraPrezzi"
+                    style="width:10%;position: sticky; top: 0;">
+                  Sconto [€]
+                </th>
+                <th v-if="VisibilitaListinoPrezziCliente && MostraPrezzi"
+                    style="width:10%;position: sticky; top: 0;">
+                  Sconto [%]
+                </th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <tr v-for="Prodotto in ProdottiFiltrati" :key="Prodotto.CHIAVE">
+                <!-- Checkbox -->
+                <td style="padding:2px;border:1px solid #ddd; background-color:white;font-size:16px;text-align:center;vertical-align: middle;">
+                  <input type="checkbox" style="height:20px;" class="form-control" v-model="Prodotto.Presente">
+                </td>
+
+                <!-- Nome prodotto -->
+                <td style="padding:2px;border:1px solid #ddd; background-color:white;font-size:16px;text-align:center;vertical-align: middle;">
+                  {{ Prodotto.NOME_PRODOTTO }}
+                </td>
+
+                <!-- Settore -->
+                <td style="padding:2px;border:1px solid #ddd; background-color:white;font-size:16px;text-align:center;vertical-align: middle;">
+                  {{ Prodotto.SETTORE }}
+                </td>
+
+                <!-- Prezzo -->
+                <td v-if="MostraPrezzi"
+                    style="padding:2px;border:1px solid #ddd; background-color:white;font-size:16px;text-align:center;vertical-align: middle;">
+                  {{ Prodotto.PREZZO_IMPONIBILE / 100 }}
+                </td>
+
+                <!-- IVA -->
+                <td v-if="MostraPrezzi"
+                    style="padding:2px;border:1px solid #ddd; background-color:white;font-size:16px;text-align:center;vertical-align: middle;">
+                  {{ Prodotto.IVA / 10 }}
+                </td>
+
+                <!-- Sconto € -->
+                <td v-if="VisibilitaListinoPrezziCliente && MostraPrezzi"
+                    style="padding:2px;border:1px solid #ddd; background-color:white;font-size:16px;text-align:center;vertical-align: middle;">
+                  {{ Prodotto.PREZZO_SCONTATO != null ? Prodotto.PREZZO_SCONTATO : '-' }}
+                </td>
+
+                <!-- Sconto % -->
+                <td v-if="VisibilitaListinoPrezziCliente && MostraPrezzi"
+                    style="padding:2px;border:1px solid #ddd; background-color:white;font-size:16px;text-align:center;vertical-align: middle;">
+                  {{ Prodotto.PREZZO_SCONTO_PERCENTUALE != null ? Prodotto.PREZZO_SCONTO_PERCENTUALE : '-' }}
+                </td>
+              </tr>
+
+              <!-- Messaggio massimo prodotti -->
+              <tr v-if="ProdottiFiltrati.length == NumeroMassimoProdotti">
+                <td :colspan="MostraPrezzi ? 7 : 3"
+                    style="padding:2px;border:1px solid #ddd; background-color:white;font-size:16px;text-align:right;vertical-align: middle;color:red">
+                  Sono presenti più di 100 prodotti...
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </div>
+  </template>
+
+  <!-- FOOTER -->
+  <template v-slot:Footer>
+    <button class="btn btn-danger" @click="OnClickAnnullaProdotti"
+            style="float:right;margin-right:20px; width:20%">Annulla</button>
+    <button class="btn btn-success" @click="OnClickConfermaProdotti"
+            style="float:right;margin-right:20px; width:20%">Conferma</button>
+  </template>
+
+</VUEModal>
 
 
    <VUEModal v-if="PopupLsPreventivi" :PathLogo="require('@/assets/images/LogoGemini2.png')"
@@ -617,7 +660,12 @@ export default {
       {
         return this.IdCliente;
       }
-    },          
+    },    
+    
+    MostraPrezzi()
+    {
+      return !this.IsSchedaScaricoProdotti
+    }
 
   },
 

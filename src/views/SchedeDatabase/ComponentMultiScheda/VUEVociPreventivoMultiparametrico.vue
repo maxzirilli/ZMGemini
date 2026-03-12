@@ -34,12 +34,8 @@
              :Programma="NomeProgramma" :Titolo="'Lista Prodotti '" :Altezza="'500px'" :Larghezza="'1200px'"
             @onClickChiudiModal="OnClickAnnullaProdotti">
     <template v-slot:Body>
-        <input type="checkbox" style="width:15px;float:left;margin-left:15px" class="input-sm form-control" v-model="CercaPerSottostringaCodice">
-        <label style="float:left;margin-left:10px; margin-top:7px;font-weight:bold;font-size:15px;width:30%">Cerca per sottostringa </label>
-        <div style="clear:both;width:1%;height:3px">&nbsp;</div>
-          <input type="text" style="width:23%;float:left" class="input-sm form-control" placeholder="Cerca per codice" v-model="FiltroProdottiCodice">
           <div style="width:1%;float:left">&nbsp;</div>
-          <input type="text" style="width:76%;float:left" class="input-sm form-control" placeholder="Cerca per descrizione" v-model="FiltroProdottiDescrizione">
+          <input type="text" style="width:76%;float:left" class="input-sm form-control" placeholder="Cerca per nome prodotto" v-model="FiltroProdottiDescrizione">
      <div style="clear:both;width:1%;height:10px">&nbsp;</div>
        
           <div class="row wrapper">
@@ -49,8 +45,7 @@
                   <thead>
                     <tr>
                       <th style="width:7%;position: sticky; top: 0;"></th>
-                      <th style="width:15%;position: sticky; top: 0;">Codice</th>
-                      <th style="width:43%;position: sticky; top: 0;">Descrizione</th>
+                      <th style="width:43%;position: sticky; top: 0;">Nome prodotto</th>
                       <th style="width:15%;position: sticky; top: 0;">Settore</th>
                       <th style="width:10%;position: sticky; top: 0;">Prezzo [€]</th>
                       <th style="width:10%;position: sticky; top: 0;">IVA [%]</th>
@@ -62,9 +57,6 @@
                     <tr v-for="Prodotto in ProdottiFiltrati" :key="Prodotto.CHIAVE">
                       <td style="padding:2px;border:1px solid #ddd; border-bottom:0; background-color:white;font-size:16px;text-align:center;vertical-align: middle;">
                         <input type="checkbox" style="height: 20px;" class="form-control" v-model="Prodotto.Presente">
-                      </td>
-                      <td style="padding:2px;border:1px solid #ddd; border-bottom:0; background-color:white;font-size:16px;text-align:center;vertical-align: middle;">
-                        {{ Prodotto.CODICE }}
                       </td>
                       <td style="padding:2px;border:1px solid #ddd; border-bottom:0; background-color:white;font-size:16px;text-align:center;vertical-align: middle;">
                         {{ Prodotto.NOME_PRODOTTO }}
@@ -165,7 +157,7 @@
                     <input type="checkbox" style="height: 20px;" class="form-control" v-model="Voce.Presente">
                   </td>
                   <td style="padding:2px;border:1px solid #ddd; border-bottom:0; background-color:white;font-size:16px;text-align:center;vertical-align: middle;">
-                    {{ Voce.DESCRIZIONE }}
+                    {{ Voce.NOME_PRODOTTO }}
                   </td>
                 </tr>
               </tbody>
@@ -223,8 +215,7 @@
                   <table class="table table-striped b-t b-light">
                     <thead>
                       <tr>
-                        <th style="width:7%;position: sticky; top: 0;">Codice</th>
-                        <th style="width:25%;position: sticky; top: 0;">Descrizione</th>
+                        <th style="width:25%;position: sticky; top: 0;">Nome prodotto</th>
                         <th style="width:3%;position: sticky; top: 0;">Udm</th>
                         <th style="width:2%;position: sticky; top: 0;">Qnt.</th>
                         <th style="width:6%;position: sticky; top: 0;">Importo</th>
@@ -238,9 +229,9 @@
                     </thead>
                     <tbody>
                       <tr v-for="(Voce, index) in GetVociSenzaEliminati(Soluzione.Dati.LsVociSoluzioni)" :key="Voce.IndexKeyComponent">
-                        <td style="padding:2px;border:1px solid #ddd; border-bottom:0; background-color:white">
+                        <!-- <td style="padding:2px;border:1px solid #ddd; border-bottom:0; background-color:white">
                           <input :readonly="IsDiventatoConfermaDOrdine || Disabilitato" v-model="Voce.Dati.CodiceProdotto" type="text" class="form-control" @input="OnEmitVociFattura(Voce)"/>
-                        </td>
+                        </td> -->
                         <td style="padding:2px;border:1px solid #ddd; border-bottom:0; background-color:white">
                           <textarea :readonly="IsDiventatoConfermaDOrdine || Disabilitato" type="text" wrap="off" v-model="Voce.Dati.Descrizione" class="form-control" @input="OnInputDescrizioneVoce(Voce)" :style="{height : Voce.AltezzaTextArea? Voce.AltezzaTextArea : '34px'}" style="resize:none;overflow-y:hidden;"></textarea>
                           <label v-if="Voce.Dati.Descrizione.trim() == '' && Voce.Dati.Quantita != 0" class="ZMFormLabelError">Campo obbligatorio</label>
@@ -1456,7 +1447,7 @@ export default {
           let InserimentoNuovaVoceSoluzione = new TVoceSoluzionePreventivoMultiparametrico(-1,
                                                                                           this.SoluzioneAppoggioPerPopup.Dati.Chiave, 
                                                                                           this.SoluzioneAppoggioPerPopup.Dati.IdPreventivo, 
-                                                                                          this.ListaProdotti[i].DESCRIZIONE, 
+                                                                                          this.ListaProdotti[i].NOME_PRODOTTO, 
                                                                                           this.ListaProdotti[i].PREZZO_SCONTATO == null? 
                                                                                             this.ListaProdotti[i].PREZZO_IMPONIBILE / 100 
                                                                                             : this.ListaProdotti[i].PREZZO_SCONTATO,

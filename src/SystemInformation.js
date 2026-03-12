@@ -676,15 +676,19 @@ class TSystemInformation
   GetProdottiSemplici()
   {
     let Result = []
-    let LSTuttiProdotti = []
-    LSTuttiProdotti = this.Configurazioni.Prodotti
+    let LSTuttiProdotti = this.Configurazioni.Prodotti
 
     for(let i = 0; i < LSTuttiProdotti.length; i++)
     {
       if(LSTuttiProdotti[i].PRODOTTO_COMPOSTO == 'F')
-        Result.push(LSTuttiProdotti[i])
+      {
+        let Prodotto = {...LSTuttiProdotti[i]}
+        Prodotto.DESCRIZIONE = Prodotto.NOME_PRODOTTO
+        Result.push(Prodotto)
+      }
     }
-    return Result
+
+   return Result
   }
 
   GetProdottiCompostiXMagazzino(IdMagazzino, OnSuccess)
