@@ -4,7 +4,7 @@
       <a class="btn btn-link visible-xs">
         <i class="fa fa-bars"></i>
       </a>
-      <a href="#" class="navbar-brand" data-toggle="fullscreen">
+      <a class="navbar-brand" data-toggle="fullscreen">
         <img src="../../assets/images/LogoGemini2.png" class="m-r-sm" style="font-size:24px;margin-right:3px">&nbsp;&nbsp;GEMINI
       </a>
       <a class="btn btn-link visible-xs" data-toggle="dropdown" data-target=".nav-user">

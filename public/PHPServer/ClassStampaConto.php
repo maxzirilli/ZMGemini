@@ -949,8 +949,8 @@
 
           if($Riga->Tipo == TYP_APERTURA_ANNO)
           {
-            $Fattura->LB_DARE                 = $Riga->Importo;
-            $Fattura->LB_AVERE                = '';
+            $Fattura->LB_DARE         = '';
+            $Fattura->LB_AVERE        = '';
             
             if($PrimoElemento)
             {
@@ -1040,7 +1040,11 @@
           {
             if($Fattura->LB_AVERE != '')
               $ConteggioSaldo -= $Fattura->LB_AVERE;
-            else $ConteggioSaldo += $Fattura->LB_DARE;
+            else 
+            {
+                if($Fattura->LB_DARE != '')
+                   $ConteggioSaldo += $Fattura->LB_DARE;
+            }
 
             $ConteggioSaldo = round($ConteggioSaldo, 2); //Arrotondamento
           }
@@ -1387,9 +1391,14 @@
 
             if($SalvareSaldoNellaTabella)
             {
-              $SQLBody = "INSERT INTO saldi_chiusure_annuali (ID_ANAGRAFICA, ANNO, DARE_CHIUSURA, AVERE_CHIUSURA)
-                                                      VALUES ($ChiaveCliente, $OggettoAnno, $TotaleDareAnno * 100, $TotaleAvereAnno * 100)";
-        
+              $SQLBody = "INSERT INTO saldi_chiusure_annuali (ID_ANAGRAFICA, ANNO, DARE_CHIUSURA, AVERE_CHIUSURA)                                
+                          SELECT $ChiaveCliente, $OggettoAnno, $TotaleDareAnno * 100, $TotaleAvereAnno * 100
+                           WHERE NOT EXISTS (
+                                              SELECT 1
+                                              FROM saldi_chiusure_annuali
+                                              WHERE ID_ANAGRAFICA = $ChiaveCliente
+                                                AND ANNO = $OggettoAnno
+                                            );";
               try
               {
                 $PDODBase->query($SQLBody);
@@ -1573,7 +1582,6 @@
             $TotaliFattura = TSystemInformation::GetRitenutaFatturaXRate($PDODBase, $Row['CHIAVE_FATTURA']);
 
             TSystemInformation::GestioneArrotondamentoSaldiAnnualiDerivatoDaErroreArrotondamento($TotaleDareAnno,  $Row['CHIAVE_RATA'], $TotaliFattura[0]);
-            TSystemInformation::GestioneArrotondamentoSaldiAnnualiDerivatoDaErroreArrotondamento($TotaleAvereAnno, $Row['CHIAVE_RATA'], $TotaliFattura[0]);
 
             if($TotaliFattura[0]->TotaleRitenuta != 0)
               $TotaleAvereAnno += $this->FGetTotaleRitenutaRata($TotaliFattura[0], $Row['CHIAVE_RATA']);
@@ -1637,7 +1645,13 @@
       if($SalvareSaldoNellaTabella)
       {
         $SQLBody = "INSERT INTO saldi_chiusure_annuali (ID_ANAGRAFICA, ANNO, DARE_CHIUSURA, AVERE_CHIUSURA)
-                         VALUES ($ChiaveCliente, $OggettoAnno, $TotaleDareAnno * 100, $TotaleAvereAnno * 100)";
+                    SELECT $ChiaveCliente, $OggettoAnno, $TotaleDareAnno * 100, $TotaleAvereAnno * 100
+                     WHERE NOT EXISTS (
+                                        SELECT 1
+                                        FROM saldi_chiusure_annuali
+                                        WHERE ID_ANAGRAFICA = $ChiaveCliente
+                                          AND ANNO = $OggettoAnno
+                                       );";
       
         try
         {

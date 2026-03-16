@@ -6,12 +6,6 @@
 			"SQL" : "SELECT *\n  FROM allegati_clienti\n WHERE CHIAVE = :CHIAVE\n"
 		}
 	],
-	"CodiceClienteMassimo" : [
-		{
-			"Name" : "UltimoCodiceCliente",
-			"SQL" : "SELECT MAX(CAST(anagrafiche.CODICE AS UNSIGNED)) AS ULTIMO_CODICE_CLIENTE FROM anagrafiche\n"
-		}
-	],
 	"ControlloDoppiaPartitaIva" : [
 		{
 			"Name" : "ControlloDoppiaPartitaIva",
@@ -93,7 +87,7 @@
 		},
 		{
 			"Name" : "InsertUltimoCodiceCliente",
-			"SQL" : "UPDATE impostazioni\n       SET ULTIMO_CODICE_CLIENTE = #ULTIMO_CODICE_CLIENTE\n"
+			"SQL" : "UPDATE impostazioni\n       SET ULTIMO_CODICE_ANAGRAFICA = #ULTIMO_CODICE_ANAGRAFICA\n"
 		},
 		{
 			"Name" : "DeleteOrariFilialiTramiteCliente",
@@ -342,12 +336,6 @@
 		{
 			"Name" : "ListaProdotti",
 			"SQL" : "SELECT prodotti.NOME_PRODOTTO,\n            prodotti.CODICE,\n            prodotti.PREZZO_IMPONIBILE,\n            prodotti.IVA\n  FROM prodotti\nORDER BY prodotti.CHIAVE\n"
-		}
-	],
-	"UltimoCodiceCliente" : [
-		{
-			"Name" : "UltimoCodiceCliente",
-			"SQL" : "SELECT ULTIMO_CODICE_CLIENTE\n   FROM impostazioni\n"
 		}
 ]
 }

@@ -27,7 +27,7 @@
 		},
 		{
 			"Name" : "InsertUltimoCodiceFornitore",
-			"SQL" : "UPDATE impostazioni\n       SET ULTIMO_CODICE_FORNITORE = #ULTIMO_CODICE_FORNITORE\n"
+			"SQL" : "UPDATE impostazioni\n       SET ULTIMO_CODICE_ANAGRAFICA = #ULTIMO_CODICE_ANAGRAFICA\n"
 		},
 		{
 			"Name" : "EliminaTelefonoTramiteFornitore",
@@ -88,12 +88,6 @@
 		{
 			"Name" : "LsFornitoriXIniziale",
 			"SQL" : "SELECT CHIAVE,\n            RAGIONE_SOCIALE,\n            ((SELECT EXISTS(SELECT ddt_uscenti.CHIAVE\n                                        FROM ddt_uscenti\n                                      WHERE ddt_uscenti.ID_FORNITORE = anagrafiche.CHIAVE)) OR\n            (SELECT EXISTS(SELECT ddt_entranti.CHIAVE\n                                        FROM ddt_entranti\n                                      WHERE ddt_entranti.ID_ANAGRAFICA = anagrafiche.CHIAVE)) OR\n            (SELECT EXISTS(SELECT fatture_passive.CHIAVE\n                                        FROM fatture_passive\n                                      WHERE fatture_passive.ID_FORNITORE = anagrafiche.CHIAVE)) OR\n            (SELECT EXISTS(SELECT fatture_insolute_pregresse_fornitori.CHIAVE\n                                        FROM fatture_insolute_pregresse_fornitori\n                                      WHERE fatture_insolute_pregresse_fornitori.ID_FORNITORE = anagrafiche.CHIAVE)) OR\n            (SELECT EXISTS(SELECT autofatture.CHIAVE\n                                        FROM autofatture\n                                      WHERE autofatture.ID_FORNITORE = anagrafiche.CHIAVE))) AS FORNITORE_CANCELLABILE\n  FROM anagrafiche\n  WHERE UPPER(SUBSTRING(RAGIONE_SOCIALE,1,1)) = UPPER(#Iniziale) AND IS_FORNITORE = 'T'\n  {w~RagioneSociale~ UPPER(CONCAT(CODICE, RAGIONE_SOCIALE)) LIKE UPPER(#RagioneSociale)\n      ~Indirizzo~ UPPER(INDIRIZZO_FATTURAZIONE) LIKE UPPER(#Indirizzo)\n      ~CodiceFornitore~ UPPER(CODICE) LIKE UPPER(#CodiceFornitore)}\nORDER BY UPPER(RAGIONE_SOCIALE)\n"
-		}
-	],
-	"UltimoCodiceFornitore" : [
-		{
-			"Name" : "UltimoCodiceFornitore",
-			"SQL" : "SELECT ULTIMO_CODICE_FORNITORE\n  FROM impostazioni\n"
 		}
 	],
 	"WatchFornitore" : [

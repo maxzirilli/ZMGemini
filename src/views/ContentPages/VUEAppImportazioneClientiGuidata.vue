@@ -60,8 +60,8 @@
         <div v-if="SchedaAttuale == SCHEDA_CLIENTE">
           <div class="ZMSeparatoreScheda">Cliente</div>
           <div class="ZMNuovaRigaScheda">
-            <div v-if="CodiceUltimoCliente != null" style="float:left;height: 15px">
-              <label style="margin-right:15px;"><span style="font-weight:bold;">Ultimo codice cliente:</span> {{ CodiceUltimoCliente }}</label>
+            <div v-if="UltimoCodice != null" style="float:left;height: 15px">
+              <label style="margin-right:15px;"><span style="font-weight:bold;">Ultimo codice:</span> {{ UltimoCodice }}</label>
             </div>
           </div>
           <div style="clear:both;height:5px">&nbsp;</div>
@@ -763,7 +763,7 @@ export default
       LsPagamentoBollo       : SystemInformation.GetLsPagamentoBollo(),
       SystemInformationConfigurazioni      : SystemInformation.Configurazioni,
       ModalConferma          : false,
-      CodiceUltimoCliente    : null,
+      UltimoCodice           : null,
       PopupDataRowCordinate  : false,
       ListaMesi              : TZDateFunct.GetListaMensilitaPerDataTable(),
       NomeProgramma          : NOME_PROGRAMMA
@@ -1127,9 +1127,9 @@ export default
 
   beforeMount()
   {
-    SystemInformation.CaricaUltimoCodiceCliente((CodiceUltimoCliente) =>
+    SystemInformation.CaricaUltimoCodiceAnagrafica((UltimoCodice) =>
                                                 {
-                                                  this.CodiceUltimoCliente = CodiceUltimoCliente
+                                                  this.UltimoCodice = UltimoCodice
                                                 }, true);
   }
 };

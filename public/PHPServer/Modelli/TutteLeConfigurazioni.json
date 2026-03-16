@@ -103,5 +103,11 @@
 			"Name" : "UserInformation",
 			"SQL" : "SELECT USERNAME,\n            RAGIONE_SOCIALE,\n            ROLE,\n            EMAIL,\n            IMMAGINE,\n            PRIMO_ACCESSO\n  FROM utenti \nWHERE CHIAVE = :KeyAccount\n"
 		}
+	],
+	"UltimoCodice" : [
+		{
+			"Name" : "UltimoCodice",
+			"SQL" : "SELECT ULTIMO_CODICE_ANAGRAFICA\n  FROM impostazioni\n"
+		}
 ]
 }

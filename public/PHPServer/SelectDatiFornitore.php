@@ -24,8 +24,8 @@
           $this->SelectQueryFornitore($PDODBase, $Parametri, $JSONAnswer->Dettaglio, 'SelectFornitore');
 
 
-          $JSONAnswer->DatiForitoreTelefono = array();
-          $this->SelectQueryFornitore($PDODBase, $Parametri, $JSONAnswer->DatiForitoreTelefono, 'TelefonoFornitori');
+          $JSONAnswer->DatiFornitoreTelefono = array();
+          $this->SelectQueryFornitore($PDODBase, $Parametri, $JSONAnswer->DatiFornitoreTelefono, 'TelefonoFornitori');
 
 
           $JSONAnswer->DatiFornitoreCodici = array();

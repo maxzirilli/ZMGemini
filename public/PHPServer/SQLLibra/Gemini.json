@@ -5759,16 +5759,7 @@
                     "SQLAfterAddedColumn": null
                 },
                 {
-                    "Nome": "ULTIMO_CODICE_FORNITORE",
-                    "IsNullable": true,
-                    "DataType": "varchar(255)",
-                    "AutoIncrement": false,
-                    "Commento": "",
-                    "DefaultValue": "",
-                    "SQLAfterAddedColumn": null
-                },
-                {
-                    "Nome": "ULTIMO_CODICE_CLIENTE",
+                    "Nome": "ULTIMO_CODICE_ANAGRAFICA",
                     "IsNullable": true,
                     "DataType": "varchar(255)",
                     "AutoIncrement": false,

@@ -143,24 +143,6 @@
     </template>
   </VUEModal>
 
-  <VUEModal v-if="PopupVisualizzaScheda" :PathLogo="require('../../assets/images/LogoGemini2.png')"
-            :Programma="NomeProgramma" :Titolo="'Visualizzazione scheda'" :Altezza="'550px'" :Larghezza="'1250px'"
-            @onClickChiudiModal="PopupVisualizzaScheda = false">
-    <template v-slot:Body>
-      <div class="form-row">
-        <div class="col-md-12">
-
-          <VUESchedaFornitore v-if="SchedaSelezionataPopup.TipoComunicazione == TipiComunicazioni.FornitoriSenzaCodice" 
-                              :SchedaFornitore="SchedaSelezionataPopup"/>
-        </div>
-      </div> 
-    </template>
-    <template v-slot:Footer>
-      <button type="button" class="btn btn-danger" style="float:right;margin-left:10px;font-weight:bold;width:15%" @click="OnClickAnnullaSchedaSelezionataPopup" data-dismiss="modal">Annulla</button>
-      <button v-if="SchedaSelezionataPopup.CanRecord()" type="button" class="btn btn-info" style="float:right;font-weight:bold;width:15%" @click="OnClickConfermaSchedaSelezionataPopup" data-dismiss="modal">Conferma</button>
-    </template>
-  </VUEModal>
-
   <VUEModal v-if="PopupCreazioneFattura.Visualizza" :PathLogo="require('../../assets/images/LogoGemini2.png')"
             :Programma="NomeProgramma" :Titolo=" 'Creazione Fattura' " :Altezza="'550px'" :Larghezza="'1250px'"
             @onClickChiudiModal="PopupCreazioneFattura.Visualizza ">
@@ -219,7 +201,6 @@
                       <!-- IMMAGINE -->
                       <td style="padding:2px;border:1px solid #ddd; border-bottom:0; background-color:white;font-size:18px;text-align:center;vertical-align: middle;font-weight:bold">
                         <img v-if="Comunicazione.Tipo == TipiComunicazioni.AvvisoGenerico" src="@/assets/images/AlertGenerico2.png" style=""> 
-                        <img v-else-if="Comunicazione.Tipo == TipiComunicazioni.FornitoriSenzaCodice" src="@/assets/images/IconeAlbero/Fornitore.png" style=""> 
                         <img v-else src="@/assets/images/AlertGenerico2.png" style=""> 
                       </td>
 
@@ -240,12 +221,6 @@
                       <td style="padding:2px;border:1px solid #ddd; border-bottom:0; background-color:white;font-size:18px;text-align:center;vertical-align: middle;">
                         <button v-if="Comunicazione.Tipo == TipiComunicazioni.AvvisoGenerico" @click="EliminaAvvisoFatturePassive()" style="width:70%;float:left; margin-left: 16px;" class="btn btn-sm btn-info">Chiudi Avviso</button>
 
-                        <!-- VISUALIZZA FORNITORE SENZA CODICE -->
-                        <button v-if="Comunicazione.Tipo == TipiComunicazioni.FornitoriSenzaCodice" @click="OnClickVisualizzaScheda(Comunicazione.Informazioni, Comunicazione.Tipo)" style="width:80%" class="btn btn-sm btn-info">Controlla </button>
-
-                        <!-- VISUALIZZA NOTE DA GESTIRE -->
-                        <button v-if="Comunicazione.Tipo == TipiComunicazioni.NoteGestite" @click="OnClickVisualizzaScheda(Comunicazione.Informazioni, Comunicazione.Tipo)" style="width:80%" class="btn btn-sm btn-info">Controlla </button>
-                        
                         <!-- QUANTITÁ PRODOTTO MAGAZZINO MINORE SOGLIA ALLARME -->
                         <button v-if="Comunicazione.Tipo == TipiComunicazioni.AllarmeProdotto" @click="GestioneSogliaDiAllarme(Comunicazione)"  style="width:80%" class="btn btn-sm btn-info">Cambia soglia di allarme</button>
 
@@ -394,6 +369,19 @@
       </div>
       <div style="float:left;width:53%;">        
         <div class="col-md-12" style="padding-left:2px;padding-top: 6px;">
+          <div style="float:left; padding-right:2%">
+                <button 
+                  @click="OnClickPaginaPrincipale()" 
+                  style="
+                    background: transparent; 
+                    border: none; 
+                    cursor: pointer; 
+                    font-size: 26px; 
+                    color: #4A90E2;">
+                  <i class="fa fa-home"></i>
+                </button>
+          </div>
+
           <div style="float:left;padding-right: 5px;">
                 <div class="btn-group open" >
                   <button type="button" 
@@ -2487,7 +2475,6 @@ export default
                         InformazioniComunicazionePresaInConsiderazione            : null,
                         StatoPreventivoIniziale                                   : '',
 
-                        PopupVisualizzaScheda                                     : false,
                         PresenzaComunicazioni                                     : false,
                         PopupAttesaCalcolo                                        : false,
                         // ListaFilialiVisibile                                      : SystemInformation.AccessRights.ListaFilialiVisibile(),
@@ -4672,6 +4659,11 @@ export default
           this.MenuFilter                 = this.MenuFilterPrincipale
       },
 
+      OnClickPaginaPrincipale()
+      {
+         this.CurrentFilter = this.FilterCliente;
+      },
+
       OnClickApriPopupComunicazioni()
       {
         this.PopupComunicazioni = true
@@ -4731,27 +4723,6 @@ export default
                                                             else SystemInformation.HandleError('Impossibile ottenere le comunicazioni','','');
                                                           },
                                                           SystemInformation.HandleError)
-      },
-
-
-      OnClickVisualizzaScheda(Informazioni, TipoComunicazione)
-      {
-        if(!this.PopupVisualizzaScheda)
-        {
-          var Self = this
-          switch(TipoComunicazione)
-          {
-            case TIPO_COMUNICAZIONI.FornitoriSenzaCodice :  this.SchedaSelezionataPopup        = new TSchedaFornitore(SystemInformation.AdvQuery);
-                                                            this.SchedaSelezionataPopup.Chiave = Informazioni.ChiaveFornitore
-                                                            this.SchedaSelezionataPopup.TipoComunicazione = TIPO_COMUNICAZIONI.FornitoriSenzaCodice
-                                                            this.SchedaSelezionataPopup.Disponi(function()
-                                                            {
-                                                              Self.PopupComunicazioni    = false
-                                                              Self.PopupVisualizzaScheda = true
-                                                            })
-            break;
-          }
-        }
       },
 
       OnClickConfermaFattura(SchedaFattura)
@@ -5052,25 +5023,6 @@ export default
         if(this.IndexAnagrafiche == 0)
           this.AnnullaModificaPopupFiliale()
         else this.RifiutaModificaPopupFiliale()
-      },
-
-      OnClickConfermaSchedaSelezionataPopup()
-      {
-        var Self = this
-        this.SchedaSelezionataPopup.Registra(function()
-        {
-          Self.PopupVisualizzaScheda = false
-          Self.ControlloPresenzaComunicazioni(function()
-          {
-            Self.PopupComunicazioni    = true
-          })
-        })
-      },
-
-      OnClickAnnullaSchedaSelezionataPopup()
-      {
-        this.PopupVisualizzaScheda = false
-        this.PopupComunicazioni    = true
       },
 
       OnClickVisualizzaInformazioniAggiuntive(Info)

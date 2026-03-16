@@ -64,7 +64,7 @@
     <div  v-if="Tabs.ActiveTab == 'DatiFatturazione'">
         <div class="ZMNuovaRigaScheda">
             <div v-if="SchedaFornitore.Dati.CODICE == '' "  style="float:left;">
-                  <label style="margin-right:15px;"><span style="font-weight:bold;">Ultimo codice fornitore inserito:</span> {{ SchedaFornitore.CodiceUltimoFornitore }}</label>
+                  <label style="margin-right:15px;"><span style="font-weight:bold;">Ultimo codice fornitore inserito:</span> {{ SchedaFornitore.UltimoCodice }}</label>
             </div> 
         </div>   
         <div style="float:left;margin-right:5px">
@@ -512,9 +512,9 @@ export class TSchedaFornitore extends TSchedaGenerica
      var Self = this;  
      super.Nuovo() 
      this.Clear()
-     SystemInformation.CaricaUltimoCodiceFornitore(function(CodiceUltimoFornitore)
+     SystemInformation.CaricaUltimoCodiceAnagrafica(function(UltimoCodice)
                        {
-                         Self.CodiceUltimoFornitore = CodiceUltimoFornitore
+                         Self.UltimoCodice = UltimoCodice
                        });
    }
 
@@ -522,9 +522,9 @@ export class TSchedaFornitore extends TSchedaGenerica
     {
       var Self = this;
       if(this.InEliminazione) return;
-      SystemInformation.CaricaUltimoCodiceFornitore(function(CodiceUltimoFornitore)
+      SystemInformation.CaricaUltimoCodiceAnagrafica(function(UltimoCodice)
                        {
-                         Self.CodiceUltimoFornitore = CodiceUltimoFornitore
+                         Self.UltimoCodice = UltimoCodice
                        });
 
       this.AdvQuery.ExecuteExternalScript('SelectDatiFornitore',{ CHIAVE : Self.Chiave, 
@@ -537,7 +537,7 @@ export class TSchedaFornitore extends TSchedaGenerica
                                         {
                                             if(Self.InEliminazione) return;
                                             let ArrayInfo          = Results.Dettaglio
-                                            let ArrayInfoTelefono  = Results.DatiForitoreTelefono
+                                            let ArrayInfoTelefono  = Results.DatiFornitoreTelefono
                                             let ArrayCodiciFornitore = Results.DatiFornitoreCodici
 
                                             if(Results.DatiSituazioneContabileFornitore)
@@ -682,7 +682,7 @@ export class TSchedaFornitore extends TSchedaGenerica
         {
           ObjQuery.Operazioni.push({
                                           Query     : "InsertUltimoCodiceFornitore",
-                                          Parametri : { ULTIMO_CODICE_FORNITORE : Self.Dati.CODICE},
+                                          Parametri : { ULTIMO_CODICE_ANAGRAFICA : Self.Dati.CODICE},
                                         })
         }
 

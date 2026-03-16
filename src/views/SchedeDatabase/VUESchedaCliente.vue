@@ -262,7 +262,7 @@
           </div>
           <div class="ZMNuovaRigaScheda">
               <div v-if="this.ShowCodiceCliente || SchedaCliente.IsNuovo()" style="float:left;">
-                    <label style="margin-right:15px;"><span style="font-weight:bold;">Ultimo codice cliente:</span> {{ SchedaCliente.CodiceUltimoCliente }}</label>
+                    <label style="margin-right:15px;"><span style="font-weight:bold;">Ultimo codice cliente:</span> {{ SchedaCliente.UltimoCodice }}</label>
               </div>
           </div>
           <div style="clear:both;padding-top: 6px;">
@@ -1622,9 +1622,9 @@ import VUEAllegati, { TSchedaAllegati } from '../../components/VUEAllegati.vue';
     Nuovo()
     {  
       super.Nuovo() 
-      SystemInformation.CaricaUltimoCodiceCliente((CodiceUltimoCliente) =>
+      SystemInformation.CaricaUltimoCodiceAnagrafica((UltimoCodice) =>
                                                   {
-                                                    this.CodiceUltimoCliente = CodiceUltimoCliente
+                                                    this.UltimoCodice = UltimoCodice
                                                   }, true);
     }
 
@@ -1793,7 +1793,7 @@ import VUEAllegati, { TSchedaAllegati } from '../../components/VUEAllegati.vue';
                                   {
                                       ObjQuery.Operazioni.push({
                                                                   Query     : "InsertUltimoCodiceCliente",
-                                                                  Parametri : { ULTIMO_CODICE_CLIENTE : Self.Dati.CODICE},
+                                                                  Parametri : { ULTIMO_CODICE_ANAGRAFICA : Self.Dati.CODICE},
                                                                 })
                                   }
                                   
@@ -2360,9 +2360,9 @@ import VUEAllegati, { TSchedaAllegati } from '../../components/VUEAllegati.vue';
                                             SystemInformation.HandleError(HTTPError,SubHTTPError,Response);
                                           })
     
-      SystemInformation.CaricaUltimoCodiceCliente(function(CodiceUltimoCliente)
+      SystemInformation.CaricaUltimoCodiceAnagrafica(function(UltimoCodice)
                                                   {
-                                                    Self.CodiceUltimoCliente = CodiceUltimoCliente
+                                                    Self.UltimoCodice = UltimoCodice
                                                   }, false);
     }
 

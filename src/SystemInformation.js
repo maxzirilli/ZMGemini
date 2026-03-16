@@ -283,41 +283,23 @@ class TSystemInformation
                }
             ]
   }
-
-  CaricaUltimoCodiceFornitore(OnSuccess)
+  
+  CaricaUltimoCodiceAnagrafica(OnSuccess)
   {
-     SystemInformation.AdvQuery.GetSQL("Fornitori",{},
+     SystemInformation.AdvQuery.GetSQL("TutteLeConfigurazioni",{},
                                        function(Results)
                                        {
-                                         let ArrayInfo  = SystemInformation.AdvQuery.FindResults(Results,"UltimoCodiceFornitore");
-                                         let CodiceUltimoFornitore = ''
+                                         let ArrayInfo  = SystemInformation.AdvQuery.FindResults(Results,"UltimoCodice");
+                                         let UltimoCodice = '';
                                          if(ArrayInfo != undefined)
-                                           CodiceUltimoFornitore = ArrayInfo[0].ULTIMO_CODICE_FORNITORE
-                                         OnSuccess(CodiceUltimoFornitore)
+                                           UltimoCodice = ArrayInfo[0].ULTIMO_CODICE_ANAGRAFICA
+                                         OnSuccess(UltimoCodice)
                                        },
                                        function(HTTPError,SubHTTPError,Response)
                                        {
                                            SystemInformation.HandleError(HTTPError,SubHTTPError,Response);
                                        },
-                                       'UltimoCodiceFornitore');
-  }   
-
-  CaricaUltimoCodiceCliente(OnSuccess,MassimoCodice = false)
-  {
-     SystemInformation.AdvQuery.GetSQL("Clienti",{},
-                                       function(Results)
-                                       {
-                                         let ArrayInfo  = SystemInformation.AdvQuery.FindResults(Results,"UltimoCodiceCliente");
-                                         let CodiceUltimoCliente = '';
-                                         if(ArrayInfo != undefined)
-                                           CodiceUltimoCliente = ArrayInfo[0].ULTIMO_CODICE_CLIENTE
-                                         OnSuccess(CodiceUltimoCliente)
-                                       },
-                                       function(HTTPError,SubHTTPError,Response)
-                                       {
-                                           SystemInformation.HandleError(HTTPError,SubHTTPError,Response);
-                                       },
-                                       MassimoCodice ? 'CodiceClienteMassimo' : 'UltimoCodiceCliente');
+                                       'UltimoCodice');
   }
 
   GetLsPagamentoBollo()
