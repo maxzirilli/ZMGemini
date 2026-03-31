@@ -78,7 +78,7 @@
     public $QRLabel10       = "Saldo attuale: ";
   }
 
-  class TDatiDocumento
+  class TDatiRigaStampa
   {
     public $MM_DESCRIZIONE_DOCUMENTO = null;
     public $LB_DATA_DOCUMENTO        = null;
@@ -87,6 +87,7 @@
     public $LB_DARE                  = null;
     public $LB_SALDO                 = null;
     public $NonConteggiare           = false;
+    public $RigaAperturaAnno         = false;
     public $Tipologia                = null;
     public $ChiaveDocumento          = null;
 
@@ -931,62 +932,54 @@
       }
 
       $PrimoElemento  = true;
-      $ConteggioSaldo = 0;
+      $this->DareDiPartenza  = round($this->DareDiPartenza, 2); 
+      $this->AvereDiPartenza = round($this->AvereDiPartenza, 2); 
 
       if(!$VelocizzaXStampaSaldiClienti)
       {
         // Carico tutte le righe nel PDF
         foreach($this->FRigheProspetto as $Riga)
         {
-          $Fattura = new TDatiDocumento();
+          $DatiStampa = new TDatiRigaStampa();
           
-          $Fattura->MM_DESCRIZIONE_DOCUMENTO = $Riga->Descrizione;
-          $Fattura->LB_DATA_DOCUMENTO        = $Riga->Data;
-          $Fattura->LB_NUMERO_DOCUMENTO      = $Riga->NumeroDocumento;
+          $DatiStampa->MM_DESCRIZIONE_DOCUMENTO = $Riga->Descrizione;
+          $DatiStampa->LB_DATA_DOCUMENTO        = $Riga->Data;
+          $DatiStampa->LB_NUMERO_DOCUMENTO      = $Riga->NumeroDocumento;
           
-          $Fattura->Tipologia                = $Riga->Tipo;
-          $Fattura->ChiaveDocumento          = $Riga->ChiaveSecondaria;
+          $DatiStampa->Tipologia                = $Riga->Tipo;
+          $DatiStampa->ChiaveDocumento          = $Riga->ChiaveSecondaria;
 
           if($Riga->Tipo == TYP_APERTURA_ANNO)
           {
-            $Fattura->LB_DARE         = '';
-            $Fattura->LB_AVERE        = '';
+            $DatiStampa->LB_DARE         = '';
+            $DatiStampa->LB_AVERE        = '';
             
             if($PrimoElemento)
-            {
-              $ConteggioSaldo             += $Riga->Importo;
-              $ConteggioSaldo              = round($ConteggioSaldo, 2); //Arrotondamento
-              $Fattura->LB_SALDO           = $ConteggioSaldo;
-            }
+              $DatiStampa->LB_DARE         = $this->DareDiPartenza - $this->AvereDiPartenza;
             else
             {
-              $Fattura->NonConteggiare        = true;
+              $DatiStampa->LB_DARE         = $Riga->Importo;
+              $DatiStampa->NonConteggiare  = true;
             }
           }
           else
           {
             if($Riga->IsDare)
             {
-              $Fattura->LB_DARE               = $Riga->Importo;
-              $Fattura->LB_AVERE              = '';
+              $DatiStampa->LB_DARE            = $Riga->Importo;
+              $DatiStampa->LB_AVERE           = '';
               $DatiFooter->LB_TOTALE_DARE    += $Riga->Importo;
-              $ConteggioSaldo                += $Riga->Importo;
             }
             else
             {
-              $Fattura->LB_DARE               = '';
-              $Fattura->LB_AVERE              = $Riga->Importo;
+              $DatiStampa->LB_DARE            = '';
+              $DatiStampa->LB_AVERE           = $Riga->Importo;
               $DatiFooter->LB_TOTALE_AVERE   += $Riga->Importo;
-              $ConteggioSaldo                -= $Riga->Importo;
             }
-
-            $ConteggioSaldo                    = round($ConteggioSaldo, 2); //Arrotondamento
-            
-            $Fattura->LB_SALDO                 = $ConteggioSaldo;
           }
 
           $PrimoElemento = false;
-          array_push($Result->BAND_SUMMARY, $Fattura);
+          array_push($Result->BAND_SUMMARY, $DatiStampa);
         }
       }
 
@@ -1027,13 +1020,21 @@
 
     private function FFormattazioneDelleDateETotali(&$BAND_SUMMARY)
     {
-      $ConteggioSaldo = $this->DareDiPartenza - $this->AvereDiPartenza;
-      $ConteggioSaldo = round($ConteggioSaldo, 2); //Arrotondamento
+      $ConteggioSaldo = 0;
+      $PrimoElemento  = true;
 
       if(count($BAND_SUMMARY) != 0)
       {
         foreach ($BAND_SUMMARY as $Fattura) 
         {
+          if($PrimoElemento)
+          {
+            $PrimoElemento  = false;
+            // Se il primo elemento non è apertura anno, parti da saldo
+            if(!$Fattura->RigaAperturaAnno)
+              $ConteggioSaldo = $this->DareDiPartenza - $this->AvereDiPartenza;
+          }
+
           $Fattura->LB_DATA_DOCUMENTO = date("d/m/Y", strtotime($Fattura->LB_DATA_DOCUMENTO));
 
           if(!$Fattura->NonConteggiare)
@@ -1045,9 +1046,10 @@
                 if($Fattura->LB_DARE != '')
                    $ConteggioSaldo += $Fattura->LB_DARE;
             }
-
-            $ConteggioSaldo = round($ConteggioSaldo, 2); //Arrotondamento
           }
+
+          if($Fattura->RigaAperturaAnno)
+             $Fattura->LB_DARE = '';
 
           $Fattura->LB_AVERE          = $Fattura->LB_AVERE != ''?
                                         number_format($Fattura->LB_AVERE, 2, ',', '.') . '€' :
@@ -1771,15 +1773,19 @@
         $CifraAvere = $OggettoReturn->TotaleAvereAnno;
       }
 
-      $OggettoReturn = $this->FCalcoloTotaleSaldoCliente($PrimoAnno, 
-                                                         $DataDal, 
-                                                         $Anno - 1, 
-                                                         $ChiaveCliente, 
-                                                         false, 
-                                                         $PDODBase);
-      
-      $CifraDare  = $CifraDare  + $OggettoReturn->TotaleDareAnno;
-      $CifraAvere = $CifraAvere + $OggettoReturn->TotaleAvereAnno;
+      if(substr($DataDal, 5, 5) != '01-01')
+      {
+        $DataDalMenoUno = date('Y-m-d', strtotime($DataDal . ' -1 day'));
+        $OggettoReturn = $this->FCalcoloTotaleSaldoCliente($PrimoAnno, 
+                                                              $DataDalMenoUno, 
+                                                              $Anno - 1, 
+                                                              $ChiaveCliente, 
+                                                              false, 
+                                                              $PDODBase);
+        
+        $CifraDare  = $CifraDare  + $OggettoReturn->TotaleDareAnno;
+        $CifraAvere = $CifraAvere + $OggettoReturn->TotaleAvereAnno;
+      }
 
       $this->DareDiPartenza  = round($CifraDare, 2);
       $this->AvereDiPartenza = round($CifraAvere, 2);

@@ -91,8 +91,11 @@
            
                foreach ($DatiSituazione->LsConti->BAND_SUMMARY as $Riga)
                {
-                   $TotDarePeriodo  += isset($Riga->LB_DARE)  ? floatval(str_replace(',', '.', $Riga->LB_DARE))  : 0;
-                   $TotAverePeriodo += isset($Riga->LB_AVERE) ? floatval(str_replace(',', '.', $Riga->LB_AVERE)) : 0;
+                  if(!$Riga->NonConteggiare)
+                  {
+                    $TotDarePeriodo  += isset($Riga->LB_DARE)  ? $this->ParseImporto($Riga->LB_DARE)  : 0;
+                    $TotAverePeriodo += isset($Riga->LB_AVERE) ? $this->ParseImporto($Riga->LB_AVERE) : 0;
+                  }
                }
            
                $SaldoPeriodo = $TotDarePeriodo - $TotAverePeriodo;
@@ -109,6 +112,14 @@
                ];
            }
           }
+        }
+
+        private function ParseImporto($Valore)
+        {
+          $Valore = str_replace('€', '', $Valore);
+          $Valore = str_replace('.', '', $Valore);   // rimuove separatore migliaia
+          $Valore = str_replace(',', '.', $Valore);  // converte decimali
+          return floatval($Valore);
         }
 
         private function FInserisciTotaliNelleFatture($PDODBase, &$JSONAnswer)
