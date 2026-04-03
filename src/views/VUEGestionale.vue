@@ -33,7 +33,7 @@
                 <VUEAppContentCfgPannelloAmministratore            v-if="Pages.CfgPannelloAmministratore" NomeModello="Testi" :Altezza="Altezza"></VUEAppContentCfgPannelloAmministratore>
                 <VUEAppContentImportazioneFatturePassive           v-if="Pages.ImportazioneFatturePassive" :Altezza="Altezza"></VUEAppContentImportazioneFatturePassive>
 
-                <VUEVersioneGemini                                  v-if="Pages.VersioneGemini" :Altezza="Altezza"></VUEVersioneGemini>
+                <VUEVersioneGemini                                 v-if="Pages.VersioneGemini" :Altezza="Altezza"></VUEVersioneGemini>
 
                 <VUEAppContentCausali                 v-if="Pages.Causali" NomeModello="Causali" :Altezza="Altezza" />
                 <VUEAppContentCfgSettori              v-if="Pages.Settori" NomeModello="Settori" :Altezza="Altezza" />
@@ -46,6 +46,8 @@
                 <VUEAppContentLogEmailInviate         v-if="Pages.LogEmailInviate"></VUEAppContentLogEmailInviate>
                 <VUEAppContentFattureInsolute         v-if="Pages.FattureInsolute"></VUEAppContentFattureInsolute>
                 <VUEAppAzioniAmministratore           v-if="Pages.AzioniAmministratore" :Altezza="Altezza"></VUEAppAzioniAmministratore>
+                <VUEAppContentCfgAccessPermission     v-if="Pages.AccessPermission" NomeModello="AccessPermission" :Altezza="Altezza"></VUEAppContentCfgAccessPermission>
+
              </section>
              </section>
              <a href="#" class="hide nav-off-screen-block" data-toggle="class:nav-off-screen, open" data-target="#nav,html"></a>
@@ -95,6 +97,7 @@ import VUEAppContentAggiungiMessaggio  from './ContentPages/VUEAppContentAggiung
 import VUEAppContentSchedaMessaggi     from './ContentPages/VUEAppContentSchedaMessaggi.vue';
 import VUEAppContentLogEmailInviate    from './ContentPages/VUEAppContentLogEmailInviate.vue';
 import VUEAppContentFattureInsolute    from './ContentPages/VUEAppContentFattureInsolute.vue';
+import VUEAppContentCfgAccessPermission from './ContentPages/VUEAppContentCfgAccessPermission.vue';
 
 export default 
 {
@@ -144,6 +147,7 @@ export default
                                           AggiungiMessaggio         : false,
                                           SchedaMessaggi            : false,
                                           MostraSideMenu            : false,
+                                          AccessPermission          : false,
                                         }
               
             };
@@ -184,6 +188,7 @@ export default
       VUEAppContentFattureInsolute,
       VUEAppContentCausali,
       VUEAppContentGestioneFatturePassive,
+      VUEAppContentCfgAccessPermission
     },
 
     methods: 
@@ -287,6 +292,9 @@ export default
         if(this.Pages.AggiungiMessaggio) this.TitoloPagina = 'Aggiungi messaggio';
         this.Pages.SchedaMessaggi = this.$route.params.pagina == 'SchedaMessaggi';
         if(this.Pages.SchedaMessaggi) this.TitoloPagina = 'Scheda messaggi';
+
+        this.Pages.AccessPermission = this.$route.params.pagina == 'AccessPermission';
+        if(this.Pages.AccessPermission) this.TitoloPagina = 'Access permission';
 
       }
     },

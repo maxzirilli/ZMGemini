@@ -5,6 +5,19 @@
             Versione software
         </div>
         <div>
+          <div class="col-md-12" style="background-color: #b3dbff;">
+                <hr>
+                <div class="col-md-3">
+                    <b style="color:#2596be; font-size: 20px; font:bold; margin-left:10px">Versione 1.000.001</b>
+                </div>
+                <div class="col-md-3">
+                  03 Aprile 2026
+                </div>
+                <div class="col-md-6">
+                    <strong>Martina Cabras</strong>
+                    <p>NEW:Aggiunte configurazioni per ip di accesso</p>
+                </div>
+           </div>
            <div class="col-md-12" style="background-color: #b3dbff;">
                 <hr>
                 <div class="col-md-3">

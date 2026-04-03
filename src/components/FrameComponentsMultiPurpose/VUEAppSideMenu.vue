@@ -396,6 +396,13 @@ export default
                               IconCfgExpanded : "fa-angle-up", 
                               IconCfgShrinked : "fa-angle-down"
                             });
+            AMenu.AddChild("Gestione permessi",
+                              {
+                                IdMenu          : TIdSideMenu.AMM_ACCESS_PERMISSION, 
+                                IconCfg         : "fa-angle-right", 
+                                IconCfgExpanded : "fa-angle-up", 
+                                IconCfgShrinked : "fa-angle-down"
+                              });
           }
        }
     },

@@ -1,0 +1,23 @@
+{
+	"RuoliAbilitati" : "",
+	"EditSQL" : [
+		{
+			"Name" : "InserisciAccess",
+			"SQL" : "INSERT INTO  access_permission (IP_ADDRESS,WHITE)\n     VALUES (#IP_ADDRESS, #WHITE)\n"
+		},
+		{
+			"Name" : "ModificaAccess",
+			"SQL" : "UPDATE access_permission\n      SET IP_ADDRESS = #IP_ADDRESS,    \n             WHITE = #WHITE\n      WHERE IP_ADDRESS = #CHIAVE\n"
+		},
+		{
+			"Name" : "EliminaAccess",
+			"SQL" : "DELETE FROM access_permission WHERE IP_ADDRESS = #CHIAVE\n"
+		}
+	],
+	"SelectSQL" : [
+		{
+			"Name" : "LsPermessi",
+			"SQL" : "SELECT access_permission.*,\n            access_permission.IP_ADDRESS AS CHIAVE\n  FROM  access_permission\n"
+		}
+]
+}

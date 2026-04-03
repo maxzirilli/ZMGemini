@@ -28,6 +28,7 @@ export const TIdSideMenu =
    CFG_COND_PAGAMENTO              : 3,
    CFG_MOD_PAGAMENTO               : 4,
    CFG_UNITA_DI_MISURA             : 5,
+   AMM_ACCESS_PERMISSION           : 6,
     
    ATTR_PREZZI_ORDINARI            : 7,
    ATTR_BATTERIE                   : 8, //eliminato
@@ -205,6 +206,9 @@ export default
                                                                 break;
             case TIdSideMenu.AMM_AZIONI                       : this.$router.push('/appMainWindow/AzioniAmministratore');
                                                                 break;
+
+            case TIdSideMenu.AMM_ACCESS_PERMISSION             : this.$router.push('/appMainWindow/AccessPermission');
+                                                                break;   
          }
        },
        ClassMenuItem(AMenuItem)
