@@ -5759,7 +5759,16 @@
                     "SQLAfterAddedColumn": null
                 },
                 {
-                    "Nome": "ULTIMO_CODICE_ANAGRAFICA",
+                    "Nome": "ULTIMO_CODICE_FORNITORE",
+                    "IsNullable": true,
+                    "DataType": "varchar(255)",
+                    "AutoIncrement": false,
+                    "Commento": "",
+                    "DefaultValue": "",
+                    "SQLAfterAddedColumn": null
+                },
+                {
+                    "Nome": "ULTIMO_CODICE_CLIENTE",
                     "IsNullable": true,
                     "DataType": "varchar(255)",
                     "AutoIncrement": false,
@@ -6107,6 +6116,15 @@
                     "AutoIncrement": false,
                     "Commento": "",
                     "DefaultValue": "1",
+                    "SQLAfterAddedColumn": null
+                },
+                {
+                    "Nome": "ULTIMO_CODICE_ANAGRAFICA",
+                    "IsNullable": true,
+                    "DataType": "varchar(255)",
+                    "AutoIncrement": false,
+                    "Commento": "",
+                    "DefaultValue": "",
                     "SQLAfterAddedColumn": null
                 }
             ],
@@ -8576,6 +8594,15 @@
                     "SQLAfterAddedColumn": null
                 },
                 {
+                    "Nome": "ID_RAPPORTO",
+                    "IsNullable": true,
+                    "DataType": "int",
+                    "AutoIncrement": false,
+                    "Commento": "",
+                    "DefaultValue": null,
+                    "SQLAfterAddedColumn": null
+                },
+                {
                     "Nome": "ID_FILIALE",
                     "IsNullable": true,
                     "DataType": "int",
@@ -9385,6 +9412,15 @@
                     "SQLAfterAddedColumn": null
                 },
                 {
+                    "Nome": "ID_RAPPORTO",
+                    "IsNullable": true,
+                    "DataType": "int",
+                    "AutoIncrement": false,
+                    "Commento": "",
+                    "DefaultValue": null,
+                    "SQLAfterAddedColumn": null
+                },
+                {
                     "Nome": "ID_FILIALE",
                     "IsNullable": true,
                     "DataType": "int",
@@ -9671,25 +9707,7 @@
                     "SQLAfterAddedColumn": null
                 },
                 {
-                    "Nome": "NOME_PRODOTTO",
-                    "IsNullable": true,
-                    "DataType": "varchar(255)",
-                    "AutoIncrement": false,
-                    "Commento": "",
-                    "DefaultValue": null,
-                    "SQLAfterAddedColumn": null
-                },
-                {
                     "Nome": "DESCRIZIONE",
-                    "IsNullable": true,
-                    "DataType": "varchar(255)",
-                    "AutoIncrement": false,
-                    "Commento": "",
-                    "DefaultValue": null,
-                    "SQLAfterAddedColumn": null
-                },
-                {
-                    "Nome": "PART_NUMBER",
                     "IsNullable": true,
                     "DataType": "varchar(255)",
                     "AutoIncrement": false,
@@ -9708,6 +9726,15 @@
                 },
                 {
                     "Nome": "PREZZO_IMPONIBILE",
+                    "IsNullable": true,
+                    "DataType": "int",
+                    "AutoIncrement": false,
+                    "Commento": "",
+                    "DefaultValue": null,
+                    "SQLAfterAddedColumn": null
+                },
+                {
+                    "Nome": "QUANTITA_MAGAZZINO",
                     "IsNullable": true,
                     "DataType": "int",
                     "AutoIncrement": false,
@@ -9767,6 +9794,33 @@
                     "AutoIncrement": false,
                     "Commento": "",
                     "DefaultValue": "F",
+                    "SQLAfterAddedColumn": null
+                },
+                {
+                    "Nome": "NOME_PRODOTTO",
+                    "IsNullable": true,
+                    "DataType": "varchar(255)",
+                    "AutoIncrement": false,
+                    "Commento": "",
+                    "DefaultValue": null,
+                    "SQLAfterAddedColumn": null
+                },
+                {
+                    "Nome": "PART_NUMBER",
+                    "IsNullable": true,
+                    "DataType": "varchar(255)",
+                    "AutoIncrement": false,
+                    "Commento": "",
+                    "DefaultValue": null,
+                    "SQLAfterAddedColumn": null
+                },
+                {
+                    "Nome": "IMG_PRODOTTO",
+                    "IsNullable": true,
+                    "DataType": "blob",
+                    "AutoIncrement": false,
+                    "Commento": "",
+                    "DefaultValue": null,
                     "SQLAfterAddedColumn": null
                 }
             ],

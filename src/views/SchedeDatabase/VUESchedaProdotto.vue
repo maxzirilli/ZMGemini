@@ -26,75 +26,131 @@
        </ul>
    </header>
    <div style="height:5px;"></div>
+
    <div  v-if="Tabs.ActiveTab == 'Generale'">
 
       <div class="ZMNuovaRigaScheda" style="padding-top:5px">
-          <div style="float:left;margin-right:5px">
-              <input style="float:left;margin-top:2px" type="checkbox" v-model="SchedaProdotto.Dati.PRODOTTO_COMPOSTO" @click="EliminaProdottoSemplice"/>
-          </div>
-          <div style="float:left;">
-              <label style="font-weight: bold;">Prodotto composto&nbsp;&nbsp;</label>
-          </div>
+
+        <div style="float:left;margin-right:5px">
+            <input style="float:left;margin-top:2px"
+                  type="checkbox"
+                  v-model="SchedaProdotto.Dati.PRODOTTO_COMPOSTO"
+                  @click="EliminaProdottoSemplice"/>
+        </div>
+
+        <div style="float:left;">
+            <label style="font-weight: bold;">Prodotto composto&nbsp;&nbsp;</label>
+        </div>
+
+        <div style="clear:both; height:5px;"></div>
+
+        <label class="btn"
+              type="button"
+              style="cursor:pointer;
+                      background-color:white;
+                      width:180px;
+                      /* margin-left:1%; */
+                      border-radius:20px;
+                      border:1px solid #ccc;">
+          Inserisci immagine
+
+          <input style="display:none;" type="file" id="inputimgprodotto" @change="LoadImmagineFromFile($event)" accept="image/jpeg/png">
+        </label>
+
       </div>
 
       <div class="ZMNuovaRigaScheda" style="padding-top:5px">
-          <div style="float:left;width:32%">
-              <label style="font-weight: bold;">Nome prodotto </label>
-              <input type="text" class="form-control" v-model="SchedaProdotto.Dati.NOME_PRODOTTO" placeholder="Nome prodotto"/>
-              <label v-if="SchedaProdotto.Dati.NOME_PRODOTTO.trim() == ''" class="ZMFormLabelError">Campo obbligatorio</label>
-          </div> 
-          <div style="float:left;width:1%;">&nbsp;</div>
-          <div style="float:left;width:10%">
-              <label style="font-weight: bold;">Part number</label>
-              <input type="text" class="form-control" v-model="SchedaProdotto.Dati.PART_NUMBER" placeholder="Part number"/>
-          </div> 
-          <div style="float:left;width:1%;">&nbsp;</div>
-          <div style="float:left;width:30%">
-              <label style="font-weight: bold;">Descrizione </label>
-              <input type="text" class="form-control" v-model="SchedaProdotto.Dati.DESCRIZIONE" placeholder="Descrizione"/>
-          </div> 
-          <div style="float:left;width:1%;">&nbsp;</div>
-          <div style="float:left;width:15%">
-              <label style="font-weight: bold;">Settore</label>
-              <select class="form-control" v-model="SchedaProdotto.Dati.ID_SETTORE">
-                <option :selected="SchedaProdotto.Dati.ID_SETTORE == -1" value="-1">-</option>
-                <option v-for="SelectOption in ListaSettori" 
-                        :Key="SelectOption.CHIAVE"
-                        :value="SelectOption.CHIAVE"
-                        :selected="SelectOption.CHIAVE == SchedaProdotto.Dati.ID_SETTORE">
-                        {{SelectOption.DESCRIZIONE}}
-                </option>
-              </select>    
-              <label v-if="SchedaProdotto.Dati.ID_SETTORE == -1" class="ZMFormLabelError">Campo obbligatorio</label>
-          </div> 
-      </div>
-      <div class="ZMNuovaRigaScheda" style="padding-top:5px">
-          <div style="float:left;width:20%">
-              <label style="font-weight: bold;">Prezzo imponibile [€]</label>
-              <input type="number" class="form-control" v-model="SchedaProdotto.Dati.PREZZO_IMPONIBILE" placeholder="Prezzo imponibile" step="0.01"/>
-          </div> 
-          <div style="float:left;width:1%;">&nbsp;</div>
-          <div style="float:left;width:19%">
-              <label style="font-weight: bold;">IVA </label>
-              <input type="number" class="form-control" v-model="SchedaProdotto.Dati.IVA" placeholder="IVA" step="0.1"/>
-          </div> 
-          <div style="float:left;width:1%;">&nbsp;</div>
-          <div style="float:left;width:19%">
-              <label style="font-weight: bold;">Prezzo ultimo acquisto</label>
-              <input type="number" class="form-control" v-model="SchedaProdotto.Dati.PREZZO_ULTIMO_ACQUISTO" placeholder="Prezzo ultimo acquisto" step="0.01"/>
-          </div> 
-          <div style="float:left;width:1%;">&nbsp;</div>
-          <div style="float:left;width:19%">
-              <label style="font-weight: bold;">Data ultimo acquisto</label>
-              <input type="date" class="form-control" v-model="SchedaProdotto.Dati.DATA_ULTIMO_ACQUISTO"/>
-          </div> 
-          <div style="float:left;width:1%;">&nbsp;</div>
-          <div style="float:left;width:19%">
-              <label style="font-weight: bold;">Unità di misura</label>
-              <VUEInputUdm v-model="SchedaProdotto.Dati.UNITA_DI_MISURA" class="form-control" />
-              <!-- <label v-if="SchedaProdotto.Dati.UNITA_DI_MISURA == -1" class="ZMFormLabelError">Campo obbligatorio</label> -->
-          </div> 
-      </div>
+
+        <div style="float:left; margin-right:20px;">
+          <div v-if="SchedaProdotto.Dati.ImmagineProdotto != ''">
+            <img :src="SchedaProdotto.Dati.ImmagineProdotto"
+                style="height:250px; width:250px; max-width:250px; max-height:250px; border:1px solid #ddd;">
+          </div>
+        </div>
+
+       <div style="float:left; width:70%;">
+
+          <div style="float:left; width:32%; margin-right:1%;">
+            <label style="font-weight:bold;">Nome prodotto</label>
+            <input type="text" class="form-control"
+                  v-model="SchedaProdotto.Dati.NOME_PRODOTTO">
+            <label v-if="SchedaProdotto.Dati.NOME_PRODOTTO.trim() == ''"
+                  class="ZMFormLabelError">Campo obbligatorio</label>
+          </div>
+
+          <div style="float:left; width:20%; margin-right:1%;">
+            <label style="font-weight:bold;">Part number</label>
+            <input type="text" class="form-control"
+                  v-model="SchedaProdotto.Dati.PART_NUMBER">
+          </div>
+
+          <div style="float:left; width:32%;">
+            <label style="font-weight:bold;">Settore</label>
+            <select class="form-control"
+                    v-model="SchedaProdotto.Dati.ID_SETTORE">
+
+              <option value="-1">-</option>
+
+              <option v-for="SelectOption in ListaSettori"
+                      :key="SelectOption.CHIAVE"
+                      :value="SelectOption.CHIAVE">
+                {{SelectOption.DESCRIZIONE}}
+              </option>
+
+            </select>
+
+            <label v-if="SchedaProdotto.Dati.ID_SETTORE == -1"
+                  class="ZMFormLabelError">Campo obbligatorio</label>
+          </div>
+
+        <div style="clear:both; height:10px;"></div>
+
+        <div style="float:left; width:86%;">
+          <label style="font-weight:bold;">Descrizione</label>
+          <input type="text" class="form-control"
+                v-model="SchedaProdotto.Dati.DESCRIZIONE">
+        </div>
+
+        <div style="clear:both; height:10px;"></div>
+
+        <div style="float:left; width:19%; margin-right:1%;">
+          <label style="font-weight:bold;">Prezzo imponibile [€]</label>
+          <input type="number" class="form-control"
+                v-model="SchedaProdotto.Dati.PREZZO_IMPONIBILE"
+                step="0.01">
+        </div>
+
+        <div style="float:left; width:15%; margin-right:1%;">
+          <label style="font-weight:bold;">IVA</label>
+          <input type="number" class="form-control"
+                v-model="SchedaProdotto.Dati.IVA"
+                step="0.1">
+        </div>
+
+        <div style="float:left; width:15%; margin-right:1%;">
+          <label style="font-weight:bold;">Ultimo acquisto</label>
+          <input type="number" class="form-control"
+                v-model="SchedaProdotto.Dati.PREZZO_ULTIMO_ACQUISTO"
+                step="0.01">
+        </div>
+
+        <div style="float:left; width:15%; margin-right:1%;">
+          <label style="font-weight:bold;">Data acquisto</label>
+          <input type="date" class="form-control"
+                v-model="SchedaProdotto.Dati.DATA_ULTIMO_ACQUISTO">
+        </div>
+
+        <div style="float:left; width:15%;">
+          <label style="font-weight:bold;">U.M.</label>
+          <VUEInputUdm v-model="SchedaProdotto.Dati.UNITA_DI_MISURA"
+                      class="form-control" />
+        </div>
+
+       </div>
+
+  <div style="clear:both;"></div>
+
+     </div>
       <!-- <div class="ZMNuovaRigaScheda" style="padding-top:5px">
         <div v-if="!SchedaProdotto.Dati.PRODOTTO_COMPOSTO" style="float:left;width:20%">
             <label style="font-weight: bold;">Qnt sug.</label>
@@ -194,6 +250,7 @@
  import VUEDataTable from '../../../../../../../../Librerie/VUE/TemplateGestionale/VUEDataTable2.vue';
  import { TZDateFunct } from '../../../../../../../../Librerie/VUE/ZDateFunct.js'
  import VUEModal from '../../../../../../../../Librerie/VUE/TemplateGestionale/VUEModal.vue';
+ import { TZImageFunct } from '../../../../../../../../Librerie/VUE/ZImageFunct.js';
  
 
  export class TSchedaProdotto extends TSchedaGenerica
@@ -243,6 +300,7 @@
                                                   PREZZO_ULTIMO_ACQUISTO  : TSchedaGenerica.PrepareForRecordInteger(this.Dati.PREZZO_ULTIMO_ACQUISTO * 100),
                                                   QUANTITA_SUGGERITA      : TSchedaGenerica.PrepareForRecordInteger(this.Dati.QUANTITA_SUGGERITA),
                                                   PRODOTTO_COMPOSTO       : TSchedaGenerica.PrepareForRecordBoolean(this.Dati.PRODOTTO_COMPOSTO),
+                                                  IMG_PRODOTTO            : this.Dati.ImmagineProdotto
                                               }
                                 });
 
@@ -462,18 +520,20 @@
                                                 if(ArrayInfo.length != 0)
                                                 {
                                                   Self.Dati = { 
-                                                                NOME_PRODOTTO           : TSchedaGenerica.DisponiFromString(ArrayInfo[0].NOME_PRODOTTO),
-                                                                DESCRIZIONE             : TSchedaGenerica.DisponiFromString(ArrayInfo[0].DESCRIZIONE),
-                                                                PART_NUMBER             : TSchedaGenerica.DisponiFromString(ArrayInfo[0].PART_NUMBER),                                                                PREZZO_IMPONIBILE       : TSchedaGenerica.DisponiFromInteger(ArrayInfo[0].PREZZO_IMPONIBILE)  / 100,
-                                                                IVA                     : TSchedaGenerica.DisponiFromInteger(ArrayInfo[0].IVA)  / 10,
-                                                                ID_SETTORE              : TSchedaGenerica.DisponiFromListIndex(ArrayInfo[0].ID_SETTORE),                                                               
-                                                                UNITA_DI_MISURA         : TSchedaGenerica.DisponiFromListIndex(ArrayInfo[0].UNITA_DI_MISURA),                                                               
-                                                                PREZZO_ULTIMO_ACQUISTO  : TSchedaGenerica.DisponiFromInteger(ArrayInfo[0].PREZZO_ULTIMO_ACQUISTO) / 100,                                                               
-                                                                QUANTITA_SUGGERITA      : TSchedaGenerica.DisponiFromInteger(ArrayInfo[0].QUANTITA_SUGGERITA),                                                               
-                                                                DATA_ULTIMO_ACQUISTO    : TSchedaGenerica.DisponiFromDate(ArrayInfo[0].DATA_ULTIMO_ACQUISTO),                                                               
-                                                                PRODOTTO_COMPOSTO       : TSchedaGenerica.DisponiFromBoolean(ArrayInfo[0].PRODOTTO_COMPOSTO),
+                                                                NOME_PRODOTTO                    : TSchedaGenerica.DisponiFromString(ArrayInfo[0].NOME_PRODOTTO),
+                                                                DESCRIZIONE                      : TSchedaGenerica.DisponiFromString(ArrayInfo[0].DESCRIZIONE),
+                                                                PART_NUMBER                      : TSchedaGenerica.DisponiFromString(ArrayInfo[0].PART_NUMBER),                                                                PREZZO_IMPONIBILE       : TSchedaGenerica.DisponiFromInteger(ArrayInfo[0].PREZZO_IMPONIBILE)  / 100,
+                                                                IVA                              : TSchedaGenerica.DisponiFromInteger(ArrayInfo[0].IVA)  / 10,
+                                                                ID_SETTORE                       : TSchedaGenerica.DisponiFromListIndex(ArrayInfo[0].ID_SETTORE),                                                               
+                                                                UNITA_DI_MISURA                  : TSchedaGenerica.DisponiFromListIndex(ArrayInfo[0].UNITA_DI_MISURA),                                                               
+                                                                PREZZO_ULTIMO_ACQUISTO           : TSchedaGenerica.DisponiFromInteger(ArrayInfo[0].PREZZO_ULTIMO_ACQUISTO) / 100,                                                               
+                                                                QUANTITA_SUGGERITA               : TSchedaGenerica.DisponiFromInteger(ArrayInfo[0].QUANTITA_SUGGERITA),                                                               
+                                                                DATA_ULTIMO_ACQUISTO             : TSchedaGenerica.DisponiFromDate(ArrayInfo[0].DATA_ULTIMO_ACQUISTO),                                                               
+                                                                PRODOTTO_COMPOSTO                : TSchedaGenerica.DisponiFromBoolean(ArrayInfo[0].PRODOTTO_COMPOSTO),
                                                                 ModificaTabellaProdottiMontaggio : false,
-                                                                ListaMagazzini          : []
+                                                                ListaMagazzini                   : [],
+                                                                ImmagineProdotto                 : ArrayInfo[0].IMG_PRODOTTO,
+
                                                               }
                                                   
                                                   Self.Dati.ListaMagazzini = []
@@ -522,19 +582,20 @@
         this.SchedaLogProdotto.AssignDati([])
 
         this.Dati = { 
-                      NOME_PRODOTTO           : '',
-                      DESCRIZIONE             : '',
-                      PART_NUMBER             : '',
-                      ID_SETTORE              : -1,
-                      UNITA_DI_MISURA         : -1,
-                      PREZZO_IMPONIBILE       : 0,
-                      DATA_ULTIMO_ACQUISTO    : '',
-                      PREZZO_ULTIMO_ACQUISTO  : '',
-                      QUANTITA_SUGGERITA      : 1,
-                      IVA                     : SystemInformation.Configurazioni.Impostazioni.IVA_SUGGERITA / 10,
-                      PRODOTTO_COMPOSTO       : false,
+                      NOME_PRODOTTO                    : '',
+                      DESCRIZIONE                      : '',
+                      PART_NUMBER                      : '',
+                      ID_SETTORE                       : -1,
+                      UNITA_DI_MISURA                  : -1,
+                      PREZZO_IMPONIBILE                : 0,
+                      DATA_ULTIMO_ACQUISTO             : '',
+                      PREZZO_ULTIMO_ACQUISTO           : '',
+                      QUANTITA_SUGGERITA               : 1,
+                      IVA                              : SystemInformation.Configurazioni.Impostazioni.IVA_SUGGERITA / 10,
+                      PRODOTTO_COMPOSTO                : false,
                       ModificaTabellaProdottiMontaggio : false,
-                      ListaMagazzini          : this.GetMagazziniDefault()
+                      ListaMagazzini                   : this.GetMagazziniDefault(),
+                      ImmagineProdotto                 : ''
         }
         super.Clear();
     }
@@ -610,7 +671,7 @@
       VUEInputUdm,
       VUELogProdotti,
       VUEDataTable,
-      VUEModal
+      VUEModal,
     },
     data()
     {
@@ -812,7 +873,29 @@
       OnClickAnnullaCancellaProdottiSemplici()
       {
         this.PopupCancellaProdottiSemplici = false
-      }
+      },
+
+      LoadImmagineFromFile()
+      {
+        var Self    = this;
+        var Reader  = new FileReader()
+        var ImgFile = document.getElementById('inputimgprodotto')
+        
+        var TypeImg = ImgFile.files[0].type
+        Reader.readAsDataURL(ImgFile.files[0])
+
+        Reader.onload = function (e) 
+        {
+          var Img = new Image()
+          Img.onload = function () 
+          {
+              Img.onload = undefined;
+              TZImageFunct.ResizeImage(Img,300,300,TypeImg) 
+              Self.SchedaProdotto.Dati.ImmagineProdotto = Img.src 
+          }
+          Img.src = e.target.result
+        }        
+      },
     },
 
     beforeMount() 
