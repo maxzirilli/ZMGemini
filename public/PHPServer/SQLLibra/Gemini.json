@@ -9698,7 +9698,7 @@
                     "SQLAfterAddedColumn": null
                 },
                 {
-                    "Nome": "CODICE",
+                    "Nome": "BARCODE",
                     "IsNullable": true,
                     "DataType": "varchar(255)",
                     "AutoIncrement": false,
@@ -9843,7 +9843,14 @@
                     "RefField": "CHIAVE"
                 }
             ],
-            "UniqueKeys": [],
+            "UniqueKeys": [
+                {
+                    "Campi": [
+                        "BARCODE"
+                    ],
+                    "Nome": "BARCODE"
+                }
+            ],
             "Indexes": [],
             "Triggers": [
                 {

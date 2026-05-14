@@ -2620,6 +2620,10 @@ export default
               Filter      : Modello.FilterProdotto,
             },
             {
+              Caption     : Modello.FilterDocScaricoProdComposti.GetDescrizione(),
+              Filter      : Modello.FilterDocScaricoProdComposti,
+            },
+            {
               Caption     : Modello.FilterMagazzini.GetDescrizione(),
               Filter      : Modello.FilterMagazzini,
             },
@@ -2694,10 +2698,6 @@ export default
                                                     Caption     : Modello.FilterDDTEntranti.GetDescrizione(),
                                                     Filter      : Modello.FilterDDTEntranti,
                                                   },
-                                                  {
-                                                    Caption     : Modello.FilterDocScaricoProdComposti.GetDescrizione(),
-                                                    Filter      : Modello.FilterDocScaricoProdComposti,
-                                                  },
                                         ]
                                       });
            
@@ -2756,10 +2756,6 @@ export default
                                                       {
                                                         Caption     : Modello.FilterDDTEntranti.GetDescrizione(),
                                                         Filter      : Modello.FilterDDTEntranti,
-                                                      },
-                                                      {
-                                                      Caption     : Modello.FilterDocScaricoProdComposti.GetDescrizione(),
-                                                      Filter      : Modello.FilterDocScaricoProdComposti,
                                                       },
                                                     ]
                                           })
@@ -3831,7 +3827,7 @@ export default
                           }
                           else Self.DataSaldoFornitori = false 
                       } 
-                      }
+                    }
                   ]
               }
               if(IsProdotti)
@@ -3858,8 +3854,33 @@ export default
                                                                           {
                                                                             SystemInformation.HandleError(HTTPError,SubHTTPError,Response);
                                                                           })                      
-                      }
-                    }
+                      },
+                      
+                    },
+                    {
+                      Caption: "Barcode prodotti",
+                      OnClick: function()
+                      {
+                        SystemInformation.AdvQuery.ExecuteExternalScript('StampaBarcodeProdotti', Self.FilterProdotto.GetParametriXProdotto(),
+                                                                          function(Result)
+                                                                          {
+                                                                            if(Result.PDF != undefined)
+                                                                            {
+                                                                              var routeData = Self.$router.resolve({
+                                                                                              name   : "IFrameStampe"
+                                                                              });
+                                                                              var AWindow = window.open(routeData.href, "_blank");
+                                                                              AWindow.BodyPDF = ('data:application/pdf;base64,' + Result.PDF);
+                                                                            }
+                                                                            else SystemInformation.HandleError('Documento non presente','','');
+                                                                          },
+                                                                          function(HTTPError,SubHTTPError,Response)
+                                                                          {
+                                                                            SystemInformation.HandleError(HTTPError,SubHTTPError,Response);
+                                                                          })                      
+                      },
+                      
+                    },
                 ]
               }
           }

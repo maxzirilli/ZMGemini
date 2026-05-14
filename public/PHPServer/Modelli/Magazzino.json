@@ -3,11 +3,11 @@
 	"EditSQL" : [
 		{
 			"Name" : "Insert",
-			"SQL" : "INSERT INTO prodotti (CHIAVE,NOME_PRODOTTO,PART_NUMBER,DESCRIZIONE, ID_SETTORE, PREZZO_IMPONIBILE,IVA, UNITA_DI_MISURA,\n                                 DATA_ULTIMO_ACQUISTO, PREZZO_ULTIMO_ACQUISTO, QUANTITA_SUGGERITA, PRODOTTO_COMPOSTO,IMG_PRODOTTO)\n             VALUES (:NewKey1,#NOME_PRODOTTO,#PART_NUMBER,#DESCRIZIONE, :ID_SETTORE, :PREZZO_IMPONIBILE,:IVA, :UNITA_DI_MISURA,\n                          #DATA_ULTIMO_ACQUISTO, :PREZZO_ULTIMO_ACQUISTO, :QUANTITA_SUGGERITA,\n                          #PRODOTTO_COMPOSTO,#IMG_PRODOTTO)\n"
+			"SQL" : "INSERT INTO prodotti (CHIAVE,NOME_PRODOTTO,PART_NUMBER,DESCRIZIONE, ID_SETTORE, PREZZO_IMPONIBILE,IVA, UNITA_DI_MISURA,\n                                 DATA_ULTIMO_ACQUISTO, PREZZO_ULTIMO_ACQUISTO, QUANTITA_SUGGERITA, PRODOTTO_COMPOSTO,IMG_PRODOTTO,BARCODE)\n             VALUES (:NewKey1,#NOME_PRODOTTO,#PART_NUMBER,#DESCRIZIONE, :ID_SETTORE, :PREZZO_IMPONIBILE,:IVA, :UNITA_DI_MISURA,\n                          #DATA_ULTIMO_ACQUISTO, :PREZZO_ULTIMO_ACQUISTO, :QUANTITA_SUGGERITA,\n                          #PRODOTTO_COMPOSTO,#IMG_PRODOTTO,#BARCODE)\n"
 		},
 		{
 			"Name" : "Update",
-			"SQL" : "UPDATE prodotti SET\n             NOME_PRODOTTO = #NOME_PRODOTTO,\n             PART_NUMBER = #PART_NUMBER,\n             DESCRIZIONE = #DESCRIZIONE,\n             PREZZO_IMPONIBILE = :PREZZO_IMPONIBILE,\n             ID_SETTORE = :ID_SETTORE,\n             IVA = :IVA,\n             UNITA_DI_MISURA = :UNITA_DI_MISURA,\n             DATA_ULTIMO_ACQUISTO = #DATA_ULTIMO_ACQUISTO, \n             PREZZO_ULTIMO_ACQUISTO = :PREZZO_ULTIMO_ACQUISTO,\n             QUANTITA_SUGGERITA = :QUANTITA_SUGGERITA,\n             PRODOTTO_COMPOSTO = #PRODOTTO_COMPOSTO,\n             IMG_PRODOTTO = #IMG_PRODOTTO\n WHERE CHIAVE = :CHIAVE\n\n\n"
+			"SQL" : "UPDATE prodotti SET\n             NOME_PRODOTTO = #NOME_PRODOTTO,\n             PART_NUMBER = #PART_NUMBER,\n             DESCRIZIONE = #DESCRIZIONE,\n             PREZZO_IMPONIBILE = :PREZZO_IMPONIBILE,\n             ID_SETTORE = :ID_SETTORE,\n             IVA = :IVA,\n             UNITA_DI_MISURA = :UNITA_DI_MISURA,\n             DATA_ULTIMO_ACQUISTO = #DATA_ULTIMO_ACQUISTO, \n             PREZZO_ULTIMO_ACQUISTO = :PREZZO_ULTIMO_ACQUISTO,\n             QUANTITA_SUGGERITA = :QUANTITA_SUGGERITA,\n             PRODOTTO_COMPOSTO = #PRODOTTO_COMPOSTO,\n             IMG_PRODOTTO = #IMG_PRODOTTO,\n             BARCODE = #BARCODE\n WHERE CHIAVE = :CHIAVE\n\n\n"
 		},
 		{
 			"Name" : "Delete",
@@ -52,6 +52,10 @@
 		{
 			"Name" : "DeleteRecordQntMagazzino",
 			"SQL" : "DELETE FROM qnt_x_magazzino\nWHERE CHIAVE = :CHIAVE\n"
+		},
+		{
+			"Name" : "UpdateBarcode",
+			"SQL" : "UPDATE prodotti \n      SET BARCODE = #BARCODE\n WHERE CHIAVE = :CHIAVE\n"
 		}
 	],
 	"ExcelListaProdotti" : [
@@ -63,7 +67,7 @@
 	"ListaProdotti" : [
 		{
 			"Name" : "ListaProdotti",
-			"SQL" : "SELECT prodotti.NOME_PRODOTTO,\n            prodotti.PART_NUMBER,\n            prodotti.DESCRIZIONE,\n            prodotti.PREZZO_IMPONIBILE,\n            prodotti.IVA, \n            prodotti.CHIAVE, \n            prodotti.UNITA_DI_MISURA,\n            prodotti.PRODOTTO_COMPOSTO,\n            prodotti.DATA_ULTIMO_ACQUISTO,\n            prodotti.PREZZO_ULTIMO_ACQUISTO,\n            settori.DESCRIZIONE AS SETTORE\n  FROM prodotti\n            LEFT OUTER JOIN settori ON settori.CHIAVE = prodotti.ID_SETTORE\n{W~Settore~prodotti.ID_SETTORE = :Settore\n     ~NomeProdotto~prodotti.CHIAVE = :NomeProdotto\n     ~PartNumber~UPPER(prodotti.PART_NUMBER) LIKE UPPER(#PartNumber)\n     ~IdMagazzino~ EXISTS (SELECT 1\n                                         FROM qnt_x_magazzino\n                                       WHERE qnt_x_magazzino.ID_MAGAZZINO = :IdMagazzino\n                                            AND qnt_x_magazzino.ID_PRODOTTO = prodotti.CHIAVE\n                                            AND qnt_x_magazzino.QUANTITA_MAGAZZINO <> 0)\n     ~SoloSottosoglia~ EXISTS (SELECT 1\n                                                FROM qnt_x_magazzino\n                                              WHERE qnt_x_magazzino.QUANTITA_MAGAZZINO < qnt_x_magazzino.SOGLIA_ALLARME\n                                                  AND qnt_x_magazzino.ID_PRODOTTO = prodotti.CHIAVE) }\n\nLIMIT :LimitNumRows OFFSET :LimitStart\n"
+			"SQL" : "SELECT prodotti.NOME_PRODOTTO,\n            prodotti.BARCODE,\n            prodotti.PART_NUMBER,\n            prodotti.DESCRIZIONE,\n            prodotti.PREZZO_IMPONIBILE,\n            prodotti.IVA, \n            prodotti.CHIAVE, \n            prodotti.UNITA_DI_MISURA,\n            prodotti.PRODOTTO_COMPOSTO,\n            prodotti.DATA_ULTIMO_ACQUISTO,\n            prodotti.PREZZO_ULTIMO_ACQUISTO,\n            settori.DESCRIZIONE AS SETTORE\n  FROM prodotti\n            LEFT OUTER JOIN settori ON settori.CHIAVE = prodotti.ID_SETTORE\n{W~Settore~prodotti.ID_SETTORE = :Settore\n     ~NomeProdotto~prodotti.CHIAVE = :NomeProdotto\n     ~PartNumber~UPPER(prodotti.PART_NUMBER) LIKE UPPER(#PartNumber)\n     ~IdMagazzino~ EXISTS (SELECT 1\n                                         FROM qnt_x_magazzino\n                                       WHERE qnt_x_magazzino.ID_MAGAZZINO = :IdMagazzino\n                                            AND qnt_x_magazzino.ID_PRODOTTO = prodotti.CHIAVE\n                                            AND qnt_x_magazzino.QUANTITA_MAGAZZINO <> 0)\n     ~SoloSottosoglia~ EXISTS (SELECT 1\n                                                FROM qnt_x_magazzino\n                                              WHERE qnt_x_magazzino.QUANTITA_MAGAZZINO < qnt_x_magazzino.SOGLIA_ALLARME\n                                                  AND qnt_x_magazzino.ID_PRODOTTO = prodotti.CHIAVE) }\n\nLIMIT :LimitNumRows OFFSET :LimitStart\n"
 		}
 	],
 	"ListaProdottiVariazionePrezzo" : [

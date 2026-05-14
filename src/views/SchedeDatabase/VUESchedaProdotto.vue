@@ -31,41 +31,85 @@
 
       <div class="ZMNuovaRigaScheda" style="padding-top:5px">
 
-        <div style="float:left;margin-right:5px">
-            <input style="float:left;margin-top:2px"
-                  type="checkbox"
-                  v-model="SchedaProdotto.Dati.PRODOTTO_COMPOSTO"
-                  @click="EliminaProdottoSemplice"/>
+        <div style="float:left;margin-right:5px;margin-top: 10px;">
+          <input style="float:left;margin-top:2px"
+                type="checkbox"
+                v-model="SchedaProdotto.Dati.PRODOTTO_COMPOSTO"
+                @click="EliminaProdottoSemplice"/>
         </div>
 
-        <div style="float:left;">
-            <label style="font-weight: bold;">Prodotto composto&nbsp;&nbsp;</label>
+        <div style="float:left;margin-top: 9px;">
+          <label style="font-weight: bold;">Prodotto composto&nbsp;&nbsp;</label>
         </div>
 
-        <div style="clear:both; height:5px;"></div>
+        <div style="float:left; width:60%; margin-left:10px;">
 
-        <label class="btn"
-              type="button"
-              style="cursor:pointer;
-                      background-color:white;
-                      width:180px;
-                      /* margin-left:1%; */
-                      border-radius:20px;
-                      border:1px solid #ccc;">
-          Inserisci immagine
+          <label class="btn"
+                style="cursor:pointer;
+                        background-color:white;
+                        width:150px;
+                        border-radius:20px;
+                        border:1px solid #ccc;
+                        float:left;
+                        text-align:center;">
+            Inserisci immagine
 
-          <input style="display:none;" type="file" id="inputimgprodotto" @change="LoadImmagineFromFile($event)" accept="image/jpeg/png">
-        </label>
+            <input style="display:none;"
+                  type="file"
+                  id="inputimgprodotto"
+                  @change="LoadImmagineFromFile($event)"
+                  accept="image/jpeg/png">
+          </label>
+
+          <label v-if="!SchedaProdotto.IsNuovo()" class="btn"
+                style="cursor:pointer;
+                        background-color:white;
+                        width:150px;
+                        margin-left:10px;
+                        border-radius:20px;
+                        border:1px solid #ccc;
+                        float:left;
+                        text-align:center;"
+                @click="GeneraBarcode">
+            Genera barcode
+          </label>
+
+          <div style="float:left; margin-left:15px; margin-top:3px;">
+
+            <label style="font-weight:bold; margin-right:5px;width: 24%;">
+              Barcode
+            </label>
+
+            <input type="text"
+                  class="form-control"
+                  v-model="SchedaProdotto.Dati.BARCODE"
+                  maxlength="13"
+                  inputmode="numeric"
+                  @input="PulisciBarcode"
+                  style="width:150px; display:inline-block; text-align:right;">
+          </div>
+
+        </div>
+
+        <div style="float:right; text-align:right;">
+          <div v-if="SchedaProdotto.Dati.BARCODE"
+              class="ZBarcodeContent"
+              style="margin-top:0px;padding-right: 20%;">
+            <div class="ZBarcodeBox">
+              <label>{{BarcodeVisuale}}</label>
+            </div>
+          </div>
+        </div>
+
+        <div style="clear:both; height:10px;"></div>
 
       </div>
-
+      
       <div class="ZMNuovaRigaScheda" style="padding-top:5px">
 
-        <div style="float:left; margin-right:20px;">
-          <div v-if="SchedaProdotto.Dati.ImmagineProdotto != ''">
+        <div v-if="SchedaProdotto.Dati.ImmagineProdotto != '' && SchedaProdotto.Dati.ImmagineProdotto != null" style="float:left; margin-right:20px;">
             <img :src="SchedaProdotto.Dati.ImmagineProdotto"
                 style="height:250px; width:250px; max-width:250px; max-height:250px; border:1px solid #ddd;">
-          </div>
         </div>
 
        <div style="float:left; width:70%;">
@@ -145,6 +189,8 @@
           <VUEInputUdm v-model="SchedaProdotto.Dati.UNITA_DI_MISURA"
                       class="form-control" />
         </div>
+
+        
 
        </div>
 
@@ -251,6 +297,7 @@
  import { TZDateFunct } from '../../../../../../../../Librerie/VUE/ZDateFunct.js'
  import VUEModal from '../../../../../../../../Librerie/VUE/TemplateGestionale/VUEModal.vue';
  import { TZImageFunct } from '../../../../../../../../Librerie/VUE/ZImageFunct.js';
+ import { TZEAN13 } from '../../../../../../../../Librerie/VUE/ZEAN13Funct.js'
  
 
  export class TSchedaProdotto extends TSchedaGenerica
@@ -300,7 +347,8 @@
                                                   PREZZO_ULTIMO_ACQUISTO  : TSchedaGenerica.PrepareForRecordInteger(this.Dati.PREZZO_ULTIMO_ACQUISTO * 100),
                                                   QUANTITA_SUGGERITA      : TSchedaGenerica.PrepareForRecordInteger(this.Dati.QUANTITA_SUGGERITA),
                                                   PRODOTTO_COMPOSTO       : TSchedaGenerica.PrepareForRecordBoolean(this.Dati.PRODOTTO_COMPOSTO),
-                                                  IMG_PRODOTTO            : this.Dati.ImmagineProdotto
+                                                  IMG_PRODOTTO            : this.Dati.ImmagineProdotto,
+                                                  BARCODE                 : this.Dati.BARCODE == '' ? null : TSchedaGenerica.PrepareForRecordString(this.Dati.BARCODE),
                                               }
                                 });
 
@@ -438,23 +486,61 @@
             }
         });
 
-        this.AdvQuery.PostSQL('Magazzino',ObjQuery,function(Response)
+        this.AdvQuery.PostSQL('Magazzino', ObjQuery, function (Response) {
+
+        SystemInformation.GetConfigurazioni(function () 
         {
-            SystemInformation.GetConfigurazioni(function()
+
+          ObjQuery = {};
+          Self.Dati.ModificaTabellaProdottiMontaggio = false;
+
+          if(Self.Chiave == -1) 
+          {
+            Self.Chiave = Response.NewKey1;
+          }
+          let BarcodeCreato = Self.Dati.BARCODE;
+
+          if(!BarcodeCreato || BarcodeCreato.trim() == '') 
+          {
+
+            BarcodeCreato = (200000000000 + parseInt(Self.Chiave)).toString().slice(0, 12);
+
+            Self.Dati.BARCODE = BarcodeCreato;
+
+            Self.AdvQuery.PostSQL('Magazzino',
             {
-              ObjQuery = {};
-              Self.Dati.ModificaTabellaProdottiMontaggio = false
-              if(Self.Chiave == -1)
-                  Self.Chiave = Response.NewKey1;
-              Self.CreateSnapshot();
-              OnSuccess();
-              
-            })
-        },
-        function(HTTPError,SubHTTPError,Response)
-        {
-          OnError(HTTPError,SubHTTPError,Response);
+              Operazioni: [{
+                            Query    : "UpdateBarcode",
+                            Parametri: 
+                            {
+                              CHIAVE  : Self.Chiave,
+                              BARCODE : TSchedaGenerica.PrepareForRecordString(BarcodeCreato)
+                            }
+                }]
+              },
+              function () 
+              {
+                Self.CreateSnapshot();
+                OnSuccess();
+              },
+              function (HTTPError, SubHTTPError, Response) 
+              {
+                OnError(HTTPError, SubHTTPError, Response);
+              }
+            );
+            return; 
+          }
+
+          Self.CreateSnapshot();
+          OnSuccess();
+
         });
+
+      },
+      function (HTTPError, SubHTTPError, Response) 
+      {
+        OnError(HTTPError, SubHTTPError, Response);
+      });
 
       }
     }
@@ -533,6 +619,7 @@
                                                                 ModificaTabellaProdottiMontaggio : false,
                                                                 ListaMagazzini                   : [],
                                                                 ImmagineProdotto                 : ArrayInfo[0].IMG_PRODOTTO,
+                                                                BARCODE                          : TSchedaGenerica.DisponiFromString(ArrayInfo[0].BARCODE),
 
                                                               }
                                                   
@@ -595,7 +682,8 @@
                       PRODOTTO_COMPOSTO                : false,
                       ModificaTabellaProdottiMontaggio : false,
                       ListaMagazzini                   : this.GetMagazziniDefault(),
-                      ImmagineProdotto                 : ''
+                      ImmagineProdotto                 : '',
+                      BARCODE                          : ''
         }
         super.Clear();
     }
@@ -676,9 +764,10 @@
     data()
     {
       return { 
-               ListaSettori         : [],
-               NomeProgramma        : NOME_PROGRAMMA,
+               ListaSettori                  : [],
+               NomeProgramma                 : NOME_PROGRAMMA,
                PopupCancellaProdottiSemplici : false,
+               Barcode                       : '',
                Tabs                 : {
                                        ActiveTab    : 'Generale',
                                        Tabs         : [
@@ -750,7 +839,24 @@
           if (pagina <= totalePagine) pagine.push(pagina);
         }
         return pagine;
-      }
+      },
+
+      BarcodeVisuale()
+      {
+        let BarcodeVisualizzato = this.SchedaProdotto?.Dati?.BARCODE;
+
+        if(!BarcodeVisualizzato) return '';
+
+        BarcodeVisualizzato = String(BarcodeVisualizzato).slice(0, 12);
+
+        if(BarcodeVisualizzato.length != 12) return '';
+        console.log(TZEAN13.GetEAN13Code(BarcodeVisualizzato));
+
+        return TZEAN13.GetEAN13Code(BarcodeVisualizzato)
+
+       
+      } 
+      
     },
 
     watch:
@@ -896,12 +1002,41 @@
           Img.src = e.target.result
         }        
       },
+
+      GeneraBarcode()
+      {
+        if(this.SchedaProdotto.IsNuovo()) return;
+
+        let BarcodeGenerato = (200000000000 + parseInt(this.SchedaProdotto.Chiave)).toString();
+
+        BarcodeGenerato = BarcodeGenerato.substring(0, 12);
+
+        this.SchedaProdotto.Dati.BARCODE = BarcodeGenerato;
+      },
+
+      PulisciBarcode()
+      {
+        if(!this.SchedaProdotto?.Dati) return;
+
+        let BarcodePulito = this.SchedaProdotto.Dati.BARCODE;
+
+        if(!BarcodePulito) return;
+
+        BarcodePulito = BarcodePulito.toString().replace(/\D/g, '');
+
+        if(BarcodePulito.length > 12)
+          BarcodePulito = BarcodePulito.substring(0, 12);
+
+        this.SchedaProdotto.Dati.BARCODE = BarcodePulito;
+      }
     },
 
     beforeMount() 
     {
       this.ActiveTab = 'Generale'
       this.CaricaSettori()
+      
     },
+
    }
 </script>

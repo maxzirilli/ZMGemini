@@ -159,10 +159,19 @@
   <template v-slot:Body>
     <div style="width:1%;float:left">&nbsp;</div>
     <input type="text"
+           style="width:15%;float:left"
+           class="input-sm form-control"
+           placeholder="Cerca per barcode"
+           v-model="FiltroProdottiBarcode">  
+    <div style="width:1%;float:left">&nbsp;</div>
+    <input type="text"
            style="width:73%;float:left"
            class="input-sm form-control"
            placeholder="Cerca per descrizione"
            v-model="FiltroProdottiDescrizione">
+
+  
+    
     <div style="clear:both;width:1%;height:10px">&nbsp;</div>
 
     <div class="row wrapper">
@@ -571,6 +580,7 @@ export default {
               ListaProdottiVariazPrezzo   : [],
               ListaPreventivi             : [],
               FiltroProdottiDescrizione   : '',
+              FiltroProdottiBarcode       : '',
               NumeroMassimoProdotti       : 100,
               VisibilitaListinoPrezziCliente : SystemInformation.AccessRights.VisibilitaListinoPrezziCliente(),
               DallaData                   : TZDateFunct.DateInHTMLInputFormat(new Date('January 01,' + (new Date().getFullYear()))),
@@ -609,34 +619,42 @@ export default {
     {
       get()
       {
-        var FiltroDescr  = this.FiltroProdottiDescrizione.toUpperCase().trim();
+        console.log(this.ListaProdotti)
+        var FiltroDescr   = this.FiltroProdottiDescrizione.toUpperCase().trim();
+        var FiltroBarcode = this.FiltroProdottiBarcode.trim();
 
         var ListaRighe   = []
 
-        if(FiltroDescr == '')
+        if(FiltroDescr == '' && FiltroBarcode == '')
         {
           ListaRighe = this.ListaProdotti.slice(0, this.NumeroMassimoProdotti)
           return ListaRighe
         }
         else 
         {
-          ListaRighe = this.ListaProdotti.filter(function(Prodotto)
+         ListaRighe = this.ListaProdotti.filter(function(Prodotto)
           {
+            var NomeProdotto = (Prodotto.NOME_PRODOTTO || '').toUpperCase();
+            var Barcode      = String(Prodotto.BARCODE || '');
+
+            if(FiltroDescr != '' && FiltroBarcode != '')
+            {
+              return NomeProdotto.includes(FiltroDescr) &&
+                    Barcode.includes(FiltroBarcode);
+            }
+
+            if(FiltroBarcode != '')
+            {
+              return Barcode.includes(FiltroBarcode);
+            }
+
             if(FiltroDescr != '')
             {
-              if((Prodotto.NOME_PRODOTTO).includes(FiltroDescr))
-                  return true;
-              return false
+              return NomeProdotto.includes(FiltroDescr);
             }
-            
-            if(FiltroDescr != '')
-            {
-              if(Prodotto.NOME_PRODOTTO.includes(FiltroDescr))
-                return true
-              return false
-            }
+
             return false;
-          })
+          });
           ListaRighe = ListaRighe.slice(0, this.NumeroMassimoProdotti) 
           return ListaRighe
         }
