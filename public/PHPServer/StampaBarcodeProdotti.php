@@ -84,9 +84,6 @@
                 $this->FGetDatiStampa($Report,$Parametri,$PDODBase,$JSONAnswer)
               )
           );
-          // error_log($JSONAnswer->PDF);
-          // error_log(json_encode($JSONAnswer));
-          // error_log('DOPO GETPDF');
         }
       }
 

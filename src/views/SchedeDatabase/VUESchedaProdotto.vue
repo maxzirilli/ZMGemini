@@ -850,11 +850,8 @@
         BarcodeVisualizzato = String(BarcodeVisualizzato).slice(0, 12);
 
         if(BarcodeVisualizzato.length != 12) return '';
-        console.log(TZEAN13.GetEAN13Code(BarcodeVisualizzato));
 
         return TZEAN13.GetEAN13Code(BarcodeVisualizzato)
-
-       
       } 
       
     },

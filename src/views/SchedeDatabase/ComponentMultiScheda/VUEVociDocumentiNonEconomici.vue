@@ -155,23 +155,12 @@
           :Larghezza="'1000px'"
           @onClickChiudiModal="PopupLsProdotti = false">
 
-  <!-- BODY -->
   <template v-slot:Body>
     <div style="width:1%;float:left">&nbsp;</div>
-    <input type="text"
-           style="width:15%;float:left"
-           class="input-sm form-control"
-           placeholder="Cerca per barcode"
-           v-model="FiltroProdottiBarcode">  
+    <input type="text" style="width:15%;float:left" class="input-sm form-control" placeholder="Cerca per barcode" v-model="FiltroProdottiBarcode">  
     <div style="width:1%;float:left">&nbsp;</div>
-    <input type="text"
-           style="width:73%;float:left"
-           class="input-sm form-control"
-           placeholder="Cerca per descrizione"
-           v-model="FiltroProdottiDescrizione">
+    <input type="text" style="width:73%;float:left" class="input-sm form-control" placeholder="Cerca per descrizione" v-model="FiltroProdottiDescrizione">
 
-  
-    
     <div style="clear:both;width:1%;height:10px">&nbsp;</div>
 
     <div class="row wrapper">
@@ -619,7 +608,6 @@ export default {
     {
       get()
       {
-        console.log(this.ListaProdotti)
         var FiltroDescr   = this.FiltroProdottiDescrizione.toUpperCase().trim();
         var FiltroBarcode = this.FiltroProdottiBarcode.trim();
 
