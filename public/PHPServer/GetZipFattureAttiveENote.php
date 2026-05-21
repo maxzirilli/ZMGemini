@@ -93,4 +93,3 @@
 
   $Result = new GetZipFattureAttiveENote();
   $Result->ServerSideScript();
-?>

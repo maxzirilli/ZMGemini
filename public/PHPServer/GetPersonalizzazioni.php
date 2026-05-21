@@ -37,4 +37,3 @@
 
     $GetPersonalizzazione = new TGetPersonalizzazione();
     $GetPersonalizzazione->ServerSideScript(true);
-?>

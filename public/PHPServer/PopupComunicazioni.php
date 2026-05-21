@@ -159,4 +159,3 @@
 
       $Connection = new TAdvQueryPopupComunicazioni();
       $Connection->ServerSideScript();
-?>

@@ -11,4 +11,3 @@
 
       $Connection = new TAdvQueryCaricaInformazioniPrimaNota();
       $Connection->ServerSideScript();
-?>

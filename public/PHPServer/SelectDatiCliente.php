@@ -162,4 +162,3 @@
 
       $Connection = new TAdvQuerySelectDatiCliente();
       $Connection->ServerSideScript();
-?>

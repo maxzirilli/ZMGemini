@@ -3,4 +3,3 @@
 
       $Connection = new TAdvQuerySelectClienteFiltro(null);
       $Connection->ServerSideScript();
-?>

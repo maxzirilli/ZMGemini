@@ -102,4 +102,3 @@
 
       $Connection = new TAdvQuerySelectFatture();
       $Connection->ServerSideScript();
-?>

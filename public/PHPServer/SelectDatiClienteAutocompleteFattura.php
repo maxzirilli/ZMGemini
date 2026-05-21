@@ -45,4 +45,3 @@
 
       $Connection = new TAdvQuerySelectDatiClienteAutocompleteFattura();
       $Connection->ServerSideScript();
-?>

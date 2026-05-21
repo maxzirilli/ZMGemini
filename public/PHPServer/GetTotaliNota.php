@@ -22,4 +22,3 @@
 
       $Connection = new TAdvQueryGetTotaliNota();
       $Connection->ServerSideScript();
-?>

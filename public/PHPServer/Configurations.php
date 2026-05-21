@@ -29,4 +29,3 @@
   } 
 
   ini_set("error_log", PATH_LOG);
-?>

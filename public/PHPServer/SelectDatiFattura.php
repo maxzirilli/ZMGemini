@@ -90,4 +90,3 @@
 
       $Connection = new TAdvQuerySelectDatiFattura();
       $Connection->ServerSideScript();
-?>

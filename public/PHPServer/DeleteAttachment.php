@@ -9,4 +9,3 @@
 
       $Connection = new TAdvQuery();
       $Connection->DeleteAttachment();
-?>

@@ -101,4 +101,3 @@
 
       $Connection = new TAdvQueryAnticipiScoperti();
       $Connection->ServerSideScript();
-?>

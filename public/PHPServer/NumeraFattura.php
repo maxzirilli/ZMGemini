@@ -21,4 +21,3 @@
 
       $Connection = new TAdvQueryNumeraEdInviaFattura();
       $Connection->ServerSideScript();
-?>

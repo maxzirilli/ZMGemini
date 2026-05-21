@@ -9,4 +9,3 @@
 
       $AConnection = new TAdvQuery();
       $AConnection->ChangePassword();
-?>

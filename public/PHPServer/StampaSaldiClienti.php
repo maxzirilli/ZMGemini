@@ -1,4 +1,3 @@
-
 <?php       
   include_once 'Configurations.php';
   include_once 'Definitions.php';

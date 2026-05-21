@@ -90,4 +90,3 @@
 
       $Connection = new TAdvQueryDownloadFatturePassive();
       $Connection->ServerSideScript();
-?>

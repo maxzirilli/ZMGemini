@@ -21,4 +21,3 @@
 		echo "LESSC Error:";
 		echo $ex->getMessage();
 	}
-?>

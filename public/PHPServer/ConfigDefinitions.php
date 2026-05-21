@@ -1,7 +1,7 @@
 <?php
     // Configurazione coordinate server SQL
     define('MYSQLSERVER','localhost');
-    define('MYSQLDBASE','gemini2');
+    define('MYSQLDBASE','gemini');
     define('MYSQLACCOUNT', 'root');
     define('MYSQLPASSWORD', '');
     define('FOLDER_BLOB','/ppp/Blobs/');
@@ -18,7 +18,7 @@
     define('TOKEN_REMEMBERME_CHECK_UA', false);
 
     // Abilitazione invio dati già zippati
-    define('HTTP_ZIP_ENABLED', false);    
+    define('HTTP_ZIP_ENABLED', true);    
     
     define('DEVELOPER_MODE', true);
     define('MAIL_DEVELOPER', 'misere8000@rencr.com');
@@ -44,4 +44,3 @@
 
     define('PATH_SESSION_FOLDER','');
 
-?>

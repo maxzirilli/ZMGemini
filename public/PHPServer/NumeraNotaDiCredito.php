@@ -20,4 +20,3 @@
 
       $Connection = new TAdvQueryNumeraEdInviaNotaDiCredito();
       $Connection->ServerSideScript();
-?>

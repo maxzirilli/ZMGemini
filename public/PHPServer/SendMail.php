@@ -13,4 +13,3 @@
 
       $AConnection = new TAdvQuery();
       $AConnection->SendMail(false);
-?>

@@ -109,4 +109,3 @@
 
       $Connection = new TAdvQueryEsportaFileExcel();
       $Connection->ServerSideScript();
-?>

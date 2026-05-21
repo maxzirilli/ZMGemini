@@ -257,4 +257,3 @@
 
       // $Connection = new TExtraStampaRitenuta();
       // $Connection->ServerSideScript();
-?>
