@@ -28,3 +28,10 @@ Le variabili sono scritte sempre in Pascal Style
 Le costanti sono sempre in maiuscolo
 Le variabili private hanno sempre il prefisso __. Ad esempio __Contatore. Fanno eccezione solo Pascal e PHP dove le private iniziano sempre per F.
 Ignora sempre le convenzioni sui nomi delle variabili relative al linguaggio utilizzato.
+
+## Divieto Git
+
+- Non usare mai Git in questo repository, salvo richiesta esplicita dell'utente in quello specifico messaggio.
+- Non eseguire mai comandi `git`, inclusi ma non limitati a `git status`, `git add`, `git commit`, `git push`, `git pull`, `git checkout`, `git reset`, `git merge`, `git rebase` o simili.
+- Non fare mai push, commit, merge, rebase, checkout, reset o altre operazioni che interagiscano con Git.
+- Se serve conoscere lo stato dei file, usare strumenti del filesystem o chiedere conferma all'utente, senza invocare Git.
