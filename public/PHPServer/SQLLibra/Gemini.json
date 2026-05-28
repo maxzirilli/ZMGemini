@@ -9698,7 +9698,7 @@
                     "SQLAfterAddedColumn": null
                 },
                 {
-                    "Nome": "BARCODE",
+                    "Nome": "CODICE",
                     "IsNullable": true,
                     "DataType": "varchar(255)",
                     "AutoIncrement": false,
@@ -9818,6 +9818,15 @@
                     "Nome": "IMG_PRODOTTO",
                     "IsNullable": true,
                     "DataType": "blob",
+                    "AutoIncrement": false,
+                    "Commento": "",
+                    "DefaultValue": null,
+                    "SQLAfterAddedColumn": null
+                },
+                {
+                    "Nome": "BARCODE",
+                    "IsNullable": true,
+                    "DataType": "varchar(255)",
                     "AutoIncrement": false,
                     "Commento": "",
                     "DefaultValue": null,
@@ -11074,7 +11083,7 @@
                 {
                     "Nome": "TOKEN",
                     "IsNullable": false,
-                    "DataType": "varchar(50)",
+                    "DataType": "varchar(255)",
                     "AutoIncrement": false,
                     "Commento": "",
                     "DefaultValue": null,
