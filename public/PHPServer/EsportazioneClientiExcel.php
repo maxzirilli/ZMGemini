@@ -51,34 +51,34 @@
         {
           $Parametri        = JSON_decode($_POST['Params']); 
 
-          $QueryPart = explode('FROM anagrafiche',
-                                $this->FGetQueryCompiled($PDODBase,
-                                                        'Clienti', 
-                                                        'SelectClientiXFiltro',
-                                                        'SelectClientiXFiltro', 
-                                                        get_object_vars($Parametri)));
+          $ArrayChiavi = [];
 
-          $QueryPart = explode('ORDER BY UPPER(RAGIONE_SOCIALE', $QueryPart[count($QueryPart) - 1]);
+          $ResultChiavi = $this->FGetQueryResult($PDODBase,
+                                                'Clienti', 
+                                                'SelectClientiXFiltro',
+                                                'SelectClientiXFiltro', 
+                                                get_object_vars($Parametri));
+                
+          if($ResultChiavi)
+            while($Row = $ResultChiavi->fetch(PDO::FETCH_ASSOC))
+              array_push($ArrayChiavi, $Row['CHIAVE']);
+          
+          $StringaChiavi = implode(',', $ArrayChiavi);
 
-          $SQLBody = "SELECT  anagrafiche.CHIAVE,
-                              anagrafiche.RAGIONE_SOCIALE,
-                              anagrafiche.INDIRIZZO_FATTURAZIONE AS INDIRIZZO,
-                              anagrafiche.NR_CIVICO_FATTURAZIONE AS NR_CIVICO,
-                              anagrafiche.COMUNE_FATTURAZIONE AS COMUNE,
-                              anagrafiche.CAP_FATTURAZIONE AS CAP,
-                              province.NOME AS PROVINCIA,
-                              regioni.DESCRIZIONE AS REGIONE,
-                              cat_clienti.DESCRIZIONE AS CATEGORIA
-                         FROM anagrafiche 
-                        " . $QueryPart[0] . " 
-                        AND anagrafiche.PROVINCIA_FATTURAZIONE IS NOT NULL
-                        ORDER BY REGIONE, PROVINCIA, COMUNE, CAP";
+          $Parametri->ListaChiavi = $ArrayChiavi;
+
+
+          $ResultClienti = $this->FGetQueryResult($PDODBase,
+                                                'Clienti', 
+                                                'EsportaXLSXClienti',
+                                                'EsportaXLSXClienti', 
+                                                get_object_vars($Parametri));
 
           try 
           {
-            if($Query = $PDODBase->query($SQLBody))
+            if($ResultClienti)
             {
-              while($Row = $Query->fetch(PDO::FETCH_ASSOC))
+              while($Row =  $ResultClienti->fetch(PDO::FETCH_ASSOC))
               {
                 $OggettoCliente = new TOggetto($Row['CHIAVE'], 
                                               $Row['REGIONE'], 

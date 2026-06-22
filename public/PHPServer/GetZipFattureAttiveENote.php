@@ -23,13 +23,13 @@
       $ContenutoFileLetto    = null;
       $PercorsoEFile         = '';
 
-      $SQLBody               = $this->FGetQueryCompiled($PDODBase, 'EsportaDatiPerGDPR', 'SelectPerZip', 'SelectXMLFattureInviateAlloSDI', (array) $Parametri);
+      $Result               = $this->FGetQueryResult($PDODBase, 'EsportaDatiPerGDPR', 'SelectPerZip', 'SelectXMLFattureInviateAlloSDI', (array) $Parametri);
       
       $FileZip->open($PercorsoZip, ZipArchive::CREATE);
 
       // FATTURE
-      if ($Query = $PDODBase->query($SQLBody))
-        while ($Row = $Query->fetch(PDO::FETCH_ASSOC))
+      if ($Result)
+        while ($Row = $Result->fetch(PDO::FETCH_ASSOC))
         {
           $File = tempnam(sys_get_temp_dir(), 'ft_');
           file_put_contents($File, $Row['XML_BODY']);
@@ -39,10 +39,10 @@
         }
 
       // NOTE DI CREDITO
-      $SQLBody               = $this->FGetQueryCompiled($PDODBase, 'EsportaDatiPerGDPR', 'SelectPerZip', 'SelectXMLNoteDiCreditoInviateAlloSDI', (array) $Parametri);
+      $Result              = $this->FGetQueryResult($PDODBase, 'EsportaDatiPerGDPR', 'SelectPerZip', 'SelectXMLNoteDiCreditoInviateAlloSDI', (array) $Parametri);
 
-      if ($Query = $PDODBase->query($SQLBody))
-        while ($Row = $Query->fetch(PDO::FETCH_ASSOC))
+      if ($Result)
+        while ($Row = $Result->fetch(PDO::FETCH_ASSOC))
         {
           $File = tempnam(sys_get_temp_dir(), 'nc_');
           file_put_contents($File, $Row['XML_BODY']);
@@ -52,10 +52,10 @@
         }
 
       // FATTURE PASSIVE
-      $SQLBody                  = $this->FGetQueryCompiled($PDODBase, 'EsportaDatiPerGDPR', 'SelectPerZip', 'SelectFatturePassive', (array) $Parametri);
+      $Result                  = $this->FGetQueryResult($PDODBase, 'EsportaDatiPerGDPR', 'SelectPerZip', 'SelectFatturePassive', (array) $Parametri);
 
-      if ($Query = $PDODBase->query($SQLBody))
-        while ($Row = $Query->fetch(PDO::FETCH_ASSOC))
+      if ($Result)
+        while ($Row = $Result->fetch(PDO::FETCH_ASSOC))
         {
           $REGEX_MIME                          = '/^data:[^;]+;\/?/';
           $REGEX_P7M                           = '/\.p7m$/i';

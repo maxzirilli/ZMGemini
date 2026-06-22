@@ -428,7 +428,7 @@ class TSystemInformation
     var Self = this
     axios.get('GEMINIConfiguration.json').then(function(Answer)
     {
-      Self.DeveloperMode  = Answer.data.DEVELOPER_MODE
+      Self.DeveloperMode  = (process.env.NODE_ENV == 'development')
       Self.AttesaPopupCaricamentoAlbero  = Answer.data.MILLISECONDI_PER_POPUP_CARICAMENTO_ALBERO
       Self.Configurazione = Answer.data
       Self.NoteInstallazioni = { Cliente : "UNKNOWN"}

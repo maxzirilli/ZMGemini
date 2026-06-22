@@ -5096,52 +5096,6 @@ export default
         this.LogSelezionato   = null;
       },
  
-      ConfermaAccesso(Log, OnSuccess)
-      {
-        var Self = this
-        var ObjQuery = { Operazioni : [] };
-
-        if (Log.ID_CLIENTE != null)
-        {
-          Log.ID_CLIENTE = null;
-        }
-
-        var Parametri = {
-                          Username          : Log.USERNAME,
-                          RagioneSociale    : Log.NOME_CLIENTE,
-                          Email             : Log.USERNAME,
-                          IdCliente         : Log.ID_CLIENTE,
-                          Password          : Log.Password
-                        }
-
-        ObjQuery.Operazioni.push({
-                                  Query     : "InserisciUtente",
-                                  Parametri : Parametri
-                                  })
-        
-        var Stato     = 'I'
-
-        ObjQuery.Operazioni.push({
-                                    Query     : "UpdateLogAppClienti",
-                                    Parametri : {
-                                                  ChiaveLog : Log.CHIAVE_LOG,
-                                                  Stato     : Stato
-                                                }
-                                  })
-
-        SystemInformation.AdvQuery.PostSQL('AppClienti',ObjQuery,
-                                            function()
-                                            {
-                                              Self.AggiornaListaLog()
-                                              OnSuccess()
-                                            },
-                                            function(HTTPError,SubHTTPError,Response)
-                                            {
-                                              SystemInformation.HandleError(HTTPError,SubHTTPError,Response);
-                                              OnSuccess()
-                                            });
-      },
-
       OnClickApriDettagliLog(Log)
       {
         this.PopupLogApp = false

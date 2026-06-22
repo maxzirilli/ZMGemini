@@ -31,17 +31,17 @@
       
       $RiassuntoAutofatture = array();
 
-      $SQLBody = $this->FGetQueryCompiled($PDODBase,
-                                          'Autofatture', 
-                                          isset($Params->RiassuntoPerAnno)? 'RiassuntoAutoFatturePerAnno' : 'SelectSQL',
-                                          isset($Params->RiassuntoPerAnno)? 'Riassunto'                   : 'Lista', 
-                                          $Parametri);
+     $Result = $this->FGetQueryResult($PDODBase,
+                                      'Autofatture', 
+                                      isset($Params->RiassuntoPerAnno)? 'RiassuntoAutoFatturePerAnno' : 'SelectSQL',
+                                      isset($Params->RiassuntoPerAnno)? 'Riassunto'                   : 'Lista', 
+                                      $Parametri);
 
       // error_log('$SQLBody: ' . $SQLBody);
 
-      if($Query = $PDODBase->query($SQLBody))
+      if($Result)
       {
-        while($Row = $Query->fetch(PDO::FETCH_ASSOC))
+        while($Row = $Result->fetch(PDO::FETCH_ASSOC))
         {
           $ObjAutofattura = new TOggettoAutofattura();
 

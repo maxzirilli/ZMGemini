@@ -96,15 +96,15 @@
  
         private function SelectQueryFornitore($PDODBase, $Parametri, &$Array, $NomeQuery)
         {
-              $SQLBody = $this->FGetQueryCompiled($PDODBase,
-                                                    'Fornitori', 
-                                                    'SelectFornitore',
-                                                    $NomeQuery, 
-                                                    get_object_vars($Parametri));
+              $Result = $this->FGetQueryResult($PDODBase,
+                                                'Fornitori', 
+                                                'SelectFornitore',
+                                                $NomeQuery, 
+                                                get_object_vars($Parametri));
 
-              if($Query = $PDODBase->query($SQLBody))
-                while($Row = $Query->fetch(PDO::FETCH_ASSOC))
-                { 
+              if($Result)
+                while($Row = $Result->fetch(PDO::FETCH_ASSOC))
+                {  
                     array_push($Array,$Row);
                 }
         }

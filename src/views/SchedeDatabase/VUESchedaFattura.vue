@@ -971,8 +971,8 @@ export class TSchedaFattura extends TSchedaGenerica
   AssignSchedaFromDDT(Scheda)
   {
     var Self = this
-    this.Dati.ID_CLIENTE             = Scheda.Dati.ID_CLIENTE
-    this.CaricaDatiCliente(Scheda.Dati.ID_CLIENTE, function()
+    this.Dati.ID_CLIENTE             = Scheda.Dati.ID_ANAGRAFICA
+    this.CaricaDatiCliente(Scheda.Dati.ID_ANAGRAFICA, function()
     {
       Self.Dati.PARTITA_IVA            = Scheda.Dati.PARTITA_IVA
       Self.Dati.CODICE_FISCALE         = Scheda.Dati.CODICE_FISCALE

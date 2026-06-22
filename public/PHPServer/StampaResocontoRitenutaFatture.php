@@ -75,28 +75,36 @@
         private function FGetDatiStampa($Parametri, $PDODBase, &$JSONAnswer, $NomeLogo)
         {
             $Result = new TStampaResocontoRitenuteClienti();
-            $QueryPart = explode('FROM fatture',$this->FGetQueryCompiled($PDODBase,
-                                                                        'Fatture', 
-                                                                        'SelectSQL',
-                                                                        'SelectFatture', 
-                                                                          get_object_vars($Parametri)));
-            $QueryChiavi = 'SELECT fatture.CHIAVE FROM fatture ' . $QueryPart[count($QueryPart) - 1];
-            $QueryChiavi = explode('LIMIT', $QueryChiavi)[0];
-            $ArrayTotaliFatture = TSystemInformation::GetTotaliFattura($PDODBase,$QueryChiavi,true);
+            $ArrayChiavi = [];
 
-            $QueryDatiResoconto = 'SELECT fatture.NUMERO, 
-                                          fatture.DATA, 
-                                          fatture.RAGIONE_SOCIALE, 
-                                          fatture.CHIAVE,
-                                          (SELECT DESCRIZIONE 
-                                             FROM cond_pagamento
-                                            WHERE cond_pagamento.CHIAVE = fatture.COND_PAGAMENTO) AS COND_PAGAMENTO
-                                     FROM fatture ' . $QueryPart[count($QueryPart) - 1];
-            $QueryDatiResoconto = explode('LIMIT', $QueryDatiResoconto)[0];
+            $ResultChiavi = $this->FGetQueryResult($PDODBase,
+                                                  'Fatture', 
+                                                  'SelectSQL',
+                                                  'SelectFatture', 
+                                                  get_object_vars($Parametri));
+                  
+            if($ResultChiavi)
+              while($Row = $ResultChiavi->fetch(PDO::FETCH_ASSOC))
+                array_push($ArrayChiavi, $Row['CHIAVE']);
+            
+            $StringaChiavi = implode(',', $ArrayChiavi);
+
+            $ArrayTotaliFatture = TSystemInformation::GetTotaliFattura($PDODBase,$StringaChiavi,true);
+
+            $Parametri->ListaChiavi = $ArrayChiavi;
+
+            $ResultResoconto = $this->FGetQueryResult($PDODBase,
+                                                  'Fatture', 
+                                                  'SelectDatiResoconto',
+                                                  'SelectDatiResocontoRitenute', 
+                                                  get_object_vars($Parametri));
+                  
+            
             $Result->DetailResocontoFatture = array();
-            if($Query = $PDODBase->query($QueryDatiResoconto))
+            
+            if($ResultResoconto)
             {
-              while($Row = $Query->fetch(PDO::FETCH_ASSOC))
+              while($Row = $ResultResoconto->fetch(PDO::FETCH_ASSOC))
               {
 				        $DatiFattura = new TDatiFattura();
                 if(!is_null($Row['NUMERO']))

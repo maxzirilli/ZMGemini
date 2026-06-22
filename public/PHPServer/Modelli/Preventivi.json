@@ -75,7 +75,7 @@
 	"FiltroPreventivo" : [
 		{
 			"Name" : "FiltroPreventivo",
-			"SQL" : "SELECT CHIAVE,\n       NUMERO, \n       EXTRACT(YEAR FROM DATA) AS ANNO, \n       ID_CLIENTE, \n       RAGIONE_SOCIALE,\n       ID_FATTURA,\n       PROGRAMMA_PROSSIMA_VISITA,\n       ID_DDT_ENTRANTI,\n       ID_DDT_USCENTI\n    FROM preventivi\n {W~NumeroPreventivo~NUMERO = :NumeroPreventivo\n      ~AnnoPreventivo~ANNO = :AnnoPreventivo\n     ~DalNr~NUMERO >= :DalNr\n     ~AlNr~NUMERO <= :AlNr\n     ~Anno1~ANNO >= :Anno1\n     ~Anno2~ANNO <= :Anno2\n     ~DallaData~DATA >= #DallaData\n     ~AllaData~DATA <= #AllaData\n     ~Intestatario~ UPPER(RAGIONE_SOCIALE) LIKE UPPER(#Intestatario)\n     ~Cliente~ ID_CLIENTE = :Cliente\n     ~PartitaIva~ UPPER(PARTITA_IVA) LIKE UPPER(#PartitaIva)\n      ~StatoConfermaDOrdineGestite~ PROGRAMMA_PROSSIMA_VISITA = 'T' OR\n                                            ID_FATTURA IS NOT NULL OR\n                                            ID_DDT_USCENTI IS NOT NULL OR\n                                            ID_DDT_ENTRANTI IS NOT NULL\n    ~StatoConfermaDOrdineNonGestite~ PROGRAMMA_PROSSIMA_VISITA = 'F' AND\n                                                            ID_FATTURA IS NULL AND\n                                                            ID_DDT_USCENTI IS NULL AND\n                                                            ID_DDT_ENTRANTI IS NULL}\nORDER BY DATA DESC, NUMERO DESC\nLIMIT :LimitNumRows OFFSET :LimitStart\n"
+			"SQL" : "SELECT CHIAVE,\n       NUMERO, \n       EXTRACT(YEAR FROM DATA) AS ANNO, \n       ID_CLIENTE, \n       RAGIONE_SOCIALE,\n       ID_FATTURA,\n       PROGRAMMA_PROSSIMA_VISITA,\n       ID_DDT_ENTRANTI,\n       ID_DDT_USCENTI\n    FROM preventivi\n {W~NumeroPreventivo~NUMERO = :NumeroPreventivo\n      ~AnnoPreventivo~ANNO = :AnnoPreventivo\n     ~DalNr~NUMERO >= :DalNr\n     ~AlNr~NUMERO <= :AlNr\n     ~Anno1~ANNO >= :Anno1\n     ~Anno2~ANNO <= :Anno2\n     ~DallaData~DATA >= #DallaData\n     ~AllaData~DATA <= #AllaData\n     ~Intestatario~ UPPER(RAGIONE_SOCIALE) LIKE UPPER(#Intestatario)\n     ~Cliente~ ID_CLIENTE = :Cliente\n     ~PartitaIva~ UPPER(PARTITA_IVA) LIKE UPPER(#PartitaIva)\n      ~StatoConfermaDOrdineGestite~ PROGRAMMA_PROSSIMA_VISITA = 'T' OR\n                                            ID_FATTURA IS NOT NULL OR\n                                            ID_DDT_USCENTI IS NOT NULL OR\n                                            ID_DDT_ENTRANTI IS NOT NULL\n    ~StatoConfermaDOrdineNonGestite~ PROGRAMMA_PROSSIMA_VISITA = 'F' AND\n                                                            ID_FATTURA IS NULL AND\n                                                            ID_DDT_USCENTI IS NULL AND\n                                                            ID_DDT_ENTRANTI IS NULL}\nORDER BY DATA DESC, NUMERO DESC\n{L~LimitNumRows~ :LimitNumRows OFFSET :LimitStart}\n"
 		}
 	],
 	"ListaEmailPreventivo" : [
@@ -124,6 +124,12 @@
 		{
 			"Name" : "Riassunto",
 			"SQL" : "SELECT CHIAVE,\n       NUMERO, \n       EXTRACT(YEAR FROM DATA) AS ANNO, \n       ID_CLIENTE, \n       RAGIONE_SOCIALE,\n       ID_FATTURA,\n       ID_DDT_ENTRANTI,\n       ID_DDT_USCENTI\n  FROM preventivi\n  WHERE ID_CLIENTE = :ChiaveCliente\n    AND EXTRACT(YEAR FROM DATA) = :AnnoPreventivo\n ORDER BY NUMERO DESC\n"
+		}
+	],
+	"SelectDatiResoconto" : [
+		{
+			"Name" : "SelectDatiResoconto",
+			"SQL" : "SELECT preventivi.NUMERO, \n            preventivi.DATA, \n            preventivi.STATO,\n            preventivi.RAGIONE_SOCIALE, \n            preventivi.CHIAVE,\n            preventivi.ID_CLIENTE,\n(SELECT DESCRIZIONE \n    FROM cond_pagamento\n  WHERE cond_pagamento.CHIAVE = preventivi.COND_PAGAMENTO) AS COND_PAGAMENTO\n    FROM preventivi\nWHERE preventivi.CHIAVE IN ?ListaChiavi\n"
 		}
 	],
 	"SelectDettaglio" : [

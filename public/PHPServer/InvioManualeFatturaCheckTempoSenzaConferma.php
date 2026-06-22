@@ -26,24 +26,24 @@
        $Parametri = new stdClass();
        $Parametri->DataLancioScript = $DataLancioScript;
        $Parametri->IntervalloInSecondi = INTERVALLO_DI_TEMPO_PER_CHECK_IN_SECONDI;
-       $SQLBody = $this->FGetQueryCompiled($PDODBase,
-                                           'EsportaFattureManualmente', 
-                                           'EditSQL',
-                                           $NomeQuery, 
-                                           (array) $Parametri
-                                          );
+       $Result = $this->FGetQueryResult($PDODBase,
+                                        'EsportaFattureManualmente', 
+                                        'EditSQL',
+                                        $NomeQuery, 
+                                        (array) $Parametri
+                                      );
 
        try
        {           
-         if(!$PDODBase->query($SQLBody))
+         if(!$Result)
          {
-             error_log($SQLBody);
+             //error_log($SQLBody);
              throw new Exception('Impossibile resettare i documenti non confermati da troppo tempo');
          }
        }
        catch(Exception $e)
        {
-         error_log($SQLBody);
+         //error_log($SQLBody);
          throw new Exception($e->getMessage());         
        }
       }
