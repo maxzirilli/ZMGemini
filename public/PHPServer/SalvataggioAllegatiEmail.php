@@ -99,20 +99,18 @@
             $Parametri['ALLEGATO']     = $OggettoBlob;
             $Parametri['DESCRIZIONE']  = 'ALLEGATO.pdf';
 
-            $SQLBody = $this->FGetQueryCompiled($PDODBase,
-                                                'LogEmail', 
-                                                'EditSQL',
-                                                'InserisciAllegatoEmail', 
-                                                $Parametri,
-                                                [1]);
-            
             try
             {
-              $PDODBase->query($SQLBody);
+              $this->FGetQueryResult($PDODBase,
+                                      'LogEmail', 
+                                      'EditSQL',
+                                      'InserisciAllegatoEmail', 
+                                      $Parametri,
+                                      [1]);
             }
             catch(Exception $e)
             {
-              error_log($SQLBody);
+              error_log('Errore insert allegato email');
               throw $e;
             }
             unset($Parametri);

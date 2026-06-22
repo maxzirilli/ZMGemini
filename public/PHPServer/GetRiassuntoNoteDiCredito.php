@@ -36,16 +36,15 @@
 
       $RiassuntoNoteDiCredito = array();
 
+      $Result = $this->FGetQueryResult($PDODBase,
+                                      'NoteDiCredito', 
+                                      isset($Params->RiassuntoPerAnno)? 'RiassuntoNotePerAnno' : 'FiltroNote',
+                                      isset($Params->RiassuntoPerAnno)? 'Riassunto'            : 'FiltroNote', 
+                                      $Parametri);
 
-      $SQLBody = $this->FGetQueryCompiled($PDODBase,
-                                          'NoteDiCredito', 
-                                          isset($Params->RiassuntoPerAnno)? 'RiassuntoNotePerAnno' : 'FiltroNote',
-                                          isset($Params->RiassuntoPerAnno)? 'Riassunto'            : 'FiltroNote', 
-                                          $Parametri);
-
-      if($Query = $PDODBase->query($SQLBody))
+      if($Result)
       {
-        while($Row = $Query->fetch(PDO::FETCH_ASSOC))
+        while($Row = $Result->fetch(PDO::FETCH_ASSOC))
         {
           $ObjNotaDiCredito = new TOggettoNotaDiCredito();
 

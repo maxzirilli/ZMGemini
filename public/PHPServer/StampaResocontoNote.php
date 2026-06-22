@@ -130,32 +130,37 @@
         private function FGetDatiStampa($Parametri, $PDODBase, &$JSONAnswer, $NomeLogo)
         {
             $Result = new TStampaResocontoNote();
-            $QueryPart = explode('FROM',$this->FGetQueryCompiled($PDODBase,
-                                                                 'NoteDiCredito', 
-                                                                 'FiltroNote',
-                                                                 'FiltroNote', 
-                                                                  get_object_vars($Parametri)));
-            $QueryChiavi = 'SELECT note_di_credito.CHIAVE FROM' . $QueryPart[count($QueryPart) - 1];
-            $QueryChiavi = explode('LIMIT', $QueryChiavi)[0];
+            $ArrayChiavi = [];
 
-            $ArrayTotaliNote = TSystemInformation::GetTotaliNota($PDODBase,$QueryChiavi,true);
+            $ResultChiavi = $this->FGetQueryResult($PDODBase,
+                                                  'NoteDiCredito', 
+                                                  'FiltroNote',
+                                                  'FiltroNote', 
+                                                  get_object_vars($Parametri));
+                  
+            if($ResultChiavi)
+              while($Row = $ResultChiavi->fetch(PDO::FETCH_ASSOC))
+                array_push($ArrayChiavi, $Row['CHIAVE']);
+            
+            $StringaChiavi = implode(',', $ArrayChiavi);
 
-            $QueryDatiResoconto = 'SELECT note_di_credito.NUMERO, 
-                                          note_di_credito.DATA, 
-                                          note_di_credito.RAGIONE_SOCIALE, 
-                                          note_di_credito.CHIAVE,
-                                          note_di_credito.ID_CLIENTE,
-                                          (SELECT DESCRIZIONE 
-                                             FROM cond_pagamento
-                                            WHERE cond_pagamento.CHIAVE = note_di_credito.COND_PAGAMENTO) AS COND_PAGAMENTO
-                                     FROM ' . $QueryPart[count($QueryPart) - 1];
-            $QueryDatiResoconto = explode('LIMIT', $QueryDatiResoconto)[0];
+            $ArrayTotaliNote = TSystemInformation::GetTotaliNota($PDODBase,$StringaChiavi,true);
+
+            $Parametri->ListaChiavi = $ArrayChiavi;
+                                    
+            $ResultResoconto = $this->FGetQueryResult($PDODBase,
+                                                      'NoteDiCredito', 
+                                                      'SelectDatiResoconto',
+                                                      'SelectDatiResoconto', 
+                                                      get_object_vars($Parametri));
+            
 
             $Result->DetailResocontoNote = array();
             $TutteLeRighe = array();
-            if($Query = $PDODBase->query($QueryDatiResoconto))
+
+            if($ResultResoconto)
             {
-              while($Row = $Query->fetch(PDO::FETCH_ASSOC))
+              while($Row = $ResultResoconto->fetch(PDO::FETCH_ASSOC))
                     array_push($TutteLeRighe,$Row);
 
               foreach($TutteLeRighe as $Row)

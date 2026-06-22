@@ -35,24 +35,24 @@
       {
        $Parametri = new stdClass();
        $Parametri->ListaChiavi = $ListaChiavi;
-       $SQLBody = $this->FGetQueryCompiled($PDODBase,
-                                           'EsportaFattureManualmente', 
-                                           'EditSQL',
-                                           $NomeQuery, 
-                                           (array) $Parametri
-                                          );
+       $Result = $this->FGetQueryResult($PDODBase,
+                                        'EsportaFattureManualmente', 
+                                        'EditSQL',
+                                        $NomeQuery, 
+                                        (array) $Parametri
+                                      );
 
        try
        {           
-         if(!$PDODBase->query($SQLBody))
+         if(!$Result)
          {
-             error_log($SQLBody);
+             //error_log($SQLBody);
              throw new Exception('Impossibile impostare come da zippare il documento');
          }
        }
        catch(Exception $e)
        {
-         error_log($SQLBody);
+         //error_log($SQLBody);
          throw new Exception($e->getMessage());         
        }
       }

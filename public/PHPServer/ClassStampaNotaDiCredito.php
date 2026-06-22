@@ -348,16 +348,15 @@
                   array_push($ChiaviNote,$Parametri->Chiave);
                else 
                {
-                 $QueryPart = explode('FROM',$this->FGetQueryCompiled($PDODBase,
-                                                                      'NoteDiCredito', 
-                                                                      'FiltroNote',
-                                                                      'FiltroNote', 
-                                                                      get_object_vars($Parametri)));
 
-                 $QueryChiavi = 'SELECT note_di_credito.CHIAVE FROM' . $QueryPart[count($QueryPart) - 1];
-                 $QueryChiavi = explode('LIMIT', $QueryChiavi)[0];
-                 if($Query = $PDODBase->query($QueryChiavi))
-                    while($Row = $Query->fetch(PDO::FETCH_ASSOC))
+                 $Result = $this->FGetQueryResult($PDODBase,
+                                                  'NoteDiCredito', 
+                                                  'FiltroNote',
+                                                  'FiltroNote', 
+                                                  get_object_vars($Parametri));                
+
+                 if($Result)
+                    while($Row = $Result->fetch(PDO::FETCH_ASSOC))
                           array_push($ChiaviNote, $Row['CHIAVE']);
                }
 

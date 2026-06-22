@@ -147,14 +147,15 @@
  
         private function SelectQueryCliente($PDODBase, $Parametri, &$Array, $NomeQuery)
         {
-              $SQLBody = $this->FGetQueryCompiled($PDODBase,
-                                                    'Clienti', 
-                                                    'SelectDettaglio',
-                                                    $NomeQuery, 
-                                                    get_object_vars($Parametri));
-              if($Query = $PDODBase->query($SQLBody))
-                while($Row = $Query->fetch(PDO::FETCH_ASSOC))
-                { 
+              $Result = $this->FGetQueryResult($PDODBase,
+                                              'Clienti', 
+                                              'SelectDettaglio',
+                                              $NomeQuery, 
+                                              get_object_vars($Parametri));
+              
+              if($Result)
+                while($Row = $Result->fetch(PDO::FETCH_ASSOC))
+                {
                     array_push($Array,$Row);
                 }
         }

@@ -49,14 +49,13 @@ class TAdvQueryAcquisisciFattura extends TAdvQuery
       $Parametri = array();
       if(trim($PartitaIVA) != '') $Parametri['PARTITA_IVA'] = $PartitaIVA;
       if(trim($CodiceFiscale) != '') $Parametri['CODICE_FISCALE'] = $CodiceFiscale;
-      $SQLBody = $this->FGetQueryCompiled($PDODBase,
+      $SQLBody = $this->FGetQueryResult($PDODBase,
                                           'Fornitori', 
                                           'FindFornitore',
                                           'ChiaveFornitore', 
                                            $Parametri);
       //echo $SQLBody;
-      $Query = $PDODBase->query($SQLBody); 
-      if ($Row = $Query->fetch(PDO::FETCH_ASSOC))
+      if ($Row = $SQLBody->fetch(PDO::FETCH_ASSOC))
          $Result = $Row["CHIAVE"];
       return $Result;
     }
@@ -84,13 +83,11 @@ class TAdvQueryAcquisisciFattura extends TAdvQuery
          $Parametri['IMPORTO']                    = abs((int)($ImportoPagamento * 1000));
          $Parametri['NO_PRIMA_NOTA']              = 'F'; 
 
-         $SQLBody = $this->FGetQueryCompiled($PDODBase,
-                                             'FatturePassive', 
-                                             'EditSQL',
-                                              'InserisciRateFatturaPassiva', 
-                                              $Parametri,[2]);
-
-         $PDODBase->query($SQLBody);
+         $this->FGetQueryResult($PDODBase,
+                                'FatturePassive', 
+                                'EditSQL',
+                                'InserisciRateFatturaPassiva', 
+                                $Parametri,[2]);
     }
 
     private function FIsFattura($TipoDoc)
@@ -179,13 +176,11 @@ class TAdvQueryAcquisisciFattura extends TAdvQuery
             $Parametri['COMUNE_FATTURAZIONE']    = $FatturaElettronica->Configurazione->CedentePrestatore->Sede->Comune;
             $Parametri['CAP_FATTURAZIONE']       = $FatturaElettronica->Configurazione->CedentePrestatore->Sede->CAP;
 
-            $SQLBody = $this->FGetQueryCompiled($PDODBase,
-                                                'Fornitori', 
-                                                'EditSQL',
-                                                $NuovoFornitore ? 'NuovoFornitoreImportazione' : 'ModificaFornitoreImportazione', 
-                                                $Parametri);
-
-            $PDODBase->query($SQLBody);
+            $this->FGetQueryResult($PDODBase,
+                                   'Fornitori', 
+                                   'EditSQL',
+                                   $NuovoFornitore ? 'NuovoFornitoreImportazione' : 'ModificaFornitoreImportazione', 
+                                   $Parametri);
 
             // Registrazione fatture passive
             $Parametri = array();
@@ -230,13 +225,11 @@ class TAdvQueryAcquisisciFattura extends TAdvQuery
                 $Parametri['TOTALE_FATTURA'] = $TotalePerAutofattura / 10;
             }
 
-            $SQLBody = $this->FGetQueryCompiled($PDODBase,
-                                                'FatturePassive', 
-                                                'EditSQL',
-                                                $NuovaFatturaPassiva ? 'InserisciDaImportazione' : 'ModificaDaImportazione', 
-                                                $Parametri);
-
-            $PDODBase->query($SQLBody);
+            $this->FGetQueryResult($PDODBase,
+                                   'FatturePassive', 
+                                   'EditSQL',
+                                   $NuovaFatturaPassiva ? 'InserisciDaImportazione' : 'ModificaDaImportazione', 
+                                   $Parametri);
 
             if($this->FUltimaDataCaricata < trim($FatturaElettronica->DatiGenerali->Data))
             $this->FUltimaDataCaricata = trim($FatturaElettronica->DatiGenerali->Data);
@@ -280,13 +273,11 @@ class TAdvQueryAcquisisciFattura extends TAdvQuery
 
             $Parametri['NOTE'] = '';
 
-            $SQLBody = $this->FGetQueryCompiled($PDODBase,
-                                                'FatturePassive', 
-                                                'EditSQL',
-                                                'InserisciVoceFatturaPassiva', 
-                                                $Parametri,[2]);
-
-            $PDODBase->query($SQLBody);
+            $this->FGetQueryResult($PDODBase,
+                                  'FatturePassive', 
+                                  'EditSQL',
+                                  'InserisciVoceFatturaPassiva', 
+                                  $Parametri,[2]);
             }
 
             $PDODBase->query("DELETE FROM rate_fatture_passive WHERE ID_FATTURA_PASSIVA = $ChiaveFatturaPassiva");
@@ -317,12 +308,11 @@ class TAdvQueryAcquisisciFattura extends TAdvQuery
                     $Parametri['ALIQUOTA']                      = (int)($SingoloElemento->Percentuale * 100);
                     $Parametri['IMPORTO']                       = abs((int)($SingoloElemento->Importo * 100));
 
-                    $SQLBody = $this->FGetQueryCompiled($PDODBase,
-                                                        'FatturePassive', 
-                                                        'EditSQL',
-                                                        'InserisciRitenute', 
-                                                        $Parametri,[2]);
-                    $PDODBase->query($SQLBody);
+                    $this->FGetQueryResult($PDODBase,
+                                           'FatturePassive', 
+                                           'EditSQL',
+                                           'InserisciRitenute', 
+                                           $Parametri,[2]);
                 }
             }
             
@@ -364,13 +354,11 @@ class TAdvQueryAcquisisciFattura extends TAdvQuery
                     $Parametri['IMPONIBILE']                   = (int)($Valori['IMPONIBILE'] * 100);
                     $Parametri['IMPOSTA']                      = (int)($Valori['IMPOSTA'] * 100);
 
-                    $SQLBody = $this->FGetQueryCompiled($PDODBase,
-                                                        'FatturePassive', 
-                                                        'EditSQL',
-                                                        'InserisciRiepiloghiAliquote', 
-                                                        $Parametri,[2]);
-
-                    $PDODBase->query($SQLBody);
+                    $this->FGetQueryResult($PDODBase,
+                                           'FatturePassive', 
+                                           'EditSQL',
+                                           'InserisciRiepiloghiAliquote', 
+                                           $Parametri,[2]);
                 }
             }
 
@@ -384,13 +372,11 @@ class TAdvQueryAcquisisciFattura extends TAdvQuery
                     $Parametri['IMPOSTA']                      = $SingoloElemento->ImponibileCassa;
                     $Parametri['IMPORTO']                      = $SingoloElemento->ImportoContributoCassa;
                     $Parametri['TIPO']                         = $SingoloElemento->TipoCassa;
-                    $SQLBody = $this->FGetQueryCompiled($PDODBase,
-                                                        'FatturePassive', 
-                                                        'EditSQL',
-                                                        'InserisciCassePrevidenziali', 
-                                                        $Parametri,[2]);
-
-                    $PDODBase->query($SQLBody);
+                    $this->FGetQueryResult($PDODBase,
+                                           'FatturePassive', 
+                                           'EditSQL',
+                                           'InserisciCassePrevidenziali', 
+                                           $Parametri,[2]);
                 }
             }
             
@@ -411,14 +397,12 @@ class TAdvQueryAcquisisciFattura extends TAdvQuery
                     $Parametri['ALLEGATO']                   = $OggettoBlob;
                     $Parametri['DESCRIZIONE']                = $SingoloElemento->FileName;
 
-                    $SQLBody = $this->FGetQueryCompiled($PDODBase,
-                                                        'FatturePassive', 
-                                                        'EditSQL',
-                                                        'InserisciAllegato', 
-                                                        $Parametri,[2]);
+                    $this->FGetQueryResult($PDODBase,
+                                           'FatturePassive', 
+                                           'EditSQL',
+                                           'InserisciAllegato', 
+                                           $Parametri,[2]);
                     // file_put_contents('d:\ppp\query.sql',$SQLBody);
-
-                    $PDODBase->query($SQLBody);
                 };
             }
 
@@ -436,14 +420,14 @@ class TAdvQueryAcquisisciFattura extends TAdvQuery
             $Parametri['ALLEGATO_XML']               = $OggettoBlob;
 
 
-            $SQLBody = $this->FGetQueryCompiled($PDODBase,
-                                                'FatturePassive', 
-                                                'EditSQL',
-                                                'InserisciXmlFatturaPassiva', 
-                                                $Parametri,[2]);
+            $Result = $this->FGetQueryResult($PDODBase,
+                                            'FatturePassive', 
+                                            'EditSQL',
+                                            'InserisciXmlFatturaPassiva', 
+                                            $Parametri,[2]);
             // file_put_contents('d:\ppp\query.sql',$SQLBody);
 
-            if(!($Query = $PDODBase->query($SQLBody)))
+            if(!$Result)
             throw new Exception('Impossibile raccogliere dal database i nomi file delle fatture già importate');
 
             $PDODBase->commit();

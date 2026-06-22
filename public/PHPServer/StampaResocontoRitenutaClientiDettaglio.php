@@ -217,9 +217,10 @@
                                     $DatiFattureClienteRitenute[$i]->Numero, 
                                     $DatiFattureClienteRitenute[$i]->Anno, 
                                     $ImportoRitenuta,
+                                    $DatiFattureClienteRitenute[$i]->IdCliente,
                                     true,
                                     false,
-                                    $DatiFattureClienteRitenute[$i]->IdCliente
+                                    
                                 );
             }
           }
@@ -262,9 +263,9 @@
                                     '',
                                     '',
                                     $Row['RITENUTA_ACCONTO'],
+                                    $Row['ID_CLIENTE'],
                                     false,
                                     strtoupper(trim($Row['RITENUTA_ACCONTO_CERTIFICATA'])) == 'T',
-                                    $Row['ID_CLIENTE']
                                   );
               }
             }
@@ -611,7 +612,7 @@
           });
         }
 
-        private function FAddNewRiga($Chiave, $Descrizione, $NumeroDocumento, $Anno, $Importo, $IsRitenuta = false, $Certificata = false, $ChiaveCliente)
+        private function FAddNewRiga($Chiave, $Descrizione, $NumeroDocumento, $Anno, $Importo,$ChiaveCliente, $IsRitenuta = false, $Certificata = false)
         {
           for($i = 0; $i < count($this->FRigheRitenuta); $i++)
           {

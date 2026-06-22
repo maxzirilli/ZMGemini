@@ -61,15 +61,15 @@
                                
 
 
-              $SQLBody = $this->FGetQueryCompiled($PDODBase,
+              $Result = $this->FGetQueryResult($PDODBase,
                                                   'Clienti',
                                                   $CercaIniziali ? 'SelectClientiXFiltro' : 'SelectClientiXFiltroIniziale',
                                                   $CercaIniziali ? 'SelectClientiXFiltro' : 'SelectClientiXFiltroIniziale',
                                                   get_object_vars($this->Parametri));
 
 
-              if($Query = $PDODBase->query($SQLBody))
-                  while($Row = $Query->fetch(PDO::FETCH_ASSOC))
+              if($Result)
+                  while($Row = $Result->fetch(PDO::FETCH_ASSOC))
                   { 
                         $ObjRow = new TObjectRow();
                         foreach($Row as $FieldName => $FieldValue)
@@ -87,26 +87,34 @@
                   $ListaRitenutePagateClienti = array();
                   $ListaRitenuteClienti = array();
 
-                  $QueryPart = explode('FROM anagrafiche',
-                                       $this->FGetQueryCompiled($PDODBase,
-                                                                'Clienti', 
-                                                                'SelectClientiXFiltro',
-                                                                'SelectClientiXFiltro', 
-                                                                get_object_vars($this->Parametri)));
+                  $ArrayChiavi = [];
 
-                  $QueryRitenute = 'SELECT * 
-                                      FROM ritenute_cliente 
-                                     WHERE ritenute_cliente.ANNO = ' . $this->Parametri->AnnoRitenuta .'
-                                       AND ritenute_cliente.ID_CLIENTE IN ( SELECT anagrafiche.CHIAVE 
-												      FROM anagrafiche ' . $QueryPart[count($QueryPart) - 1] . ')
-                                     ORDER BY ID_CLIENTE';
+                  $ResultChiavi = $this->FGetQueryResult($PDODBase,
+                                                        'Clienti', 
+                                                        'SelectClientiXFiltro',
+                                                        'SelectClientiXFiltro', 
+                                                        get_object_vars($this->Parametri));
+                        
+                  if($ResultChiavi)
+                    while($Row = $ResultChiavi->fetch(PDO::FETCH_ASSOC))
+                      array_push($ArrayChiavi, $Row['CHIAVE']);
+                  
+                  $StringaChiavi = implode(',', $ArrayChiavi);
+
+                  $this->Parametri->ListaChiavi = $ArrayChiavi;
+
+                  $Result = $this->FGetQueryResult($PDODBase,
+                                                  'Clienti', 
+                                                  'SelectRitenute',
+                                                  'SelectRitenuteClienti', 
+                                                  get_object_vars($this->Parametri));
 
 
 
                   $ObjectCliente = null;
                   $LastCliente   = -1;
-                  if($Query = $PDODBase->query($QueryRitenute))
-                    while($Row = $Query->fetch(PDO::FETCH_ASSOC))
+                  if($Result)
+                    while($Row = $Result->fetch(PDO::FETCH_ASSOC))
                     {
                         if($LastCliente != $Row['ID_CLIENTE'])
                         {
@@ -120,9 +128,23 @@
                         array_push($ObjectCliente->Ritenute, $OggettoRitenuta);
                     }
 
-                  $QueryClienti = 'SELECT anagrafiche.CHIAVE FROM anagrafiche' . $QueryPart[count($QueryPart) - 1];                  
+                  $ArrayChiavi = [];
+
+                  $ResultChiavi = $this->FGetQueryResult($PDODBase,
+                                                      'Clienti', 
+                                                      'SelectClientiXFiltro',
+                                                      'SelectClientiXFiltro', 
+                                                      get_object_vars($this->Parametri));
+
+                  if($ResultChiavi)
+                  {
+                    while($Row = $ResultChiavi->fetch(PDO::FETCH_ASSOC))
+                     array_push($ArrayChiavi, $Row['CHIAVE']);
+                  }
+
+                  $StringaChiavi = implode(',', $ArrayChiavi);
                   
-                  $ListaRitenuteClienti = TSystemInformation::GetRitenutaClienteXAnno($PDODBase,$QueryClienti,$this->Parametri->AnnoRitenuta);
+                  $ListaRitenuteClienti = TSystemInformation::GetRitenutaClienteXAnno($PDODBase,$StringaChiavi,$this->Parametri->AnnoRitenuta);
                   
 
                   $ObjectCliente = null;

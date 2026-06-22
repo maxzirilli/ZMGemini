@@ -92,20 +92,18 @@
         $Parametri['ALLEGATO']     = $OggettoBlob;
         $Parametri['DESCRIZIONE']  = PrepareForRecordString($NomeFile);
 
-        $SQLBody = $this->FGetQueryCompiled($PDODBase,
+        try
+        {
+          $this->FGetQueryResult($PDODBase,
                                             'LogEmail', 
                                             'EditSQL',
                                             'InserisciAllegatoEmail', 
                                             $Parametri,
                                             [1]);
-        
-        try
-        {
-          $PDODBase->query($SQLBody);
         }
         catch(Exception $e)
         {
-          error_log($SQLBody);
+          error_log('Errore inserimento allegati email');
           throw $e;
         }
     }

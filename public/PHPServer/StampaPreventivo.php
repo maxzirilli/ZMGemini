@@ -454,18 +454,14 @@
                   array_push($ChiaviPreventivi,$Parametri->Chiave);
                else 
                {
-                  $QueryPart = explode('FROM',$this->FGetQueryCompiled($PDODBase,
-                                                                       'PreventiviMultiparametrici', 
-                                                                       'FiltroPreventivo',
-                                                                       'FiltroPreventivo', 
-                                                                        get_object_vars($Parametri)));
-
-                  $QueryChiavi = 'SELECT preventivi_multiparametrici.CHIAVE FROM' . $QueryPart[count($QueryPart) - 1];
-
-                  $QueryChiavi = explode('LIMIT', $QueryChiavi)[0];
+                  $Result = $this->FGetQueryResult($PDODBase,
+                                                  'PreventiviMultiparametrici', 
+                                                  'FiltroPreventivo',
+                                                  'FiltroPreventivo', 
+                                                  get_object_vars($Parametri));
                   
-                  if($Query = $PDODBase->query($QueryChiavi))
-                    while($Row = $Query->fetch(PDO::FETCH_ASSOC))
+                  if($Result)
+                    while($Row = $Result->fetch(PDO::FETCH_ASSOC))
                       array_push($ChiaviPreventivi, $Row['CHIAVE']);
                }   
                

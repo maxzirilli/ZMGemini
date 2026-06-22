@@ -18,14 +18,13 @@
 
         try
         {
-          $SQLBody = $this->FGetQueryCompiled($PDODBase,
-                                              'EsportaFattureManualmente', 
-                                              'SelectSQL',
-                                              'FattureDaInviare', 
-                                              []);
+          $Result = $this->FGetQueryResult($PDODBase,
+                                          'EsportaFattureManualmente', 
+                                          'SelectSQL',
+                                          'FattureDaInviare', 
+                                          []);
           
-          $Query = $PDODBase->query($SQLBody);
-          while ($Doc = $Query->fetch(PDO::FETCH_ASSOC))
+          while ($Doc = $Result->fetch(PDO::FETCH_ASSOC))
           {
             if($Doc['IS_NOTA_DI_CREDITO'] === 'T')
                $ListaNoteDiCredito[] = $Doc;
@@ -184,24 +183,24 @@
       {
        $Parametri = new stdClass();
        $Parametri->ListaChiavi = $ListaChiavi;
-       $SQLBody = $this->FGetQueryCompiled($PDODBase,
-                                           'EsportaFattureManualmente', 
-                                           'EditSQL',
-                                           $NomeQuery, 
-                                           (array) $Parametri
-                                          );
+       $Result = $this->FGetQueryResult($PDODBase,
+                                          'EsportaFattureManualmente', 
+                                          'EditSQL',
+                                          $NomeQuery, 
+                                          (array) $Parametri
+                                        );
 
        try
        {           
-         if(!$PDODBase->query($SQLBody))
+         if(!$Result)
          {
-             error_log($SQLBody);
+             //error_log($SQLBody);
              throw new Exception('Impossibile impostare come inviato il documento');
          }
        }
        catch(Exception $e)
        {
-         error_log($SQLBody);
+        //  error_log($SQLBody);
          throw $e;         
        }
       }

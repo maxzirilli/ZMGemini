@@ -132,37 +132,39 @@
         {
 
             $Result = new TStampaResocontoPreventivi();
-            $QueryPart = explode('FROM',$this->FGetQueryCompiled($PDODBase,
-                                                                 'Preventivi', 
-                                                                 'FiltroPreventivo',
-                                                                 'FiltroPreventivo', 
-                                                                  get_object_vars($Parametri)));
-            $QueryChiavi = 'SELECT preventivi.CHIAVE FROM' . $QueryPart[count($QueryPart) - 1];
-            $QueryChiavi = explode('LIMIT', $QueryChiavi)[0];
+            $ArrayChiavi = [];
 
-            $ArrayTotaliPreventivi = TSystemInformation::GetTotaliPreventivo($PDODBase,$QueryChiavi);
+            $ResultChiavi = $this->FGetQueryResult($PDODBase,
+                                                  'Preventivi', 
+                                                  'FiltroPreventivo',
+                                                  'FiltroPreventivo', 
+                                                  get_object_vars($Parametri));
 
+                  
+            if($ResultChiavi)
+              while($Row = $ResultChiavi->fetch(PDO::FETCH_ASSOC))
+                array_push($ArrayChiavi, $Row['CHIAVE']);
+            
+            $StringaChiavi = implode(',', $ArrayChiavi);
 
-            $QueryDatiResoconto = 'SELECT preventivi.NUMERO, 
-                                          preventivi.DATA, 
-                                          preventivi.STATO,
-                                          preventivi.RAGIONE_SOCIALE, 
-                                          preventivi.CHIAVE,
-                                          preventivi.ID_CLIENTE,
-                                          (SELECT DESCRIZIONE 
-                                             FROM cond_pagamento
-                                            WHERE cond_pagamento.CHIAVE = preventivi.COND_PAGAMENTO) AS COND_PAGAMENTO
-                                     FROM ' . $QueryPart[count($QueryPart) - 1];
-            $QueryDatiResoconto = explode('LIMIT', $QueryDatiResoconto)[0];
+            $ArrayTotaliPreventivi = TSystemInformation::GetTotaliPreventivo($PDODBase,$StringaChiavi);
+
+            $Parametri->ListaChiavi = $ArrayChiavi;
+
+            $ResultResoconto = $this->FGetQueryResult($PDODBase,
+                                                      'Preventivi', 
+                                                      'SelectDatiResoconto',
+                                                      'SelectDatiResoconto', 
+                                                      get_object_vars($Parametri));
 
             $Result->DetailResocontoPreventivi = array();
             $TutteLeRighe = array();
-            if($Query = $PDODBase->query($QueryDatiResoconto))
+            
+            if($ResultResoconto)
             {
-              while($Row = $Query->fetch(PDO::FETCH_ASSOC))
+              while($Row = $ResultResoconto->fetch(PDO::FETCH_ASSOC))
                     array_push($TutteLeRighe,$Row);
             
-
               foreach($TutteLeRighe as $Row)
               {
                 $this->FAddDocResponsabile($Row['ID_CLIENTE'], $Row['CHIAVE'], $this->RecapitiClienti);

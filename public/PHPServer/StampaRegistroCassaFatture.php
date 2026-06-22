@@ -69,38 +69,38 @@
             TSystemInformation::GetDatiIntestazione($PDODBase, $DatiIntestazione);
             array_push($Result->BAND_INTESTAZIONE,$DatiIntestazione);
 
-            $QueryPart = explode('FROM fatture',$this->FGetQueryCompiled($PDODBase,
-                                                                        'Fatture', 
-                                                                        'SelectSQL',
-                                                                        'SelectFatture', 
-                                                                        get_object_vars($Parametri)));
-            $QueryChiavi = 'SELECT fatture.CHIAVE FROM fatture ' . $QueryPart[count($QueryPart) - 1];
-            $QueryChiavi = explode('LIMIT', $QueryChiavi)[0];
+            $ArrayChiavi = [];
 
-            $ArrayTotaliFatture = TSystemInformation::GetTotaliFattura($PDODBase,$QueryChiavi,true);
+            $ResultChiavi = $this->FGetQueryResult($PDODBase,
+                                                  'Fatture', 
+                                                  'SelectSQL',
+                                                  'SelectFatture', 
+                                                  get_object_vars($Parametri));
+            
+            if($ResultChiavi)
+            {
+              while($Row = $ResultChiavi->fetch(PDO::FETCH_ASSOC))
+                array_push($ArrayChiavi, $Row['CHIAVE']);
+            }
 
+            $StringaChiavi = implode(',', $ArrayChiavi);
 
-            $QueryDatiResoconto = 'SELECT fatture.NUMERO, 
-                                          fatture.DATA, 
-                                          fatture.CHIAVE,
-                                          fatture.RAGIONE_SOCIALE, 
-                                          fatture.CHIAVE,
-                                          fatture.ID_CLIENTE,
-                                          fatture.DA_BANCO,
-                                          anagrafiche.CODICE,
-                                          rate_fattura.NOTE,
-                                          rate_fattura.DATA_PAGAMENTO AS DATA_RATA
-                                     FROM fatture 
-                                                     JOIN anagrafiche        ON anagrafiche.CHIAVE = fatture.ID_CLIENTE
-                                          LEFT OUTER JOIN rate_fattura   ON rate_fattura.ID_FATTURA = fatture.CHIAVE ' . $QueryPart[count($QueryPart) - 1];
-            $QueryDatiResoconto = explode('LIMIT', $QueryDatiResoconto)[0];
+            $ArrayTotaliFatture = TSystemInformation::GetTotaliFattura($PDODBase,$StringaChiavi,true);
+
+            $Parametri->ListaChiavi = $ArrayChiavi;
+
+            $ResultResoconto = $this->FGetQueryResult($PDODBase,
+                                                      'Fatture', 
+                                                      'SelectDatiResoconto',
+                                                      'SelectDatiResocontoRegistroCassa', 
+                                                      get_object_vars($Parametri));
             
             $LastChiaveFattura = -1;
             $StringaNote       = '';
 
-            if($Query = $PDODBase->query($QueryDatiResoconto))
+            if($ResultResoconto)
             {
-              while($Row = $Query->fetch(PDO::FETCH_ASSOC))
+              while($Row = $ResultResoconto->fetch(PDO::FETCH_ASSOC))
               { 
                 if($LastChiaveFattura != $Row['CHIAVE'])
                 {

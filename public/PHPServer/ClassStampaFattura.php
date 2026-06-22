@@ -519,20 +519,17 @@
             }
             else 
             {
-               $QueryPart = explode('FROM fatture',$this->FGetQueryCompiled($PDODBase,
-                                                                            'Fatture', 
-                                                                            'SelectSQL',
-                                                                            'SelectFatture', 
-                                                                            get_object_vars($Parametri)));
-
-               $QueryChiavi = 'SELECT fatture.CHIAVE FROM fatture ' . $QueryPart[count($QueryPart) - 1];
-               $QueryChiavi = explode('LIMIT', $QueryChiavi)[0];
+              $ResultChiavi = $this->FGetQueryResult($PDODBase,
+                                                      'Fatture', 
+                                                      'SelectSQL',
+                                                      'SelectFatture',
+                                                      get_object_vars($Parametri));
 
                try
                {
-                if($Query = $PDODBase->query($QueryChiavi))
-                   while($Row = $Query->fetch(PDO::FETCH_ASSOC))
-                         array_push($ChiaviFatture, $Row['CHIAVE']);
+                if($ResultChiavi)
+                   while($Row = $ResultChiavi->fetch(PDO::FETCH_ASSOC))
+                      array_push($ChiaviFatture, $Row['CHIAVE']);
                }
                catch(Exception $e)
                {
@@ -540,6 +537,7 @@
                   throw new Exception($e->getMessage());         
                }
             }    
+               
             if(count($ChiaviFatture) > 100)
                throw new Exception('Impossibile gestire più di 100 fatture');
                

@@ -21,15 +21,15 @@
         private function SelectDatiCliente($Parametri, &$JSONAnswer, $PDODBase)
         {
           $JSONAnswer->Dettaglio = array();
-          $SQLBody = $this->FGetQueryCompiled($PDODBase,
-                                              'Clienti', 
-                                              'SelectCliente',
-                                              'SelectCliente', 
-                                              get_object_vars($Parametri));
+          $Result = $this->FGetQueryResult($PDODBase,
+                                          'Clienti', 
+                                          'SelectCliente',
+                                          'SelectCliente', 
+                                          get_object_vars($Parametri));
 
-          if($Query = $PDODBase->query($SQLBody))
-            while($Row = $Query->fetch(PDO::FETCH_ASSOC))
-            { 
+          if($Result)
+            while($Row = $Result->fetch(PDO::FETCH_ASSOC))
+            {
                 array_push($JSONAnswer->Dettaglio, $Row);
             }
 

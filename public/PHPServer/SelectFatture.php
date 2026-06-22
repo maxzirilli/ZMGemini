@@ -50,7 +50,7 @@
 
             private function FSelectFatture($PDODBase, $Parametri, &$Array, &$ArrayChiaviFatture, $GruppoQuery, $Query)
             {
-                  $SQLBody = $this->FGetQueryCompiled($PDODBase,
+                  $Result = $this->FGetQueryResult($PDODBase,
                                                       'Fatture', 
                                                       $GruppoQuery,
                                                       $Query, 
@@ -58,8 +58,8 @@
             //      error_log($SQLBody);
                   try
                   {
-                        if($Query = $PDODBase->query($SQLBody))
-                           while($Row = $Query->fetch(PDO::FETCH_ASSOC))
+                        if($Result)
+                           while($Row = $Result->fetch(PDO::FETCH_ASSOC))
                            { 
                               array_push($Array, $Row);
 

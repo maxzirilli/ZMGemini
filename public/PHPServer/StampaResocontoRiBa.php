@@ -82,45 +82,37 @@
               $DatiIntestazione->LB_TITOLO .= ' al ' . (new DateTime($Parametri->AllaData))->format('d/m/Y');  
 
             array_push($Result->BAND_INTESTAZIONE,$DatiIntestazione);
-
-            $QueryPart = explode('FROM fatture',$this->FGetQueryCompiled($PDODBase,
-                                                                 'Fatture', 
-                                                                 'SelectSQL',
-                                                                 'SelectFatture', 
-                                                                  get_object_vars($Parametri)));
-            $QueryChiavi = 'SELECT fatture.CHIAVE FROM fatture ' . $QueryPart[count($QueryPart) - 1];
-            $QueryChiavi = explode('LIMIT', $QueryChiavi)[0];
             
-            $ArrayTotaliFatture = TSystemInformation::GetTotaliFattura($PDODBase,$QueryChiavi,true);
+            $ArrayChiavi = [];
 
-
-            $QueryDatiResoconto = 'SELECT fatture.NUMERO, 
-                                          fatture.DATA                    AS DATA_FATTURA, 
-                                          fatture.CHIAVE,
-                                          fatture.RAGIONE_SOCIALE, 
-                                          fatture.CHIAVE,
-                                          fatture.ID_CLIENTE,
-                                          fatture.DA_BANCO,
-                                          anagrafiche.CODICE,
-                                          fatture.BANCA,
-                                          fatture.IBAN                    AS IBAN_FATTURA,
-                                          rate_fattura.NOTE,
-                                          rate_fattura.IMPORTO            AS IMPORTO_RATA,
-                                          rate_fattura.DATA               AS DATA_SCADENZA,
-                                          rate_fattura.DATA_PAGAMENTO     AS DATA_RATA,
-                                          cond_pagamento.RICEVUTA_BANCARIA
-                                     FROM fatture 
-                                                     JOIN anagrafiche        ON anagrafiche.CHIAVE = fatture.ID_CLIENTE
-                                          LEFT OUTER JOIN rate_fattura   ON rate_fattura.ID_FATTURA = fatture.CHIAVE' . $QueryPart[count($QueryPart) - 1];
-            $QueryDatiResoconto = explode('LIMIT', $QueryDatiResoconto)[0];
+            $ResultChiavi = $this->FGetQueryResult($PDODBase,
+                                                  'Fatture', 
+                                                  'SelectSQL',
+                                                  'SelectFatture', 
+                                                  get_object_vars($Parametri));
+                  
+            if($ResultChiavi)
+              while($Row = $ResultChiavi->fetch(PDO::FETCH_ASSOC))
+                array_push($ArrayChiavi, $Row['CHIAVE']);
             
-            // $LastChiaveFattura = -1;
+            $StringaChiavi = implode(',', $ArrayChiavi);
+
+            $ArrayTotaliFatture = TSystemInformation::GetTotaliFattura($PDODBase,$StringaChiavi,true);
+
+            $Parametri->ListaChiavi = $ArrayChiavi;
+
+            $ResultResoconto = $this->FGetQueryResult($PDODBase,
+                                                      'Fatture', 
+                                                      'SelectDatiResoconto',
+                                                      'SelectDatiResocontoRiba', 
+                                                      get_object_vars($Parametri));
+            
             $StringaNote       = '';
 
             $TotaleImporti = 0;
-            if($Query = $PDODBase->query($QueryDatiResoconto))
+            if($ResultResoconto)
             {
-              while($Row = $Query->fetch(PDO::FETCH_ASSOC))
+              while($Row = $ResultResoconto->fetch(PDO::FETCH_ASSOC))
               { 
                 if($Row['RICEVUTA_BANCARIA'] != 'T')
                   continue; // Se questa riga non è relativa a una fattura con Ri.Ba., non considero questa riga e passo direttamente alla successiva

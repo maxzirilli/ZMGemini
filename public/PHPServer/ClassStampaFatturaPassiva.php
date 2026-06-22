@@ -602,17 +602,15 @@
                array_push($ChiaviFatturePassive, $Parametri->Chiave);
             else 
             {
-               $QueryPart = explode('FROM',$this->FGetQueryCompiled($PDODBase,
-                                                                    'FatturePassive', 
-                                                                    'SelectSQL',
-                                                                    'SelectFatturePassive', 
-                                                                     get_object_vars($Parametri)));
-
-               $QueryChiavi = 'SELECT fatture_passive.CHIAVE FROM' . $QueryPart[count($QueryPart) - 1];
-
-                if($Query = $PDODBase->query($QueryChiavi))
-                   while($Row = $Query->fetch(PDO::FETCH_ASSOC))
-                         array_push($ChiaviFatturePassive, $Row['CHIAVE']);
+                $Result = $this->FGetQueryResult($PDODBase,
+                                                'FatturePassive', 
+                                                'SelectSQL',
+                                                'SelectFatturePassive', 
+                                                get_object_vars($Parametri));
+                
+                if($Result)
+                    while($Row = $Result->fetch(PDO::FETCH_ASSOC))
+                      array_push($ChiaviFatturePassive, $Row['CHIAVE']);
             }
             
             if(count($ChiaviFatturePassive) > 100)

@@ -15,13 +15,13 @@
 
   class TRigaSaldo 
   {
-    public $LB_CODICE        = null;
+    public $LB_CODICE_CLIENTE        = null;
     public $LB_DESCRIZIONE_CLIENTE   = '';
     public $LB_SALDO                 = 0;
 
     function __construct($CodiceCliente, $RagioneSociale)
     {
-      $this->LB_CODICE      = $CodiceCliente;
+      $this->LB_CODICE_CLIENTE      = $CodiceCliente;
       $this->LB_DESCRIZIONE_CLIENTE = $RagioneSociale;
     }
   }
