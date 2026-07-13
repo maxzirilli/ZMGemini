@@ -96,6 +96,10 @@
 		{
 			"Name" : "Magazzini",
 			"SQL" : "SELECT * \n  FROM magazzini\n"
+		},
+		{
+			"Name" : "Contropartite",
+			"SQL" : "SELECT *\n  FROM contropartite\n"
 		}
 	],
 	"SelectSQL" : [

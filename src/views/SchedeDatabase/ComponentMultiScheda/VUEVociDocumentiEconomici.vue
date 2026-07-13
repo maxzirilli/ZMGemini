@@ -89,6 +89,7 @@
               <th style="width:1%;position: sticky; top: 0;"></th>
               <th style="width:1%;position: sticky; top: 0;"></th>
               <th style="width:1%;position: sticky; top: 0;"></th>
+              <th style="width:1%;position: sticky; top: 0;"></th>
             </tr>
           </thead>
           <tbody>
@@ -131,6 +132,10 @@
               <td style="padding:2px;border:1px solid #ddd;border-bottom:0; background-color:white">
                 <a v-if="Voce.Dati.Iva == 0 && Voce.Dati.Quantita != 0" @click="OnClickNaturaPagamento(Voce)" data-toggle="class" style="font-size:17px;color:#fb6b5b; cursor:pointer;margin-top:5px;margin-left:8px" 
                 :title="GetDescrizioneNaturaPagamento(Voce.Dati.NaturaPagamento)"><i class="fa fa-align-justify"></i></a>
+              </td>
+              <td style="padding:2px;border:1px solid #ddd;border-bottom:0; background-color:white">
+                <a @click="OnClickContropartita(Voce)" data-toggle="class" :style="{ fontSize:'17px', color: Voce.Dati.Contropartita == null || Voce.Dati.Contropartita == -1  ? '#fb6b5b' : '#8ec165' , cursor:'pointer', marginTop:'5px', marginLeft:'8px'}" 
+                :title="'Contropartita'"><i class="fa fa-file"></i></a>
               </td>
               <td style="padding:2px;border:1px solid #ddd;border-bottom:0; background-color:white">
                 <a v-if="Voce.Dati.IdProdotto" @click="OnClickApriPopupDettaglioProdotto(Voce.Dati.IdProdotto)" data-toggle="class" style="font-size:17px;color:#008f39;cursor:pointer;margin-top:5px;margin-left:8px" title="Info prodotto"><i class="fa fa-info-circle"></i></a>
@@ -345,6 +350,52 @@
     </template>
             
 
+  </VUEModal>
+
+  <VUEModal v-if="PopupContropartita.Visibile" :PathLogo="require('@/assets/images/LogoGemini2.png')"
+             :Programma="NomeProgramma" :Titolo="'Contropartite'" :Altezza="'500px'" :Larghezza="'1200px'" @onClickChiudiModal="PopupContropartita.Visibile=false">
+    <template v-slot:Body>
+        <label style="float:left;margin-left:10px; margin-top:7px;font-weight:bold;font-size:15px;width:30%">Cerca per descrizione </label>
+        <div style="width:1%;float:left">&nbsp;</div>
+        <input type="text" style="width:100%;float:left" class="input-sm form-control" placeholder="Cerca per descrizione" v-model="FiltroContropartiteDescrizione">
+        <div style="clear:both;width:1%;height:3px">&nbsp;</div>
+      <table class="table table-striped b-t b-light" style="width:100%;">
+        <thead style="height: 40px;">  
+            <tr>
+              <th style="position:sticky; width:5%; border:1px solid #ddd; top: 0; background-color:#3B9C9C"></th>
+              <th style="position:sticky; width:7%; top: 0; border:1px solid #ddd; font-size:16px; color:white; background-color:#3B9C9C">Codice</th>
+              <th style="position:sticky; width:7%; top: 0; border:1px solid #ddd; font-size:16px; color:white; background-color:#3B9C9C">Contropartita</th> 
+            </tr>
+        </thead>
+        <tbody>
+          <template v-for="Contropartita in ContropartiteFiltrate" :key="Contropartita.CHIAVE">
+            <tr>
+              <td style="width:2%; padding:2px; border:1px solid #ddd; border-bottom:0; background-color:white;font-size:16px;text-align:center;vertical-align: middle;"> 
+                <input type="radio" 
+                       name="RadioContropartita"
+                       :checked="PopupContropartita.ContropartitaSelezionata == Contropartita.CHIAVE"
+                       @click="DeselezionaContropartita(Contropartita.CHIAVE)"/>
+              </td>
+              <td style="width:12%; padding:2px; border:1px solid #ddd; border-bottom:0; background-color:white;font-size:16px;vertical-align: middle;"> 
+                {{ Contropartita.CODICE }}
+              </td>
+              <td style="width:90%; padding:2px; border:1px solid #ddd; border-bottom:0; background-color:white;font-size:16px;vertical-align: middle;"> 
+                {{ Contropartita.DESCRIZIONE }}
+              </td>
+            </tr>
+          </template>
+          <tr v-if="ContropartiteFiltrate.length == NumeroMassimoContropartite">
+            <td colspan="7" style="padding:2px;border:1px solid #ddd; border-bottom:0; background-color:white;font-size:16px;text-align:right;vertical-align: middle;color:red">
+              Sono presenti piu di 100 contropartite, usare la ricerca
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </template>
+    <template v-slot:Footer>
+     <button class="btn btn-danger" @click="PopupContropartita.Visibile = false" style="float:right;margin-right:20px;width:20%">Annulla</button>
+     <button class="btn btn-success" @click="OnClickConfermaModificaContropartita" style="float:right;margin-right:20px; width:20%">Conferma</button> 
+    </template>
   </VUEModal>
 
   <VUEModal v-if="PopupLsVociPreventiviPredefinite" :PathLogo="require('@/assets/images/LogoGemini2.png')"
@@ -625,7 +676,8 @@ export class TSingoloVociDocumentiEconomici
                DescrizioneFatturaAnticipo = '',
                NaturaPagamento = DEFAULT_NATURA_PAGAMENTO,
                IdProdotto,
-               NonCambiareIva = false)
+               NonCambiareIva = false,
+               Contropartita = -1)
    {
       this.Dati = {}
       this.Dati.Chiave                = Chiave;
@@ -641,6 +693,7 @@ export class TSingoloVociDocumentiEconomici
       this.Dati.Anticipo              = Anticipo
       this.DescrizioneFatturaAnticipo = DescrizioneFatturaAnticipo
       this.Dati.IdProdotto            = IdProdotto
+      this.Dati.Contropartita         = Contropartita
       this.NonCambiareIva             = NonCambiareIva
 
       if(Importo)
@@ -714,6 +767,7 @@ export class TSingoloVociDocumentiEconomici
                         ID_FATTURA_ANTICIPO  : (this.Dati.Anticipo == undefined || this.Dati.Anticipo == null) ? null : TSchedaGenerica.PrepareForRecordInteger(this.Dati.Anticipo),
                         NATURA_PAGAMENTO     : TSchedaGenerica.PrepareForRecordInteger(this.Dati.NaturaPagamento),
                         ID_PRODOTTO          : TSchedaGenerica.PrepareForRecordListIndex(this.Dati.IdProdotto),
+                        ID_CONTROPARTITA     : TSchedaGenerica.PrepareForRecordListIndex(this.Dati.Contropartita),
                       }
      if(this.Dati.Chiave == -1 && !this.Dati.DaEliminare)
      {
@@ -988,7 +1042,9 @@ export class TSchedaVociDocumentiEconomici
                                                                                  null, 
                                                                                  '',
                                                                                  IsDDT? this.NaturaPagamentoSuggerita     : LsVociSorgente[i].Dati.NaturaPagamento,
-                                                                                 IsDDT? LsVociSorgente[i].Dati.IdProdotto : LsVociSorgente[i].Dati.IdProdotto)
+                                                                                 IsDDT? LsVociSorgente[i].Dati.IdProdotto : LsVociSorgente[i].Dati.IdProdotto,
+                                                                                 false,
+                                                                                 this.GetContropartitaDaVoceOProdotto(LsVociSorgente[i]))
 
           this.SetAltezzaTextarea(SingoloVociDocumentiEconomici)
           this.LsVociDocumentiEconomici.push(SingoloVociDocumentiEconomici)
@@ -1007,7 +1063,7 @@ export class TSchedaVociDocumentiEconomici
       this.CalcoloTotaliFattura()
    }
 
-   AggiungiVoce(Chiave, Descrizione, Importo, Quantita, Importo_Ivato, Iva, Sconto, IdDocumento, UnitaDiMisura, CodiceProdotto, Anticipo, DescrizioneFatturaAnticipo, NaturaPagamento, IdProdotto)
+   AggiungiVoce(Chiave, Descrizione, Importo, Quantita, Importo_Ivato, Iva, Sconto, IdDocumento, UnitaDiMisura, CodiceProdotto, Anticipo, DescrizioneFatturaAnticipo, NaturaPagamento, IdProdotto, IdContropartita)
    {
       let SingoloVociDocumentiEconomici = new TSingoloVociDocumentiEconomici(Chiave, 
                                                                             Descrizione, 
@@ -1022,9 +1078,34 @@ export class TSchedaVociDocumentiEconomici
                                                                             Anticipo, 
                                                                             DescrizioneFatturaAnticipo, 
                                                                             NaturaPagamento,
-                                                                            IdProdotto)
+                                                                            IdProdotto,
+                                                                            false,
+                                                                            IdContropartita)
       this.SetAltezzaTextarea(SingoloVociDocumentiEconomici)
       this.LsVociDocumentiEconomici.push(SingoloVociDocumentiEconomici)
+   }
+
+   GetContropartita(ChiaveProdotto)
+   {  
+      for (let i = 0; i < SystemInformation.Configurazioni.Prodotti.length ; i++)
+      {
+        let Prodotto = SystemInformation.Configurazioni.Prodotti[i]
+        
+        if(Prodotto.CHIAVE == ChiaveProdotto)
+          return Prodotto.ID_CONTROPARTITA
+      }
+      return -1
+   }
+
+   GetContropartitaDaVoceOProdotto(Voce)
+   {
+      let Contropartita = Voce.Dati.Contropartita
+      if(Contropartita == undefined || Contropartita == null)
+      {
+        if(Voce.Dati.IdProdotto >= 0)
+          Contropartita = this.GetContropartita(Voce.Dati.IdProdotto)
+      }
+      return Contropartita
    }
 
    SetSoluzioniApprovate(LsSoluzioniAccettate)
@@ -1065,7 +1146,8 @@ export class TSchedaVociDocumentiEconomici
                             null, 
                             '',
                             Voce.Dati.NaturaPagamento,
-                            TSchedaGenerica.DisponiFromListIndex(Voce.Dati.IdProdotto))
+                            TSchedaGenerica.DisponiFromListIndex(Voce.Dati.IdProdotto),
+                            Voce.Dati.Contropartita)
         }
       }
       this.CalcoloTotaliFattura()
@@ -1112,7 +1194,8 @@ export class TSchedaVociDocumentiEconomici
                           LsVociDocumentiEconomici[i].ID_FATTURA_ANTICIPO == undefined ? null : parseInt(LsVociDocumentiEconomici[i].ID_FATTURA_ANTICIPO),
                           LsVociDocumentiEconomici[i].DESCR_FATTURA_ANTICIPO,
                           LsVociDocumentiEconomici[i].NATURA_PAGAMENTO,
-                          TSchedaGenerica.DisponiFromListIndex(LsVociDocumentiEconomici[i].ID_PRODOTTO))
+                          TSchedaGenerica.DisponiFromListIndex(LsVociDocumentiEconomici[i].ID_PRODOTTO),
+                          TSchedaGenerica.DisponiFromListIndex(LsVociDocumentiEconomici[i].ID_CONTROPARTITA))
       }
       this.CalcoloTotaliFattura()
    }
@@ -1328,19 +1411,28 @@ export default {
                                                      NaturaSelezionata      : -1,
                                                      VoceInModifica         : null, 
                                                   },
+              PopupContropartita                : {
+                                                     Visibile                 : false,
+                                                     ContropartitaSelezionata : null,
+                                                     VoceInModifica           : null, 
+                                                  },
               VecchiaNaturaPagamento            : -1, 
+              VecchiaContropartita              : -1, 
               PopupCondPagamentoNonOmogeneeNeiPreventiviCaricati : false,                                  
               ListaProdotti                     : [],
               ListaProdottiVariazPrezzo         : [],
               LsNaturaPagamento                 : TZFatturaElettronica.GetLsNaturaPagamenti(),
+              LsContropartite                   : SystemInformation.Configurazioni.Contropartite,
               ListaVociPreventiviPredefinite    : [],
               ListaPreventivi                   : [],
               ListaDDT                          : [],
               ListaFatture                      : [],
               FiltroProdottiCodice              : '',
               FiltroProdottiDescrizione         : '',
+              FiltroContropartiteDescrizione    : '',
               CercaPerSottostringaCodice        : false,
               NumeroMassimoProdotti             : 100,
+              NumeroMassimoContropartite        : 100,
               DallaData                         : TZDateFunct.DateInHTMLInputFormat(new Date('January 01,' + (new Date().getFullYear()))),
               AllaData                          : TZDateFunct.DateInHTMLInputFormat(new Date()),
               CostantePagamentoBollo            : PAGAMENTO_BOLLO,
@@ -1546,6 +1638,31 @@ export default {
           return ListaRighe
         }
       }
+    },
+
+    ContropartiteFiltrate:
+    {
+      get()
+      {
+        var Filtro = (this.FiltroContropartiteDescrizione || '').toUpperCase().trim();
+
+        if(Filtro == '')
+          return this.LsContropartite.slice(0, this.NumeroMassimoContropartite);
+
+        var Parole = Filtro.split(' ');
+        var ListaRighe = this.LsContropartite.filter((Contropartita) =>
+        {
+          var Codice = (Contropartita.CODICE || '').toUpperCase();
+          var Descrizione = (Contropartita.DESCRIZIONE || '').toUpperCase();
+
+          return Parole.every(Parola =>
+          {
+            return Codice.includes(Parola) || Descrizione.includes(Parola);
+          });
+        });
+
+        return ListaRighe.slice(0, this.NumeroMassimoContropartite);
+      }
     }
   },
 
@@ -1749,6 +1866,21 @@ export default {
         this.PopupNaturaPagamento.NaturaSelezionata = Voce.Dati.NaturaPagamento
     },
 
+    OnClickContropartita(Voce)
+    {
+      this.PopupContropartita.Visibile = true
+      this.PopupContropartita.VoceInModifica = Voce
+      this.PopupContropartita.ContropartitaSelezionata = Voce.Dati.Contropartita ?? null
+      this.VecchiaContropartita = Voce.Dati.Contropartita
+    },
+
+    DeselezionaContropartita(Valore)
+    {
+      if(this.PopupContropartita.ContropartitaSelezionata == Valore)
+        this.PopupContropartita.ContropartitaSelezionata = null
+      else this.PopupContropartita.ContropartitaSelezionata = Valore
+    },
+
     GetDescrizioneNaturaPagamento(NaturaPagamento)
     {
       for(let i = 0; i < this.LsNaturaPagamento.length; i++)
@@ -1936,6 +2068,7 @@ export default {
                                                                         this.ListaProdotti[i].CHIAVE)
                                                                         
           InserimentoNuovaRiga.CalcoloTotale()
+          InserimentoNuovaRiga.Dati.Contropartita = this.ListaProdotti[i].ID_CONTROPARTITA ?? null
           this.CurrentSchedaVociDocumentiEconomici.LsVociDocumentiEconomici.push(InserimentoNuovaRiga)
           this.ListaProdotti[i].Presente = false
         }
@@ -1958,6 +2091,16 @@ export default {
     OnClickAnnullaNaturaPagamento()
     {
       this.PopupNaturaPagamento.Visibile = false
+    },
+
+    OnClickConfermaModificaContropartita()
+    {
+      this.PopupContropartita.VoceInModifica.Dati.Contropartita = this.PopupContropartita.ContropartitaSelezionata
+      this.PopupContropartita.Visibile = false
+      if(this.PopupContropartita.ContropartitaSelezionata != this.VecchiaContropartita)
+      {
+         this.$emit('onChange')
+      }
     },
 
     

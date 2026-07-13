@@ -1,0 +1,23 @@
+{
+	"RuoliAbilitati" : "",
+	"EditSQL" : [
+		{
+			"Name" : "Insert",
+			"SQL" : "INSERT INTO contropartite (CHIAVE,DESCRIZIONE,CODICE)\n     VALUES (:NewKey1,#DESCRIZIONE,#CODICE)\n"
+		},
+		{
+			"Name" : "Delete",
+			"SQL" : "DELETE FROM contropartite WHERE CHIAVE = :CHIAVE\n"
+		},
+		{
+			"Name" : "Update",
+			"SQL" : "UPDATE contropartite\n   SET DESCRIZIONE=#DESCRIZIONE,\n          CODICE = #CODICE\n WHERE CHIAVE = :CHIAVE\n"
+		}
+	],
+	"SelectSQL" : [
+		{
+			"Name" : "Tutto",
+			"SQL" : "SELECT * \n  FROM contropartite\n ORDER BY CODICE\n"
+		}
+]
+}

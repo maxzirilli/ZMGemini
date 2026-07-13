@@ -9,7 +9,7 @@ export const LOCALSTORAGE = {
                               TokenRememberMe : "XFG2lo",
                             }  
 
-export const NUMERO_VERSIONE_GEMINI = '0.000.000'
+export const NUMERO_VERSIONE_GEMINI = '1.100.000'
 export const NOME_PROGRAMMA = 'Gemini'
 
 export const TIPO_COMUNICAZIONI = { // uguale a php
@@ -521,6 +521,7 @@ class TSystemInformation
                                                         Settori                                 : self.AdvQuery.FindResults(Results,'Settori'),
                                                         Magazzini                               : self.AdvQuery.FindResults(Results,'Magazzini'),
                                                         Prodotti                                : self.AdvQuery.FindResults(Results,'Prodotti'),
+                                                        Contropartite                           : self.AdvQuery.FindResults(Results,'Contropartite'),
                                                         VociPreventiviPredefinite               : self.AdvQuery.FindResults(Results, 'VociPreventiviPredefinite'),
                                                         ContiCasse                              : self.AdvQuery.FindResults(Results,'ContiCasse'),
                                                     }

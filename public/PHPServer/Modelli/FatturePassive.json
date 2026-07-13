@@ -33,11 +33,11 @@
 		},
 		{
 			"Name" : "InserisciVoceFatturaPassiva",
-			"SQL" : "INSERT INTO voci_fatture_passive (CHIAVE,ID_FATTURA_PASSIVA, NUMERO_LINEA, QUANTITA, BENE_SERVIZIO, PREZZO,\n                                  SCONTO1, SCONTO2, SCONTO3, TOTALE, IVA, CODICE_ARTICOLO, ID_PRODOTTO)\n                          VALUES (:NewKey2,:NewKey1!CHIAVE_FATTURA_PASSIVA, :NUMERO_LINEA, :QUANTITA, \n                                  #BENE_SERVIZIO, :PREZZO, :SCONTO1,:SCONTO2,:SCONTO3, :TOTALE, :IVA, #CODICE_ARTICOLO, :ID_PRODOTTO)\n"
+			"SQL" : "INSERT INTO voci_fatture_passive (CHIAVE,ID_FATTURA_PASSIVA, NUMERO_LINEA, QUANTITA, BENE_SERVIZIO, PREZZO,\n                                  SCONTO1, SCONTO2, SCONTO3, TOTALE, IVA, CODICE_ARTICOLO, ID_PRODOTTO, ID_CONTROPARTITA)\n                          VALUES (:NewKey2,:NewKey1!CHIAVE_FATTURA_PASSIVA, :NUMERO_LINEA, :QUANTITA, \n                                  #BENE_SERVIZIO, :PREZZO, :SCONTO1,:SCONTO2,:SCONTO3, :TOTALE, :IVA, #CODICE_ARTICOLO, :ID_PRODOTTO, :ID_CONTROPARTITA)\n"
 		},
 		{
 			"Name" : "ModificaVoceFatturaPassiva",
-			"SQL" : "UPDATE voci_fatture_passive\n   SET NUMERO_LINEA = :NUMERO_LINEA,\n       QUANTITA = :QUANTITA,\n       BENE_SERVIZIO = #BENE_SERVIZIO,\n       PREZZO = :PREZZO,\n       SCONTO1 = :SCONTO1,\n       SCONTO2 = :SCONTO2,\n       SCONTO3 = :SCONTO3,\n       TOTALE = :TOTALE,\n       IVA = :IVA,\n       CODICE_ARTICOLO = #CODICE_ARTICOLO\nWHERE CHIAVE = :CHIAVE\n"
+			"SQL" : "UPDATE voci_fatture_passive\n   SET NUMERO_LINEA = :NUMERO_LINEA,\n       QUANTITA = :QUANTITA,\n       BENE_SERVIZIO = #BENE_SERVIZIO,\n       PREZZO = :PREZZO,\n       SCONTO1 = :SCONTO1,\n       SCONTO2 = :SCONTO2,\n       SCONTO3 = :SCONTO3,\n       TOTALE = :TOTALE,\n       IVA = :IVA,\n       CODICE_ARTICOLO = #CODICE_ARTICOLO,\n       ID_CONTROPARTITA = :ID_CONTROPARTITA\nWHERE CHIAVE = :CHIAVE\n"
 		},
 		{
 			"Name" : "EliminaVoceFatturaPassiva",

@@ -93,6 +93,7 @@ export const TIdSideMenu =
    CFG_ESITO_SORVEGLIANZA          : 61,
    CFG_MAGAZZINI                   : 62,
    AMM_AZIONI                      : 63,
+   CFG_CONTROPARTITE               : 64,
 
 }
 
@@ -144,6 +145,8 @@ export default
                                                                     break;
             case TIdSideMenu.CFG_ZONE                             : this.$router.push('/appMainWindow/ConfigurazioneZone');
                                                                     break;                                                       
+            case TIdSideMenu.CFG_CONTROPARTITE                    : this.$router.push('/appMainWindow/ConfigurazioneContropartite');
+                                                                    break; 
             case TIdSideMenu.ATTR_TECNICHE                        : this.$router.push('/appMainWindow/AttrTecniche');
                                                                     break;   
             case TIdSideMenu.ATTR_PREZZI_ORDINARI                 : this.$router.push('/appMainWindow/PrezziOrdinariAttr');

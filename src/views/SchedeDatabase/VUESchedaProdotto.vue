@@ -190,7 +190,10 @@
                       class="form-control" />
         </div>
 
-        
+        <div style="float:left; width:19%; margin-top:1%;">
+          <label style="font-weight:bold;">Contropartita</label>
+          <VUEInputContropartita v-model="SchedaProdotto.Dati.ID_CONTROPARTITA"/>
+        </div>
 
        </div>
 
@@ -298,6 +301,7 @@
  import VUEModal from '../../../../../../../../Librerie/VUE/TemplateGestionale/VUEModal.vue';
  import { TZImageFunct } from '../../../../../../../../Librerie/VUE/ZImageFunct.js';
  import { TZEAN13 } from '../../../../../../../../Librerie/VUE/ZEAN13Funct.js'
+ import VUEInputContropartita from '@/components/InputComponents/VUEInputContropartita.vue';
  
 
  export class TSchedaProdotto extends TSchedaGenerica
@@ -347,6 +351,7 @@
                                                   PREZZO_ULTIMO_ACQUISTO  : TSchedaGenerica.PrepareForRecordInteger(this.Dati.PREZZO_ULTIMO_ACQUISTO * 100),
                                                   QUANTITA_SUGGERITA      : TSchedaGenerica.PrepareForRecordInteger(this.Dati.QUANTITA_SUGGERITA),
                                                   PRODOTTO_COMPOSTO       : TSchedaGenerica.PrepareForRecordBoolean(this.Dati.PRODOTTO_COMPOSTO),
+                                                  ID_CONTROPARTITA        : TSchedaGenerica.PrepareForRecordListIndex(this.Dati.ID_CONTROPARTITA),
                                                   IMG_PRODOTTO            : this.Dati.ImmagineProdotto,
                                                   BARCODE                 : this.Dati.BARCODE == '' ? null : TSchedaGenerica.PrepareForRecordString(this.Dati.BARCODE),
                                               }
@@ -616,6 +621,7 @@
                                                                 QUANTITA_SUGGERITA               : TSchedaGenerica.DisponiFromInteger(ArrayInfo[0].QUANTITA_SUGGERITA),                                                               
                                                                 DATA_ULTIMO_ACQUISTO             : TSchedaGenerica.DisponiFromDate(ArrayInfo[0].DATA_ULTIMO_ACQUISTO),                                                               
                                                                 PRODOTTO_COMPOSTO                : TSchedaGenerica.DisponiFromBoolean(ArrayInfo[0].PRODOTTO_COMPOSTO),
+                                                                ID_CONTROPARTITA                 : TSchedaGenerica.DisponiFromListIndex(ArrayInfo[0].ID_CONTROPARTITA),
                                                                 ModificaTabellaProdottiMontaggio : false,
                                                                 ListaMagazzini                   : [],
                                                                 ImmagineProdotto                 : ArrayInfo[0].IMG_PRODOTTO,
@@ -680,6 +686,7 @@
                       QUANTITA_SUGGERITA               : 1,
                       IVA                              : SystemInformation.Configurazioni.Impostazioni.IVA_SUGGERITA / 10,
                       PRODOTTO_COMPOSTO                : false,
+                      ID_CONTROPARTITA                 : -1,
                       ModificaTabellaProdottiMontaggio : false,
                       ListaMagazzini                   : this.GetMagazziniDefault(),
                       ImmagineProdotto                 : '',
@@ -760,6 +767,7 @@
       VUELogProdotti,
       VUEDataTable,
       VUEModal,
+      VUEInputContropartita,
     },
     data()
     {

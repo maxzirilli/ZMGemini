@@ -271,6 +271,13 @@ export default
                                       IconCfgExpanded : "fa-angle-up", 
                                       IconCfgShrinked : "fa-angle-down"
                                     });
+            AMenu2.AddChild("Contropartite",
+                                    { 
+                                      IdMenu          : TIdSideMenu.CFG_CONTROPARTITE, 
+                                      IconCfg         : "fa-angle-right", 
+                                      IconCfgExpanded : "fa-angle-up", 
+                                      IconCfgShrinked : "fa-angle-down"
+                                    });
             AMenu2.AddChild("Fattura elettronica",
                                     { 
                                       IdMenu          : TIdSideMenu.CFG_FATTURA_ELETTRONICA, 

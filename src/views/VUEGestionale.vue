@@ -39,6 +39,7 @@
                 <VUEAppContentCfgSettori              v-if="Pages.Settori" NomeModello="Settori" :Altezza="Altezza" />
                 <VUEAppContentCfgMagazzini            v-if="Pages.Magazzini" NomeModello="Magazzini" :Altezza="Altezza" />
                 <VUEAppContentCfgZone                 v-if="Pages.Zone" NomeModello="Zone" :Altezza="Altezza" />
+                <VUEAppContentCfgContropartite        v-if="Pages.Contropartite" NomeModello="Contropartite" :Altezza="Altezza" />
                 <VUEAppContentGestioneUtenti          v-if="Pages.GestioneUtenti" :Altezza="Altezza"></VUEAppContentGestioneUtenti>
                 <VUEAppContentGestioneMessaggi        v-if="Pages.GestioneMessaggi" :Altezza="Altezza"></VUEAppContentGestioneMessaggi>
                 <VUEAppContentAggiungiMessaggio       v-if="Pages.AggiungiMessaggio" :Altezza="Altezza"></VUEAppContentAggiungiMessaggio>
@@ -83,6 +84,7 @@ import VUEAppContentCfgPannelloAmministratore from './ContentPages/VUEAppContent
 import VUEAppContentAmmEsportaSdI from './ContentPages/VUEAppContentAmmEsportaSdI.vue';
 import VUEAppContentAmmEsportaManualmente from './ContentPages/VUEAppContentAmmEsportaManualmente.vue';
 import VUEAppContentCfgZone from '@/views/ContentPages/VUEAppContentCfgZone.vue';
+import VUEAppContentCfgContropartite from './ContentPages/VUEAppContentCfgContropartite.vue';
 import VUEAppContentCfgSettori from '@/views/ContentPages/VUEAppContentCfgSettori.vue';
 import VUEAppContentCfgMagazzini from '@/views/ContentPages/VUEAppContentCfgMagazzini.vue';
 import { TSchedaGenerica } from '../../../../../../../Librerie/VUE/ZSchedaGenerica.js'
@@ -141,6 +143,7 @@ export default
                                           Magazzini                 : false, 
                                           TecniciCorsi              : false, 
                                           Zone                      : false, 
+                                          Contropartite             : false,
                                           VersioneGemini            : false, 
                                           GestioneUtenti            : false,
                                           GestioneMessaggi          : false,
@@ -172,6 +175,7 @@ export default
       VUEAppAzioniAmministratore,
       VUEVersioneGemini,
       VUEAppContentCfgZone,
+      VUEAppContentCfgContropartite,
       VUEAppContentCfgSettori,
       VUEAppContentCfgMagazzini,
       VUEAppContentAmmEsportaSdI,
@@ -284,6 +288,8 @@ export default
         if(this.Pages.Magazzini) this.TitoloPagina = 'Magazzini';
         this.Pages.Zone = this.$route.params.pagina == 'ConfigurazioneZone';
         if(this.Pages.Zone) this.TitoloPagina = 'Zone';
+        this.Pages.Contropartite = this.$route.params.pagina == 'ConfigurazioneContropartite';
+        if(this.Pages.Contropartite) this.TitoloPagina = 'Contropartite';
         this.Pages.GestioneUtenti = this.$route.params.pagina == 'GestioneUtenti';
         if(this.Pages.GestioneUtenti) this.TitoloPagina = 'Gestione utenti';
         this.Pages.GestioneMessaggi = this.$route.params.pagina == 'GestioneMessaggi';

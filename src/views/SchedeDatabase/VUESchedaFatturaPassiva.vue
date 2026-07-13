@@ -344,6 +344,14 @@ export class TSchedaFatturaPassiva extends TSchedaGenerica
                               TZDTableColumnType.typCentesimi,
                               'IVA',
                               "7%");
+    Colonna = this.DataTable.AddColumn('Contropartita',
+                                        TZDTableColumnType.typSelect,
+                                        'ID_CONTROPARTITA',
+                                        "13%");
+    Colonna.Lista               = SystemInformation.Configurazioni.Contropartite
+    Colonna.DefaultValue        = -1;
+    Colonna.ValueNullForSelect  = -1;
+    Colonna.Autocomplete        = true
     // this.DataTable.AddColumn('Note',
     //                           TZDTableColumnType.typString,
     //                           'NOTE',

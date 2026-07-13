@@ -258,6 +258,7 @@ class TAdvQueryAcquisisciFattura extends TAdvQuery
             $Parametri['BENE_SERVIZIO']          = $SingolaVoce->Descrizione;
             $Parametri['PREZZO']                 = (int)($SingolaVoce->PrezzoUnitario * 1000);
             $Parametri['CODICE_ARTICOLO']        = $SingolaVoce->CodiceArticolo;
+            $Parametri['ID_CONTROPARTITA']       = null;
             $Parametri['SCONTO1']                = 0;
             $Parametri['SCONTO2']                = 0;
             $Parametri['SCONTO3']                = 0;
