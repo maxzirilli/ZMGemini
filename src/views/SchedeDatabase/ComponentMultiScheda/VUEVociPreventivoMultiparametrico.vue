@@ -220,7 +220,9 @@
                         <th style="width:2%;position: sticky; top: 0;">Qnt.</th>
                         <th style="width:6%;position: sticky; top: 0;">Importo</th>
                         <th style="width:3%;position: sticky; top: 0;">IVA</th>
-                        <th style="width:3%;position: sticky; top: 0;">Sc. [%]</th>
+                        <th style="width:3%;position: sticky; top: 0;">Sc. 1 [%]</th>
+                        <th style="width:3%;position: sticky; top: 0;">Sc. 2 [%]</th>
+                        <th style="width:3%;position: sticky; top: 0;">Sc. 3 [%]</th>
                         <th style="width:4%;position: sticky; top: 0;">Tot</th>
                         <th style="width:1%;position: sticky; top: 0;"></th>
                         <th style="width:1%;position: sticky; top: 0;"></th>
@@ -252,6 +254,12 @@
                         </td>
                         <td style="padding:2px;border:1px solid #ddd;border-bottom:0; background-color:white">
                           <input :readonly="IsDiventatoConfermaDOrdine || Disabilitato" type="number" @input="OnInputValori(Voce), OnEmitVociFattura(Voce)" class="form-control" v-model="Voce.Dati.Sconto" />
+                        </td>
+                        <td style="padding:2px;border:1px solid #ddd;border-bottom:0; background-color:white">
+                          <input :readonly="IsDiventatoConfermaDOrdine || Disabilitato" type="number" @input="OnInputValori(Voce), OnEmitVociFattura(Voce)" class="form-control" v-model="Voce.Dati.Sconto2" />
+                        </td>
+                        <td style="padding:2px;border:1px solid #ddd;border-bottom:0; background-color:white">
+                          <input :readonly="IsDiventatoConfermaDOrdine || Disabilitato" type="number" @input="OnInputValori(Voce), OnEmitVociFattura(Voce)" class="form-control" v-model="Voce.Dati.Sconto3" />
                         </td>
                         <td style="padding:2px;border:1px solid #ddd;border-bottom:0; background-color:white">
                           <input readonly type="number" class="form-control" v-model="Voce.DatiTotale.Totale" @input="OnEmitVociFattura(Voce)" />
@@ -347,7 +355,7 @@ const DEFAULT_NATURA_PAGAMENTO = TZFattElettronicaNaturaPagamenti.natInversioneC
 export class TVoceSoluzionePreventivoMultiparametrico
 {   
     constructor(Chiave, IdSoluzione, IdPreventivo, Descrizione, Importo, Quantita, Iva, 
-                Sconto, UnitaDiMisura, CodiceProdotto = '', NaturaPagamento = DEFAULT_NATURA_PAGAMENTO, IdProdotto)
+                Sconto, UnitaDiMisura, CodiceProdotto = '', NaturaPagamento = DEFAULT_NATURA_PAGAMENTO, IdProdotto, Sconto2 = 0, Sconto3 = 0)
     {
         this.Dati = {}
         this.Dati.Chiave                = Chiave;
@@ -355,7 +363,9 @@ export class TVoceSoluzionePreventivoMultiparametrico
         this.Dati.Imponibile            = Importo
         this.Dati.Quantita              = Quantita
         this.Dati.Iva                   = Iva
-        this.Dati.Sconto                = Sconto
+        this.Dati.Sconto                = this.__NormalizzaSconto(Sconto)
+        this.Dati.Sconto2               = this.__NormalizzaSconto(Sconto2)
+        this.Dati.Sconto3               = this.__NormalizzaSconto(Sconto3)
         this.Dati.IdSoluzione           = IdSoluzione
         this.Dati.IdPreventivo          = IdPreventivo
         this.Dati.UnitaDiMisura         = UnitaDiMisura
@@ -397,9 +407,27 @@ export class TVoceSoluzionePreventivoMultiparametrico
    {
       this.DatiTotale.Totale       = 0
 
-      this.DatiTotale.Totale       = this.Dati.Quantita * (this.Dati.Imponibile - (this.Dati.Imponibile * this.Dati.Sconto / 100))
+      this.DatiTotale.Totale       = this.Dati.Quantita * this.Dati.Imponibile * this.GetCoefficienteSconto()
 
       this.DatiTotale.Totale       = parseFloat((this.DatiTotale.Totale).toFixed(2))
+    }
+
+    GetCoefficienteSconto()
+    {
+      this.Dati.Sconto  = this.__NormalizzaSconto(this.Dati.Sconto)
+      this.Dati.Sconto2 = this.__NormalizzaSconto(this.Dati.Sconto2)
+      this.Dati.Sconto3 = this.__NormalizzaSconto(this.Dati.Sconto3)
+
+      return (1 - this.Dati.Sconto / 100) *
+             (1 - this.Dati.Sconto2 / 100) *
+             (1 - this.Dati.Sconto3 / 100)
+    }
+
+    __NormalizzaSconto(Sconto)
+    {
+      if(Sconto == undefined || Sconto == null || Sconto == '')
+        return 0
+      return parseFloat(Sconto)
     }
 
 
@@ -416,6 +444,8 @@ export class TVoceSoluzionePreventivoMultiparametrico
                           QUANTITA             : TSchedaGenerica.PrepareForRecordInteger(this.Dati.Quantita * 100),
                           IVA                  : TSchedaGenerica.PrepareForRecordInteger(this.Dati.Iva * 100),
                           SCONTO               : TSchedaGenerica.PrepareForRecordInteger(this.Dati.Sconto * 100),
+                          SCONTO2              : TSchedaGenerica.PrepareForRecordInteger(this.Dati.Sconto2 * 100),
+                          SCONTO3              : TSchedaGenerica.PrepareForRecordInteger(this.Dati.Sconto3 * 100),
                           CODICE_PRODOTTO      : TSchedaGenerica.PrepareForRecordString(this.Dati.CodiceProdotto),
                           NATURA_PAGAMENTO     : TSchedaGenerica.PrepareForRecordInteger(this.Dati.NaturaPagamento),
                           ID_PRODOTTO          : TSchedaGenerica.PrepareForRecordListIndex(this.Dati.IdProdotto),
@@ -750,7 +780,7 @@ export class TSchedaVociPreventivoMultiparametrico
       ListaVociSoluzione.forEach(function(AVoce)
       {
         if(!AVoce.Dati.DaEliminare)
-           GetIva(AVoce.Dati.Iva).SommaImponibile += parseFloat((AVoce.Dati.Quantita * (AVoce.Dati.Imponibile - (AVoce.Dati.Imponibile * AVoce.Dati.Sconto / 100))).toFixed(2))
+           GetIva(AVoce.Dati.Iva).SommaImponibile += parseFloat((AVoce.Dati.Quantita * AVoce.Dati.Imponibile * AVoce.GetCoefficienteSconto()).toFixed(2))
       })
       LsIva.forEach(function(Elemento)
       {
@@ -1004,7 +1034,9 @@ export class TSchedaVociPreventivoMultiparametrico
                                                                                            LsSezioni[i].NATURA_PAGAMENTO == -1? 
                                                                                             DEFAULT_NATURA_PAGAMENTO : 
                                                                                             TSchedaGenerica.DisponiFromListIndex(LsSezioni[i].NATURA_PAGAMENTO),
-                                                                                           TSchedaGenerica.DisponiFromListIndex(LsSezioni[i].ID_PRODOTTO))
+                                                                                           TSchedaGenerica.DisponiFromListIndex(LsSezioni[i].ID_PRODOTTO),
+                                                                                           TSchedaGenerica.DisponiFromInteger(LsSezioni[i].SCONTO2) / 100,
+                                                                                           TSchedaGenerica.DisponiFromInteger(LsSezioni[i].SCONTO3) / 100)
 
           InserimentoNuovaSoluzione.Dati.LsVociSoluzioni.push(InserimentoNuovaVoceSoluzione)
           InserimentoNuovaVoceSoluzione.CalcoloTotale()
@@ -1038,7 +1070,9 @@ export class TSchedaVociPreventivoMultiparametrico
                                                                                                             LsSezioni[i].NATURA_PAGAMENTO == -1? 
                                                                                                               DEFAULT_NATURA_PAGAMENTO : 
                                                                                                               TSchedaGenerica.DisponiFromListIndex(LsSezioni[i].NATURA_PAGAMENTO),
-                                                                                                            TSchedaGenerica.DisponiFromListIndex(LsSezioni[i].ID_PRODOTTO))
+                                                                                                            TSchedaGenerica.DisponiFromListIndex(LsSezioni[i].ID_PRODOTTO),
+                                                                                                            TSchedaGenerica.DisponiFromInteger(LsSezioni[i].SCONTO2) / 100,
+                                                                                                            TSchedaGenerica.DisponiFromInteger(LsSezioni[i].SCONTO3) / 100)
 
               InserimentoNuovaSoluzioneDaSoluzione.Dati.LsVociSoluzioni.push(InserimentoUnaNuovaVoceSoluzioneDaSoluzione)
               InserimentoUnaNuovaVoceSoluzioneDaSoluzione.CalcoloTotale()
@@ -1072,7 +1106,9 @@ export class TSchedaVociPreventivoMultiparametrico
                                                                                                       LsSezioni[i].NATURA_PAGAMENTO == -1? 
                                                                                                         DEFAULT_NATURA_PAGAMENTO : 
                                                                                                         TSchedaGenerica.DisponiFromListIndex(LsSezioni[i].NATURA_PAGAMENTO),
-                                                                                                      TSchedaGenerica.DisponiFromListIndex(LsSezioni[i].ID_PRODOTTO))
+                                                                                                      TSchedaGenerica.DisponiFromListIndex(LsSezioni[i].ID_PRODOTTO),
+                                                                                                      TSchedaGenerica.DisponiFromInteger(LsSezioni[i].SCONTO2) / 100,
+                                                                                                      TSchedaGenerica.DisponiFromInteger(LsSezioni[i].SCONTO3) / 100)
 
                   this.LsSezioniPreventivoMultiparametrico[j].Dati.LsSoluzioni[k].Dati.LsVociSoluzioni.push(InserimentoUnaNuovaVoceSoluzione)
                   InserimentoUnaNuovaVoceSoluzione.CalcoloTotale()

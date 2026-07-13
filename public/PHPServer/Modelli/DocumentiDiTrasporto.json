@@ -15,11 +15,11 @@
 		},
 		{
 			"Name" : "InserisciVoce",
-			"SQL" : "INSERT INTO voci_ddt_uscenti (CHIAVE, ID_DDT, DESCRIZIONE, QUANTITA,\n                                              UNITA_DI_MISURA, ORDINAMENTO, IMPORTO, IVA, SCONTO, ID_PRODOTTO)\n                  VALUES (:NewKey2, :NewKey1!ID_DDT, #DESCRIZIONE, :QUANTITA,\n                               :UNITA_DI_MISURA, #ORDINAMENTO, :IMPORTO, :IVA, :SCONTO, :ID_PRODOTTO)\n"
+			"SQL" : "INSERT INTO voci_ddt_uscenti (CHIAVE, ID_DDT, DESCRIZIONE, QUANTITA,\n                                              UNITA_DI_MISURA, ORDINAMENTO, IMPORTO, IVA, SCONTO, SCONTO2, SCONTO3, ID_PRODOTTO)\n                  VALUES (:NewKey2, :NewKey1!ID_DDT, #DESCRIZIONE, :QUANTITA,\n                               :UNITA_DI_MISURA, #ORDINAMENTO, :IMPORTO, :IVA, :SCONTO, :SCONTO2, :SCONTO3, :ID_PRODOTTO)\n"
 		},
 		{
 			"Name" : "ModificaVoce",
-			"SQL" : "UPDATE voci_ddt_uscenti\n      SET DESCRIZIONE = #DESCRIZIONE,\n             QUANTITA = :QUANTITA,\n             ORDINAMENTO = :ORDINAMENTO,\n             UNITA_DI_MISURA = :UNITA_DI_MISURA,\n             IMPORTO = :IMPORTO,\n             IVA = :IVA,\n             SCONTO = :SCONTO\n WHERE CHIAVE = :CHIAVE\n"
+			"SQL" : "UPDATE voci_ddt_uscenti\n      SET DESCRIZIONE = #DESCRIZIONE,\n             QUANTITA = :QUANTITA,\n             ORDINAMENTO = :ORDINAMENTO,\n             UNITA_DI_MISURA = :UNITA_DI_MISURA,\n             IMPORTO = :IMPORTO,\n             IVA = :IVA,\n             SCONTO = :SCONTO,\n             SCONTO2 = :SCONTO2,\n             SCONTO3 = :SCONTO3\n WHERE CHIAVE = :CHIAVE\n"
 		},
 		{
 			"Name" : "EliminaVoce",

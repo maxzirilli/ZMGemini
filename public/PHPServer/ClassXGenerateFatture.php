@@ -161,6 +161,18 @@
                }
             }
 
+            private function FAddScontiVoce(&$NuovaVoce, $Row)
+            {
+               if(isset($Row['SCONTO']) && $Row['SCONTO'] != 0)
+                  $NuovaVoce->AddScontoPerc(($Row['SCONTO']) / 100);
+
+               if(isset($Row['SCONTO2']) && $Row['SCONTO2'] != 0)
+                  $NuovaVoce->AddScontoPerc(($Row['SCONTO2']) / 100);
+
+               if(isset($Row['SCONTO3']) && $Row['SCONTO3'] != 0)
+                  $NuovaVoce->AddScontoPerc(($Row['SCONTO3']) / 100);
+            }
+
             protected function FPrepareFattura($Chiave, &$Fattura, $PDODBase)
             {
                 $ModPagamento = 1;
@@ -291,8 +303,7 @@
                     if($Row['QUANTITA'] == 0)
                       $SomeIvaSuggerita = true;
                     $NuovaVoce->Udm = ($Row['DESCRIZIONE_UNITA_DI_MISURA']);
-                    if($Row['SCONTO'] != 0)
-                      $NuovaVoce->AddScontoPerc(($Row['SCONTO']) / 100);  
+                    $this->FAddScontiVoce($NuovaVoce, $Row);
 
                     $NuovaVoce->NatPagamVoce = $this->FGetCodeNaturaPagamento($Row['NATURA_PAGAMENTO']);
                             
@@ -409,8 +420,7 @@
                     else $NuovaVoce->PrezzoUnitario = ($Row['IMPORTO'])/ 100;
                     $NuovaVoce->IVA = $Row['QUANTITA'] == 0 ? $this->FIvaSuggerita : $Row['IVA'] / 100;
                     $NuovaVoce->Udm = ($Row['DESCRIZIONE_UNITA_DI_MISURA']);
-                    if($Row['SCONTO'] != 0)
-                       $NuovaVoce->AddScontoPerc(($Row['SCONTO']) / 100);          
+                    $this->FAddScontiVoce($NuovaVoce, $Row);
 
                     if($Row['QUANTITA'] == 0)
                        $SomeIvaSuggerita = true;
@@ -527,11 +537,9 @@
                       else $NuovaVoce->PrezzoUnitario = ($Row['IMPORTO'])/ 100;
                       $NuovaVoce->IVA = $Row['QUANTITA'] == 0 ? $this->FIvaSuggerita : $Row['IVA'] / 100;
                       $NuovaVoce->Udm = ($Row['DESCRIZIONE_UNITA_DI_MISURA']);
-                      $NuovaVoce->AddScontoPerc(($Row['SCONTO']) / 100);   
                       if($Row['QUANTITA'] == 0)
                         $SomeIvaSuggerita = true;
-                      if($Row['SCONTO'] != 0)
-                        $NuovaVoce->AddScontoPerc(($Row['SCONTO']) / 100);   
+                      $this->FAddScontiVoce($NuovaVoce, $Row);
                       
                       $NuovaVoce->NatPagamVoce = $this->FGetCodeNaturaPagamento($Row['NATURA_PAGAMENTO']);
                     }

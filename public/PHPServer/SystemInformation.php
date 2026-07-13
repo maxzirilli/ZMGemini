@@ -225,6 +225,15 @@ class TSystemInformation
 {
    public $ListaNaturaPagamento = array();
 
+   private static function GetCoefficienteSconto($Row)
+   {
+      $Sconto1 = isset($Row['SCONTO']) ? $Row['SCONTO'] / 100 : 0;
+      $Sconto2 = isset($Row['SCONTO2']) ? $Row['SCONTO2'] / 100 : 0;
+      $Sconto3 = isset($Row['SCONTO3']) ? $Row['SCONTO3'] / 100 : 0;
+
+      return (1 - $Sconto1 / 100) * (1 - $Sconto2 / 100) * (1 - $Sconto3 / 100);
+   }
+
    public static function GetDescrizioneNaturaPagamento($ChiaveNatura)
    {
       $ListaNaturaPagamento = GetLsNaturaPagamento();
@@ -334,14 +343,14 @@ class TSystemInformation
             {
                $Importo = ($Row['IMPORTO']/100) * 100 / (($Row['IVA']/100) + 100);
                if($Row['QUANTITA'] != 0)
-                  self::GetIva($Row['IVA'] / 100, $TotaliNota->LsIva, $CalcoloNaturaPagamento = $CalcoloNaturaPagamento, $NaturaPagamento = $Row['NATURA_PAGAMENTO'])->SommaImponibile += ($Row['QUANTITA']/100 * ($Importo - ($Importo * ($Row['SCONTO']/100) / 100)));
+                  self::GetIva($Row['IVA'] / 100, $TotaliNota->LsIva, $CalcoloNaturaPagamento = $CalcoloNaturaPagamento, $NaturaPagamento = $Row['NATURA_PAGAMENTO'])->SommaImponibile += ($Row['QUANTITA']/100 * $Importo * self::GetCoefficienteSconto($Row));
                if($Row['RITENUTA'])
                   $TotaliNota->Ritenuta = $Row['RITENUTA'] / 10;
             }
             else
             {
                if($Row['QUANTITA'] != 0)
-                  self::GetIva($Row['IVA'] / 100, $TotaliNota->LsIva, $CalcoloNaturaPagamento = $CalcoloNaturaPagamento, $NaturaPagamento = $Row['NATURA_PAGAMENTO'])->SommaImponibile += ($Row['QUANTITA']/100 * ($Row['IMPORTO']/100 - ($Row['IMPORTO']/100 * $Row['SCONTO']/100 / 100)));
+                  self::GetIva($Row['IVA'] / 100, $TotaliNota->LsIva, $CalcoloNaturaPagamento = $CalcoloNaturaPagamento, $NaturaPagamento = $Row['NATURA_PAGAMENTO'])->SommaImponibile += ($Row['QUANTITA']/100 * $Row['IMPORTO']/100 * self::GetCoefficienteSconto($Row));
                if($Row['RITENUTA'])
                   $TotaliNota->Ritenuta = $Row['RITENUTA']/10;
             }
@@ -417,14 +426,14 @@ class TSystemInformation
             {
                $Importo = ($Row['IMPORTO']/100) * 100 / (($Row['IVA']/100) + 100);
                if($Row['QUANTITA'] != 0)
-                  self::GetIva($Row['IVA']/100, $TotaliAutofattura->LsIva, $CalcoloNaturaPagamento = $CalcoloNaturaPagamento, $NaturaPagamento = $Row['NATURA_PAGAMENTO'])->SommaImponibile += ($Row['QUANTITA']/100 * ($Importo - ($Importo * ($Row['SCONTO']/100) / 100)));
+                  self::GetIva($Row['IVA']/100, $TotaliAutofattura->LsIva, $CalcoloNaturaPagamento = $CalcoloNaturaPagamento, $NaturaPagamento = $Row['NATURA_PAGAMENTO'])->SommaImponibile += ($Row['QUANTITA']/100 * $Importo * self::GetCoefficienteSconto($Row));
                if($Row['RITENUTA'])
                   $TotaliAutofattura->Ritenuta = $Row['RITENUTA'] / 10;
             }
             else
             {
                if($Row['QUANTITA'] != 0)
-                  self::GetIva($Row['IVA']/100, $TotaliAutofattura->LsIva, $CalcoloNaturaPagamento = $CalcoloNaturaPagamento, $NaturaPagamento = $Row['NATURA_PAGAMENTO'])->SommaImponibile += ($Row['QUANTITA']/100 * ($Row['IMPORTO']/100 - ($Row['IMPORTO']/100 * $Row['SCONTO']/100 / 100)));
+                  self::GetIva($Row['IVA']/100, $TotaliAutofattura->LsIva, $CalcoloNaturaPagamento = $CalcoloNaturaPagamento, $NaturaPagamento = $Row['NATURA_PAGAMENTO'])->SommaImponibile += ($Row['QUANTITA']/100 * $Row['IMPORTO']/100 * self::GetCoefficienteSconto($Row));
                if($Row['RITENUTA'])
                   $TotaliAutofattura->Ritenuta = $Row['RITENUTA']/10;
             }
@@ -475,14 +484,14 @@ class TSystemInformation
             {
                $Importo = ($Row['IMPORTO']/100) * 100 / (($Row['IVA']/100) + 100);
                if($Row['QUANTITA'] != 0)
-                  self::GetIva($Row['IVA']/100, $TotaliPreventivo->LsIva, $CalcoloNaturaPagamento = $CalcoloNaturaPagamento, $NaturaPagamento = $Row['NATURA_PAGAMENTO'])->SommaImponibile += ($Row['QUANTITA']/100 * ($Importo - ($Importo * ($Row['SCONTO']/100) / 100)));
+                  self::GetIva($Row['IVA']/100, $TotaliPreventivo->LsIva, $CalcoloNaturaPagamento = $CalcoloNaturaPagamento, $NaturaPagamento = $Row['NATURA_PAGAMENTO'])->SommaImponibile += ($Row['QUANTITA']/100 * $Importo * self::GetCoefficienteSconto($Row));
                if($Row['RITENUTA'])
                   $TotaliPreventivo->Ritenuta = $Row['RITENUTA'] / 10;
             }
             else
             {
                if($Row['QUANTITA'] != 0)
-                  self::GetIva($Row['IVA']/100, $TotaliPreventivo->LsIva, $CalcoloNaturaPagamento = $CalcoloNaturaPagamento, $NaturaPagamento = $Row['NATURA_PAGAMENTO'])->SommaImponibile += ($Row['QUANTITA']/100 * ($Row['IMPORTO']/100 - ($Row['IMPORTO']/100 * $Row['SCONTO']/100 / 100)));
+                  self::GetIva($Row['IVA']/100, $TotaliPreventivo->LsIva, $CalcoloNaturaPagamento = $CalcoloNaturaPagamento, $NaturaPagamento = $Row['NATURA_PAGAMENTO'])->SommaImponibile += ($Row['QUANTITA']/100 * $Row['IMPORTO']/100 * self::GetCoefficienteSconto($Row));
                if($Row['RITENUTA'])
                   $TotaliPreventivo->Ritenuta = $Row['RITENUTA']/10;
             }
@@ -530,7 +539,7 @@ class TSystemInformation
                $IdLastPreventivoMultiParametrico = $Row['ID_PREVENTIVO_MULTI'];
              }
                if($Row['QUANTITA'] != 0)
-                  self::GetIva($Row['IVA']/100, $TotaliPreventivoMultiparametrico->LsIva, $CalcoloNaturaPagamento = $CalcoloNaturaPagamento, $NaturaPagamento = $Row['NATURA_PAGAMENTO'])->SommaImponibile += ($Row['QUANTITA']/100 * ($Row['IMPORTO']/100 - ($Row['IMPORTO']/100 * $Row['SCONTO']/100 / 100)));
+                  self::GetIva($Row['IVA']/100, $TotaliPreventivoMultiparametrico->LsIva, $CalcoloNaturaPagamento = $CalcoloNaturaPagamento, $NaturaPagamento = $Row['NATURA_PAGAMENTO'])->SommaImponibile += ($Row['QUANTITA']/100 * $Row['IMPORTO']/100 * self::GetCoefficienteSconto($Row));
                if($Row['RITENUTA'])
                   $TotaliPreventivoMultiparametrico->Ritenuta = $Row['RITENUTA']/10;
           }
@@ -695,14 +704,14 @@ class TSystemInformation
             {
                $Importo = ($Row['IMPORTO']/100) * 100 / (($Row['IVA']/100) + 100);
                if($Row['QUANTITA'] != 0)
-                  self::GetIva($Row['IVA']/100, $TotaliFattura->LsIva, $CalcoloNaturaPagamento = $CalcoloNaturaPagamento, $NaturaPagamento = $Row['NATURA_PAGAMENTO'])->SommaImponibile += ($Row['QUANTITA']/100 * ($Importo - ($Importo * ($Row['SCONTO']/100) / 100)));
+                  self::GetIva($Row['IVA']/100, $TotaliFattura->LsIva, $CalcoloNaturaPagamento = $CalcoloNaturaPagamento, $NaturaPagamento = $Row['NATURA_PAGAMENTO'])->SommaImponibile += ($Row['QUANTITA']/100 * $Importo * self::GetCoefficienteSconto($Row));
                if($Row['RITENUTA'])
                   $TotaliFattura->Ritenuta = $Row['RITENUTA'] / 10;
             }
             else
             {
                if($Row['QUANTITA'] != 0)
-                  self::GetIva($Row['IVA']/100, $TotaliFattura->LsIva, $CalcoloNaturaPagamento = $CalcoloNaturaPagamento, $NaturaPagamento = $Row['NATURA_PAGAMENTO'])->SommaImponibile += ($Row['QUANTITA']/100 * ($Row['IMPORTO']/100 - ($Row['IMPORTO']/100 * ($Row['SCONTO']/100) / 100)));
+                  self::GetIva($Row['IVA']/100, $TotaliFattura->LsIva, $CalcoloNaturaPagamento = $CalcoloNaturaPagamento, $NaturaPagamento = $Row['NATURA_PAGAMENTO'])->SommaImponibile += ($Row['QUANTITA']/100 * $Row['IMPORTO']/100 * self::GetCoefficienteSconto($Row));
                if($Row['RITENUTA'])
                   $TotaliFattura->Ritenuta = $Row['RITENUTA'] / 10;
             }

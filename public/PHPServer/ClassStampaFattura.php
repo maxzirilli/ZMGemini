@@ -39,6 +39,8 @@
         public $LB_IVA = null;
         public $LB_UNITA = null;
         public $LB_SCONTO = null; 
+        public $LB_SCONTO2 = null; 
+        public $LB_SCONTO3 = null; 
         public $__InfoStyle = null;
       }
 
@@ -321,6 +323,8 @@
                     $DatiVoci->LB_IVA = "";
                     $DatiVoci->LB_UNITA = "";
                     $DatiVoci->LB_SCONTO = ""; 
+                    $DatiVoci->LB_SCONTO2 = ""; 
+                    $DatiVoci->LB_SCONTO3 = ""; 
                   }  
                   else
                   {
@@ -336,10 +340,16 @@
 
                       if($Row['SCONTO']  != 0)
                         $ImportoRiga *= 1 - $Row['SCONTO'] / 10000;
+                      if(isset($Row['SCONTO2']) && $Row['SCONTO2'] != 0)
+                        $ImportoRiga *= 1 - $Row['SCONTO2'] / 10000;
+                      if(isset($Row['SCONTO3']) && $Row['SCONTO3'] != 0)
+                        $ImportoRiga *= 1 - $Row['SCONTO3'] / 10000;
                       $DatiVoci->LB_IMPORTO = number_format($ImportoRiga,2, ',', '.');
                       $DatiVoci->LB_IVA = number_format(($Row['IVA']) / 100, 2, ',', '.');
                       $DatiVoci->LB_UNITA = ($Row['DESCRIZIONE_UNITA_DI_MISURA']);
                       $DatiVoci->LB_SCONTO = number_format((($Row['SCONTO']) / 100),2, ',', '.'); 
+                      $DatiVoci->LB_SCONTO2 = isset($Row['SCONTO2'])? number_format((($Row['SCONTO2']) / 100),2, ',', '.') : number_format(0,2, ',', '.'); 
+                      $DatiVoci->LB_SCONTO3 = isset($Row['SCONTO3'])? number_format((($Row['SCONTO3']) / 100),2, ',', '.') : number_format(0,2, ',', '.'); 
                   }
                   array_push($Result->QRSubDetail1,$DatiVoci);
                 }

@@ -21,6 +21,19 @@
           <div class="col-md-12" style="background-color: #b3dbff;">
                 <hr>
                 <div class="col-md-3">
+                    <b style="color:#2596be; font-size: 20px; font:bold; margin-left:10px">Versione 1.101.000</b>
+                </div>
+                <div class="col-md-3">
+                  10 Luglio 2026
+                </div>
+                <div class="col-md-6">
+                    <strong>Martina Cabras</strong>
+                    <p>NEW: Aggiunti Sconto 2 e Sconto 3 sulle voci dei documenti.</p>
+                </div>
+           </div>
+          <div class="col-md-12" style="background-color: #b3dbff;">
+                <hr>
+                <div class="col-md-3">
                     <b style="color:#2596be; font-size: 20px; font:bold; margin-left:10px">Versione 1.001.001</b>
                 </div>
                 <div class="col-md-3">

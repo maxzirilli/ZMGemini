@@ -29,7 +29,9 @@
             <th style="width:7%;position: sticky; top: 0">Qnt.</th>
             <th style="width:6%;position: sticky; top: 0">Prezzo</th>
             <th style="width:7%;position: sticky; top: 0">IVA</th>
-            <th style="width:8%;position: sticky; top: 0;">Sc. [%]</th>
+            <th style="width:8%;position: sticky; top: 0;">Sc. 1 [%]</th>
+            <th style="width:8%;position: sticky; top: 0;">Sc. 2 [%]</th>
+            <th style="width:8%;position: sticky; top: 0;">Sc. 3 [%]</th>
 
             <th style="width:1%;position: sticky; top: 0"></th>
           </tr>
@@ -56,6 +58,12 @@
             <td style="padding:2px;border:1px solid #ddd; border-bottom:0; background-color:white">
               <input :readonly="CurrentReadOnly" type="number" min="0" v-model="Voce.Dati.Sconto" class="form-control" step="0.01"/>
             </td>
+            <td style="padding:2px;border:1px solid #ddd; border-bottom:0; background-color:white">
+              <input :readonly="CurrentReadOnly" type="number" min="0" v-model="Voce.Dati.Sconto2" class="form-control" step="0.01"/>
+            </td>
+            <td style="padding:2px;border:1px solid #ddd; border-bottom:0; background-color:white">
+              <input :readonly="CurrentReadOnly" type="number" min="0" v-model="Voce.Dati.Sconto3" class="form-control" step="0.01"/>
+            </td>
             <td style="padding:2px;border:1px solid #ddd;border-bottom:0; background-color:white">
               <a v-if="!CurrentReadOnly" @click="OnClickEliminaVoce(Voce)" data-toggle="class" style="font-size:17px;color:#fb6b5b; cursor:pointer;margin-top:5px;margin-left:8px" title="Elimina Voce"><i class="fa fa-trash-o"></i></a>
             </td>
@@ -72,7 +80,9 @@
             <th style="width:7%;position: sticky; top: 0">Qnt.</th>
             <th style="width:6%;position: sticky; top: 0">Prezzo</th>
             <th style="width:7%;position: sticky; top: 0">IVA</th>
-            <th style="width:8%;position: sticky; top: 0;">Sc. [%]</th>
+            <th style="width:8%;position: sticky; top: 0;">Sc. 1 [%]</th>
+            <th style="width:8%;position: sticky; top: 0;">Sc. 2 [%]</th>
+            <th style="width:8%;position: sticky; top: 0;">Sc. 3 [%]</th>
             <th style="width:1%;position: sticky; top: 0"></th>
           </tr>
         </thead>
@@ -97,6 +107,12 @@
             </td>
             <td style="padding:2px;border:1px solid #ddd; border-bottom:0; background-color:white">
               <input :readonly="CurrentReadOnly" type="number" min="0" v-model="Voce.Dati.Sconto" class="form-control" step="0.01"/>
+            </td>
+            <td style="padding:2px;border:1px solid #ddd; border-bottom:0; background-color:white">
+              <input :readonly="CurrentReadOnly" type="number" min="0" v-model="Voce.Dati.Sconto2" class="form-control" step="0.01"/>
+            </td>
+            <td style="padding:2px;border:1px solid #ddd; border-bottom:0; background-color:white">
+              <input :readonly="CurrentReadOnly" type="number" min="0" v-model="Voce.Dati.Sconto3" class="form-control" step="0.01"/>
             </td>
             <td style="padding:2px;border:1px solid #ddd;border-bottom:0; background-color:white">
               <a v-if="!CurrentReadOnly" @click="OnClickEliminaVoce(Voce)" data-toggle="class" style="font-size:17px;color:#fb6b5b; cursor:pointer;margin-top:5px;margin-left:8px" title="Elimina Voce"><i class="fa fa-trash-o"></i></a>
@@ -338,7 +354,7 @@ import { TSchedaGenerica } from '../../../../../../../../../Librerie/VUE/ZScheda
 
 export class TSingoloVociDocumentiNonEconomici
 {
-   constructor(Chiave, Descrizione, Quantita, IdDocumento, Unita_di_Misura, Prezzo, Iva, Sconto, IdProdotto)
+   constructor(Chiave, Descrizione, Quantita, IdDocumento, Unita_di_Misura, Prezzo, Iva, Sconto, IdProdotto, Sconto2 = 0, Sconto3 = 0)
    {
      this.Dati = {}
      this.Dati.Chiave          = Chiave;
@@ -348,7 +364,9 @@ export class TSingoloVociDocumentiNonEconomici
      this.Dati.Unita_di_Misura = Unita_di_Misura
      this.Dati.Prezzo          = Prezzo
      this.Dati.Iva             = Iva
-     this.Dati.Sconto          = Sconto
+     this.Dati.Sconto          = this.__NormalizzaSconto(Sconto)
+     this.Dati.Sconto2         = this.__NormalizzaSconto(Sconto2)
+     this.Dati.Sconto3         = this.__NormalizzaSconto(Sconto3)
      if(IdProdotto != undefined)
         this.Dati.IdProdotto = IdProdotto
      else this.Dati.IdProdotto  = -1
@@ -357,6 +375,13 @@ export class TSingoloVociDocumentiNonEconomici
      this.Snapshot             = JSON.stringify(this.Dati)  
      if(Chiave == -1)
       this.Dati.DaRegistrare = true 
+   }
+
+   __NormalizzaSconto(Sconto)
+   {
+     if(Sconto == undefined || Sconto == null || Sconto == '')
+       return 0
+     return parseFloat(Sconto)
    }
 
    AllDataOk()
@@ -379,6 +404,8 @@ export class TSingoloVociDocumentiNonEconomici
                         UNITA_DI_MISURA      : TSchedaGenerica.PrepareForRecordListIndex(this.Dati.Unita_di_Misura),
                         QUANTITA             : TSchedaGenerica.PrepareForRecordInteger(this.Dati.Quantita * 100),
                         SCONTO               : TSchedaGenerica.PrepareForRecordInteger(this.Dati.Sconto * 100),
+                        SCONTO2              : TSchedaGenerica.PrepareForRecordInteger(this.Dati.Sconto2 * 100),
+                        SCONTO3              : TSchedaGenerica.PrepareForRecordInteger(this.Dati.Sconto3 * 100),
                         IMPORTO              : TSchedaGenerica.PrepareForRecordInteger(this.Dati.Prezzo * 100),
                         IVA                  : TSchedaGenerica.PrepareForRecordInteger(this.Dati.Iva * 10),
                         ID_PRODOTTO          : this.Dati.IdProdotto == -1 ? null : TSchedaGenerica.PrepareForRecordInteger(this.Dati.IdProdotto),
@@ -493,7 +520,9 @@ export class TSchedaVociDocumentiNonEconomici
                                                                                        TSchedaGenerica.DisponiFromInteger(LsVociDocumentiNonEconomici[i].IMPORTO) / 100,
                                                                                        TSchedaGenerica.DisponiFromInteger(LsVociDocumentiNonEconomici[i].IVA) / 10,
                                                                                        TSchedaGenerica.DisponiFromInteger(LsVociDocumentiNonEconomici[i].SCONTO) / 100,
-                                                                                       TSchedaGenerica.DisponiFromInteger(LsVociDocumentiNonEconomici[i].ID_PRODOTTO))
+                                                                                       TSchedaGenerica.DisponiFromInteger(LsVociDocumentiNonEconomici[i].ID_PRODOTTO),
+                                                                                       TSchedaGenerica.DisponiFromInteger(LsVociDocumentiNonEconomici[i].SCONTO2) / 100,
+                                                                                       TSchedaGenerica.DisponiFromInteger(LsVociDocumentiNonEconomici[i].SCONTO3) / 100)
           this.LsVociDocumentiNonEconomici.push(SingoloVociDocumentiNonEconomici)
           this.SetAltezzaTextarea(SingoloVociDocumentiNonEconomici)
       }
@@ -911,7 +940,9 @@ export default {
                                                                                                                 ArrayInfo[i].IMPORTO / 100,
                                                                                                                 ArrayInfo[i].IVA / 100,
                                                                                                                 ArrayInfo[i].SCONTO / 100,
-                                                                                                                ArrayInfo[i].ID_PRODOTTO)
+                                                                                                                ArrayInfo[i].ID_PRODOTTO,
+                                                                                                                TSchedaGenerica.DisponiFromInteger(ArrayInfo[i].SCONTO2) / 100,
+                                                                                                                TSchedaGenerica.DisponiFromInteger(ArrayInfo[i].SCONTO3) / 100)
 
                                                 Self.SchedaVociDocumentiNonEconomici.SetAltezzaTextarea(InserimentoNuovaRiga)                                                
                                                 Self.SchedaVociDocumentiNonEconomici.LsVociDocumentiNonEconomici.push(InserimentoNuovaRiga)
