@@ -72,7 +72,7 @@
   <div class="row wrapper" style="padding-top:5px;padding-bottom:5px">
     <section class="panel panel-default" style="background-color:#f1f1f1;margin-bottom:0px; margin-left: 0.75%; width: 98.5%;">
       <div :ref="'Tabella'" class="table-responsive" style="max-height:350px; overflow-y:auto">
-        <table class="table table-striped b-t b-light" style="min-width:1000px;">
+        <table class="table table-striped b-t b-light" style="min-width:1120px;">
           <thead>
             <tr>
               <th style="width:25%;position: sticky; top: 0;">Descrizione</th>
@@ -81,7 +81,9 @@
               <th style="width:6%;position: sticky; top: 0;">Importo</th>
               <th style="width:3%;position: sticky; top: 0;">IVA</th>
               <!-- <th style="width:6%;position: sticky; top: 0;">Ivato</th> -->
-              <th style="width:3%;position: sticky; top: 0;">Sc. [%]</th>
+              <th style="width:3%;position: sticky; top: 0;">Sc. 1 [%]</th>
+              <th style="width:3%;position: sticky; top: 0;">Sc. 2 [%]</th>
+              <th style="width:3%;position: sticky; top: 0;">Sc. 3 [%]</th>
               <th style="width:4%;position: sticky; top: 0;">Tot</th>
               <!-- <th style="width:4%;position: sticky; top: 0;">Tot ivato</th> -->
               <th style="width:1%;position: sticky; top: 0;"></th>
@@ -114,6 +116,12 @@
               </td>
               <td style="padding:2px;border:1px solid #ddd;border-bottom:0; background-color:white">
                 <input :readonly="FatturaInviataAlloSdi || Disabilitato" type="number" @input="OnInputValori(Voce), OnEmitVociFattura(Voce)" class="form-control" v-model="Voce.Dati.Sconto" />
+              </td>
+              <td style="padding:2px;border:1px solid #ddd;border-bottom:0; background-color:white">
+                <input :readonly="FatturaInviataAlloSdi || Disabilitato" type="number" @input="OnInputValori(Voce), OnEmitVociFattura(Voce)" class="form-control" v-model="Voce.Dati.Sconto2" />
+              </td>
+              <td style="padding:2px;border:1px solid #ddd;border-bottom:0; background-color:white">
+                <input :readonly="FatturaInviataAlloSdi || Disabilitato" type="number" @input="OnInputValori(Voce), OnEmitVociFattura(Voce)" class="form-control" v-model="Voce.Dati.Sconto3" />
               </td>
               <td style="padding:2px;border:1px solid #ddd;border-bottom:0; background-color:white">
                 <input readonly type="number" class="form-control" v-model="Voce.DatiTotale.Totale" @input="OnEmitVociFattura(Voce)" />
@@ -625,7 +633,9 @@ export class TSingoloVociDocumentiEconomici
                DescrizioneFatturaAnticipo = '',
                NaturaPagamento = DEFAULT_NATURA_PAGAMENTO,
                IdProdotto,
-               NonCambiareIva = false)
+               NonCambiareIva = false,
+               Sconto2 = 0,
+               Sconto3 = 0)
    {
       this.Dati = {}
       this.Dati.Chiave                = Chiave;
@@ -633,7 +643,9 @@ export class TSingoloVociDocumentiEconomici
       this.Dati.NaturaPagamento       = NaturaPagamento;
       this.Dati.Importo_Ivato         = Importo_Ivato
       this.Dati.Iva                   = Iva
-      this.Dati.Sconto                = Sconto
+      this.Dati.Sconto                = this.__NormalizzaSconto(Sconto)
+      this.Dati.Sconto2               = this.__NormalizzaSconto(Sconto2)
+      this.Dati.Sconto3               = this.__NormalizzaSconto(Sconto3)
       this.Dati.Quantita              = Quantita
       this.Dati.IdDocumento           = IdDocumento
       this.Dati.UnitaDiMisura         = UnitaDiMisura
@@ -680,12 +692,31 @@ export class TSingoloVociDocumentiEconomici
       this.DatiTotale.Totale       = 0
       this.DatiTotale.Totale_Ivato = 0
 
-      this.DatiTotale.Totale       = this.Dati.Quantita * (this.Dati.Imponibile - (this.Dati.Imponibile * this.Dati.Sconto / 100))
-      this.DatiTotale.Totale_Ivato = this.Dati.Quantita * (this.Dati.Ivato - (this.Dati.Ivato * this.Dati.Sconto / 100))
+      let CoefficienteSconto       = this.GetCoefficienteSconto()
+      this.DatiTotale.Totale       = this.Dati.Quantita * this.Dati.Imponibile * CoefficienteSconto
+      this.DatiTotale.Totale_Ivato = this.Dati.Quantita * this.Dati.Ivato * CoefficienteSconto
 
       this.DatiTotale.Totale       = parseFloat((this.DatiTotale.Totale).toFixed(2))
       this.DatiTotale.Totale_Ivato = parseFloat((this.DatiTotale.Totale_Ivato).toFixed(2))
     }
+
+   GetCoefficienteSconto()
+   {
+      this.Dati.Sconto  = this.__NormalizzaSconto(this.Dati.Sconto)
+      this.Dati.Sconto2 = this.__NormalizzaSconto(this.Dati.Sconto2)
+      this.Dati.Sconto3 = this.__NormalizzaSconto(this.Dati.Sconto3)
+
+      return (1 - this.Dati.Sconto / 100) *
+             (1 - this.Dati.Sconto2 / 100) *
+             (1 - this.Dati.Sconto3 / 100)
+   }
+
+   __NormalizzaSconto(Sconto)
+   {
+      if(Sconto == undefined || Sconto == null || Sconto == '')
+        return 0
+      return parseFloat(Sconto)
+   }
 
    AllDataOk()
    {
@@ -710,6 +741,8 @@ export class TSingoloVociDocumentiEconomici
                         IVA                  : TSchedaGenerica.PrepareForRecordInteger(this.Dati.Iva * 100),
                         IMPORTO_IVATO        : TSchedaGenerica.PrepareForRecordString(this.Dati.Importo_Ivato),
                         SCONTO               : TSchedaGenerica.PrepareForRecordInteger(this.Dati.Sconto * 100),
+                        SCONTO2              : TSchedaGenerica.PrepareForRecordInteger(this.Dati.Sconto2 * 100),
+                        SCONTO3              : TSchedaGenerica.PrepareForRecordInteger(this.Dati.Sconto3 * 100),
                         CODICE_PRODOTTO      : TSchedaGenerica.PrepareForRecordString(this.Dati.CodiceProdotto),
                         ID_FATTURA_ANTICIPO  : (this.Dati.Anticipo == undefined || this.Dati.Anticipo == null) ? null : TSchedaGenerica.PrepareForRecordInteger(this.Dati.Anticipo),
                         NATURA_PAGAMENTO     : TSchedaGenerica.PrepareForRecordInteger(this.Dati.NaturaPagamento),
@@ -1007,7 +1040,7 @@ export class TSchedaVociDocumentiEconomici
       this.CalcoloTotaliFattura()
    }
 
-   AggiungiVoce(Chiave, Descrizione, Importo, Quantita, Importo_Ivato, Iva, Sconto, IdDocumento, UnitaDiMisura, CodiceProdotto, Anticipo, DescrizioneFatturaAnticipo, NaturaPagamento, IdProdotto)
+   AggiungiVoce(Chiave, Descrizione, Importo, Quantita, Importo_Ivato, Iva, Sconto, IdDocumento, UnitaDiMisura, CodiceProdotto, Anticipo, DescrizioneFatturaAnticipo, NaturaPagamento, IdProdotto, Sconto2 = 0, Sconto3 = 0)
    {
       let SingoloVociDocumentiEconomici = new TSingoloVociDocumentiEconomici(Chiave, 
                                                                             Descrizione, 
@@ -1022,7 +1055,10 @@ export class TSchedaVociDocumentiEconomici
                                                                             Anticipo, 
                                                                             DescrizioneFatturaAnticipo, 
                                                                             NaturaPagamento,
-                                                                            IdProdotto)
+                                                                            IdProdotto,
+                                                                            false,
+                                                                            Sconto2,
+                                                                            Sconto3)
       this.SetAltezzaTextarea(SingoloVociDocumentiEconomici)
       this.LsVociDocumentiEconomici.push(SingoloVociDocumentiEconomici)
    }
@@ -1065,7 +1101,9 @@ export class TSchedaVociDocumentiEconomici
                             null, 
                             '',
                             Voce.Dati.NaturaPagamento,
-                            TSchedaGenerica.DisponiFromListIndex(Voce.Dati.IdProdotto))
+                            TSchedaGenerica.DisponiFromListIndex(Voce.Dati.IdProdotto),
+                            parseFloat(((Voce.Dati.Sconto2 == undefined ? 0 : Voce.Dati.Sconto2)).toFixed(2)),
+                            parseFloat(((Voce.Dati.Sconto3 == undefined ? 0 : Voce.Dati.Sconto3)).toFixed(2)))
         }
       }
       this.CalcoloTotaliFattura()
@@ -1112,7 +1150,9 @@ export class TSchedaVociDocumentiEconomici
                           LsVociDocumentiEconomici[i].ID_FATTURA_ANTICIPO == undefined ? null : parseInt(LsVociDocumentiEconomici[i].ID_FATTURA_ANTICIPO),
                           LsVociDocumentiEconomici[i].DESCR_FATTURA_ANTICIPO,
                           LsVociDocumentiEconomici[i].NATURA_PAGAMENTO,
-                          TSchedaGenerica.DisponiFromListIndex(LsVociDocumentiEconomici[i].ID_PRODOTTO))
+                          TSchedaGenerica.DisponiFromListIndex(LsVociDocumentiEconomici[i].ID_PRODOTTO),
+                          parseFloat((TSchedaGenerica.DisponiFromInteger(LsVociDocumentiEconomici[i].SCONTO2) / 100).toFixed(2)),
+                          parseFloat((TSchedaGenerica.DisponiFromInteger(LsVociDocumentiEconomici[i].SCONTO3) / 100).toFixed(2)))
       }
       this.CalcoloTotaliFattura()
    }
@@ -1177,7 +1217,7 @@ export class TSchedaVociDocumentiEconomici
       this.LsVociDocumentiEconomici.forEach(function(AVoce)
       {
         if(!AVoce.Dati.DaEliminare)
-           GetIva(AVoce.Dati.Iva).SommaImponibile += parseFloat((AVoce.Dati.Quantita * (AVoce.Dati.Imponibile - (AVoce.Dati.Imponibile * AVoce.Dati.Sconto / 100))).toFixed(2))
+           GetIva(AVoce.Dati.Iva).SommaImponibile += parseFloat((AVoce.Dati.Quantita * AVoce.Dati.Imponibile * AVoce.GetCoefficienteSconto()).toFixed(2))
       })
 
       LsIva.forEach(function(Elemento)
@@ -2081,7 +2121,14 @@ export default {
                                                                                                                 Self.CurrentSchedaVociDocumentiEconomici.Dati.IvaSuggerita == 0? 0 : (ArrayInfo[i].IVA / 100),
                                                                                                                 ArrayInfo[i].SCONTO / 100,
                                                                                                                 Self.CurrentSchedaVociDocumentiEconomici.IdDocumento,
-                                                                                                                ArrayInfo[i].UNITA_DI_MISURA == null? SystemInformation.Configurazioni.Impostazioni.UNITA_DI_MISURA_SUGGERITA : ArrayInfo[i].UNITA_DI_MISURA)
+                                                                                                                ArrayInfo[i].UNITA_DI_MISURA == null? SystemInformation.Configurazioni.Impostazioni.UNITA_DI_MISURA_SUGGERITA : ArrayInfo[i].UNITA_DI_MISURA,
+                                                                                                                TSchedaGenerica.DisponiFromString(ArrayInfo[i].CODICE_PRODOTTO),
+                                                                                                                null,
+                                                                                                                '',
+                                                                                                                ArrayInfo[i].NATURA_PAGAMENTO,
+                                                                                                                TSchedaGenerica.DisponiFromListIndex(ArrayInfo[i].ID_PRODOTTO),
+                                                                                                                TSchedaGenerica.DisponiFromInteger(ArrayInfo[i].SCONTO2) / 100,
+                                                                                                                TSchedaGenerica.DisponiFromInteger(ArrayInfo[i].SCONTO3) / 100)
                                                   
                                                   Self.CurrentSchedaVociDocumentiEconomici.SetAltezzaTextarea(InserimentoNuovaRiga)                                                
                                                   Self.CurrentSchedaVociDocumentiEconomici.LsVociDocumentiEconomici.push(InserimentoNuovaRiga)
@@ -2244,7 +2291,14 @@ export default {
                                                                                                               Self.CurrentSchedaVociDocumentiEconomici.Dati.IvaSuggerita == 0? 0 : (ArrayInfo[i].IVA / 100),
                                                                                                               ArrayInfo[i].SCONTO / 100,
                                                                                                               Self.CurrentSchedaVociDocumentiEconomici.IdDocumento,
-                                                                                                              ArrayInfo[i].UNITA_DI_MISURA == null? SystemInformation.Configurazioni.Impostazioni.UNITA_DI_MISURA_SUGGERITA : ArrayInfo[i].UNITA_DI_MISURA)
+                                                                                                              ArrayInfo[i].UNITA_DI_MISURA == null? SystemInformation.Configurazioni.Impostazioni.UNITA_DI_MISURA_SUGGERITA : ArrayInfo[i].UNITA_DI_MISURA,
+                                                                                                              TSchedaGenerica.DisponiFromString(ArrayInfo[i].CODICE_PRODOTTO),
+                                                                                                              null,
+                                                                                                              '',
+                                                                                                              ArrayInfo[i].NATURA_PAGAMENTO,
+                                                                                                              TSchedaGenerica.DisponiFromListIndex(ArrayInfo[i].ID_PRODOTTO),
+                                                                                                              TSchedaGenerica.DisponiFromInteger(ArrayInfo[i].SCONTO2) / 100,
+                                                                                                              TSchedaGenerica.DisponiFromInteger(ArrayInfo[i].SCONTO3) / 100)
                                                 
                                                 Self.CurrentSchedaVociDocumentiEconomici.SetAltezzaTextarea(InserimentoNuovaRiga)                                                
                                                 Self.CurrentSchedaVociDocumentiEconomici.LsVociDocumentiEconomici.push(InserimentoNuovaRiga)

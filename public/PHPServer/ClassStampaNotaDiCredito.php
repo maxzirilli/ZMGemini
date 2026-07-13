@@ -39,6 +39,8 @@
         public $LB_IVA = null;
         public $LB_UNITA = null;
         public $LB_SCONTO = null; 
+        public $LB_SCONTO2 = null; 
+        public $LB_SCONTO3 = null; 
         public $__InfoStyle = null;
       }      
 
@@ -241,6 +243,8 @@
                       $DatiVoci->LB_IVA = "";
                       $DatiVoci->LB_UNITA = "";
                       $DatiVoci->LB_SCONTO = ""; 
+                      $DatiVoci->LB_SCONTO2 = ""; 
+                      $DatiVoci->LB_SCONTO3 = ""; 
                     }  
                     else
                     {
@@ -249,11 +253,20 @@
                         $DatiVoci->LB_PREZZO = EuropeanCurrencyFormat((($Row['IMPORTO'])/100)/(100 + ($Row['IVA'])/100));
                       else $DatiVoci->LB_PREZZO = EuropeanCurrencyFormat(($Row['IMPORTO'])/ 100);
                       if($Row['IMPORTO_IVATO'] == 'T')
-                        $DatiVoci->LB_IMPORTO = EuropeanCurrencyFormat(($Row['IMPORTO'])/ 100);
-                      else $DatiVoci->LB_IMPORTO = EuropeanCurrencyFormat((($Row['IMPORTO'])/ 100)+(((($Row['IMPORTO'])/ 100)*($Row['IVA'])/100)/100));
+                        $ImportoRiga = ($Row['IMPORTO']) / 100;
+                      else $ImportoRiga = (($Row['IMPORTO'])/ 100)+(((($Row['IMPORTO'])/ 100)*($Row['IVA'])/100)/100);
+                      if($Row['SCONTO']  != 0)
+                        $ImportoRiga *= 1 - $Row['SCONTO'] / 10000;
+                      if(isset($Row['SCONTO2']) && $Row['SCONTO2'] != 0)
+                        $ImportoRiga *= 1 - $Row['SCONTO2'] / 10000;
+                      if(isset($Row['SCONTO3']) && $Row['SCONTO3'] != 0)
+                        $ImportoRiga *= 1 - $Row['SCONTO3'] / 10000;
+                      $DatiVoci->LB_IMPORTO = EuropeanCurrencyFormat($ImportoRiga);
                       $DatiVoci->LB_IVA = EuropeanCurrencyFormat(($Row['IVA'])/ 100, false);
                       $DatiVoci->LB_UNITA = ($Row['DESCRIZIONE_UNITA_DI_MISURA']);
                       $DatiVoci->LB_SCONTO = EuropeanCurrencyFormat((($Row['SCONTO']) / 100), false); 
+                      $DatiVoci->LB_SCONTO2 = isset($Row['SCONTO2'])? EuropeanCurrencyFormat((($Row['SCONTO2']) / 100), false) : EuropeanCurrencyFormat(0, false); 
+                      $DatiVoci->LB_SCONTO3 = isset($Row['SCONTO3'])? EuropeanCurrencyFormat((($Row['SCONTO3']) / 100), false) : EuropeanCurrencyFormat(0, false); 
                     }
                     
                   
