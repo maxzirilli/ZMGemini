@@ -5,23 +5,23 @@
             Versione software
         </div>
         <div>
-             <div class="col-md-12" style="background-color: #b3dbff;">
+          <div class="col-md-12" style="background-color: #b3dbff;">
                 <hr>
                 <div class="col-md-3">
-                    <b style="color:#2596be; font-size: 20px; font:bold; margin-left:10px">Versione 1.100.000</b>
+                    <b style="color:#2596be; font-size: 20px; font:bold; margin-left:10px">Versione 1.005.000</b>
                 </div>
                 <div class="col-md-3">
                   10 Luglio 2026
                 </div>
                 <div class="col-md-6">
                     <strong>Martina Cabras</strong>
-                    <p>NEW: Inserita creazione e gestione delle CONTROPARTITE all'interno del software</p>
+                    <p>NEW: Aggiunta NO PRIMA NOTA nelle rate delle note di credito</p>
                 </div>
            </div>
           <div class="col-md-12" style="background-color: #b3dbff;">
                 <hr>
                 <div class="col-md-3">
-                    <b style="color:#2596be; font-size: 20px; font:bold; margin-left:10px">Versione 1.101.000</b>
+                    <b style="color:#2596be; font-size: 20px; font:bold; margin-left:10px">Versione 1.004.000</b>
                 </div>
                 <div class="col-md-3">
                   10 Luglio 2026
@@ -31,10 +31,24 @@
                     <p>NEW: Aggiunti Sconto 2 e Sconto 3 sulle voci dei documenti.</p>
                 </div>
            </div>
+             <div class="col-md-12" style="background-color: #b3dbff;">
+                <hr>
+                <div class="col-md-3">
+                    <b style="color:#2596be; font-size: 20px; font:bold; margin-left:10px">Versione 1.003.000</b>
+                </div>
+                <div class="col-md-3">
+                  10 Luglio 2026
+                </div>
+                <div class="col-md-6">
+                    <strong>Martina Cabras</strong>
+                    <p>NEW: Inserita creazione e gestione delle CONTROPARTITE all'interno del software</p>
+                </div>
+           </div>
+          
           <div class="col-md-12" style="background-color: #b3dbff;">
                 <hr>
                 <div class="col-md-3">
-                    <b style="color:#2596be; font-size: 20px; font:bold; margin-left:10px">Versione 1.001.001</b>
+                    <b style="color:#2596be; font-size: 20px; font:bold; margin-left:10px">Versione 1.002.000</b>
                 </div>
                 <div class="col-md-3">
                   22 Giugno 2026
@@ -48,7 +62,7 @@
           <div class="col-md-12" style="background-color: #b3dbff;">
                 <hr>
                 <div class="col-md-3">
-                    <b style="color:#2596be; font-size: 20px; font:bold; margin-left:10px">Versione 1.000.001</b>
+                    <b style="color:#2596be; font-size: 20px; font:bold; margin-left:10px">Versione 1.001.000</b>
                 </div>
                 <div class="col-md-3">
                   03 Aprile 2026

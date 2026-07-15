@@ -54,17 +54,19 @@
                                                 ID_CONTO_CASSE,
                                                 NOTE,
                                                 SCALATA_IN_FATTURA,
-                                                ID_FATTURA
+                                                ID_FATTURA,
+                                                NO_PRIMA_NOTA
                                               ) 
                                        VALUES ( GET_NEW_KEY(), " . 
                                                 $Nota['CHIAVE'] . ", '" .
                                                 $Nota['DATA'] . "', '" .
                                                 (isset($Nota['DATA_PAGAMENTO']) && $Nota['NO_PRIMA_NOTA'] <> 'T'? $Nota['DATA_PAGAMENTO'] : "NULL") . "', " .
                                                 $TotaliNota[0]->NettoAPagare * 100 . ", " .
-                                                (isset($Nota['ID_CONTO_PAGAMENTO'])? $Nota['ID_CONTO_PAGAMENTO'] : "NULL") . ", '" .
+                                                (isset($Nota['ID_CONTO_PAGAMENTO']) && $Nota['NO_PRIMA_NOTA'] <> 'T'? $Nota['ID_CONTO_PAGAMENTO'] : "NULL") . ", '" .
                                                 $Nota['NOTE_PAGAMENTO'] . "', " .
-                                                ($Nota['NO_PRIMA_NOTA'] == 'T' || $Nota['SCALATA_IN_FATTURA'] == 'T'? "'T'" : "'F'") . ", " .
-                                                (isset($Nota['ID_FATTURA'])? $Nota['ID_FATTURA'] : "NULL") . ")";
+                                                ($Nota['SCALATA_IN_FATTURA'] == 'T'? "'T'" : "'F'") . ", " .
+                                                (isset($Nota['ID_FATTURA'])? $Nota['ID_FATTURA'] : "NULL") . ", " .
+                                                ($Nota['NO_PRIMA_NOTA'] == 'T'? "'T'" : "'F'") . ")";
 
             try
             {

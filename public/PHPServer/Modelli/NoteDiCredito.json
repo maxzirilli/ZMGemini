@@ -79,11 +79,11 @@
 		},
 		{
 			"Name" : "ModificaRata",
-			"SQL" : "UPDATE rate_note\n   SET DATA = #DATA,\n       DATA_PAGAMENTO = #DATA_PAGAMENTO,\n       NOTE = #NOTE,\n       IMPORTO = :IMPORTO,\n       ID_CONTO_CASSE = :ID_CONTO_CASSE,\n       SCALATA_IN_FATTURA = #SCALATA_IN_FATTURA,\n       ID_FATTURA = :ID_FATTURA\n WHERE CHIAVE = :CHIAVE\n"
+			"SQL" : "UPDATE rate_note\n   SET DATA = #DATA,\n       DATA_PAGAMENTO = #DATA_PAGAMENTO,\n       NOTE = #NOTE,\n       IMPORTO = :IMPORTO,\n       ID_CONTO_CASSE = :ID_CONTO_CASSE,\n       SCALATA_IN_FATTURA = #SCALATA_IN_FATTURA,\n       ID_FATTURA = :ID_FATTURA,\n       NO_PRIMA_NOTA = #NO_PRIMA_NOTA\n WHERE CHIAVE = :CHIAVE\n"
 		},
 		{
 			"Name" : "InserisciRata",
-			"SQL" : "INSERT INTO rate_note (CHIAVE, ID_NOTA, DATA, DATA_PAGAMENTO, IMPORTO, NOTE, \n                                       ID_CONTO_CASSE,SCALATA_IN_FATTURA, ID_FATTURA)\n                         VALUES (:NewKey3, :NewKey1!ID_NOTA, #DATA, #DATA_PAGAMENTO, :IMPORTO, #NOTE, \n                                        :ID_CONTO_CASSE, #SCALATA_IN_FATTURA, :ID_FATTURA)\n"
+			"SQL" : "INSERT INTO rate_note (CHIAVE, ID_NOTA, DATA, DATA_PAGAMENTO, IMPORTO, NOTE, \n                                       ID_CONTO_CASSE,SCALATA_IN_FATTURA, ID_FATTURA, NO_PRIMA_NOTA)\n                         VALUES (:NewKey3, :NewKey1!ID_NOTA, #DATA, #DATA_PAGAMENTO, :IMPORTO, #NOTE, \n                                        :ID_CONTO_CASSE, #SCALATA_IN_FATTURA, :ID_FATTURA, #NO_PRIMA_NOTA)\n"
 		},
 		{
 			"Name" : "EliminaFatturaCorrelata",

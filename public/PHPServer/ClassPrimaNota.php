@@ -269,9 +269,10 @@
               $SQLBody = "SELECT rate_note.ID_CONTO_CASSE,
 			                           rate_note.IMPORTO AS IMPORTO,
                                  rate_note.ID_NOTA 
-                            FROM rate_note
+                           FROM rate_note
                            WHERE rate_note.DATA_PAGAMENTO IS NOT NULL
 	                           AND rate_note.SCALATA_IN_FATTURA = 'F'
+                             AND COALESCE(rate_note.NO_PRIMA_NOTA, 'F') = 'F'
 	                           AND rate_note.DATA_PAGAMENTO < " . $this->FPrepareParameterValue($this->DallaData,'#');
               
               if($Query = $PDODBase->query($SQLBody))
@@ -454,6 +455,7 @@
                             JOIN rate_note ON (rate_note.ID_NOTA = note_di_credito.CHIAVE)
                            WHERE note_di_credito.NUMERO IS NOT NULL
                              AND rate_note.SCALATA_IN_FATTURA  <> 'T' 
+                             AND COALESCE(rate_note.NO_PRIMA_NOTA, 'F') = 'F'
                              AND (rate_note.DATA_PAGAMENTO IS NOT NULL OR rate_note.ID_FATTURA IS NOT NULL)
                              AND note_di_credito.NUMERO IS NOT NULL
                              AND rate_note.DATA_PAGAMENTO IS NOT NULL 

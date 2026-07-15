@@ -70,8 +70,9 @@
                 <th style="width:7%">Data Pagamento</th>
                 <th style="width:20%">Conto Corrente/Cassa</th>
                 <th style="width:33%">Note</th>
+                <th style="width:2%">No PN</th>
                 <th style="width:2%">Scalata in fatt.</th>
-                <th style="width:20%">Fatture Correlate</th>
+                <th style="width:18%">Fatture Correlate</th>
                 <th style="width:3%"></th>
               </tr>
             </thead>
@@ -95,13 +96,18 @@
                 
                 <!-- Conto Corrente/Cassa -->
                 <td style=" border:1px solid #ddd; border-bottom:0; background-color:white">
-                  <VUEInputContoCorrente v-model="Rata.Dati.IdContoCasse" :disabled = "Rata.Dati.NumeroFattura != null || Rata.Dati.ScalataInFattura"/>
-                  <label v-if="(Rata.Dati.DataPagamento != '' && Rata.Dati.DataPagamento != undefined && Rata.Dati.DataPagamento != null) && (Rata.Dati.IdContoCasse == -1 || Rata.Dati.IdContoCasse == null) && !Rata.Dati.ScalataInFattura" class="ZMFormLabelError">Inserire il conto corrente/cassa</label>
+                  <VUEInputContoCorrente v-model="Rata.Dati.IdContoCasse" :disabled = "Rata.Dati.NumeroFattura != null || Rata.Dati.ScalataInFattura || Rata.Dati.NoPrimaNota"/>
+                  <label v-if="(Rata.Dati.DataPagamento != '' && Rata.Dati.DataPagamento != undefined && Rata.Dati.DataPagamento != null) && (Rata.Dati.IdContoCasse == -1 || Rata.Dati.IdContoCasse == null) && !Rata.Dati.ScalataInFattura && !Rata.Dati.NoPrimaNota" class="ZMFormLabelError">Inserire il conto corrente/cassa</label>
                 </td>
                 
                 <!-- Note -->
                 <td style=" border:1px solid #ddd;border-bottom:0; background-color:white">
                   <textarea  @input="OnInputNoteRata(Rata)" :style="{height : Rata.AltezzaTextArea? Rata.AltezzaTextArea : '34px'}" v-model="Rata.Dati.Note" class="form-control" wrap="off" type="text" style="resize:none; width:100%; scrollbar-width: thin;"/>
+                </td>
+
+                <!-- No prima nota -->
+                <td style=" border:1px solid #ddd; border-bottom:0; background-color:white">
+                  <input class="form-control" type="checkbox" style="width: 23px;" v-model="Rata.Dati.NoPrimaNota" @change="OnChangeNoPrimaNota(Rata)"/>
                 </td>
 
                 <!-- Scalata in fattura -->
@@ -171,7 +177,7 @@ import VUEModal from '../../../../../../../../../Librerie/VUE/TemplateGestionale
 
 export class TSingolaRata
 {
-  constructor(Chiave, IdDocumento, Data, Importo, DataPagamento, IdContoCasse, Note, ScalataInFattura = false, IdFatturaCorrelata, NumeroFattura)
+  constructor(Chiave, IdDocumento, Data, Importo, DataPagamento, IdContoCasse, Note, ScalataInFattura = false, IdFatturaCorrelata, NumeroFattura, NoPrimaNota = false)
    {
       this.Dati = {}
       this.Dati.Chiave              = Chiave;
@@ -184,6 +190,7 @@ export class TSingolaRata
       this.Dati.ScalataInFattura    = ScalataInFattura;
       this.Dati.IdFatturaCorrelata  = IdFatturaCorrelata;
       this.Dati.NumeroFattura       = NumeroFattura;
+      this.Dati.NoPrimaNota         = NoPrimaNota;
       this.Dati.DaEliminare         = false;
       
       this.Snapshot                = JSON.stringify(this.Dati)   
@@ -209,7 +216,8 @@ export class TSingolaRata
       if(this.Dati.DataPagamento != '' && this.Dati.DataPagamento != undefined && this.Dati.DataPagamento != null)
       {
         if((this.Dati.IdContoCasse == -1 || this.Dati.IdContoCasse == null || this.Dati.IdContoCasse == null || this.Dati.IdContoCasse == '') && 
-            !this.Dati.ScalataInFattura)
+            !this.Dati.ScalataInFattura &&
+            !this.Dati.NoPrimaNota)
           Result = false;
       }
 
@@ -236,7 +244,8 @@ export class TSingolaRata
                                           IMPORTO             : TSchedaGenerica.PrepareForRecordInteger(this.Dati.Importo * 100),
                                           ID_FATTURA          : this.Dati.IdFatturaCorrelata != -1 ? TSchedaGenerica.PrepareForRecordListIndex(this.Dati.IdFatturaCorrelata) : undefined,
                                           ID_CONTO_CASSE      : TSchedaGenerica.PrepareForRecordListIndex(this.Dati.IdContoCasse),
-                                          SCALATA_IN_FATTURA  : TSchedaGenerica.PrepareForRecordBoolean(this.Dati.ScalataInFattura)
+                                          SCALATA_IN_FATTURA  : TSchedaGenerica.PrepareForRecordBoolean(this.Dati.ScalataInFattura),
+                                          NO_PRIMA_NOTA       : TSchedaGenerica.PrepareForRecordBoolean(this.Dati.NoPrimaNota)
                                         },
                             ResetKeys   : [3]
       })
@@ -272,7 +281,8 @@ export class TSingolaRata
                                                       IMPORTO             : TSchedaGenerica.PrepareForRecordInteger(this.Dati.Importo * 100),
                                                       ID_FATTURA          : this.Dati.IdFatturaCorrelata != -1 ? TSchedaGenerica.PrepareForRecordListIndex(this.Dati.IdFatturaCorrelata) : undefined,
                                                       ID_CONTO_CASSE      : this.Dati.IdMovimento  != null ? null : TSchedaGenerica.PrepareForRecordListIndex(this.Dati.IdContoCasse),
-                                                      SCALATA_IN_FATTURA  : TSchedaGenerica.PrepareForRecordBoolean(this.Dati.ScalataInFattura)
+                                                      SCALATA_IN_FATTURA  : TSchedaGenerica.PrepareForRecordBoolean(this.Dati.ScalataInFattura),
+                                                      NO_PRIMA_NOTA       : TSchedaGenerica.PrepareForRecordBoolean(this.Dati.NoPrimaNota)
                                                       
                                                     }
                               })
@@ -460,7 +470,8 @@ export class TSchedaRateNota
                                             LsRate[i].NOTE,
                                             TSchedaGenerica.DisponiFromBoolean(LsRate[i].SCALATA_IN_FATTURA), 
                                             TSchedaGenerica.DisponiFromListIndex(LsRate[i].ID_FATTURA),
-                                            LsRate[i].NUMERO
+                                            LsRate[i].NUMERO,
+                                            TSchedaGenerica.DisponiFromBoolean(LsRate[i].NO_PRIMA_NOTA)
                                           )
 
         
@@ -751,6 +762,12 @@ export default {
         Rata.Dati.NumeroFattura = null;
       }
         
+    },
+
+    OnChangeNoPrimaNota(Rata)
+    {
+      if(Rata.Dati.NoPrimaNota)
+        Rata.Dati.IdContoCasse = -1
     },
 
     OnclickCorrelaFattura(Rata)
