@@ -220,6 +220,7 @@ export default
       },
       AggiornaTipoPagina()
       {
+        this.InvioManualeCheck = TSchedaGenerica.DisponiFromBoolean(SystemInformation.Configurazioni.Impostazioni.ESPORTAZIONE_MANUALE_FATTURE);
         this.TitoloPagina = '';
         this.Pages.Dashboard =  this.$route.params.pagina == 'Dashboard';
         this.Pages.Opzioni =  this.$route.params.pagina == 'Opzioni';
@@ -227,7 +228,8 @@ export default
         if(this.Pages.Opzioni) this.TitoloPagina = 'Impostazioni generali'; 
 
         this.Pages.AmministrazioneEsporta =  this.$route.params.pagina == 'AmmEsportaSdI';      
-        if(this.Pages.AmministrazioneEsporta) this.TitoloPagina = 'Esporta fatture verso SdI';
+        if(this.Pages.AmministrazioneEsporta && !this.InvioManualeCheck) this.TitoloPagina = 'Esporta fatture verso SdI';
+        if(this.Pages.AmministrazioneEsporta && this.InvioManualeCheck) this.TitoloPagina = 'Esporta fatture verso SdI manuale';
 
         this.Pages.Solleciti = this.$route.params.pagina == 'Solleciti';
         if(this.Pages.Solleciti) this.TitoloPagina = 'Solleciti';

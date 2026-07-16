@@ -8,6 +8,19 @@
           <div class="col-md-12" style="background-color: #b3dbff;">
                 <hr>
                 <div class="col-md-3">
+                    <b style="color:#2596be; font-size: 20px; font:bold; margin-left:10px">Versione 1.006.000</b>
+                </div>
+                <div class="col-md-3">
+                  16 Luglio 2026
+                </div>
+                <div class="col-md-6">
+                    <strong>Martina Cabras</strong>
+                    <p>NEW: Aggiunta gestione configurabile dell'invio manuale delle fatture verso SdI con esportazione ZIP.</p>
+                </div>
+           </div>
+          <div class="col-md-12" style="background-color: #b3dbff;">
+                <hr>
+                <div class="col-md-3">
                     <b style="color:#2596be; font-size: 20px; font:bold; margin-left:10px">Versione 1.005.000</b>
                 </div>
                 <div class="col-md-3">

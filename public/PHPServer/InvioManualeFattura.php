@@ -200,7 +200,7 @@
        }
        catch(Exception $e)
        {
-        //  error_log($SQLBody);
+         //error_log($SQLBody);
          throw $e;         
        }
       }

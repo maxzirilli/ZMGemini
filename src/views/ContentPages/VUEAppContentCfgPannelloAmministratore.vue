@@ -35,13 +35,9 @@
             <input style="text-transform: none!important" type="password" class="form-control" v-model="Dati.Password" placeholder="Password"/>
         </div>
        </div>
-        <div style="float:left;width:100%;">
-          <div style="float: left;padding-top:5px;padding-bottom:5px">
-            <input type="checkbox" v-model="Dati.InvioManuale" @change="OnInvioManualeChange">
-          </div>
-          <div style="float: left;padding-top:5px;padding-bottom:5px;margin-left:6px;margin-right: 10px">
-            <label style="font-weight: bold;margin-bottom: 0px;margin-top: 0px;font-size:14px;">Gestione manuale invio fatture.</label>
-          </div>
+        <div class="CheckRiga">
+          <label>Gestione manuale invio fatture.</label>
+          <input type="checkbox" v-model="Dati.InvioManuale" @change="OnInvioManualeChange">
         </div>
       </div>
       <div class="col-md-4"></div>
@@ -714,3 +710,26 @@ export default
   },
 }
 </script>
+
+<style scoped>
+.CheckRiga
+{
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.CheckRiga label
+{
+  display: inline-flex;
+  margin: 0;
+  order: 1;
+}
+
+.CheckRiga input
+{
+  margin: 0;
+  order: 2;
+}
+</style>

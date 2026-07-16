@@ -135,6 +135,7 @@
 <script>
 import { SystemInformation, NOME_PROGRAMMA } from '@/SystemInformation.js'
 import { TZDateFunct } from '../../../../../../../../Librerie/VUE/ZDateFunct.js'
+import { TZStringConvFunct } from '../../../../../../../../Librerie/VUE/ZStringConvFunct.js'
 import { saveAs } from 'file-saver';
 import VUEConfirm from '../../../../../../../../Librerie/VUE/TemplateGestionale/VUEConfirm.vue';
 import VUEModal from '../../../../../../../../Librerie/VUE/TemplateGestionale/VUEModal.vue';
@@ -251,6 +252,9 @@ methods :
     {
       ListaDocs = this.ListaDocumentiSelezionatiPagina;
     }
+
+    if(ListaDocs == undefined || ListaDocs.length == 0)
+      return;
   
     ListaDocs.forEach(function(doc)
           {
@@ -302,7 +306,7 @@ methods :
     SystemInformation.AdvQuery.PostSQL('EsportaFattureManualmente',ObjQuery,
                            () => 
                            {
-                            this.CaricaFattureDaEsportare();
+                            this.GeneraZipInvioManuale();
                            },
                            (HTTPError,SubHTTPError,Response) =>
                            {
@@ -310,6 +314,52 @@ methods :
                             this.InvioFatture = false;
                            }
                          )
+  },
+
+  GeneraZipInvioManuale()
+  {
+    SystemInformation.AdvQuery.ExecuteExternalScript('InvioManualeFattura', {},
+      (Answer) =>
+      {
+        if(Answer.ZipBase64 != undefined && Answer.ZipBase64 != '')
+        {
+          saveAs(TZStringConvFunct.Base64AsBlob(Answer.ZipBase64), 'FattureInvioManualeSdI.zip')
+          this.ConfermaZipInvioManuale(Answer);
+        }
+        else
+        {
+          this.InvioFatture = false;
+          this.CaricaFattureDaEsportare();
+        }
+      },
+      (HTTPError,SubHTTPError,Response) =>
+      {
+        SystemInformation.HandleError(HTTPError,SubHTTPError,Response);
+        this.InvioFatture = false;
+        this.CaricaFattureDaEsportare();
+      });
+  },
+
+  ConfermaZipInvioManuale(Answer)
+  {
+    let Parametri = {
+                      ChiaviFatture     : Answer.ChiaviFatture,
+                      ChiaviNote        : Answer.ChiaviNote,
+                      ChiaviAutofatture : Answer.ChiaviAutofatture
+                    }
+
+    SystemInformation.AdvQuery.ExecuteExternalScript('InvioManualeFatturaStatoConfermato', Parametri,
+      () =>
+      {
+        this.InvioFatture = false;
+        this.CaricaFattureDaEsportare();
+      },
+      (HTTPError,SubHTTPError,Response) =>
+      {
+        SystemInformation.HandleError(HTTPError,SubHTTPError,Response);
+        this.InvioFatture = false;
+        this.CaricaFattureDaEsportare();
+      });
   },
 
   OnClickGeneraXML(Documento)

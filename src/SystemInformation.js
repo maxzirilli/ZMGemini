@@ -9,7 +9,7 @@ export const LOCALSTORAGE = {
                               TokenRememberMe : "XFG2lo",
                             }  
 
-export const NUMERO_VERSIONE_GEMINI = '1.002.000'
+export const NUMERO_VERSIONE_GEMINI = '1.006.000'
 export const NOME_PROGRAMMA = 'Gemini'
 
 export const TIPO_COMUNICAZIONI = { // uguale a php
