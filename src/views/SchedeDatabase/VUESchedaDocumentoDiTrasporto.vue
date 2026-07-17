@@ -273,10 +273,7 @@
         <div style="float:left;width:1%;">&nbsp;</div>
         <div style="width:24%; float:left">
           <text style="font-weight: bold">Porto</text>
-
-          <input v-if="!VisibilitaOpzioniPortoDDT" :readonly="SchedaDocumentoDiTrasporto.Dati.ID_FATTURA != -1" type="text" class="form-control" v-model="SchedaDocumentoDiTrasporto.Dati.PORTO">
-
-          <select v-else class="form-control" v-model="SchedaDocumentoDiTrasporto.Dati.PORTO" :disabled="SchedaDocumentoDiTrasporto.Dati.ID_FATTURA != -1">
+          <select class="form-control" v-model="SchedaDocumentoDiTrasporto.Dati.PORTO" :disabled="SchedaDocumentoDiTrasporto.Dati.ID_FATTURA != -1">
             <option :value="''">-</option>
             <option value="Porto franco">Porto franco</option>
             <option value="Porto assegnato">Porto assegnato</option>
@@ -706,9 +703,7 @@ export class TSchedaDocumentoDiTrasporto extends TSchedaGenerica
                                                             NOTE                          : TSchedaGenerica.DisponiFromString(ArrayInfo[0].NOTE),
                                                             CAUSALE                       : TSchedaGenerica.DisponiFromListIndex(ArrayInfo[0].CAUSALE),
                                                             NUMERO_COLLI                  : TSchedaGenerica.DisponiFromInteger(ArrayInfo[0].NUMERO_COLLI),
-                                                            PORTO                         : SystemInformation.AccessRights.VisibilitaOpzioniPortoDDT()? 
-                                                                                            TSchedaGenerica.DisponiFromString(ArrayInfo[0].PORTO).charAt(0).toUpperCase() + TSchedaGenerica.DisponiFromString(ArrayInfo[0].PORTO).slice(1).toLowerCase() : 
-                                                                                            TSchedaGenerica.DisponiFromString(ArrayInfo[0].PORTO),
+                                                            PORTO                         : TSchedaGenerica.DisponiFromString(ArrayInfo[0].PORTO).charAt(0).toUpperCase() + TSchedaGenerica.DisponiFromString(ArrayInfo[0].PORTO).slice(1).toLowerCase(),
                                                             ORA_INIZIO                    : TSchedaGenerica.DisponiFromString(ArrayInfo[0].ORA_INIZIO),
                                                             DATA_INIZIO                   : TSchedaGenerica.DisponiFromString(ArrayInfo[0].DATA_INIZIO),
                                                             FILIALE                       : TSchedaGenerica.DisponiFromInteger(ArrayInfo[0].FILIALE),
@@ -841,7 +836,6 @@ export default
               LsStatiDDT          : SystemInformation.GetLsStatoDDT(),
               DeveloperMode       : SystemInformation.DeveloperMode,
               StatoItaliano       : SystemInformation.Configurazioni.StatoItaliano,
-              VisibilitaOpzioniPortoDDT : SystemInformation.AccessRights.VisibilitaOpzioniPortoDDT(),
               ListaMagazzini      : SystemInformation.Configurazioni.Magazzini,
               RiferimentiCausali  : RIFERIMENTO_CAUSALI,
               

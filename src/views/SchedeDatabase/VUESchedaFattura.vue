@@ -544,6 +544,15 @@
       <div class="ZMNuovaRigaScheda">
         <VUEInputContoRibaCorrente :InviataAlloSdi="SchedaFattura.Dati.INVIATA_ALLO_SDI" :ContoCorrente="SchedaFattura.Dati.ContoCorrente"/>
       </div>
+      <div class="ZMNuovaRigaScheda" v-if="VisibilitaEsportazioneCbiRiba && SchedaFattura.Dati.ContoCorrente.CONTO_RIBA" style="min-height:22px">
+        <div style="float:left;width:20%">
+          <label style="font-weight: bold;">Esportata tramite CBI</label>
+          <input type="checkbox"
+                 style="margin-left:10px"
+                 :disabled="SchedaFattura.Dati.INVIATA_ALLO_SDI"
+                 v-model="SchedaFattura.Dati.INVIATA_TRAMITE_CBI"/>
+        </div>
+      </div>
 
       <div v-if="ListaMagazzini.length > 1">
         <div style="clear:both"></div>
@@ -899,6 +908,10 @@ export class TSchedaFattura extends TSchedaGenerica
       this.Dati.ContoCorrente.NR_CONTO               = Scheda.Dati.ContoCorrente.NUMERO_CONTO
       this.Dati.ContoCorrente.SWIFT                  = Scheda.Dati.ContoCorrente.SWIFT
       this.Dati.ContoCorrente.BIC                    = Scheda.Dati.ContoCorrente.BIC
+      this.Dati.ContoCorrente.ABI                    = Scheda.Dati.ContoCorrente.ABI
+      this.Dati.ContoCorrente.CAB                    = Scheda.Dati.ContoCorrente.CAB
+      this.Dati.ContoCorrente.NUMERO_CONTO_CORR      = Scheda.Dati.ContoCorrente.NUMERO_CONTO_CORR
+      this.Dati.ContoCorrente.TIPO_COORDINATE        = Scheda.Dati.ContoCorrente.TIPO_COORDINATE
       this.Dati.ContoCorrente.CONTO_RIBA             = Scheda.Dati.ContoCorrente.CONTO_RIBA
       this.Dati.ESIGIBILITA_IVA        = Scheda.Dati.ESIGIBILITA_IVA
       if(this.Dati.ESIGIBILITA_IVA == FATT_ELE_ESIGIBILITA_IVA.Scissione)
@@ -954,6 +967,10 @@ export class TSchedaFattura extends TSchedaGenerica
       Self.Dati.ContoCorrente.NR_CONTO               = Scheda.Dati.ContoCorrente.NUMERO_CONTO
       Self.Dati.ContoCorrente.SWIFT                  = Scheda.Dati.ContoCorrente.SWIFT
       Self.Dati.ContoCorrente.BIC                    = Scheda.Dati.ContoCorrente.BIC
+      Self.Dati.ContoCorrente.ABI                    = Scheda.Dati.ContoCorrente.ABI
+      Self.Dati.ContoCorrente.CAB                    = Scheda.Dati.ContoCorrente.CAB
+      Self.Dati.ContoCorrente.NUMERO_CONTO_CORR      = Scheda.Dati.ContoCorrente.NUMERO_CONTO_CORR
+      Self.Dati.ContoCorrente.TIPO_COORDINATE        = Scheda.Dati.ContoCorrente.TIPO_COORDINATE
       Self.Dati.ContoCorrente.CONTO_RIBA             = Scheda.Dati.ContoCorrente.CONTO_RIBA
       Self.Dati.ESIGIBILITA_IVA        = Scheda.Dati.ESIGIBILITA_IVA
       if(Self.Dati.ESIGIBILITA_IVA == FATT_ELE_ESIGIBILITA_IVA.Scissione)
@@ -1119,14 +1136,6 @@ export class TSchedaFattura extends TSchedaGenerica
                                       Parametri : { CHIAVE_FATTURA : this.Chiave }
                                     },
                                     {
-                                      Query     : "UpdateSaldoNoleggioTramiteEliminaFattura",
-                                      Parametri : { CHIAVE_FATTURA : this.Chiave }
-                                    },
-                                    {
-                                      Query     : "UpdateDepositoNoleggioTramiteEliminaFattura",
-                                      Parametri : { CHIAVE_FATTURA : this.Chiave }
-                                    },
-                                    {
                                       Query     : "UpdateDDTRichiamataInFattura",
                                       Parametri : { CHIAVE_FATTURA : this.Chiave }
                                     },
@@ -1136,10 +1145,6 @@ export class TSchedaFattura extends TSchedaGenerica
                                     },
                                     {
                                       Query     : "EliminaLogFattureGenerateTramiteFattura",
-                                      Parametri : { CHIAVE_FATTURA : this.Chiave }
-                                    },
-                                    {
-                                      Query     : "EliminaFattureDaMobileTramiteFattura",
                                       Parametri : { CHIAVE_FATTURA : this.Chiave }
                                     },
                                     {
@@ -1218,8 +1223,12 @@ export class TSchedaFattura extends TSchedaGenerica
                                                   BANCA                     : Self.Dati.ContoCorrente.ID_CONTO_CORRENTE == -1? TSchedaGenerica.PrepareForRecordString(Self.Dati.ContoCorrente.BANCA) : null,
                                                   BIC                       : Self.Dati.ContoCorrente.ID_CONTO_CORRENTE == -1? TSchedaGenerica.PrepareForRecordString(Self.Dati.ContoCorrente.BIC)   : null,
                                                   SWIFT                     : Self.Dati.ContoCorrente.ID_CONTO_CORRENTE == -1? TSchedaGenerica.PrepareForRecordString(Self.Dati.ContoCorrente.SWIFT) : null,
+                                                  ABI                       : Self.Dati.ContoCorrente.ID_CONTO_CORRENTE == -1? TSchedaGenerica.PrepareForRecordString(Self.Dati.ContoCorrente.ABI)   : null,
+                                                  CAB                       : Self.Dati.ContoCorrente.ID_CONTO_CORRENTE == -1? TSchedaGenerica.PrepareForRecordString(Self.Dati.ContoCorrente.CAB)   : null,
+                                                  NUMERO_CONTO_CORR         : Self.Dati.ContoCorrente.ID_CONTO_CORRENTE == -1? TSchedaGenerica.PrepareForRecordString(Self.Dati.ContoCorrente.NUMERO_CONTO_CORR)   : null,
                                                   ID_CONTO_CORRENTE         : TSchedaGenerica.PrepareForRecordListIndex(Self.Dati.ContoCorrente.ID_CONTO_CORRENTE),
                                                   INVIATA_ALLO_SDI          : TSchedaGenerica.PrepareForRecordBoolean(Self.Dati.INVIATA_ALLO_SDI),
+                                                  INVIATA_TRAMITE_CBI       : TSchedaGenerica.PrepareForRecordBoolean(Self.Dati.INVIATA_TRAMITE_CBI),
                                                   ENTE_PUBBLICO             : TSchedaGenerica.PrepareForRecordBoolean(Self.Dati.ENTE_PUBBLICO),
                                                   COD_ENTE_SDI              : TSchedaGenerica.PrepareForRecordString(Self.Dati.COD_ENTE_SDI),
                                                   COD_UFFICIO_DEST          : TSchedaGenerica.PrepareForRecordString(Self.Dati.COD_UFFICIO_DEST),
@@ -1540,13 +1549,18 @@ export class TSchedaFattura extends TSchedaGenerica
                                                         NR_CONTO          : '',
                                                         CONTO_RIBA        : false,
                                                         BIC               : '',
-                                                        SWIFT             : ''
+                                                        SWIFT             : '',
+                                                        ABI               : '',
+                                                        CAB               : '',
+                                                        NUMERO_CONTO_CORR : '',
+                                                        TIPO_COORDINATE   : ''
                                                       },
                       ESIGIBILITA_IVA               : '',
                       DA_BANCO                      : false,
                       MESE_GENERAZIONE              : null,
                       REVERSE_CHARGE                : false,
                       INVIATA_TRAMITE_EMAIL         : false,
+                      INVIATA_TRAMITE_CBI           : false,
                       ANTICIPO                      : false,
                       ACCOMPAGNATORIA               : false,
                       // Dati allegati
@@ -1701,6 +1715,7 @@ export class TSchedaFattura extends TSchedaGenerica
                       MESE_GENERAZIONE              : TSchedaGenerica.DisponiFromInteger(ArrayInfo[0].MESE_GENERAZIONE),
                       REVERSE_CHARGE                : TSchedaGenerica.DisponiFromBoolean(ArrayInfo[0].REVERSE_CHARGE),
                       INVIATA_TRAMITE_EMAIL         : TSchedaGenerica.DisponiFromBoolean(ArrayInfo[0].INVIATA_TRAMITE_EMAIL),
+                      INVIATA_TRAMITE_CBI           : TSchedaGenerica.DisponiFromBoolean(ArrayInfo[0].INVIATA_TRAMITE_CBI),
                       ANTICIPO                      : TSchedaGenerica.DisponiFromBoolean(ArrayInfo[0].ANTICIPO),
                       FATTURA_SCALATA               : TSchedaGenerica.DisponiFromInteger(ArrayInfo[0].FATTURA_SCALATA) != 0,
                       INVIATA_ALLO_SDI              : TSchedaGenerica.DisponiFromBoolean(ArrayInfo[0].INVIATA_ALLO_SDI),
@@ -1732,6 +1747,10 @@ export class TSchedaFattura extends TSchedaGenerica
                                                           NR_CONTO          : TSchedaGenerica.DisponiFromString(ArrayInfo[0].NR_CONTO),
                                                           SWIFT             : ArrayInfo[0].ID_CONTO_CORRENTE != null? TSchedaGenerica.DisponiFromString(ArrayInfo[0].SWIFT_CONTO) : TSchedaGenerica.DisponiFromString(ArrayInfo[0].SWIFT),
                                                           BIC               : ArrayInfo[0].ID_CONTO_CORRENTE != null? TSchedaGenerica.DisponiFromString(ArrayInfo[0].BIC_CONTO) : TSchedaGenerica.DisponiFromString(ArrayInfo[0].BIC),
+                                                          ABI               : ArrayInfo[0].ID_CONTO_CORRENTE != null? null : TSchedaGenerica.DisponiFromString(ArrayInfo[0].ABI),
+                                                          CAB               : ArrayInfo[0].ID_CONTO_CORRENTE != null? null : TSchedaGenerica.DisponiFromString(ArrayInfo[0].CAB),
+                                                          NUMERO_CONTO_CORR : ArrayInfo[0].ID_CONTO_CORRENTE != null? null : TSchedaGenerica.DisponiFromString(ArrayInfo[0].NUMERO_CONTO_CORR),
+                                                          TIPO_COORDINATE   : ArrayInfo[0].ID_CONTO_CORRENTE != null? '' : (ArrayInfo[0].IBAN != null && ArrayInfo[0].IBAN != '' ? 'IBAN' : 'ABICAB'),
                                                       },
                       ModificaTabellaAllegati       : 0,
                       ModificaTabellaVoci           : 0,
@@ -1932,6 +1951,10 @@ export class TSchedaFattura extends TSchedaGenerica
                                                                             NR_CONTO          : ArrayInfo[0].NR_CONTO,
                                                                             BIC               : ArrayInfo[0].ID_CONTO_CORRENTE? ArrayInfo[0].BIC_CONTO : ArrayInfo[0].BIC,
                                                                             SWIFT             : ArrayInfo[0].ID_CONTO_CORRENTE? ArrayInfo[0].SWIFT_CONTO : ArrayInfo[0].SWIFT,
+                                                                            ABI               : ArrayInfo[0].ID_CONTO_CORRENTE? null : ArrayInfo[0].ABI,
+                                                                            CAB               : ArrayInfo[0].ID_CONTO_CORRENTE? null : ArrayInfo[0].CAB,
+                                                                            NUMERO_CONTO_CORR : ArrayInfo[0].ID_CONTO_CORRENTE? null : ArrayInfo[0].NUMERO_CONTO_CORR,
+                                                                            TIPO_COORDINATE   : ArrayInfo[0].ID_CONTO_CORRENTE? ''   : (ArrayInfo[0].IBAN != null && ArrayInfo[0].IBAN != '' ? 'IBAN' : 'ABICAB'),
                                                                         }            
                                               Self.Dati.NOTE_IN_FATTURA          = TSchedaGenerica.DisponiFromString(ArrayInfo[0].NOTE_IN_FATTURA)
                                               Self.Dati.CAP_DESTINAZIONE         = ArrayInfo[0].CAP_SPEDIZIONE
@@ -2176,6 +2199,7 @@ export default
               CostantePagamentoBollo            : PAGAMENTO_BOLLO,
               VisibilitaLogVariazioni           : SystemInformation.AccessRights.VisibilitaLogVariazioni(),
               VisibilitaNotaDiDebito            : SystemInformation.AccessRights.VisibilitaNotaDiDebito(),
+              VisibilitaEsportazioneCbiRiba     : SystemInformation.AccessRights.VisibilitaEsportazioneCbiRiba(),
               NomeProgramma                     : NOME_PROGRAMMA,
               PopupAttesaCalcolo                : false,
               NumerazioneAvviata                : false,

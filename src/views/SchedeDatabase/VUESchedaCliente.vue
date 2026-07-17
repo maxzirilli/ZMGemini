@@ -1672,6 +1672,9 @@ import VUEAllegati, { TSchedaAllegati } from '../../components/VUEAllegati.vue';
                                                                             IBAN                        : Self.Dati.ContoCorrente.ID_CONTO_CORRENTE == -1? TSchedaGenerica.PrepareForRecordString(Self.Dati.ContoCorrente.IBAN)  : null,
                                                                             BIC                         : Self.Dati.ContoCorrente.ID_CONTO_CORRENTE == -1? TSchedaGenerica.PrepareForRecordString(Self.Dati.ContoCorrente.BIC)   : null,
                                                                             SWIFT                       : Self.Dati.ContoCorrente.ID_CONTO_CORRENTE == -1? TSchedaGenerica.PrepareForRecordString(Self.Dati.ContoCorrente.SWIFT) : null,
+                                                                            ABI                         : Self.Dati.ContoCorrente.ID_CONTO_CORRENTE == -1? TSchedaGenerica.PrepareForRecordString(Self.Dati.ContoCorrente.ABI) : null,
+                                                                            CAB                         : Self.Dati.ContoCorrente.ID_CONTO_CORRENTE == -1? TSchedaGenerica.PrepareForRecordString(Self.Dati.ContoCorrente.CAB) : null,
+                                                                            NUMERO_CONTO_CORR           : Self.Dati.ContoCorrente.ID_CONTO_CORRENTE == -1? TSchedaGenerica.PrepareForRecordString(Self.Dati.ContoCorrente.NUMERO_CONTO_CORR) : null,
                                                                             BANCA_APPOGGIO              : Self.Dati.ContoCorrente.ID_CONTO_CORRENTE == -1? TSchedaGenerica.PrepareForRecordString(Self.Dati.ContoCorrente.BANCA) : null,
                                                                             ID_CONTO_CORRENTE           : TSchedaGenerica.PrepareForRecordListIndex(Self.Dati.ContoCorrente.ID_CONTO_CORRENTE),
                                                                             PEC                         : TSchedaGenerica.PrepareForRecordString(Self.Dati.PEC),
@@ -1925,6 +1928,9 @@ import VUEAllegati, { TSchedaAllegati } from '../../components/VUEAllegati.vue';
             (typeof Oggetto1[Chiave] == 'object' && Oggetto1[Chiave] != null && (Oggetto1[Chiave]?.IBAN != Oggetto2[Chiave]?.IBAN) ||
                                                                                 (Oggetto1[Chiave]?.BIC != Oggetto2[Chiave]?.BIC) ||
                                                                                 (Oggetto1[Chiave]?.SWIFT != Oggetto2[Chiave]?.SWIFT) ||
+                                                                                (Oggetto1[Chiave]?.ABI != Oggetto2[Chiave]?.ABI) ||
+                                                                                (Oggetto1[Chiave]?.CAB != Oggetto2[Chiave]?.CAB) ||
+                                                                                (Oggetto1[Chiave]?.NUMERO_CONTO_CORR != Oggetto2[Chiave]?.NUMERO_CONTO_CORR) ||
                                                                                 (Oggetto1[Chiave]?.BANCA_APPOGGIO != Oggetto2[Chiave]?.BANCA_APPOGGIO) ||
                                                                                 (Oggetto1[Chiave]?.CONTO_RIBA != Oggetto2[Chiave]?.CONTO_RIBA));
     }
@@ -2324,6 +2330,10 @@ import VUEAllegati, { TSchedaAllegati } from '../../components/VUEAllegati.vue';
                                                                                               NR_CONTO          : TSchedaGenerica.DisponiFromString(ArrayInfo[0].NR_CONTO),
                                                                                               SWIFT             : ArrayInfo[0].ID_CONTO_CORRENTE != null? TSchedaGenerica.DisponiFromString(ArrayInfo[0].SWIFT_CONTO) : TSchedaGenerica.DisponiFromString(ArrayInfo[0].SWIFT),
                                                                                               BIC               : ArrayInfo[0].ID_CONTO_CORRENTE != null? TSchedaGenerica.DisponiFromString(ArrayInfo[0].BIC_CONTO) : TSchedaGenerica.DisponiFromString(ArrayInfo[0].BIC),
+                                                                                              ABI               : ArrayInfo[0].ID_CONTO_CORRENTE != null? null : TSchedaGenerica.DisponiFromString(ArrayInfo[0].ABI),
+                                                                                              CAB               : ArrayInfo[0].ID_CONTO_CORRENTE != null? null : TSchedaGenerica.DisponiFromString(ArrayInfo[0].CAB),
+                                                                                              NUMERO_CONTO_CORR : ArrayInfo[0].ID_CONTO_CORRENTE != null? null : TSchedaGenerica.DisponiFromString(ArrayInfo[0].NUMERO_CONTO_CORR),
+                                                                                              TIPO_COORDINATE   : ArrayInfo[0].ID_CONTO_CORRENTE != null? '' : (ArrayInfo[0].IBAN != null && ArrayInfo[0].IBAN != '' ? 'IBAN' : 'ABICAB'),
                                                                                             },
                                                               PASSATA_AD_AVVOCATO          : TSchedaGenerica.DisponiFromBoolean(ArrayInfo[0].PASSATA_AD_AVVOCATO),
                                                               // Indicazione stato tabelle dati
@@ -2435,6 +2445,10 @@ import VUEAllegati, { TSchedaAllegati } from '../../components/VUEAllegati.vue';
                                                       IBAN              : '',
                                                       BIC               : '',
                                                       SWIFT             : '',
+                                                      ABI               : '',
+                                                      CAB               : '',
+                                                      NUMERO_CONTO_CORR : '',
+                                                      TIPO_COORDINATE   : '',
                                                       BANCA_APPOGGIO    : '',
                                                       ID_CONTO_CORRENTE : -1,
                                                       NR_CONTO          : '',

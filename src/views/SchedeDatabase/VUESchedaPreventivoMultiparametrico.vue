@@ -629,7 +629,11 @@ export class TSchedaPreventivoMultiparametrico extends TSchedaGenerica
       this.Dati.ContoCorrente.NR_CONTO               = Scheda.Dati.ContoCorrente.NUMERO_CONTO
       this.Dati.ContoCorrente.SWIFT                  = Scheda.Dati.ContoCorrente.SWIFT
       this.Dati.ContoCorrente.BIC                    = Scheda.Dati.ContoCorrente.BIC
-      this.Dati.ContoCorrente.CONTO_RIBA             = Scheda.Dati.ContoCorrente.CONTO_RIBA     
+      this.Dati.ContoCorrente.ABI                    = Scheda.Dati.ContoCorrente.ABI
+      this.Dati.ContoCorrente.CAB                    = Scheda.Dati.ContoCorrente.CAB
+      this.Dati.ContoCorrente.NUMERO_CONTO_CORR      = Scheda.Dati.ContoCorrente.NUMERO_CONTO_CORR
+      this.Dati.ContoCorrente.TIPO_COORDINATE        = Scheda.Dati.ContoCorrente.TIPO_COORDINATE
+      this.Dati.ContoCorrente.CONTO_RIBA             = Scheda.Dati.ContoCorrente.CONTO_RIBA
       this.Dati.CAUSALE                = Scheda.Dati.CAUSALE
       this.Dati.NOTE                   = Scheda.Dati.NOTE_IN_FATTURA
       this.Dati.ESIGIBILITA_IVA        = Scheda.Dati.ESIGIBILITA_IVA
@@ -770,6 +774,9 @@ export class TSchedaPreventivoMultiparametrico extends TSchedaGenerica
                                                   BANCA                     : this.Dati.ContoCorrente.ID_CONTO_CORRENTE == -1? TSchedaGenerica.PrepareForRecordString(this.Dati.ContoCorrente.BANCA) : null,
                                                   BIC                       : this.Dati.ContoCorrente.ID_CONTO_CORRENTE == -1? TSchedaGenerica.PrepareForRecordString(this.Dati.ContoCorrente.BIC)   : null,
                                                   SWIFT                     : this.Dati.ContoCorrente.ID_CONTO_CORRENTE == -1? TSchedaGenerica.PrepareForRecordString(this.Dati.ContoCorrente.SWIFT) : null,
+                                                  ABI                       : this.Dati.ContoCorrente.ID_CONTO_CORRENTE == -1? TSchedaGenerica.PrepareForRecordString(this.Dati.ContoCorrente.ABI)   : null,
+                                                  CAB                       : this.Dati.ContoCorrente.ID_CONTO_CORRENTE == -1? TSchedaGenerica.PrepareForRecordString(this.Dati.ContoCorrente.CAB)   : null,
+                                                  NUMERO_CONTO_CORR         : this.Dati.ContoCorrente.ID_CONTO_CORRENTE == -1? TSchedaGenerica.PrepareForRecordString(this.Dati.ContoCorrente.NUMERO_CONTO_CORR) : null,
                                                   ID_CONTO_CORRENTE         : TSchedaGenerica.PrepareForRecordListIndex(this.Dati.ContoCorrente.ID_CONTO_CORRENTE),
                                                   ENTE_PUBBLICO             : TSchedaGenerica.PrepareForRecordBoolean(this.Dati.ENTE_PUBBLICO),
                                                   COD_ENTE_SDI              : TSchedaGenerica.PrepareForRecordString(this.Dati.COD_ENTE_SDI),
@@ -835,6 +842,9 @@ export class TSchedaPreventivoMultiparametrico extends TSchedaGenerica
                                                   BANCA                     : Self.CopiaDati.Dati.ContoCorrente.ID_CONTO_CORRENTE == -1? TSchedaGenerica.PrepareForRecordString(Self.CopiaDati.Dati.ContoCorrente.BANCA) : null,
                                                   BIC                       : Self.CopiaDati.Dati.ContoCorrente.ID_CONTO_CORRENTE == -1? TSchedaGenerica.PrepareForRecordString(Self.CopiaDati.Dati.ContoCorrente.BIC)   : null,
                                                   SWIFT                     : Self.CopiaDati.Dati.ContoCorrente.ID_CONTO_CORRENTE == -1? TSchedaGenerica.PrepareForRecordString(Self.CopiaDati.Dati.ContoCorrente.SWIFT) : null,
+                                                  ABI                       : Self.CopiaDati.Dati.ContoCorrente.ID_CONTO_CORRENTE == -1? TSchedaGenerica.PrepareForRecordString(Self.CopiaDati.Dati.ContoCorrente.ABI)   : null,
+                                                  CAB                       : Self.CopiaDati.Dati.ContoCorrente.ID_CONTO_CORRENTE == -1? TSchedaGenerica.PrepareForRecordString(Self.CopiaDati.Dati.ContoCorrente.CAB)   : null,
+                                                  NUMERO_CONTO_CORR         : Self.CopiaDati.Dati.ContoCorrente.ID_CONTO_CORRENTE == -1? TSchedaGenerica.PrepareForRecordString(Self.CopiaDati.Dati.ContoCorrente.NUMERO_CONTO_CORR) : null,
                                                   ID_CONTO_CORRENTE         : TSchedaGenerica.PrepareForRecordListIndex(Self.CopiaDati.Dati.ContoCorrente.ID_CONTO_CORRENTE),
                                                   ENTE_PUBBLICO             : TSchedaGenerica.PrepareForRecordBoolean(Self.CopiaDati.Dati.ENTE_PUBBLICO),
                                                   COD_ENTE_SDI              : TSchedaGenerica.PrepareForRecordString(Self.CopiaDati.Dati.COD_ENTE_SDI),
@@ -1019,7 +1029,11 @@ export class TSchedaPreventivoMultiparametrico extends TSchedaGenerica
                                                         NR_CONTO          : '',
                                                         CONTO_RIBA        : false,
                                                         BIC               : '',
-                                                        SWIFT             : ''
+                                                        SWIFT             : '',
+                                                        ABI               : '',
+                                                        CAB               : '',
+                                                        NUMERO_CONTO_CORR : '',
+                                                        TIPO_COORDINATE   : ''
                                                       },
                       ID_PREVENTIVO_CONFERMA        : -1,
                       NUMERO_CONFERMA               : -1,
@@ -1145,7 +1159,11 @@ export class TSchedaPreventivoMultiparametrico extends TSchedaGenerica
                                                                                       NR_CONTO          : TSchedaGenerica.DisponiFromString(ArrayInfo[0].NR_CONTO),
                                                                                       SWIFT             : ArrayInfo[0].ID_CONTO_CORRENTE != null? TSchedaGenerica.DisponiFromString(ArrayInfo[0].SWIFT_CONTO) : TSchedaGenerica.DisponiFromString(ArrayInfo[0].SWIFT),
                                                                                       BIC               : ArrayInfo[0].ID_CONTO_CORRENTE != null? TSchedaGenerica.DisponiFromString(ArrayInfo[0].BIC_CONTO) : TSchedaGenerica.DisponiFromString(ArrayInfo[0].BIC),
-                                                                                  },
+                                                                                      ABI               : ArrayInfo[0].ID_CONTO_CORRENTE != null? null : TSchedaGenerica.DisponiFromString(ArrayInfo[0].ABI),
+                                                                                      CAB               : ArrayInfo[0].ID_CONTO_CORRENTE != null? null : TSchedaGenerica.DisponiFromString(ArrayInfo[0].CAB),
+                                                                                      NUMERO_CONTO_CORR : ArrayInfo[0].ID_CONTO_CORRENTE != null? null : TSchedaGenerica.DisponiFromString(ArrayInfo[0].NUMERO_CONTO_CORR),
+                                                                                      TIPO_COORDINATE   : ArrayInfo[0].ID_CONTO_CORRENTE != null? '' : (ArrayInfo[0].IBAN != null && ArrayInfo[0].IBAN != '' ? 'IBAN' : 'ABICAB'),
+                                                                                    },  
                                                   ModificaTabellaAllegati       : false,
                                                   ModificaTabellaVoci           : false,
                                                   NascondiIncrementaRevisione   : false,
@@ -1274,6 +1292,10 @@ export class TSchedaPreventivoMultiparametrico extends TSchedaGenerica
                                                                             NR_CONTO          : ArrayInfo[0].NR_CONTO,
                                                                             BIC               : ArrayInfo[0].ID_CONTO_CORRENTE? ArrayInfo[0].BIC_CONTO   : ArrayInfo[0].BIC,
                                                                             SWIFT             : ArrayInfo[0].ID_CONTO_CORRENTE? ArrayInfo[0].SWIFT_CONTO : ArrayInfo[0].SWIFT,
+                                                                            ABI               : ArrayInfo[0].ID_CONTO_CORRENTE? null : ArrayInfo[0].ABI,
+                                                                            CAB               : ArrayInfo[0].ID_CONTO_CORRENTE? null : ArrayInfo[0].CAB,
+                                                                            NUMERO_CONTO_CORR : ArrayInfo[0].ID_CONTO_CORRENTE? null : ArrayInfo[0].NUMERO_CONTO_CORR,
+                                                                            TIPO_COORDINATE   : ArrayInfo[0].ID_CONTO_CORRENTE? '' : (ArrayInfo[0].IBAN != null && ArrayInfo[0].IBAN != '' ? 'IBAN' : 'ABICAB'),
                                                                           } 
                                                 Self.Dati.DESTINAZIONE             = ArrayInfo[0].PRESSO;
                                                 Self.Dati.COND_PAGAMENTO           = ArrayInfo[0].COND_PAGAMENTO

@@ -102,9 +102,9 @@ export class TAccessRights
     return this.NoteInstallazioni.Cliente == CLIENTI.ZMSoftware
   }
 
-  VisibilitaOpzioniPortoDDT()
+  VisibilitaEsportazioneCbiRiba()
   {
-    return (this.NoteInstallazioni.Cliente == CLIENTI.GeneralSecurityFire)
+    return this.NoteInstallazioni.Cliente == CLIENTI.ZMSoftware
   }
 
 }

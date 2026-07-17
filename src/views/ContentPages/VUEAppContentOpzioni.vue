@@ -60,6 +60,43 @@
   </div>
   <div class="col-md-8" style="float:left">
    <div style="padding-top: 25px;" class="ZMNuovaRigaScheda">
+      <div style="float:left; margin-right: 2%;width:13%">
+       <label style="font-size:14px;">Codice SIA
+          <input type="text" class="form-control" v-model="Dati.CodiceSia" maxlength="5"/>
+       </label>
+      </div>
+      <div style="float:left; margin-right: 2%;width:13%">
+       <label style="font-size:14px;">ABI CBI
+          <input type="text" class="form-control" v-model="Dati.CodiceAbiCbi" maxlength="5"/>
+       </label>
+      </div>
+      <div style="float:left; margin-right: 2%;width:13%">
+       <label style="font-size:14px;">CAB CBI
+          <input type="text" class="form-control" v-model="Dati.CodiceCabCbi" maxlength="5"/>
+       </label>
+      </div>
+      <div style="float:left; margin-right: 2%;width:20%">
+       <label style="font-size:14px;">Conto accredito CBI
+          <input type="text" class="form-control" v-model="Dati.ContoAccreditoCbi" maxlength="12"/>
+       </label>
+      </div>
+      <div style="float:left; margin-right: 2%;width:15%">
+       <label style="font-size:14px;">Progr. ricevuta CBI
+          <input type="number" class="form-control" step="1" min="1" max="999999" v-model="Dati.ProgressivoRicevutaCbi"/>
+       </label>
+      </div>
+      <div style="float:left;width:13%">
+       <label style="font-size:14px;">Intestazione CBI
+          <select class="form-control" v-model="Dati.TipoRecordIntestazioneCbi">
+            <option value="I">IB</option>
+            <option value="R">RB</option>
+          </select>
+       </label>
+      </div>
+   </div>
+  </div>
+  <div class="col-md-8" style="float:left">
+   <div style="padding-top: 25px;" class="ZMNuovaRigaScheda">
       <div style="float:left; margin-right: 5%;width:86%">
        <label style="font-size:14px;">Articolo di legge imposta di bollo
           <input type="text" class="form-control" v-model="Dati.ImpostaDiBollo"/>
@@ -266,6 +303,12 @@ export default
                       EsigibilitaIvaSuggerita                  : -1,
                       SpeseDiTrasporto                         : 0,
                       CostoBollo                               : 0,
+                      CodiceSia                                : '00000',
+                      CodiceAbiCbi                             : '03032',
+                      CodiceCabCbi                             : '20700',
+                      ContoAccreditoCbi                        : '010000003288',
+                      ProgressivoRicevutaCbi                   : 1,
+                      TipoRecordIntestazioneCbi                : 'I',
                       ImpostaDiBollo                           : '',
                       NotaFatturaSuperamentoSoglia             : '',
                       UnitaDiMisura                            : -1,
@@ -348,6 +391,12 @@ export default
                                                              ANNO_MESSA_IN_OPERA                             : Self.Dati.AnnoMessaInOpera,
                                                              SPESE_DI_TRASPORTO_SUGGERITE                    : Self.Dati.SpeseDiTrasporto * 100,
                                                              COSTO_BOLLO_SUGGERITO                           : Self.Dati.CostoBollo * 100,
+                                                             CODICE_SIA                                      : Self.Dati.CodiceSia,
+                                                             CODICE_ABI_CBI                                  : Self.Dati.CodiceAbiCbi,
+                                                             CODICE_CAB_CBI                                  : Self.Dati.CodiceCabCbi,
+                                                             CONTO_ACCREDITO_CBI                             : Self.Dati.ContoAccreditoCbi,
+                                                             PROGRESSIVO_RICEVUTA_CBI                        : Self.Dati.ProgressivoRicevutaCbi,
+                                                             TIPO_RECORD_INTESTAZIONE_CBI                    : Self.Dati.TipoRecordIntestazioneCbi,
                                                              IMPOSTA_DI_BOLLO_IMPOSTAZIONI                   : Self.Dati.ImpostaDiBollo,
                                                              NOTA_PER_SUPERAMENTO_SOGLIA_ESENZIONE_IVA       : Self.Dati.NotaFatturaSuperamentoSoglia,
                                                              UNITA_DI_MISURA_SUGGERITA                       : Self.Dati.UnitaDiMisura,
@@ -440,6 +489,12 @@ export default
                                            Self.Dati.NumeroPrimaNotaDiCredito                 = ArrayInfo[0].NUMERO_PRIMA_NOTA_DI_CREDITO
                                            Self.Dati.SpeseDiTrasporto                         = parseInt(ArrayInfo[0].SPESE_DI_TRASPORTO_SUGGERITE) / 100
                                            Self.Dati.CostoBollo                               = parseInt(ArrayInfo[0].COSTO_BOLLO_SUGGERITO) / 100
+                                           Self.Dati.CodiceSia                                = ArrayInfo[0].CODICE_SIA == null ? '00000' : ArrayInfo[0].CODICE_SIA
+                                           Self.Dati.CodiceAbiCbi                             = ArrayInfo[0].CODICE_ABI_CBI == null ? '03032' : ArrayInfo[0].CODICE_ABI_CBI
+                                           Self.Dati.CodiceCabCbi                             = ArrayInfo[0].CODICE_CAB_CBI == null ? '20700' : ArrayInfo[0].CODICE_CAB_CBI
+                                           Self.Dati.ContoAccreditoCbi                        = ArrayInfo[0].CONTO_ACCREDITO_CBI == null ? '010000003288' : ArrayInfo[0].CONTO_ACCREDITO_CBI
+                                           Self.Dati.ProgressivoRicevutaCbi                   = ArrayInfo[0].PROGRESSIVO_RICEVUTA_CBI == null ? 1 : ArrayInfo[0].PROGRESSIVO_RICEVUTA_CBI
+                                           Self.Dati.TipoRecordIntestazioneCbi                = ArrayInfo[0].TIPO_RECORD_INTESTAZIONE_CBI == null ? 'I' : ArrayInfo[0].TIPO_RECORD_INTESTAZIONE_CBI
                                            Self.Dati.ImpostaDiBollo                           = ArrayInfo[0].IMPOSTA_DI_BOLLO_IMPOSTAZIONI
                                            Self.Dati.NotaFatturaSuperamentoSoglia             = ArrayInfo[0].NOTA_PER_SUPERAMENTO_SOGLIA_ESENZIONE_IVA,
                                            Self.Dati.UnitaDiMisura                            = ArrayInfo[0].UNITA_DI_MISURA_SUGGERITA,

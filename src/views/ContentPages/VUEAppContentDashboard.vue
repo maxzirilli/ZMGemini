@@ -87,6 +87,37 @@
     </template>
   </VUEModal>
 
+  <VUEModal v-if="PopupEsportaFileCbi"
+            :PathLogo="require('../../assets/images/LogoGemini2.png')"
+            :Programma="NomeProgramma"
+            :Titolo="'Esporta file CBI'"
+            :Altezza="'110px'"
+            :Larghezza="'520px'"
+            @onClickChiudiModal="PopupEsportaFileCbi = false">
+    <template v-slot:Body>
+      <p>Generare il file CBI per le fatture Ri.Ba. inviate allo SDI e non ancora esportate?</p>
+    </template>
+    <template v-slot:Footer>
+      <button type="button" class="btn btn-danger" style="float:right;margin-left:10px;font-weight:bold;width:20%" @click="PopupEsportaFileCbi = false" data-dismiss="modal">No</button>
+      <button type="button" class="btn btn-info" style="float:right;font-weight:bold;width:20%" @click="OnClickEsportaFileCbi" data-dismiss="modal">Sì</button>
+    </template>
+  </VUEModal>
+
+  <VUEModal v-if="PopupAvvisoEsportaFileCbi"
+            :PathLogo="require('../../assets/images/LogoGemini2.png')"
+            :Programma="NomeProgramma"
+            :Titolo="'Esportazione CBI'"
+            :Altezza="'220px'"
+            :Larghezza="'700px'"
+            @onClickChiudiModal="ChiudiPopupAvvisoEsportaFileCbi">
+    <template v-slot:Body>
+      <textarea class="form-control" style="height:150px;resize:none" readonly v-model="MessaggioAvvisoEsportaFileCbi"></textarea>
+    </template>
+    <template v-slot:Footer>
+      <button type="button" class="btn btn-info" style="float:right;font-weight:bold;width:20%" @click="ChiudiPopupAvvisoEsportaFileCbi" data-dismiss="modal">Chiudi</button>
+    </template>
+  </VUEModal>
+
    <VUEAppImportazioneClientiGuidata v-if="PopupInserimentoClienteGuidato" 
                                     @onClickAttivaModalInsermentoClienteGuidato="OnClickAttivaModalInsermentoClienteGuidato"/>
 
@@ -2472,6 +2503,10 @@ export default
                         PopupFatturaPerConferma                                   : false,
                         MostraSoloRateNonPagate                                   : true,
                         PopupConfermaStampaRibaFatture                            : false,
+                        PopupEsportaFileCbi                                       : false,
+                        PopupAvvisoEsportaFileCbi                                 : false,
+                        MessaggioAvvisoEsportaFileCbi                             : '',
+                        EsportazioneCbiInCorso                                    : false,
                         InformazioniComunicazionePresaInConsiderazione            : null,
                         StatoPreventivoIniziale                                   : '',
 
@@ -3381,31 +3416,18 @@ export default
 
           if(FiltroSelezionato == undefined)
           {
-            let SubMenuTrovato
-            let MenuFilterTrovato = Self.MenuFilter.find(function(AMenu)
-                                    {
-                                      if(AMenu.Caption != '')
-                                      {
-                                        if(AMenu.SubMenu != null)
-                                        {
-                                          let Trovato = AMenu.SubMenu.find(function(ASubMenu)
-                                          {
-                                            if(ASubMenu.Caption != '')
-                                              return ASubMenu.Filter.GetFilterId() == FiltriAbilitati[0].Name                    
-                                          })
-                                          if(Trovato != undefined)
-                                          {
-                                            SubMenuTrovato = Trovato
-                                            return true
-                                          }
-                                        }
-                                        else return AMenu.Filter.GetFilterId() == FiltriAbilitati[0].Name
-                                      }
-                                    })
+            if(FiltriAbilitati[0].Name == DASHBOARD_FILTER_TYPES.Clienti)
+              Self.MenuFilter = Self.MenuFilterPrincipale
 
-            if(SubMenuTrovato != undefined)
-              Self.CurrentFilter = SubMenuTrovato.Filter
-            else Self.CurrentFilter = MenuFilterTrovato.Filter
+            let MenuFilterTrovato = Self.MenuFilter.find(function(AMenu)
+            {
+              if(AMenu.Caption != '')
+                if(AMenu.Filter != undefined)
+                  return AMenu.Filter.GetFilterId() == FiltriAbilitati[0].Name
+            })
+
+            if(MenuFilterTrovato != undefined)
+              Self.CurrentFilter = MenuFilterTrovato.Filter
 
             FiltroSelezionato  = FiltriAbilitati[0]
           }
@@ -3506,6 +3528,99 @@ export default
                                                           {
                                                             SystemInformation.HandleError(HTTPError,SubHTTPError,Response);
                                                           }) 
+      },
+
+      ApriPopupEsportaCbi()
+      {
+        this.PopupEsportaFileCbi = true
+      },
+
+      FormattaFattureNonEsportateCbi(ListaFattureNonEsportate)
+      {
+        if(ListaFattureNonEsportate == undefined || ListaFattureNonEsportate.length == 0)
+          return ''
+
+        let Messaggio = '\n\nFatture Ri.Ba. non inserite nel file per dati mancanti:'
+
+        for(let i = 0; i < ListaFattureNonEsportate.length; i++)
+        {
+          let FatturaNonEsportata = ListaFattureNonEsportate[i]
+          let NumeroFattura = FatturaNonEsportata.NumeroFattura != undefined && FatturaNonEsportata.NumeroFattura != null && FatturaNonEsportata.NumeroFattura != ''
+                              ? FatturaNonEsportata.NumeroFattura
+                              : FatturaNonEsportata.Chiave
+          let Debitore = FatturaNonEsportata.Debitore != undefined && FatturaNonEsportata.Debitore != null && FatturaNonEsportata.Debitore != ''
+                         ? ' - ' + FatturaNonEsportata.Debitore
+                         : ''
+          let Motivo = FatturaNonEsportata.Motivo != undefined && FatturaNonEsportata.Motivo != null && FatturaNonEsportata.Motivo != ''
+                       ? ': ' + FatturaNonEsportata.Motivo
+                       : ''
+
+          Messaggio += '\n- Fattura ' + NumeroFattura + Debitore + Motivo
+        }
+
+        return Messaggio
+      },
+
+      OnClickEsportaFileCbi()
+      {
+        let Self = this;
+
+        if(Self.EsportazioneCbiInCorso)
+          return;
+
+        Self.EsportazioneCbiInCorso = true;
+        Self.PopupEsportaFileCbi = false;
+        Self.PopupAttesaCalcolo = true;
+
+        SystemInformation.AdvQuery.ExecuteExternalScript('EsportaFileRibaBan', {},
+          function(Result)
+          {
+            if(Result != undefined)
+            {
+              if(Result.Esito === false)
+              {
+                Self.MessaggioAvvisoEsportaFileCbi = Result.MessaggioUtente != undefined && Result.MessaggioUtente != ''
+                                                    ? Result.MessaggioUtente
+                                                    : 'Nessuna fattura da esportare.'
+                Self.MessaggioAvvisoEsportaFileCbi += Self.FormattaFattureNonEsportateCbi(Result.FattureNonEsportate)
+                Self.PopupAvvisoEsportaFileCbi = true
+              }
+              else
+              {
+                if(Result.FileBan != undefined && Result.FileBan != '')
+                {
+                  const FileBlob = new Blob([Result.FileBan],
+                  {
+                    type: "text/plain;charset=utf-8"
+                  });
+
+                  saveAs(FileBlob, "FileRiba.cbi");
+                  Self.MessaggioAvvisoEsportaFileCbi = 'File CBI generato correttamente.\n\nAttenzione: conserva il file scaricato e non cancellarlo. Le fatture esportate sono state segnate come inviate.'
+                  Self.MessaggioAvvisoEsportaFileCbi += Self.FormattaFattureNonEsportateCbi(Result.FattureNonEsportate)
+                  Self.PopupAvvisoEsportaFileCbi = true
+                }
+                else
+                  SystemInformation.HandleError('Fatture non presenti','','');
+              }
+            }
+            else
+              SystemInformation.HandleError('Fatture non presenti','','');
+
+            Self.EsportazioneCbiInCorso = false
+            Self.PopupAttesaCalcolo = false
+          },
+          function(HTTPError,SubHTTPError,Response)
+          {
+            Self.EsportazioneCbiInCorso = false
+            Self.PopupAttesaCalcolo = false
+            SystemInformation.HandleError(HTTPError,SubHTTPError,Response);
+          })
+      },
+
+      ChiudiPopupAvvisoEsportaFileCbi()
+      {
+        this.PopupAvvisoEsportaFileCbi = false
+        this.MessaggioAvvisoEsportaFileCbi = ''
       },
 
       OnClickStampaXML()
@@ -3645,6 +3760,18 @@ export default
                       }
                     }
                   ]
+
+                  if(SystemInformation.AccessRights.VisibilitaEsportazioneCbiRiba())
+                  {
+                    this.MenuStampa.push(
+                    {
+                      Caption: "Esporta in formato CBI",
+                      OnClick: function ()
+                      {
+                        Self.ApriPopupEsportaCbi()
+                      }
+                    })
+                  }
               }
               if(IsConferma)
               {
@@ -4070,12 +4197,20 @@ export default
         }) 
         if(FiltroSelezionato == undefined)
         {
-        Self.CurrentFilter = Self.MenuFilter.find(function(AMenu)
-         {
-           if(AMenu.Caption != '')
-             return AMenu.Filter.GetFilterId() == Filtro[0].Name
-         }).Filter
-        FiltroSelezionato  = Filtro[0]
+          if(Filtro[0].Name == DASHBOARD_FILTER_TYPES.Clienti)
+            Self.MenuFilter = Self.MenuFilterPrincipale
+
+          let MenuFilterTrovato = Self.MenuFilter.find(function(AMenu)
+          {
+            if(AMenu.Caption != '')
+              if(AMenu.Filter != undefined)
+                return AMenu.Filter.GetFilterId() == Filtro[0].Name
+          })
+
+          if(MenuFilterTrovato != undefined)
+            Self.CurrentFilter = MenuFilterTrovato.Filter
+
+          FiltroSelezionato  = Filtro[0]
         }
         setTimeout(function() {
                                 Self.FiltraDati(FiltroSelezionato.Positions,
