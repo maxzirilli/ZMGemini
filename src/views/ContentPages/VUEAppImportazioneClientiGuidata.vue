@@ -56,6 +56,13 @@
                     @onClickConfermaPopup="ConfermaAggiorna" 
                     @onClickChiudiPopup="AnnullaAggiorna">
         </VUEConfirm>
+        <VUEOpenStreetMapRisultati v-if="PopupRisultatiCoordinate"
+                                   :Risultati="RisultatiCoordinate"
+                                   :Programma="NomeProgramma"
+                                   :PathLogo="require('../../assets/images/LogoGemini2.png')"
+                                   @onClickConferma="ConfermaRisultatoCoordinate"
+                                   @onClickAnnulla="AnnullaRisultatiCoordinate">
+        </VUEOpenStreetMapRisultati>
 
         <div v-if="SchedaAttuale == SCHEDA_CLIENTE">
           <div class="ZMSeparatoreScheda">Cliente</div>
@@ -442,6 +449,7 @@ import VUEModalCaricamentoDati from '../../../../../../../../Librerie/VUE/Templa
 import VUEConfirm from '../../../../../../../../Librerie/VUE/TemplateGestionale/VUEConfirm.vue';
 import { TZOpenStreetMap } from '../../../../../../../../Librerie/VUE/ZOpenStreetMap.js';
 import VUEInputContoRibaCorrente from '@/components/InputComponents/VUEInputContoRibaCorrente.vue';
+import VUEOpenStreetMapRisultati from '@/components/PopupComponents/VUEOpenStreetMapRisultati.vue';
 // import { TZDataTable,TZDTableColumnType } from '../../../../../../../../Librerie/VUE/ZDataTable.js'
 
 export class TSchedaFiliale
@@ -737,7 +745,8 @@ export default
     VUEInputCondPagamenti,
     VUEModalCaricamentoDati,
     VUEConfirm,
-    VUEInputContoRibaCorrente
+    VUEInputContoRibaCorrente,
+    VUEOpenStreetMapRisultati
   },
     
   name: "VUEImportazioneClientiGuidata",
@@ -765,6 +774,9 @@ export default
       ModalConferma          : false,
       UltimoCodice           : null,
       PopupDataRowCordinate  : false,
+      PopupRisultatiCoordinate : false,
+      RisultatiCoordinate    : [],
+      OnSelectCoordinate     : null,
       ListaMesi              : TZDateFunct.GetListaMensilitaPerDataTable(),
       NomeProgramma          : NOME_PROGRAMMA
 
@@ -919,6 +931,21 @@ export default
       this.PopupDataRowCordinate = false 
     },
 
+    ConfermaRisultatoCoordinate(Risultato)
+    {
+      if(this.OnSelectCoordinate != null)
+        this.OnSelectCoordinate(Risultato)
+
+      this.AnnullaRisultatiCoordinate()
+    },
+
+    AnnullaRisultatiCoordinate()
+    {
+      this.PopupRisultatiCoordinate = false
+      this.RisultatiCoordinate      = []
+      this.OnSelectCoordinate       = null
+    },
+
     OnClickPopupModificaCoordinate()
     {
       this.PopupDataRowCordinate = true
@@ -927,16 +954,26 @@ export default
     OnClickTrovaCoordinateFiliale()
     { 
       let Self = this
+      var Filiale = this.SchedaClienti.SchedeFiliali[this.SchedaClienti.CurrentSchedaFiliale]
+      var Errori = this.ControllaDatiCoordinate(Filiale)
+      if(Errori.length > 0)
+      {
+         alert('Impossibile aggiornare le coordinate. Compilare: ' + Errori.join(', '))
+         return
+      }
+
       var Provincia = SystemInformation.Configurazioni.Province.find(function(Elemento)
                       {
-                        return Elemento.CHIAVE == Self.SchedaClienti.SchedeFiliali[Self.SchedaClienti.CurrentSchedaFiliale].PROVINCIA
+                        return Elemento.CHIAVE == Filiale.PROVINCIA
                       });
       
       Provincia = Provincia != undefined ? Provincia.NOME : '-'
 
-      TZOpenStreetMap.GetCoordinate(this.SchedaClienti.SchedeFiliali[this.SchedaClienti.CurrentSchedaFiliale].NR_CIVICO, 
-                                    this.SchedaClienti.SchedeFiliali[this.SchedaClienti.CurrentSchedaFiliale].INDIRIZZO, 
+      TZOpenStreetMap.GetCoordinate(Filiale.NR_CIVICO, 
+                                    Filiale.INDIRIZZO,
+                                    Filiale.COMUNE,
                                     Provincia,
+                                    Filiale.CAP,
                                     function(Latitudine, Longitudine)
                                     {
                                       Self.SchedaClienti.SchedeFiliali[Self.SchedaClienti.CurrentSchedaFiliale].LAT_IND  = Latitudine
@@ -949,7 +986,35 @@ export default
                                       Self.SchedaClienti.SchedeFiliali[Self.SchedaClienti.CurrentSchedaFiliale].LONG_IND = null
                                       alert(Message)
                                       Self.PopupDataRowCordinate = false
+                                    },
+                                    function(Risultati, OnSelect)
+                                    {
+                                      Self.RisultatiCoordinate      = Risultati
+                                      Self.OnSelectCoordinate       = OnSelect
+                                      Self.PopupRisultatiCoordinate = true
                                     });
+    },
+
+    ControllaDatiCoordinate(Filiale)
+    {
+      var Errori = []
+      if(this.ValoreVuoto(Filiale.INDIRIZZO))
+         Errori.push('indirizzo')
+      if(this.ValoreVuoto(Filiale.NR_CIVICO))
+         Errori.push('numero civico')
+      if(this.ValoreVuoto(Filiale.CAP))
+         Errori.push('CAP')
+      if(this.ValoreVuoto(Filiale.COMUNE))
+         Errori.push('comune')
+      if(this.ValoreVuoto(Filiale.PROVINCIA))
+         Errori.push('provincia')
+
+      return Errori
+    },
+
+    ValoreVuoto(Valore)
+    {
+      return Valore == undefined || Valore == null || String(Valore).trim() == ''
     },
 
     OnClickAcquisisciCliente()

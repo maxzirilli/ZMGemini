@@ -7,6 +7,13 @@
             :PathLogo="require('../../assets/images/LogoGemini2.png')"
             :Programma="NomeProgramma">
 </VUEConfirm>
+<VUEOpenStreetMapRisultati v-if="PopupRisultatiCoordinate"
+                           :Risultati="RisultatiCoordinate"
+                           :Programma="NomeProgramma"
+                           :PathLogo="require('../../assets/images/LogoGemini2.png')"
+                           @onClickConferma="ConfermaRisultatoCoordinate"
+                           @onClickAnnulla="AnnullaRisultatiCoordinate">
+</VUEOpenStreetMapRisultati>
 
 <VUEModal v-if="LsLogFiliali" 
             :Titolo="'Lista Log Filiale'" 
@@ -255,6 +262,7 @@ import VUEConfirm from '../../../../../../../../Librerie/VUE/TemplateGestionale/
 import VUEModal from '../../../../../../../../Librerie/VUE/TemplateGestionale/VUEModal.vue';
 import VUERecapiti from '@/views/SchedeDatabase/ComponentMultiScheda/VUERecapiti.vue';
 import { TZOpenStreetMap } from '../../../../../../../../Librerie/VUE/ZOpenStreetMap.js';
+import VUEOpenStreetMapRisultati from '@/components/PopupComponents/VUEOpenStreetMapRisultati.vue';
 
 export default 
 {
@@ -269,7 +277,8 @@ export default
     VUEConfirm,
     VUEModal,
     VUERecapiti,
-    VUEInputZone
+    VUEInputZone,
+    VUEOpenStreetMapRisultati
   },
 
   data()
@@ -285,7 +294,10 @@ export default
               RecapitiWidth              : 44,
               TimesWidth                 : 55,
               RigaPopup                  : null,
-              ElencoLogFiliali           : []
+              ElencoLogFiliali           : [],
+              PopupRisultatiCoordinate   : false,
+              RisultatiCoordinate        : [],
+              OnSelectCoordinate         : null
             }
   },
   
@@ -349,6 +361,22 @@ export default
       this.PopupDataRowCordinate = false 
     },
 
+    ConfermaRisultatoCoordinate(Risultato)
+    {
+      if(this.OnSelectCoordinate != null)
+        this.OnSelectCoordinate(Risultato)
+
+      this.AnnullaRisultatiCoordinate()
+      this.CurrentRiga.OnChange()
+    },
+
+    AnnullaRisultatiCoordinate()
+    {
+      this.PopupRisultatiCoordinate = false
+      this.RisultatiCoordinate      = []
+      this.OnSelectCoordinate       = null
+    },
+
     OnClickChiudiLista()
     {
        this.LsLogFiliali = false
@@ -390,24 +418,65 @@ export default
 
     OnClickTrovaCoordinateFiliale(Riga)
     { 
-      Riga = this.Riga
+      Riga = Riga != undefined ? Riga : this.Riga
+
+      var Errori = this.ControllaDatiCoordinate(Riga)
+      if(Errori.length > 0)
+      {
+         alert('Impossibile aggiornare le coordinate. Compilare: ' + Errori.join(', '))
+         return
+      }
+
       var Provincia = SystemInformation.Configurazioni.Province.find(function(Elemento)
                       {
                         return Elemento.CHIAVE == Riga.Dati['PROVINCIA'].Valore
                       });
       let Self = this
       Provincia = Provincia != undefined ? Provincia.NOME : '-'
-      TZOpenStreetMap.GetCoordinate(Riga.Dati['NR_CIVICO'].Valore, Riga.Dati['INDIRIZZO'].Valore, Provincia,
+      TZOpenStreetMap.GetCoordinate(Riga.Dati['NR_CIVICO'].Valore, 
+                                    Riga.Dati['INDIRIZZO'].Valore,
+                                    Riga.Dati['COMUNE'].Valore,
+                                    Provincia,
+                                    Riga.Dati['CAP'].Valore,
                                     function(Latitudine, Longitudine)
                                     {
                                       Riga.Dati['LAT_IND'].Valore  = Latitudine
                                       Riga.Dati['LONG_IND'].Valore = Longitudine
+                                      Riga.OnChange()
                                       Self.PopupDataRowCordinate = false
                                     },
                                       function(Message)
                                     {
                                       alert(Message)
+                                    },
+                                    function(Risultati, OnSelect)
+                                    {
+                                      Self.RisultatiCoordinate      = Risultati
+                                      Self.OnSelectCoordinate       = OnSelect
+                                      Self.PopupRisultatiCoordinate = true
                                     });
+    },
+
+    ControllaDatiCoordinate(Riga)
+    {
+      var Errori = []
+      if(this.ValoreVuoto(Riga.Dati['INDIRIZZO'].Valore))
+         Errori.push('indirizzo')
+      if(this.ValoreVuoto(Riga.Dati['NR_CIVICO'].Valore))
+         Errori.push('numero civico')
+      if(this.ValoreVuoto(Riga.Dati['CAP'].Valore))
+         Errori.push('CAP')
+      if(this.ValoreVuoto(Riga.Dati['COMUNE'].Valore))
+         Errori.push('comune')
+      if(this.ValoreVuoto(Riga.Dati['PROVINCIA'].Valore))
+         Errori.push('provincia')
+
+      return Errori
+    },
+
+    ValoreVuoto(Valore)
+    {
+      return Valore == undefined || Valore == null || String(Valore).trim() == ''
     },
 
     OnClickCopiaRecapiti()
