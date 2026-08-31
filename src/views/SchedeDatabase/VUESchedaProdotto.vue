@@ -304,11 +304,11 @@
  import VUEInputContropartita from '@/components/InputComponents/VUEInputContropartita.vue';
  
 
- export class TSchedaProdotto extends TSchedaGenerica
- {
-    GetClassName()
-    {
-     return 'TSchedaProdotto';
+  export class TSchedaProdotto extends TSchedaGenerica
+  {
+     GetClassName()
+     {
+      return 'TSchedaProdotto';
     }
 
     CaricaRiassunto(Riassunto)
@@ -851,11 +851,9 @@
 
       BarcodeVisuale()
       {
-        let BarcodeVisualizzato = this.SchedaProdotto?.Dati?.BARCODE;
+        let BarcodeVisualizzato = SystemInformation.NormalizzaBarcode(this.SchedaProdotto?.Dati?.BARCODE);
 
         if(!BarcodeVisualizzato) return '';
-
-        BarcodeVisualizzato = String(BarcodeVisualizzato).slice(0, 12);
 
         if(BarcodeVisualizzato.length != 12) return '';
 
@@ -1023,16 +1021,7 @@
       {
         if(!this.SchedaProdotto?.Dati) return;
 
-        let BarcodePulito = this.SchedaProdotto.Dati.BARCODE;
-
-        if(!BarcodePulito) return;
-
-        BarcodePulito = BarcodePulito.toString().replace(/\D/g, '');
-
-        if(BarcodePulito.length > 12)
-          BarcodePulito = BarcodePulito.substring(0, 12);
-
-        this.SchedaProdotto.Dati.BARCODE = BarcodePulito;
+        this.SchedaProdotto.Dati.BARCODE = SystemInformation.NormalizzaBarcode(this.SchedaProdotto.Dati.BARCODE);
       }
     },
 

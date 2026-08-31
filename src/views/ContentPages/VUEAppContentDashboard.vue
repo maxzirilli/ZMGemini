@@ -1,6 +1,11 @@
 <template>
   <VUEModalCaricamentoDati v-if="PopupAttesaCalcolo" :PathGif="require('@/assets/images/CaricamentoDatiGif.gif')"/>
 
+  <VUEMovimentoBarcodeProdotti :Attivo="IsPaginaProdotti()"
+                               :LsMagazzini="LsMagazzini"
+                               :NomeProgramma="NomeProgramma"
+                               @onMovimentoRegistrato="OnMovimentoBarcodeRegistrato"/>
+
   <VUEModal v-if="PopupProdottiExcel" :Titolo="'Stampa excel prodotti'" :Altezza="'170px'" :Larghezza="'520px'"
             @onClickChiudiModal="PopupProdottiExcel = false"
             :PathLogo="require('../../assets/images/LogoGemini2.png')"
@@ -99,7 +104,7 @@
     </template>
     <template v-slot:Footer>
       <button type="button" class="btn btn-danger" style="float:right;margin-left:10px;font-weight:bold;width:20%" @click="PopupEsportaFileCbi = false" data-dismiss="modal">No</button>
-      <button type="button" class="btn btn-info" style="float:right;font-weight:bold;width:20%" @click="OnClickEsportaFileCbi" data-dismiss="modal">Sì</button>
+      <button type="button" class="btn btn-info" style="float:right;font-weight:bold;width:20%" @click="OnClickEsportaFileCbi" data-dismiss="modal">Si</button>
     </template>
   </VUEModal>
 
@@ -1989,6 +1994,13 @@
             </VUEInputProdotti>
             </div>
 
+        <div style="float:left;font-size:14px;margin-top: 5px;width:8%;text-align: right; padding-right: 15px;">
+          <label>Barcode</label>
+        </div>
+        <div style="float:left;width:12%;">
+          <input type="text" class="form-control" v-model="FilterMovimentiMagazzini.Barcode">
+        </div>
+
       </div>
 
       <div class="col-md-2" style="display: flex; justify-content: flex-end; align-items: flex-start; gap: 10px">
@@ -2146,27 +2158,33 @@
      <div v-if="!DatiInModifica && CurrentFilter.GetFilterId() == 'Prodotti'" class="breadcrumb no-border no-radius b-b b-light pull-in" style="height:50px;">
         <div class="col-md-10" style="padding:0px">
         
-          <div style="float: left;font-size:14px;padding-top: 5px;width:5%;text-align: right; padding-right: 15px;">
+          <div style="float: left;font-size:14px;padding-top: 5px;width:4%;text-align: right; padding-right: 10px;">
             <label>Nome</label>
           </div>
-          <div style="float:left;width:20%">
+          <div style="float:left;width:18%">
             <VUEInputProdotti v-model="FilterProdotto.NomeProdotto"
              @onUpdate="newValue => FilterProdotto.NomeProdotto = newValue">
             </VUEInputProdotti>
           </div> 
 
-          <div style="float: left;font-size:14px;padding-top: 5px;width:9%;text-align: right; padding-right: 15px;">
+          <div style="float: left;font-size:14px;padding-top: 5px;width:7%;text-align: right; padding-right: 10px;">
             <label>Part number</label>
           </div>
-          <div style="float:left;width:10%">
+          <div style="float:left;width:9%">
             <input type="text" class="form-control" v-model="FilterProdotto.PartNumber">
+          </div> 
+          <div style="float: left;font-size:14px;padding-top: 5px;width:6%;text-align: right; padding-right: 10px;">
+            <label>Barcode</label>
+          </div>
+          <div style="float:left;width:9%">
+            <input type="text" class="form-control" v-model="FilterProdotto.Barcode">
           </div> 
           <div>
             <!-- Filtro Settore-->
-            <div style="float: left;font-size:14px;padding-top: 5px;width:6%;text-align: right; padding-right: 15px;">
+            <div style="float: left;font-size:14px;padding-top: 5px;width:5%;text-align: right; padding-right: 10px;">
               <label>Settore</label>
             </div>
-            <div style="float:left;width:11%">
+            <div style="float:left;width:10%">
               <select class="form-control" v-model="FilterProdotto.Settore">
                   <option selected :value="-1">-</option>
                   <option v-for="(Settore) in LsSettori" :key="Settore.CHIAVE" :value="Settore.CHIAVE">
@@ -2174,10 +2192,10 @@
                   </option>
               </select>
             </div> 
-            <div style="float: left;font-size:14px;padding-top: 5px;width:8%;text-align: right; padding-right: 15px;">
+            <div style="float: left;font-size:14px;padding-top: 5px;width:7%;text-align: right; padding-right: 10px;">
               <label>Magazzino</label>
             </div>
-            <div style="float:left;width:11%">
+            <div style="float:left;width:10%">
               <select class="form-control" v-model="FilterProdotto.IdMagazzino">
                   <option selected :value="-1">-</option>
                   <option v-for="(Magazzino) in LsMagazzini" :key="Magazzino.CHIAVE" :value="Magazzino.CHIAVE">
@@ -2186,7 +2204,7 @@
               </select>
             </div> 
             <!-- Filtro Prodotti Sottosoglia-->
-            <div style="float: left;font-size:14px;padding-top: 5px;width:14%;text-align: right; padding-right: 15px;">
+            <div style="float: left;font-size:14px;padding-top: 5px;width:11%;text-align: right; padding-right: 10px;">
               <label>Prodotti sottosoglia</label>
             </div>
             <div style="float:left;width:2%;padding-top: 1px">
@@ -2383,6 +2401,7 @@ import VUESchedaPreventivoMultiparametrico, { TSchedaPreventivoMultiparametrico 
 import VUESchedaPrimaNota from '../SchedeDatabase/VUESchedaPrimaNota.vue';
 import VUESchedaProdotto, { TSchedaProdotto } from '../SchedeDatabase/VUESchedaProdotto.vue';
 import VUEAppImportazioneClientiGuidata from './VUEAppImportazioneClientiGuidata.vue';
+import VUEMovimentoBarcodeProdotti from '@/components/VUEMovimentoBarcodeProdotti.vue';
 
 export default
 {
@@ -2419,13 +2438,13 @@ export default
                   VUESchedaFattureInsolutePregresseFornitori,
                   VUEModalCaricamentoDati,
                   VUESchedaPreventivoMultiparametrico,
-                  VUEAppImportazioneClientiGuidata
+                  VUEAppImportazioneClientiGuidata,
+                  VUEMovimentoBarcodeProdotti
                 },
     data() 
     {
         var Self = this;
         var TreeView = new TZTree();
-
         TreeView.BeforeDelete = function()
         {
            Self.SchedaSelezionata = new TSchedaGenerica(SystemInformation.AdvQuery);
@@ -3155,6 +3174,12 @@ export default
             this.FiltraDati();
       },
 
+      IsPaginaProdotti()
+      {
+        if(this.CurrentFilter == null) return false;
+
+        return this.CurrentFilter.GetFilterId() == DASHBOARD_FILTER_TYPES.Prodotti;
+      },
       OnClickRadioFiltroRitenuta()
       {
         this.FilterCliente.AnnoRitenuta = (new Date()).getFullYear()
@@ -5272,6 +5297,15 @@ export default
       {
         this.PopupInserimentoClienteGuidato = false;
         this.InserimentoClienteGuidatoTrigger.TriggerInserimentoGuidato = false
+      },
+
+      OnMovimentoBarcodeRegistrato(ListaProdottiMovimentati)
+      {
+        if(this.TipoSchedaSelezionata != 'TSchedaProdotto') return;
+        if(!ListaProdottiMovimentati.map(String).includes(String(this.SchedaSelezionata.Chiave))) return;
+        if(this.SchedaSelezionata.DatiModificati()) return;
+
+        this.SchedaSelezionata.Disponi();
       }
     },
     

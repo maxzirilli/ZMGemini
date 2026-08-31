@@ -48,13 +48,13 @@
 
           $Result->BAND_PRODOTTI = array();
 
-          $SQLBody = "SELECT NOME_PRODOTTO,
-                             BARCODE
-                        FROM prodotti
-                       WHERE BARCODE IS NOT NULL AND BARCODE <> ''
-                       ORDER BY NOME_PRODOTTO";
+          $Query = $this->FGetQueryResult($PDODBase,
+                                          'Magazzino',
+                                          'StampaBarcodeProdotti',
+                                          'StampaBarcodeProdotti',
+                                          get_object_vars($Parametri));
 
-          if($Query = $PDODBase->query($SQLBody))
+          if($Query)
           {
               while($Row = $Query->fetch(PDO::FETCH_ASSOC))
               {

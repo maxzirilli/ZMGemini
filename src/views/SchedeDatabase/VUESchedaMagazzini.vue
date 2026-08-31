@@ -12,6 +12,13 @@
           <VUEInputProdotti v-model="ChiaveProdotto" @onUpdate="newValue => ChiaveProdotto = newValue"/>
         </div> 
 
+        <div style="float:left;font-size:14px;padding-top: 5px;margin-right:5px">
+          <label>Barcode</label>
+        </div>
+        <div style="float:left;width:12%;margin-right:20px">
+          <input type="text" class="form-control" v-model="Barcode">
+        </div> 
+
           <div style="float: left;font-size:14px;padding-top: 5px;width:6%;text-align: right; padding-right: 15px;">
               <label>Magazzino</label>
             </div>
@@ -25,7 +32,7 @@
             </div> 
       </div>
       <div class="col-md-1" style="display: flex; justify-content: flex-end; align-items: flex-start; gap: 10px">
-        <button @click="OnClickCaricaListaProdotti()" class="btn btn-s-md btn-info" style="margin-right: 5px;"> Cerca</button>
+        <button @click="OnClickCaricaListaProdotti()" class="btn btn-s-md btn-info" style="margin-right: 5px;"> [F2] Cerca</button>
       </div>
 
       <div class="ZMSeparatoreFiltri">&nbsp;</div>
@@ -42,17 +49,19 @@
                         </tr>
                         <tr>
                           <th>Prodotto</th>
+                          <th>Barcode</th>
                           <th>Quantità in magazzino</th>
                         </tr>
                       </thead>
                       <tbody>
   <tr v-if="!Magazzino.Prodotti || Magazzino.Prodotti.length == 0">
-    <td colspan="2" style="font-style: italic; color: #999;">
+    <td colspan="3" style="font-style: italic; color: #999;">
       Nessun prodotto in questo magazzino
     </td>
   </tr>
   <tr v-for="Prodotto in Magazzino.Prodotti" :key="Prodotto.CHIAVE">
     <td>{{ Prodotto.NOME_PRODOTTO }}</td>
+    <td>{{ Prodotto.BARCODE }}</td>
     <td>{{ Prodotto.QUANTITA_MAGAZZINO }}</td>
   </tr>
 </tbody>
@@ -117,7 +126,8 @@ export default
                                           NrMagazzini         : 0
                                        },
             ListaMagazzini              : SystemInformation.Configurazioni.Magazzini,
-            NomeMagazzino               : -1
+            NomeMagazzino               : -1,
+            Barcode                     : ''
 
           }
  },
@@ -204,11 +214,16 @@ export default
                         Limite : this.Paginazione.NrRighePerPagina,
                         Offset : (this.Paginazione.NrPagina -1) * this.Paginazione.NrRighePerPagina
                       }
+      let BarcodeFiltro = SystemInformation.NormalizzaBarcode(this.Barcode);
+
       if(this.ChiaveProdotto > 0)
          Parametri.ChiaveProdotto = this.ChiaveProdotto
 
       if(this.NomeMagazzino != -1)
          Parametri.NomeMagazzino = this.NomeMagazzino;
+
+      if(BarcodeFiltro != '')
+         Parametri.Barcode = '%' + BarcodeFiltro + '%';
 
       return Parametri
     },
@@ -255,6 +270,7 @@ export default
               LastMagazzino.Prodotti.push({
                                             CHIAVE               : Riga.CHIAVE_PRODOTTO,
                                             NOME_PRODOTTO        : Riga.NOME_PRODOTTO,
+                                            BARCODE              : Riga.BARCODE,
                                             QUANTITA_MAGAZZINO   : (Riga.QUANTITA_MAGAZZINO ?? 0) / 100})
             }
           })

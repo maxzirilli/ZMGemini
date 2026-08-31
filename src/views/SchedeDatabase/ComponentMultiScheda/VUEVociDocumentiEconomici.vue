@@ -262,7 +262,9 @@
             @onClickChiudiModal="PopupLsProdotti=false">
     <template v-slot:Body>
           <div style="width:1%;float:left">&nbsp;</div>
-          <input type="text" style="width:76%;float:left" class="input-sm form-control" placeholder="Cerca per nome prodotto" v-model="FiltroProdottiDescrizione">
+          <input type="text" style="width:15%;float:left" class="input-sm form-control" placeholder="Cerca per barcode" v-model="FiltroProdottiBarcode">
+          <div style="width:1%;float:left">&nbsp;</div>
+          <input type="text" style="width:60%;float:left" class="input-sm form-control" placeholder="Cerca per nome prodotto" v-model="FiltroProdottiDescrizione">
      <div style="clear:both;width:1%;height:10px">&nbsp;</div>
        
           <div class="row wrapper">
@@ -1469,6 +1471,7 @@ export default {
               ListaDDT                          : [],
               ListaFatture                      : [],
               FiltroProdottiCodice              : '',
+              FiltroProdottiBarcode             : '',
               FiltroProdottiDescrizione         : '',
               FiltroContropartiteDescrizione    : '',
               CercaPerSottostringaCodice        : false,
@@ -1640,14 +1643,14 @@ export default {
       get()
       {
         var FiltroCodice            = this.FiltroProdottiCodice.toUpperCase().trim();
-
+        var FiltroBarcode           = SystemInformation.NormalizzaBarcode(this.FiltroProdottiBarcode);
         var FiltroDescr             = this.FiltroProdottiDescrizione.toUpperCase().trim();
         var ListaParoleDescr        = FiltroDescr.split(' ')
 
         var ListaRighe       = []
         let Self = this
 
-        if(FiltroCodice == '' && FiltroDescr == '')
+        if(FiltroCodice == '' && FiltroBarcode == '' && FiltroDescr == '')
         {
           ListaRighe = this.ListaProdotti.slice(0, this.NumeroMassimoProdotti)
           return ListaRighe
@@ -1656,24 +1659,19 @@ export default {
         {
           ListaRighe = this.ListaProdotti.filter(function(Prodotto)
           {
-            if(FiltroCodice != '' && FiltroDescr != '')
-            {
-              if(Self.FiltraPerCodice(FiltroCodice, Prodotto))
-                if(Self.FiltraPerDescrizione(Prodotto, ListaParoleDescr))
-                  return true;
-              return false
-            }
-            
             if(FiltroCodice != '')
-            {
-              return Self.FiltraPerCodice(FiltroCodice, Prodotto)
-            }
+              if(!Self.FiltraPerCodice(FiltroCodice, Prodotto))
+                return false
+
+            if(FiltroBarcode != '')
+              if(!Self.FiltraPerBarcode(FiltroBarcode, Prodotto))
+                return false
 
             if(FiltroDescr != '')
-            {
-              return Self.FiltraPerDescrizione(Prodotto, ListaParoleDescr)
-            }
-            return false;
+              if(!Self.FiltraPerDescrizione(Prodotto, ListaParoleDescr))
+                return false
+
+            return true
           })
           ListaRighe = ListaRighe.slice(0, this.NumeroMassimoProdotti) 
           return ListaRighe
@@ -1729,6 +1727,15 @@ export default {
       }
 
       if(Prodotto.CODICE.includes(FiltroCodice))
+        return true
+      return false
+    },
+
+    FiltraPerBarcode(FiltroBarcode, Prodotto)
+    {
+      let BarcodeProdotto = SystemInformation.NormalizzaBarcode(Prodotto.BARCODE);
+
+      if(BarcodeProdotto.includes(FiltroBarcode))
         return true
       return false
     },

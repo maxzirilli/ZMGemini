@@ -4,7 +4,8 @@
              :Programma="NomeProgramma" :Titolo="'Lista Prodotti '" :Altezza="'500px'" :Larghezza="'1200px'"
             @onClickChiudiModal="PopupLsProdotti=false">
     <template v-slot:Body>
-          <input type="text" style="width:76%;float:left" class="input-sm form-control" placeholder="Cerca per descrizione" v-model="FiltroProdottiDescrizione">
+          <input type="text" style="width:60%;float:left;margin-right:1%;" class="input-sm form-control" placeholder="Cerca per descrizione" v-model="FiltroProdottiDescrizione">
+          <input type="text" style="width:20%;float:left" class="input-sm form-control" placeholder="Cerca per barcode" v-model="FiltroProdottiBarcode">
         <div style="clear:both;width:1%;height:10px">&nbsp;</div>
        
           <div class="row wrapper">
@@ -469,12 +470,13 @@ export default
                                                            },
                                                          ]
                                            },                       
-              ListaProdotti              : [],
-              PopupLsProdotti            : false,
-              NumeroMassimoProdotti      : 100,
-              FiltroProdottiDescrizione  : '',
-              NomeProgramma              : NOME_PROGRAMMA
-             };
+               ListaProdotti              : [],
+               PopupLsProdotti            : false,
+               NumeroMassimoProdotti      : 100,
+               FiltroProdottiDescrizione  : '',
+               FiltroProdottiBarcode      : '',
+               NomeProgramma              : NOME_PROGRAMMA
+              };
   },
   props : ['SchedaMovimentiMagazzini'],
   computed :
@@ -502,12 +504,13 @@ export default
       {
         get()
         {
-          var FiltroDescr      = this.FiltroProdottiDescrizione.toUpperCase().trim();
-          var ListaParoleDescr = FiltroDescr.split(' ')
-          var ListaRighe       = []
-          let Self = this
+          var FiltroDescr       = this.FiltroProdottiDescrizione.toUpperCase().trim();
+          var FiltroBarcode     = SystemInformation.NormalizzaBarcode(this.FiltroProdottiBarcode);
+          var ListaParoleDescr  = FiltroDescr.split(' ')
+          var ListaRighe        = []
+          let Self              = this
 
-          if( FiltroDescr == '')
+          if(FiltroDescr == '' && FiltroBarcode == '')
           {
             ListaRighe = this.ListaProdotti.slice(0, this.NumeroMassimoProdotti)
             return ListaRighe
@@ -516,18 +519,15 @@ export default
           {
             ListaRighe = this.ListaProdotti.filter(function(Prodotto)
                                                   {
-                                                    // if( FiltroDescr != '')
-                                                    // {
-                                                    //     if(Self.FiltraPerDescrizione(Prodotto, ListaParoleDescr))
-                                                    //       return true;
-                                                    //      return false
-                                                    // }
-                                                    
                                                     if(FiltroDescr != '')
-                                                    {
-                                                      return Self.FiltraPerDescrizione(Prodotto, ListaParoleDescr)
-                                                    }
-                                                    return false;
+                                                      if(!Self.FiltraPerDescrizione(Prodotto, ListaParoleDescr))
+                                                        return false
+
+                                                    if(FiltroBarcode != '')
+                                                      if(!Self.FiltraPerBarcode(Prodotto, FiltroBarcode))
+                                                        return false
+
+                                                    return true;
                                                   })
             ListaRighe = ListaRighe.slice(0, this.NumeroMassimoProdotti) 
             return ListaRighe
@@ -608,6 +608,12 @@ export default
           Trovato = false
         }
         return true
+      },
+
+      FiltraPerBarcode(Prodotto, FiltroBarcode)
+      {
+        let BarcodeProdotto = SystemInformation.NormalizzaBarcode(Prodotto.BARCODE);
+        return BarcodeProdotto.includes(FiltroBarcode)
       },
 
       OnClickListaProdotti()

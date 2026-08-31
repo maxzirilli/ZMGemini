@@ -17,11 +17,11 @@ import { TSchedaPreventivo } from '@/views/SchedeDatabase/VUESchedaPreventivo.vu
 import { TSchedaFatturaPassiva } from '@/views/SchedeDatabase/VUESchedaFatturaPassiva.vue';
 import { TSchedaMovimento } from '@/views/SchedeDatabase/VUESchedaMovimento.vue';
 import { TSchedaMovimentiMagazzini } from '@/views/SchedeDatabase/VUESchedaMovimentiMagazzini.vue';
+import { TSchedaProdotto } from '@/views/SchedeDatabase/VUESchedaProdotto.vue';
 import { TSchedaDocumentoDiTrasporto } from '@/views/SchedeDatabase/VUESchedaDocumentoDiTrasporto.vue';
 import { TSchedaDocScaricoProdottiComposti } from '@/views/SchedeDatabase/VUESchedaDocScaricoProdottiComposti.vue';
 import { TZFilter } from '../../../../../../Librerie/VUE/ZFilters.js';
 import { TSchedaFornitore } from '@/views/SchedeDatabase/VUESchedaFornitore.vue';
-import { TSchedaProdotto } from '@/views/SchedeDatabase/VUESchedaProdotto.vue';
 import { TSchedaContoCorrente } from '@/views/SchedeDatabase/VUESchedaContoCorrente.vue';
 import { TSchedaPreventivoMultiparametrico } from '@/views/SchedeDatabase/VUESchedaPreventivoMultiparametrico.vue';
 
@@ -1092,7 +1092,8 @@ export class TFilterMovimentiMagazzini extends TZFilter
       this.DallaData            = '',
       this.AllaData             = '',
       this.CodiceProdotto       = '',
-      this.NomeProdotto         = -1
+      this.NomeProdotto         = -1,
+      this.Barcode              = ''
 
     }
 
@@ -1109,6 +1110,8 @@ export class TFilterMovimentiMagazzini extends TZFilter
     GetParametriXMovimentiMagazzini()
     {
       var Parametri = {}
+      let BarcodeFiltro = SystemInformation.NormalizzaBarcode(this.Barcode);
+
       if(this.DallaData != '')
         Parametri.DallaData = this.DallaData
       if(this.AllaData != '')
@@ -1117,6 +1120,8 @@ export class TFilterMovimentiMagazzini extends TZFilter
         Parametri.NomeProdotto =  this.NomeProdotto; 
       if(this.CodiceProdotto.trim() != '')
         Parametri.CodiceProdotto = '%' + this.CodiceProdotto + '%';
+      if(BarcodeFiltro != '')
+        Parametri.Barcode = '%' + BarcodeFiltro + '%';
       return Parametri;
     } 
 
@@ -1268,6 +1273,7 @@ export class TFilterNotaDiCreditoPassiva extends TZFilter
       this.Codice          = '',
       this.NomeProdotto    = -1,
       this.PartNumber      = '',
+      this.Barcode         = '',
       this.Descrizione     = ''
       this.Settore         = -1
       this.IdMagazzino     = -1
@@ -1284,15 +1290,24 @@ export class TFilterNotaDiCreditoPassiva extends TZFilter
       return 'Prodotti'
     }
 
+    GetBarcodeFiltro()
+    {
+      return SystemInformation.NormalizzaBarcode(this.Barcode);
+    }
+
     GetParametriXProdotto()
     {
       var Parametri = {}
+      let BarcodeFiltro = this.GetBarcodeFiltro();
+
       if(this.Codice.trim() != '')
         Parametri.Codice = '%' + this.Codice + '%'; 
       if(this.NomeProdotto != -1)
         Parametri.NomeProdotto =  this.NomeProdotto;
       if(this.PartNumber.trim() != '')
         Parametri.PartNumber = '%' + this.PartNumber + '%';
+      if(BarcodeFiltro != '')
+        Parametri.Barcode = '%' + BarcodeFiltro + '%';
       if(this.Descrizione.trim() != '')
         Parametri.Descrizione = '%' + this.Descrizione + '%';
       if(this.Settore && this.Settore != -1)
@@ -1307,7 +1322,7 @@ export class TFilterNotaDiCreditoPassiva extends TZFilter
     
     Apply(Component, OnSuccess, OnError, FromPosition = 0)
     {
-      if(this.NomeProdotto != -1 || this.PartNumber != '' || this.Settore != -1 || this.SoloSottosoglia || this.IdMagazzino != -1 )
+      if(this.NomeProdotto != -1 || this.PartNumber != '' || this.GetBarcodeFiltro() != '' || this.Settore != -1 || this.SoloSottosoglia || this.IdMagazzino != -1 )
       {
         let Self      = this
         let Parametri = {}

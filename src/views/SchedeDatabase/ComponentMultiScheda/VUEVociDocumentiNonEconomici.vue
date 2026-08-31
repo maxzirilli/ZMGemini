@@ -122,36 +122,36 @@
       </table>
     </div>
         <div v-if="IsSchedaScaricoProdotti" :ref="'Tabella'" class="table-responsive" style="max-height:350px;">
-      <table class="table table-striped b-t b-light" style="min-width:500px;">
-        <thead>
-          <tr>
-            <th style="width:35%;position: sticky; top: 0">Descrizione</th>
-            <th style="width:8%;position: sticky; top: 0">Udm</th>
-            <th style="width:7%;position: sticky; top: 0">Qnt.</th>
+          <table class="table table-striped b-t b-light" style="min-width:500px;">
+            <thead>
+              <tr>
+                <th style="width:35%;position: sticky; top: 0">Descrizione</th>
+                <th style="width:8%;position: sticky; top: 0">Udm</th>
+                <th style="width:7%;position: sticky; top: 0">Qnt.</th>
 
-            <th style="width:1%;position: sticky; top: 0"></th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="Voce in LsVociVisibili" :key="Voce.Chiave">
-            <td style="padding:2px;border:1px solid #ddd; border-bottom:0; background-color:white">
-              <textarea :readonly="CurrentReadOnly" type="text" wrap="off" v-model="Voce.Dati.Descrizione" @input="OnInputDescrizioneVoce(Voce)" class="form-control" :style="{height : Voce.AltezzaTextArea? Voce.AltezzaTextArea : '34px'}" style="resize:none;overflow-y:hidden"></textarea>
-              <label v-if="Voce.Dati.Descrizione.trim() == ''" class="ZMFormLabelError">Campo obbligatorio</label>
-            </td>
-            <td style="padding:2px;border:1px solid #ddd; border-bottom:0; background-color:white">
-              <VUEInputUdm :disabled="CurrentReadOnly" v-model="Voce.Dati.Unita_di_Misura" class="form-control" />
-              <label v-if="Voce.Dati.Unita_di_Misura == -1" class="ZMFormLabelError">Campo obbligatorio</label>
-            </td>
-            <td style="padding:2px;border:1px solid #ddd; border-bottom:0; background-color:white">
-              <input :readonly="CurrentReadOnly" type="number" min="0" v-model="Voce.Dati.Quantita" class="form-control" step="0.01"/>
-            </td>
-            <td style="padding:2px;border:1px solid #ddd;border-bottom:0; background-color:white">
-              <a v-if="!CurrentReadOnly" @click="OnClickEliminaVoce(Voce)" data-toggle="class" style="font-size:17px;color:#fb6b5b; cursor:pointer;margin-top:5px;margin-left:8px" title="Elimina Voce"><i class="fa fa-trash-o"></i></a>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+                <th style="width:1%;position: sticky; top: 0"></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="Voce in LsVociVisibili" :key="Voce.Chiave">
+                <td style="padding:2px;border:1px solid #ddd; border-bottom:0; background-color:white">
+                  <textarea :readonly="CurrentReadOnly" type="text" wrap="off" v-model="Voce.Dati.Descrizione" @input="OnInputDescrizioneVoce(Voce)" class="form-control" :style="{height : Voce.AltezzaTextArea? Voce.AltezzaTextArea : '34px'}" style="resize:none;overflow-y:hidden"></textarea>
+                  <label v-if="Voce.Dati.Descrizione.trim() == ''" class="ZMFormLabelError">Campo obbligatorio</label>
+                </td>
+                <td style="padding:2px;border:1px solid #ddd; border-bottom:0; background-color:white">
+                  <VUEInputUdm :disabled="CurrentReadOnly" v-model="Voce.Dati.Unita_di_Misura" class="form-control" />
+                  <label v-if="Voce.Dati.Unita_di_Misura == -1" class="ZMFormLabelError">Campo obbligatorio</label>
+                </td>
+                <td style="padding:2px;border:1px solid #ddd; border-bottom:0; background-color:white">
+                  <input :readonly="CurrentReadOnly" type="number" min="0" v-model="Voce.Dati.Quantita" class="form-control" step="0.01"/>
+                </td>
+                <td style="padding:2px;border:1px solid #ddd;border-bottom:0; background-color:white">
+                  <a v-if="!CurrentReadOnly" @click="OnClickEliminaVoce(Voce)" data-toggle="class" style="font-size:17px;color:#fb6b5b; cursor:pointer;margin-top:5px;margin-left:8px" title="Elimina Voce"><i class="fa fa-trash-o"></i></a>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+       </div>
   </section>
       <div>  
         <div class="ZMNuovaRigaScheda">
@@ -638,7 +638,7 @@ export default {
       get()
       {
         var FiltroDescr   = this.FiltroProdottiDescrizione.toUpperCase().trim();
-        var FiltroBarcode = this.FiltroProdottiBarcode.trim();
+        var FiltroBarcode = SystemInformation.NormalizzaBarcode(this.FiltroProdottiBarcode);
 
         var ListaRighe   = []
 
@@ -652,7 +652,7 @@ export default {
          ListaRighe = this.ListaProdotti.filter(function(Prodotto)
           {
             var NomeProdotto = (Prodotto.NOME_PRODOTTO || '').toUpperCase();
-            var Barcode      = String(Prodotto.BARCODE || '');
+            var Barcode      = SystemInformation.NormalizzaBarcode(Prodotto.BARCODE);
 
             if(FiltroDescr != '' && FiltroBarcode != '')
             {

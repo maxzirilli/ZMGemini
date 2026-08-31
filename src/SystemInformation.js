@@ -771,6 +771,16 @@ class TSystemInformation
 
     return Result 
   }
+
+  NormalizzaBarcode(Barcode)
+  {
+    let BarcodePulito = String(Barcode || '').replace(/\D/g, '');
+
+    if(BarcodePulito.length > 12)
+      BarcodePulito = BarcodePulito.substring(0, 12);
+
+    return BarcodePulito;
+  }
 }
 
 export var SystemInformation = new TSystemInformation();

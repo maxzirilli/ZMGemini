@@ -5,6 +5,19 @@
             Versione software
         </div>
         <div>
+              <div class="col-md-12" style="background-color: #b3dbff;">
+                <hr>
+                <div class="col-md-3">
+                    <b style="color:#2596be; font-size: 20px; font:bold; margin-left:10px">Versione 1.008.001</b>
+                </div>
+                <div class="col-md-3">
+                  31 Agosto 2026
+                </div>
+                <div class="col-md-6">
+                    <strong>Martina Cabras</strong>
+                    <p>NEW: Aggiunta gestione rapida dei movimenti di magazzino tramite pistola barcode, con popup dedicato per selezionare magazzino, tipo movimento e registrare entrate/uscite prodotto.</p>
+                </div>
+           </div>
           <div class="col-md-12" style="background-color: #b3dbff;">
                 <hr>
                 <div class="col-md-3">

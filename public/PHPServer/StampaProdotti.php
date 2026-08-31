@@ -88,20 +88,13 @@
 
           $Result->QRSubDetail1        = array();
 
+          $Query = $this->FGetQueryResult($PDODBase,
+                                          'Magazzino',
+                                          'StampaProdotti',
+                                          'StampaProdotti',
+                                          get_object_vars($Parametri));
 
-          $SQLBody = "SELECT prodotti.NOME_PRODOTTO,
-		                         qnt_x_magazzino.QUANTITA_MAGAZZINO,
-		                         qnt_x_magazzino.SOGLIA_ALLARME,
-                            --  prodotti.PRODOTTO_COMPOSTO,
-                             settori.DESCRIZIONE AS SETTORE,
-                             magazzini.DESCRIZIONE AS NOME_MAGAZZINO
-                        FROM prodotti 
-                             JOIN settori ON settori.CHIAVE = prodotti.ID_SETTORE
-                             LEFT JOIN qnt_x_magazzino ON qnt_x_magazzino.ID_PRODOTTO = prodotti.CHIAVE
-                             LEFT OUTER JOIN magazzini ON magazzini.CHIAVE = qnt_x_magazzino.ID_MAGAZZINO
-                    ORDER BY settori.DESCRIZIONE,prodotti.NOME_PRODOTTO";
-
-          if($Query = $PDODBase->query($SQLBody))
+          if($Query)
           {
             $PrimaRiga = true;
             while($Row = $Query->fetch(PDO::FETCH_ASSOC))
@@ -114,8 +107,8 @@
                 $DatiProdotto = new TDatiProdotto();
                 $DatiProdotto->LB_MAGAZZINO = $Row['NOME_MAGAZZINO'];
                 $DatiProdotto->LB_DESCRIZIONE = $Row['NOME_PRODOTTO'];
-                $DatiProdotto->LB_QUANTITA = number_format($Row['QUANTITA_MAGAZZINO']/100);
-                $DatiProdotto->LB_SOGLIA_DI_ALLARME = $Row['SOGLIA_ALLARME'];
+                $DatiProdotto->LB_QUANTITA = number_format(($Row['QUANTITA_MAGAZZINO'] ?? 0)/100);
+                $DatiProdotto->LB_SOGLIA_DI_ALLARME = $Row['SOGLIA_ALLARME'] ?? 0;
                 $DatiProdotto->SETTORE = $Row['SETTORE'];
                 array_push($Result->BAND_PRODOTTI,$DatiProdotto);
             }
