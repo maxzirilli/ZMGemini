@@ -24,17 +24,25 @@
            </template>
          </VUEModal> 
         <div class="panel-body wrapper-lg">
-          <!-- <div class="form-group">
-            <label class="control-label">Partita IVA</label>
-            <input type="text" placeholder="Partita IVA" style="height:40px;text-transform: none!important" v-model="PartitaIVA" class="form-control ZMFormRegister">
-          </div> -->
           <div class="form-group">
             <label class="control-label">Utente</label>
             <input type="text" placeholder="UserName" style="height:40px;text-transform: none!important" v-model="UserName" class="form-control ZMFormRegister">
           </div>
           <div class="form-group">
             <label class="control-label">Password</label>
-            <input type="password" placeholder="Password" style="height:40px;text-transform: none!important" v-model="Password" class="form-control ZMFormRegister">
+             <div class="input-group">
+              <input :type="PasswordVisibile ? 'text' : 'password'" placeholder="Password" style="height:40px;text-transform: none!important" v-model="Password" class="form-control ZMFormRegister">
+              <span class="input-group-btn">
+                <button type="button" class="btn btn-default" style="height:40px"
+                        :title="PasswordVisibile ? 'Nascondi password' : 'Mostra password'"
+                        :aria-label="PasswordVisibile ? 'Nascondi password' : 'Mostra password'"
+                        :aria-pressed="PasswordVisibile"
+                        @keydown.enter.stop
+                        @click="PasswordVisibile = !PasswordVisibile">
+                  <i class="fa" :class="PasswordVisibile ? 'fa-eye-slash' : 'fa-eye'" aria-hidden="true"></i>
+                </button>
+              </span>
+            </div>
           </div>
           <div class="checkbox">
             <label>
@@ -64,13 +72,13 @@ export default
     data() 
     {
      return { 
-               UserName      : '',
-               Password      : '',
-              //  PartitaIVA  : '',
-               Ricordami     : true,
-               RecuperoPsw   : false,
-               NomeUtente    : '',
-               NomeProgramma : NOME_PROGRAMMA
+               UserName         : '',
+               Password         : '',
+               Ricordami        : true,
+               RecuperoPsw      : false,
+               NomeUtente       : '',
+               NomeProgramma    : NOME_PROGRAMMA,
+               PasswordVisibile : false,
             };
     },
     components: 
