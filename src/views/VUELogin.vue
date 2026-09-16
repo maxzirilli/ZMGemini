@@ -50,7 +50,7 @@
             </label>
           </div>
           <a class="pull-right m-t-xs" style="cursor:pointer" @click="RecuperoPsw = true"><small>Password dimenticata?</small></a>
-          <button class="btn btn-primary" @click="OnClickLogin">Entra</button>
+          <button :disabled="OnTryLogin" class="btn btn-primary" @click="OnClickLogin">Entra</button>
           <div class="line line-dashed"></div>
           <p class="text-muted text-center"><small>Do not have an account?</small></p>
           <a href="#/Registrati" class="btn btn-default btn-block">Create an account</a>
@@ -75,6 +75,7 @@ export default
                UserName         : '',
                Password         : '',
                Ricordami        : true,
+               OnTryLogin       : false,
                RecuperoPsw      : false,
                NomeUtente       : '',
                NomeProgramma    : NOME_PROGRAMMA,
@@ -90,48 +91,50 @@ export default
     {
        OnClickLogin()
        {
+          if(this.OnTryLogin)
+            return;
+
           var Self = this;
+          this.OnTryLogin = true;
           SystemInformation.AdvQuery.Login(this.UserName,
                                            this.Password,
                                            this.Ricordami,
                                            function(TokenRememberMe)
                                            {
-                                             if(TokenRememberMe == undefined)
+                                             if(SystemInformation.DeveloperMode)
                                              {
-                                                localStorage.removeItem(LOCALSTORAGE.TokenRememberMe);
-                                                // localStorage.removeItem(LOCALSTORAGE.TokenPartitaIVA);
-                                             }
-                                             else 
-                                             {
-                                               localStorage.setItem(LOCALSTORAGE.TokenRememberMe, TokenRememberMe);
-                                              //  localStorage.setItem(LOCALSTORAGE.TokenPartitaIVA, Self.PartitaIVA);
+                                               if(TokenRememberMe == undefined)
+                                               {
+                                                 localStorage.removeItem(LOCALSTORAGE.TokenRememberMe);
+                                               }
+                                               else
+                                               {
+                                                 localStorage.setItem(LOCALSTORAGE.TokenRememberMe, TokenRememberMe);
+                                               }
                                              }
                                              SystemInformation.GetUserInformation(function()
                                              {
-                                              // if(SystemInformation.UserInformation.Ruolo != RUOLI.Tecnico)
-                                              // {
                                                 if(SystemInformation.UserInformation.PrimoAccesso != 'F')
                                                   Self.$router.push('/PrimoAccesso')
                                                 else
                                                 {
                                                     Self.$router.push('/appMainWindow/Dashboard')
                                                 }
-                                              // }
-                                              // else 
-                                              // {
-                                              //   alert('Non hai i requisiti per eseguire l\'accesso');
-                                              // }
+                                               Self.OnTryLogin = false;
                                              },
                                              function(HTTPError,SubHTTPError)
                                              {
+                                               Self.OnTryLogin = false;
                                                SystemInformation.HandleError(HTTPError,SubHTTPError);
                                              });
                                            },
                                            function(HTTPError,SubHTTPError)
                                            {
+                                             Self.OnTryLogin = false;
                                              SystemInformation.HandleError(HTTPError,SubHTTPError);
-                                           });
-                                          //  this.PartitaIVA);
+                                           },
+                                           undefined,
+                                           !SystemInformation.DeveloperMode);
        },
 
        AnnullaRecupero()

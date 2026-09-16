@@ -550,7 +550,7 @@ class TSystemInformation
 
   Init(OnEndFunction)
   {
-    var self = this;
+    var Self = this;
     var OnNoLogin   = function()
     {
        var ElementiUrl = window.location.href.split('#')
@@ -558,19 +558,22 @@ class TSystemInformation
        {
          ElementiUrl = ElementiUrl[1].split('/')
          if(ElementiUrl[1].toLowerCase() == 'appmainwindow')
-            window.location.assign(self.Configurazione.URL_WEBAPP)
+            window.location.assign(Self.Configurazione.URL_WEBAPP)
        }   
         OnEndFunction()
     }
 
     this.GetInitConfig(function(UrlServer)
     {
-      self.AdvQuery.UrlServer = UrlServer;
-      let Token       = localStorage.getItem(LOCALSTORAGE.TokenRememberMe);
+      Self.AdvQuery.UrlServer = UrlServer;
+      let Token = '';
 
-      if(Token != null)
+      if(Self.DeveloperMode)
       {
-         self.AdvQuery.LoginWithToken(Token,
+        Token = localStorage.getItem(LOCALSTORAGE.TokenRememberMe);
+      }
+
+      Self.AdvQuery.LoginWithToken(Token,
                                       function()
                                       {
                                          SystemInformation.GetUserInformation(function()
@@ -582,14 +585,14 @@ class TSystemInformation
                                            SystemInformation.HandleError(HTTPError,SubHTTPError);
                                            OnEndFunction();
                                          });
-                                         self.AdvQuery.LastToken = Token
+                                         Self.AdvQuery.LastToken = Token
                                       },
                                       function()
                                       {
                                          OnNoLogin()
-                                      },);
-      }
-      else OnNoLogin();
+                                      },
+                                      undefined,
+                                      !Self.DeveloperMode);
 
     });
   }

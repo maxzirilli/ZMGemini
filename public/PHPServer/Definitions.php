@@ -19,6 +19,7 @@
 
     define('PAR_TOKEN_REMEMBERME',"TokenRememberMe");
     define('PAR_REMEMBER_ME_ENABLED',"GetTokenRememberMe");
+    define('PAR_USE_COOKIE',"Usck");
     define('PAR_USERNAME','Username');
     define('PAR_PASSWORD','Password');
     define('PAR_NOME_FILE','NomeFile');
