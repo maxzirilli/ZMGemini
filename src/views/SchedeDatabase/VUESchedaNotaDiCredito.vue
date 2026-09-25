@@ -342,8 +342,9 @@
         <VUEVociDocumentiEconomici :SchedaVociDocumentiEconomici="SchedaNotaDiCredito.SchedaVociNotaDiCredito"
                                    :TastoCreaNotaVisibile="false"
                                    :InviataAlloSdi="SchedaNotaDiCredito.Dati.INVIATA_ALLO_SDI"
-                                   :IdCliente="SchedaNotaDiCredito.Dati.ID_CLIENTE"
-                                   @onChange="OnVociNotaDiCreditoChange"/>    
+                                    :IdCliente="SchedaNotaDiCredito.Dati.ID_CLIENTE"
+                                    @onChange="OnVociNotaDiCreditoChange"/>    
+         <label v-if="SchedaNotaDiCredito.SchedaVociNotaDiCredito.VociVuotePresenti()" class="ZMFormLabelError">Sono presenti righe vuote: compilarle o eliminarle per confermare la nota di credito.</label>
       </div>
       <div v-else style="padding-bottom:2%; font-size:16px; font:bold; margin-top: 2%;margin-left: 1%;"> INSERIRE UN CLIENTE NELLA NOTA DI CREDITO</div>                                 
       
@@ -590,7 +591,7 @@ export class TSchedaNotaDiCredito extends TSchedaGenerica
       this.Dati.ESIGIBILITA_IVA        = Scheda.Dati.ESIGIBILITA_IVA
       this.SchedaVociNotaDiCredito.SetDatiCliente(Scheda.SchedaVociFattura.IvaSuggerita,
                                                   Scheda.SchedaVociFattura.RitenutaAcconto)
-      this.SchedaVociNotaDiCredito.CopyData(Scheda.SchedaVociFattura)
+      this.SchedaVociNotaDiCredito.CopyData(Scheda.SchedaVociFattura, false, true)
       this.SchedaRateNota.CopyDataDaFattura(Scheda)
   }
 
@@ -614,8 +615,9 @@ export class TSchedaNotaDiCredito extends TSchedaGenerica
               SystemInformation.DeveloperMode || 
             this.Dati.NAZIONE_EM_PIVA != SystemInformation.Configurazioni.StatoItaliano) &&
             this.SchedaAllegati.AllDataOk() &&
-            this.SchedaVociNotaDiCredito.AllDataOk() && 
-            this.SchedaVociNotaDiCredito.VociPresenti() && this.SchedaRateNota.AllDataOk()
+             this.SchedaVociNotaDiCredito.AllDataOk() && 
+             !this.SchedaVociNotaDiCredito.VociVuotePresenti() &&
+             this.SchedaVociNotaDiCredito.VociPresenti() && this.SchedaRateNota.AllDataOk()
   }
 
   DatiEliminabili()

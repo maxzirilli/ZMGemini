@@ -455,7 +455,7 @@ export class TSchedaDocumentoDiTrasporto extends TSchedaGenerica
             this.Dati.RAGIONE_SOCIALE != '' &&
             (this.Dati.ID_ANAGRAFICA != -1) &&
             this.SchedaAllegati.AllDataOk() &&
-            this.SchedaVociDocumentoDiTrasporto.AllDataOk()
+            this.SchedaVociDocumentoDiTrasporto.AllDataOk(true)
   }
 
   DatiEliminabili()

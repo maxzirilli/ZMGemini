@@ -589,8 +589,9 @@
                                  @onClickGeneraNotaDiCredito="OnClickGeneraNotaDiCredito"
                                  @inviaChiaviDDTCaricate="RiceviChiaviDDTCaricate"
                                  :ReverseCharge="SchedaFattura.Dati.REVERSE_CHARGE"
-                                 :RichiestaPopupNotaDiCredito="GetRichiestaNotaDiCreditoPopup()"
-                                 @onChangeCondizioniDiPagamentoCaricandoConferme="OnChangeCondizioniDiPagamentoCaricandoConferme"/>
+                                  :RichiestaPopupNotaDiCredito="GetRichiestaNotaDiCreditoPopup()"
+                                  @onChangeCondizioniDiPagamentoCaricandoConferme="OnChangeCondizioniDiPagamentoCaricandoConferme"/>
+       <label v-if="SchedaFattura.SchedaVociFattura.VociVuotePresenti()" class="ZMFormLabelError">Sono presenti righe vuote: compilarle o eliminarle per confermare la fattura.</label>
       </div>
       <div v-else style="padding-bottom:2%; font-size:16px; font:bold; margin-top: 2%;margin-left: 1%;"> INSERIRE UN CLIENTE NELLA FATTURA</div>
    </div>
@@ -979,7 +980,7 @@ export class TSchedaFattura extends TSchedaGenerica
       if(Self.Dati.DA_BANCO == true)
         Self.Dati.ACCOMPAGNATORIA = true;
     
-      Self.SchedaVociFattura.CopyData(Scheda.SchedaVociPreventivo)
+      Self.SchedaVociFattura.CopyData(Scheda.SchedaVociPreventivo, false, true)
       Self.CollegaFatturaAlPreventivo(Scheda.Chiave)
       Self.RicalcolaRate()
     })
@@ -1000,14 +1001,14 @@ export class TSchedaFattura extends TSchedaGenerica
       Self.FromDDTEntrante = []
       if(Scheda.SchedaVociDocumentoDiTrasporto != undefined)
       {
-        Self.SchedaVociFattura.CopyData(Scheda.SchedaVociDocumentoDiTrasporto, true)
+        Self.SchedaVociFattura.CopyData(Scheda.SchedaVociDocumentoDiTrasporto, true, true)
         Self.FromDDT.push(Scheda.Chiave)
       }
       else 
       {
         if(Scheda.SchedaVociDocumentoDiTrasportoEntrante != undefined)
         {
-          Self.SchedaVociFattura.CopyData(Scheda.SchedaVociDocumentoDiTrasportoEntrante, true)
+          Self.SchedaVociFattura.CopyData(Scheda.SchedaVociDocumentoDiTrasportoEntrante, true, true)
           Self.FromDDTEntrante.push(Scheda.Chiave)
         }
       }
@@ -1098,8 +1099,9 @@ export class TSchedaFattura extends TSchedaGenerica
             this.Dati.NAZIONE_EM_PIVA != SystemInformation.Configurazioni.StatoItaliano) &&
             this.SchedaAllegati.AllDataOk() &&
             this.SchedaRate.AllDataOk() &&
-            this.SchedaVociFattura.AllDataOk() &&
-            this.SchedaVociFattura.VociPresenti() && 
+             this.SchedaVociFattura.AllDataOk() &&
+             !this.SchedaVociFattura.VociVuotePresenti() &&
+             this.SchedaVociFattura.VociPresenti() && 
             this.SchedaVociFattura.TotaleFattura >= 0
   }
 
@@ -2042,6 +2044,8 @@ export class TSchedaFattura extends TSchedaGenerica
                                                                     null,
                                                                     false,
                                                                     NaturaPagamento)
+      if(this.SchedaVociFattura.VociVuotePresenti(InserimentoNuovaRiga))
+        return
       this.SchedaVociFattura.LsVociDocumentiEconomici.push(InserimentoNuovaRiga)
       this.SchedaVociFattura.SetAltezzaTextarea(this.SchedaVociFattura.LsVociDocumentiEconomici[this.SchedaVociFattura.LsVociDocumentiEconomici.length - 1])
       this.SchedaVociFattura.CalcoloTotaliFattura()

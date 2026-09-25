@@ -234,8 +234,9 @@
                                  :InviataAlloSdi="SchedaAutoFattura.Dati.INVIATA_ALLO_SDI"
                                  @onChange="OnVociAutoFatturaChange"
                                  :IsSchedaFattura="false"
-                                 :IdCliente="SchedaAutoFattura.Dati.ID_FORNITORE"
-                                 :NascondiPulsanti="true"/>
+                                  :IdCliente="SchedaAutoFattura.Dati.ID_FORNITORE"
+                                  :NascondiPulsanti="true"/>
+       <label v-if="SchedaAutoFattura.SchedaVociAutoFattura.VociVuotePresenti()" class="ZMFormLabelError">Sono presenti righe vuote: compilarle o eliminarle per confermare l'autofattura.</label>
     </div>
     <div v-else style="padding-bottom:2%; font-size:16px; font:bold; margin-top: 2%;margin-left: 1%;"> INSERIRE UN CLIENTE NELL' AUTOFATTURA</div>
     
@@ -316,6 +317,7 @@ export class TSchedaAutoFattura extends TSchedaGenerica
             this.Dati.NAZIONE_EM_PIVA != SystemInformation.Configurazioni.StatoItaliano) &&            
             this.SchedaAllegati.AllDataOk() &&
             this.SchedaVociAutoFattura.AllDataOk() &&
+            !this.SchedaVociAutoFattura.VociVuotePresenti() &&
             this.SchedaVociAutoFattura.VociPresenti() 
   }
 

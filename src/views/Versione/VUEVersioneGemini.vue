@@ -5,20 +5,33 @@
             Versione software
         </div>
         <div>
-              <div class="col-md-12" style="background-color: #b3dbff;">
-                <hr>
-                <div class="col-md-3">
-                    <b style="color:#2596be; font-size: 20px; font:bold; margin-left:10px">Versione 1.008.001</b>
-                </div>
-                <div class="col-md-3">
-                  31 Agosto 2026
-                </div>
-                <div class="col-md-6">
-                    <strong>Martina Cabras</strong>
-                    <p>NEW: Aggiunta gestione rapida dei movimenti di magazzino tramite pistola barcode, con popup dedicato per selezionare magazzino, tipo movimento e registrare entrate/uscite prodotto.</p>
-                </div>
+           <div class="col-md-12" style="background-color: #b3dbff;">
+            <hr>
+            <div class="col-md-3">
+                <b style="color:#2596be; font-size: 20px; font:bold; margin-left:10px">Versione 1.008.002</b>
+            </div>
+            <div class="col-md-3">
+              25 Settembre 2026
+            </div>
+            <div class="col-md-6">
+                <strong>Martina Cabras</strong>
+                <p>CHG:Cambiata gestione delle righe vuote nelle voci dei documenti</p>
+            </div>
            </div>
-          <div class="col-md-12" style="background-color: #b3dbff;">
+           <div class="col-md-12" style="background-color: #b3dbff;">
+            <hr>
+            <div class="col-md-3">
+                <b style="color:#2596be; font-size: 20px; font:bold; margin-left:10px">Versione 1.008.001</b>
+            </div>
+            <div class="col-md-3">
+              31 Agosto 2026
+            </div>
+            <div class="col-md-6">
+                <strong>Martina Cabras</strong>
+                <p>NEW: Aggiunta gestione rapida dei movimenti di magazzino tramite pistola barcode, con popup dedicato per selezionare magazzino, tipo movimento e registrare entrate/uscite prodotto.</p>
+            </div>
+           </div>
+           <div class="col-md-12" style="background-color: #b3dbff;">
                 <hr>
                 <div class="col-md-3">
                     <b style="color:#2596be; font-size: 20px; font:bold; margin-left:10px">Versione 1.008.001</b>
@@ -32,7 +45,7 @@
                     <p>Fix: Aggiornata la ricerca coordinate nell'inserimento cliente guidato e nella scheda cliente per usare comune e CAP.</p>
                 </div>
            </div>
-          <div class="col-md-12" style="background-color: #b3dbff;">
+           <div class="col-md-12" style="background-color: #b3dbff;">
                 <hr>
                 <div class="col-md-3">
                     <b style="color:#2596be; font-size: 20px; font:bold; margin-left:10px">Versione 1.007.000</b>

@@ -213,7 +213,7 @@
 	"ListaVociFattureSelezionate": [
 		{
 			"Name": "ListaVociFattureSelezionate",
-			"SQL": "SELECT voci_fatture.*, \n            fatture.NUMERO, \n            fatture.DATA AS DATA\n  FROM voci_fatture\n   LEFT OUTER JOIN fatture ON fatture.CHIAVE = voci_fatture.ID_FATTURA\nWHERE voci_fatture.ID_FATTURA IN ?ListaCheckati\nORDER BY ID_FATTURA, ORDINAMENTO\n"
+			"SQL": "SELECT voci_fatture.*, \n            COALESCE(prodotti.NOME_PRODOTTO, voci_fatture.DESCRIZIONE) AS NOME_PRODOTTO,\n            fatture.NUMERO, \n            fatture.DATA AS DATA\n  FROM voci_fatture\n   LEFT OUTER JOIN fatture ON fatture.CHIAVE = voci_fatture.ID_FATTURA\n   LEFT OUTER JOIN prodotti ON prodotti.CHIAVE = voci_fatture.ID_PRODOTTO\nWHERE voci_fatture.ID_FATTURA IN ?ListaCheckati\nORDER BY ID_FATTURA, ORDINAMENTO\n"
 		}
 	],
 	"LsAnniFattureXCliente": [

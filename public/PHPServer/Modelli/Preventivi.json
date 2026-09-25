@@ -93,7 +93,7 @@
 	"ListaVociPreventiviSelezionati": [
 		{
 			"Name": "ListaVociPreventiviSelezionati",
-			"SQL": "SELECT voci_preventivi.*, \n            preventivi.NUMERO, \n            preventivi.DESTINAZIONE, \n            preventivi.DATA AS DATA_PREVENTIVO, \n            preventivi.NUMERO_REVISIONE,\n            preventivi.INDIRIZZO_DESTINAZIONE,\n            preventivi.NR_CIVICO_DESTINAZIONE,\n            preventivi.COMUNE_DESTINAZIONE\n  FROM voci_preventivi\n           LEFT OUTER JOIN preventivi ON preventivi.CHIAVE = voci_preventivi.ID_PREVENTIVO\nWHERE voci_preventivi.ID_PREVENTIVO IN ?ListaCheckati\nORDER BY ID_PREVENTIVO, ORDINAMENTO\n"
+			"SQL": "SELECT voci_preventivi.*, \n            COALESCE(prodotti.NOME_PRODOTTO, voci_preventivi.DESCRIZIONE) AS NOME_PRODOTTO,\n            preventivi.NUMERO, \n            preventivi.DESTINAZIONE, \n            preventivi.DATA AS DATA_PREVENTIVO, \n            preventivi.NUMERO_REVISIONE,\n            preventivi.INDIRIZZO_DESTINAZIONE,\n            preventivi.NR_CIVICO_DESTINAZIONE,\n            preventivi.COMUNE_DESTINAZIONE\n  FROM voci_preventivi\n           LEFT OUTER JOIN preventivi ON preventivi.CHIAVE = voci_preventivi.ID_PREVENTIVO\n           LEFT OUTER JOIN prodotti ON prodotti.CHIAVE = voci_preventivi.ID_PRODOTTO\nWHERE voci_preventivi.ID_PREVENTIVO IN ?ListaCheckati\nORDER BY ID_PREVENTIVO, ORDINAMENTO\n"
 		}
 	],
 	"LsAnnoConfermeXCliente": [

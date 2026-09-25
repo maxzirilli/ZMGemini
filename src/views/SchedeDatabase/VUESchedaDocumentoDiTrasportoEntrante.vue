@@ -452,7 +452,7 @@ export class TSchedaDocumentoDiTrasportoEntrante extends TSchedaGenerica
             this.Dati.RAGIONE_SOCIALE != '' &&
             (this.Dati.ID_ANAGRAFICA != -1) &&
             this.SchedaAllegati.AllDataOk() &&
-            this.SchedaVociDocumentoDiTrasportoEntrante.AllDataOk()
+            this.SchedaVociDocumentoDiTrasportoEntrante.AllDataOk(true)
   }
 
   DatiEliminabili()

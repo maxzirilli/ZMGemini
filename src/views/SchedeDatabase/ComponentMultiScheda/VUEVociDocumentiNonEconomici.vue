@@ -40,7 +40,7 @@
           <tr v-for="Voce in LsVociVisibili" :key="Voce.Chiave">
             <td style="padding:2px;border:1px solid #ddd; border-bottom:0; background-color:white">
               <textarea :readonly="CurrentReadOnly" type="text" wrap="off" v-model="Voce.Dati.Descrizione" @input="OnInputDescrizioneVoce(Voce)" class="form-control" :style="{height : Voce.AltezzaTextArea? Voce.AltezzaTextArea : '34px'}" style="resize:none;overflow-y:hidden"></textarea>
-              <label v-if="Voce.Dati.Descrizione.trim() == ''" class="ZMFormLabelError">Campo obbligatorio</label>
+               <label v-if="Voce.Dati.Descrizione.trim() == '' && !Voce.VoceVuota()" class="ZMFormLabelError">Campo obbligatorio</label>
             </td>
             <td style="padding:2px;border:1px solid #ddd; border-bottom:0; background-color:white">
               <VUEInputUdm :disabled="CurrentReadOnly" v-model="Voce.Dati.Unita_di_Misura" class="form-control" />
@@ -90,7 +90,7 @@
           <tr v-for="Voce in LsVociVisibili" :key="Voce.Chiave">
             <td style="padding:2px;border:1px solid #ddd; border-bottom:0; background-color:white">
               <textarea :readonly="CurrentReadOnly" type="text" wrap="off" v-model="Voce.Dati.Descrizione" @input="OnInputDescrizioneVoce(Voce)" class="form-control" :style="{height : Voce.AltezzaTextArea? Voce.AltezzaTextArea : '34px'}" style="resize:none;overflow-y:hidden"></textarea>
-              <label v-if="Voce.Dati.Descrizione.trim() == ''" class="ZMFormLabelError">Campo obbligatorio</label>
+               <label v-if="Voce.Dati.Descrizione.trim() == '' && !Voce.VoceVuota()" class="ZMFormLabelError">Campo obbligatorio</label>
             </td>
             <td style="padding:2px;border:1px solid #ddd; border-bottom:0; background-color:white">
               <VUEInputUdm :disabled="CurrentReadOnly" v-model="Voce.Dati.Unita_di_Misura" class="form-control" />
@@ -384,15 +384,15 @@ export class TSingoloVociDocumentiNonEconomici
      return parseFloat(Sconto)
    }
 
-   AllDataOk()
+   AllDataOk(PermettiVoceVuota = false)
    {
-     var Result = this.Dati.Descrizione.trim() != ''
-     if(Result)
-     {
-        if(!this.DaEliminare)
-          Result = this.Dati.Descrizione.trim() != '';
-     }
-     return Result
+      return this.Dati.Descrizione.trim() != '' || (PermettiVoceVuota && this.VoceVuota())
+   }
+
+   VoceVuota()
+   {
+      return (this.Dati.Descrizione || '').trim() == '' &&
+             this.Dati.Quantita == 0 && (this.Dati.Prezzo || 0) == 0
    }
 
    PrepareQueryParameters(Operazioni,NomeCampoDocumento,Ordinamento)
@@ -492,10 +492,10 @@ export class TSchedaVociDocumentiNonEconomici
      return Operazioni
    }
 
-   AllDataOk()
+   AllDataOk(PermettiVociVuote = false)
    {
-    for(var i = 0; i < this.LsVociDocumentiNonEconomici.length; i++)
-        if(!this.LsVociDocumentiNonEconomici[i].AllDataOk())
+     for(var i = 0; i < this.LsVociDocumentiNonEconomici.length; i++)
+         if(!this.LsVociDocumentiNonEconomici[i].AllDataOk(PermettiVociVuote))
           return false
     return true 
    }

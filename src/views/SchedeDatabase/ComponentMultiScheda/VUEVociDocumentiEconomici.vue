@@ -1009,11 +1009,20 @@ export class TSchedaVociDocumentiEconomici
 
    AllDataOk()
    {
-      for(var i = 0; i < this.LsVociDocumentiEconomici.length; i++)
-        if(!this.LsVociDocumentiEconomici[i].Dati.DaEliminare)
-           if(!this.LsVociDocumentiEconomici[i].AllDataOk())
-             return false
-      return true 
+       for(var i = 0; i < this.LsVociDocumentiEconomici.length; i++)
+         if(!this.LsVociDocumentiEconomici[i].Dati.DaEliminare)
+            if(!this.LsVociDocumentiEconomici[i].AllDataOk())
+              return false
+       return true 
+   }
+
+   VociVuotePresenti(VoceDaControllare = null)
+   {
+      let ListaVoci = VoceDaControllare == null ? this.LsVociDocumentiEconomici : [VoceDaControllare]
+      return ListaVoci.some(Voce => !Voce.Dati.DaEliminare &&
+             (Voce.Dati.CodiceProdotto || '').trim() == '' &&
+             (Voce.Dati.Descrizione || '').trim() == '' &&
+             Voce.Dati.Quantita == 0 && Voce.Dati.Imponibile == 0)
    }
 
    VociPresenti()
@@ -1047,7 +1056,7 @@ export class TSchedaVociDocumentiEconomici
           this.LsVociDocumentiEconomici[i].Dati.Iva = this.Dati.IvaSuggerita
    }
 
-   CopyData(DocumentiEconomiciSorgente, IsDDT)
+   CopyData(DocumentiEconomiciSorgente, IsDDT, EscludiVociVuote = false)
    {
       this.LsVociDocumentiEconomici = []
       var LsVociSorgente            = []
@@ -1083,7 +1092,9 @@ export class TSchedaVociDocumentiEconomici
                                                                                  IsDDT? LsVociSorgente[i].Dati.Sconto3 : LsVociSorgente[i].Dati.Sconto3,
                                                                                  this.GetContropartitaDaVoceOProdotto(LsVociSorgente[i]))
 
-          this.SetAltezzaTextarea(SingoloVociDocumentiEconomici)
+           if(EscludiVociVuote && this.VociVuotePresenti(SingoloVociDocumentiEconomici))
+             continue
+           this.SetAltezzaTextarea(SingoloVociDocumentiEconomici)
           this.LsVociDocumentiEconomici.push(SingoloVociDocumentiEconomici)
           
       }
@@ -2265,7 +2276,7 @@ export default {
                                                     }
                                                   }
                                                   let InserimentoNuovaRiga = new TSingoloVociDocumentiEconomici(-1,
-                                                                                                                ArrayInfo[i].NOME_PRODOTTO,
+                                                                                                                 ArrayInfo[i].NOME_PRODOTTO,
                                                                                                                 ArrayInfo[i].IMPORTO_IVATO == 'F'? ArrayInfo[i].IMPORTO / 100 : (ArrayInfo[i].IMPORTO * 100 / (100 + ArrayInfo[i].IVA)),
                                                                                                                 ArrayInfo[i].QUANTITA / 100,
                                                                                                                 ArrayInfo[i].IMPORTO_IVATO,
@@ -2276,14 +2287,16 @@ export default {
                                                                                                                 TSchedaGenerica.DisponiFromString(ArrayInfo[i].CODICE_PRODOTTO),
                                                                                                                 null,
                                                                                                                 '',
-                                                                                                                ArrayInfo[i].NATURA_PAGAMENTO,
-                                                                                                                TSchedaGenerica.DisponiFromListIndex(ArrayInfo[i].ID_PRODOTTO),
-                                                                                                                TSchedaGenerica.DisponiFromInteger(ArrayInfo[i].SCONTO2) / 100,
+                                                                                                                 ArrayInfo[i].NATURA_PAGAMENTO,
+                                                                                                                 TSchedaGenerica.DisponiFromListIndex(ArrayInfo[i].ID_PRODOTTO),
+                                                                                                                 false,
+                                                                                                                 TSchedaGenerica.DisponiFromInteger(ArrayInfo[i].SCONTO2) / 100,
                                                                                                                 TSchedaGenerica.DisponiFromInteger(ArrayInfo[i].SCONTO3) / 100,
                                                                                                                 TSchedaGenerica.DisponiFromListIndex(ArrayInfo[i].ID_CONTROPARTITA))
                                                   
-                                                  Self.CurrentSchedaVociDocumentiEconomici.SetAltezzaTextarea(InserimentoNuovaRiga)                                                
-                                                  Self.CurrentSchedaVociDocumentiEconomici.LsVociDocumentiEconomici.push(InserimentoNuovaRiga)
+                                                   Self.CurrentSchedaVociDocumentiEconomici.SetAltezzaTextarea(InserimentoNuovaRiga)                                                
+                                                   if(!Self.CurrentSchedaVociDocumentiEconomici.VociVuotePresenti(InserimentoNuovaRiga))
+                                                     Self.CurrentSchedaVociDocumentiEconomici.LsVociDocumentiEconomici.push(InserimentoNuovaRiga)
                                                 }
                                                 Self.CurrentSchedaVociDocumentiEconomici.CalcoloTotaliFattura()
                                                 Self.PopupCondPagamentoNonOmogeneeNeiPreventiviCaricati = false
@@ -2371,7 +2384,7 @@ export default {
                                                   }
                                                 }
                                                 let InserimentoNuovaRiga = new TSingoloVociDocumentiEconomici(-1,
-                                                                                                              ArrayInfo[i].NOME_PRODOTTO,
+                                                                                                               ArrayInfo[i].NOME_PRODOTTO,
                                                                                                               TSchedaGenerica.DisponiFromInteger(ArrayInfo[i].IMPORTO) / 100,
                                                                                                               TSchedaGenerica.DisponiFromInteger(ArrayInfo[i].QUANTITA) / 100,
                                                                                                               'F',
@@ -2379,10 +2392,11 @@ export default {
                                                                                                               TSchedaGenerica.DisponiFromInteger(ArrayInfo[i].SCONTO) / 100,
                                                                                                               Self.CurrentSchedaVociDocumentiEconomici.IdDocumento,
                                                                                                               ArrayInfo[i].UNITA_DI_MISURA == null? SystemInformation.Configurazioni.Impostazioni.UNITA_DI_MISURA_SUGGERITA : ArrayInfo[i].UNITA_DI_MISURA,
-                                                                                                              TSchedaGenerica.DisponiFromString(ArrayInfo[i].CODICE))
+                                                                                                               TSchedaGenerica.DisponiFromString(ArrayInfo[i].CODICE))
                                                 
-                                                Self.CurrentSchedaVociDocumentiEconomici.SetAltezzaTextarea(InserimentoNuovaRiga)                                                                                                
-                                                Self.CurrentSchedaVociDocumentiEconomici.LsVociDocumentiEconomici.push(InserimentoNuovaRiga)
+                                                 Self.CurrentSchedaVociDocumentiEconomici.SetAltezzaTextarea(InserimentoNuovaRiga)                                                                                                
+                                                 if(!Self.CurrentSchedaVociDocumentiEconomici.VociVuotePresenti(InserimentoNuovaRiga))
+                                                   Self.CurrentSchedaVociDocumentiEconomici.LsVociDocumentiEconomici.push(InserimentoNuovaRiga)
                                               }
                                               Self.CurrentSchedaVociDocumentiEconomici.CalcoloTotaliFattura()
                                               if(Self.IsSchedaFattura)
@@ -2436,7 +2450,7 @@ export default {
                                                   Self.CurrentSchedaVociDocumentiEconomici.LsVociDocumentiEconomici.push(InserimentoSeparatore)
                                                 }
                                                 let InserimentoNuovaRiga = new TSingoloVociDocumentiEconomici(-1,
-                                                                                                              ArrayInfo[i].NOME_PRODOTTO,
+                                                                                                               ArrayInfo[i].NOME_PRODOTTO,
                                                                                                               ArrayInfo[i].IMPORTO_IVATO == 'F'? ArrayInfo[i].IMPORTO / 100 : (ArrayInfo[i].IMPORTO * 100 / (100 + ArrayInfo[i].IVA)),
                                                                                                               ArrayInfo[i].QUANTITA / 100,
                                                                                                               ArrayInfo[i].IMPORTO_IVATO,
@@ -2447,14 +2461,16 @@ export default {
                                                                                                               TSchedaGenerica.DisponiFromString(ArrayInfo[i].CODICE_PRODOTTO),
                                                                                                               null,
                                                                                                               '',
-                                                                                                              ArrayInfo[i].NATURA_PAGAMENTO,
-                                                                                                              TSchedaGenerica.DisponiFromListIndex(ArrayInfo[i].ID_PRODOTTO),
-                                                                                                              TSchedaGenerica.DisponiFromInteger(ArrayInfo[i].SCONTO2) / 100,
+                                                                                                               ArrayInfo[i].NATURA_PAGAMENTO,
+                                                                                                               TSchedaGenerica.DisponiFromListIndex(ArrayInfo[i].ID_PRODOTTO),
+                                                                                                               false,
+                                                                                                               TSchedaGenerica.DisponiFromInteger(ArrayInfo[i].SCONTO2) / 100,
                                                                                                               TSchedaGenerica.DisponiFromInteger(ArrayInfo[i].SCONTO3) / 100,
                                                                                                               TSchedaGenerica.DisponiFromListIndex(ArrayInfo[i].ID_CONTROPARTITA))
                                                 
-                                                Self.CurrentSchedaVociDocumentiEconomici.SetAltezzaTextarea(InserimentoNuovaRiga)                                                
-                                                Self.CurrentSchedaVociDocumentiEconomici.LsVociDocumentiEconomici.push(InserimentoNuovaRiga)
+                                                 Self.CurrentSchedaVociDocumentiEconomici.SetAltezzaTextarea(InserimentoNuovaRiga)                                                
+                                                 if(!Self.CurrentSchedaVociDocumentiEconomici.VociVuotePresenti(InserimentoNuovaRiga))
+                                                   Self.CurrentSchedaVociDocumentiEconomici.LsVociDocumentiEconomici.push(InserimentoNuovaRiga)
                                               }
                                                 Self.CurrentSchedaVociDocumentiEconomici.CalcoloTotaliFattura()
 

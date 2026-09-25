@@ -77,7 +77,7 @@
 	"ListaVociDDTSelezionati" : [
 		{
 			"Name" : "ListaVociDDTSelezionati",
-			"SQL" : "SELECT voci_ddt_uscenti.*, \n            ddt_uscenti.DESTINAZIONE, \n            ddt_uscenti.NUMERO_DDT, \n            ddt_uscenti.DATA_DDT,\n            ddt_uscenti.CHIAVE AS CHIAVE_DDT,\n            ddt_uscenti.INDIRIZZO_DESTINAZIONE,\n            ddt_uscenti.COMUNE_DESTINAZIONE,\n            ddt_uscenti.NR_CIVICO_DESTINAZIONE\n  FROM voci_ddt_uscenti\n   LEFT OUTER JOIN ddt_uscenti ON ddt_uscenti.CHIAVE = voci_ddt_uscenti.ID_DDT\nWHERE voci_ddt_uscenti.ID_DDT IN ?ListaCheckati\nORDER BY ID_DDT, ORDINAMENTO\n"
+			"SQL" : "SELECT voci_ddt_uscenti.*, \n            COALESCE(prodotti.NOME_PRODOTTO, voci_ddt_uscenti.DESCRIZIONE) AS NOME_PRODOTTO,\n            ddt_uscenti.DESTINAZIONE, \n            ddt_uscenti.NUMERO_DDT, \n            ddt_uscenti.DATA_DDT,\n            ddt_uscenti.CHIAVE AS CHIAVE_DDT,\n            ddt_uscenti.INDIRIZZO_DESTINAZIONE,\n            ddt_uscenti.COMUNE_DESTINAZIONE,\n            ddt_uscenti.NR_CIVICO_DESTINAZIONE\n  FROM voci_ddt_uscenti\n   LEFT OUTER JOIN ddt_uscenti ON ddt_uscenti.CHIAVE = voci_ddt_uscenti.ID_DDT\n   LEFT OUTER JOIN prodotti ON prodotti.CHIAVE = voci_ddt_uscenti.ID_PRODOTTO\nWHERE voci_ddt_uscenti.ID_DDT IN ?ListaCheckati\nORDER BY ID_DDT, ORDINAMENTO\n"
 		}
 	],
 	"LsAnnoDDTXCliente" : [
