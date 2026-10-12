@@ -128,6 +128,18 @@
 			"SQL": "SELECT XML_BODY, DATA_INVIO\n  FROM xml_note_di_credito\nWHERE ID_NOTA_DI_CREDITO = :CHIAVE\n     AND RISULTATO IS NULL\n"
 		}
 	],
+	"ScaricaFileNotaSDI": [
+		{
+			"Name": "ScaricaFileNotaSDI",
+			"SQL": "SELECT XML_BODY, DATA_INVIO\n  FROM xml_note_di_credito\n WHERE ID_NOTA_DI_CREDITO = :CHIAVE\n   AND NOME_FILE = #NOME_FILE\n   AND RISULTATO IS NULL\n"
+		}
+	],
+	"ScaricaFileRicevutaSDI": [
+		{
+			"Name": "ScaricaFileRicevutaSDI",
+			"SQL": "SELECT RICEVUTA_SDI, DATA_NOTIFICA\n  FROM xml_note_di_credito\n WHERE CHIAVE = :CHIAVE_NOTIFICA\n   AND ID_NOTA_DI_CREDITO = :CHIAVE\n   AND RICEVUTA_SDI IS NOT NULL\n"
+		}
+	],
 	"SelectDatiResoconto": [
 		{
 			"Name": "SelectDatiResoconto",
@@ -135,6 +147,14 @@
 		}
 	],
 	"SelectDettaglio": [
+		{
+			"Name" : "UltimaNotificaMySond",
+			"SQL" : "SELECT CHIAVE, STATUS, STATO_MYSOND, DATA_INVIO, DATA_NOTIFICA FROM xml_note_di_credito WHERE ID_NOTA_DI_CREDITO = :CHIAVE ORDER BY DATA_NOTIFICA DESC, DATA_INVIO DESC, CHIAVE DESC LIMIT 1"
+		},
+		{
+			"Name" : "ListaNotificheMySond",
+			"SQL" : "SELECT CHIAVE, STATUS, STATO_MYSOND, DATA_INVIO, DATA_NOTIFICA, NOME_FILE, RISULTATO, (RICEVUTA_SDI IS NOT NULL) AS HAS_RICEVUTA_SDI FROM xml_note_di_credito WHERE ID_NOTA_DI_CREDITO = :CHIAVE ORDER BY DATA_INVIO DESC, DATA_NOTIFICA DESC, CHIAVE DESC"
+		},
 		{
 			"Name": "Dettaglio",
 			"SQL": "SELECT note_di_credito.*,\n            conti_correnti_casse.IBAN AS IBAN_CONTO,\n            conti_correnti_casse.NR_CONTO, conti_correnti_casse.BANCA AS BANCA_CONTO,\n            anagrafiche.IVA_SUGGERITA_CLIENTE,\n            conti_correnti_casse.SWIFT AS SWIFT_CONTO,  \n            conti_correnti_casse.BIC AS BIC_CONTO, \n            anagrafiche.NATURA_PAGAMENTO,\n            fatture.NUMERO AS NUMERO_FATTURA,\n            fatture.ANNO AS ANNO_FATTURA,\n            (SELECT COUNT(*)\n                FROM rate_note\n              WHERE DATA_PAGAMENTO IS NULL\n                  AND ID_FATTURA IS NULL\n                  AND ID_NOTA = note_di_credito.CHIAVE) AS RATE_NON_PAGATE,\n            (SELECT COUNT(*)\n               FROM rate_note\n             WHERE ID_NOTA = note_di_credito.CHIAVE) AS RATE_TOTALI,\n            (EXISTS(SELECT 1\n                            FROM rate_note \n                          WHERE rate_note.DATA_PAGAMENTO IS NULL \n                               AND rate_note.ID_FATTURA IS NULL \n                               AND rate_note.ID_NOTA = note_di_credito.CHIAVE) <> 1)  AS PAGATO\n  FROM note_di_credito\n            LEFT OUTER JOIN conti_correnti_casse ON conti_correnti_casse.CHIAVE = note_di_credito.ID_CONTO_CORRENTE\n            LEFT OUTER JOIN anagrafiche ON anagrafiche.CHIAVE = note_di_credito.ID_CLIENTE\n            LEFT OUTER JOIN fatture ON fatture.CHIAVE = note_di_credito.ID_FATTURA_CREAZIONE\n WHERE note_di_credito.CHIAVE = :CHIAVE\n"

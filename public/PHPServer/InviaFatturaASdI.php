@@ -50,19 +50,20 @@
             for($i = 0; $i < count($Parametri); ++$i)
             {
               if($Parametri[$i]->IS_NOTA_DI_CREDITO == 'T')
-                $this->FInvioDocumento($this->FPrepareParameterValue($Parametri[$i]->ChiaveNota,':'), TIPO_DOCUMENTO_NOTA, $PDODBase, $ParametriEmail, $JSONAnswer);
+                $this->FInvioDocumento($Parametri[$i]->ChiaveNota, TIPO_DOCUMENTO_NOTA, $PDODBase, $ParametriEmail, $JSONAnswer);
               else 
               {
                 if($Parametri[$i]->IS_AUTOFATTURA == 'T')
-                  $this->FInvioDocumento($this->FPrepareParameterValue($Parametri[$i]->ChiaveAutofattura,':'), TIPO_DOCUMENTO_AUTOFATTURA, $PDODBase, $ParametriEmail, $JSONAnswer); 
+                  $this->FInvioDocumento($Parametri[$i]->ChiaveAutofattura, TIPO_DOCUMENTO_AUTOFATTURA, $PDODBase, $ParametriEmail, $JSONAnswer); 
                 else
-                 $this->FInvioDocumento($this->FPrepareParameterValue($Parametri[$i]->ChiaveFattura,':'), TIPO_DOCUMENTO_FATTURA, $PDODBase, $ParametriEmail, $JSONAnswer); 
+                 $this->FInvioDocumento($Parametri[$i]->ChiaveFattura, TIPO_DOCUMENTO_FATTURA, $PDODBase, $ParametriEmail, $JSONAnswer); 
               }
             }
           }
 
           protected function FInvioDocumento($Chiave, $TipoDocumento, $PDODBase, $ParametriEmail, &$JSONAnswer)
           {
+            $Chiave = intval($Chiave);
             $FatturaIsInviata = false;
 
             if(!DEVELOPER_MODE)
@@ -91,10 +92,6 @@
                   
                   $FatturaIsInviata = $MySond->InviaFileXML($BodyFattura, false, MYSOND_INVIA_IMMEDIATAMENTE, $ErrorInvioDocumento,$NomeDelDocumento);
 
-                  $BodyFattura = $this->FPrepareParameterValue($BodyFattura, '#'); 
-
-                  $NomeFile = $this->FPrepareParameterValue($NomeDelDocumento, '#'); 
-
                   $PDODBase->beginTransaction();
                   try
                   {
@@ -102,11 +99,11 @@
 
                     switch ($TipoDocumento) 
                     {
-                      case TIPO_DOCUMENTO_FATTURA     : $this->FPrepareDocumentoFileXML($PDODBase, $FatturaIsInviata, $ErrorInvioDocumento, $ChiaveInvioFatturaElettronica, $Chiave, $BodyFattura, $NomeFile, 'fatture', 'ID_FATTURA' );
+                      case TIPO_DOCUMENTO_FATTURA     : $this->FPrepareDocumentoFileXML($PDODBase, $FatturaIsInviata, $ErrorInvioDocumento, $ChiaveInvioFatturaElettronica, $Chiave, $BodyFattura, $NomeDelDocumento, 'fatture', 'ID_FATTURA' );
                                                         break;
-                      case TIPO_DOCUMENTO_NOTA        : $this->FPrepareDocumentoFileXML($PDODBase, $FatturaIsInviata, $ErrorInvioDocumento, $ChiaveInvioFatturaElettronica, $Chiave, $BodyFattura, $NomeFile, 'note_di_credito', 'ID_NOTA_DI_CREDITO' );
+                      case TIPO_DOCUMENTO_NOTA        : $this->FPrepareDocumentoFileXML($PDODBase, $FatturaIsInviata, $ErrorInvioDocumento, $ChiaveInvioFatturaElettronica, $Chiave, $BodyFattura, $NomeDelDocumento, 'note_di_credito', 'ID_NOTA_DI_CREDITO' );
                                                         break;
-                      case TIPO_DOCUMENTO_AUTOFATTURA : $this->FPrepareDocumentoFileXML($PDODBase, $FatturaIsInviata, $ErrorInvioDocumento, $ChiaveInvioFatturaElettronica, $Chiave, $BodyFattura, $NomeFile, 'autofatture', 'ID_AUTOFATTURA');
+                      case TIPO_DOCUMENTO_AUTOFATTURA : $this->FPrepareDocumentoFileXML($PDODBase, $FatturaIsInviata, $ErrorInvioDocumento, $ChiaveInvioFatturaElettronica, $Chiave, $BodyFattura, $NomeDelDocumento, 'autofatture', 'ID_AUTOFATTURA');
                                                         break;
                     }
                     $PDODBase->commit();
@@ -281,62 +278,41 @@
 
           private function FPrepareDocumentoFileXML($PDODBase, $FatturaIsInviata, $ErrorInvioDocumento, $ChiaveInvioFatturaElettronica, $Chiave, $BodyFattura, $NomeFile, $NomeTabella, $IdCampo )
           {
-              if($FatturaIsInviata)
+              switch ($NomeTabella)
               {
-                $SQLBody = "UPDATE $NomeTabella
-                               SET INVIATA_ALLO_SDI = 'T'
-                             WHERE CHIAVE = $Chiave";
+                  case 'fatture':         $QueryUpdate = 'UpdateFatturaInviata';
+                                          $QueryInsert = 'InsertXMLFattura';
+                                          break;
 
-                try
-                {           
-                  if(!$PDODBase->query($SQLBody))
-                  {
-                      error_log($SQLBody);
-                      throw new Exception('Impossibile impostare come inviato il documento');
-                  }
-                }
-                catch(Exception $e)
-                {
-                  error_log($SQLBody);
-                  throw new Exception($e->getMessage());         
-                }
-                
-                $SQLBody = "INSERT INTO xml_" . $NomeTabella . " (CHIAVE, $IdCampo, XML_BODY, DATA_INVIO,  NOME_FILE)
-                                                          VALUES ($ChiaveInvioFatturaElettronica, $Chiave, $BodyFattura, NOW(), $NomeFile)";
-                try
-                {
-                  if(!$PDODBase->query($SQLBody))
-                  {
-                      error_log($SQLBody);
-                      throw new Exception('Impossibile impostare come inviata il documento');
-                  }
-                }
-                catch(Exception $e)
-                {
-                  error_log($SQLBody);
-                  throw new Exception($e->getMessage());         
-                }
+                  case 'note_di_credito': $QueryUpdate = 'UpdateNotaInviata';
+                                          $QueryInsert = 'InsertXMLNota';
+                                          break;
+
+                  case 'autofatture':     $QueryUpdate = 'UpdateAutofatturaInviata';
+                                          $QueryInsert = 'InsertXMLAutofattura';
+                                          break;
+
+                  default:                throw new Exception("NomeTabella non valido: " . $NomeTabella);
               }
-              else
-              {
-                $ErrorInvioDocumento = $this->FPrepareParameterValue($ErrorInvioDocumento, '#'); 
-                $SQLBody = "INSERT INTO xml_" . $NomeTabella . " (CHIAVE, $IdCampo, XML_BODY, DATA_INVIO, RISULTATO, NOME_FILE)
-                                                          VALUES ($ChiaveInvioFatturaElettronica, $Chiave, $BodyFattura, NOW(), $ErrorInvioDocumento, $NomeFile)";
-                
-                try
-                {
-                  if(!$PDODBase->query($SQLBody))
-                  {
-                      error_log($SQLBody);
-                      throw new Exception('Impossibile impostare l\'insuccesso del documento');
-                  }
-                }
-                catch(Exception $e)
-                {
-                  error_log($SQLBody);
-                  throw new Exception($e->getMessage());         
-                }
-              }
+
+              $ParametriUpdate = [
+                                     'CHIAVE' => $Chiave
+                                 ];
+
+              $ParametriInsertBase = [
+                                         'CHIAVE'       => $ChiaveInvioFatturaElettronica,
+                                         'ID_DOCUMENTO' => $Chiave,
+                                         'BODY_FATTURA' => $BodyFattura,
+                                         'NOME_FILE'    => $NomeFile,
+                                         'STATUS'       => $FatturaIsInviata ? STATO_XML_IN_ATTESA : STATO_XML_FALLITO,
+                                         'STATO_MYSOND' => -1,
+                                         'RISULTATO'    => $FatturaIsInviata ? null : $ErrorInvioDocumento
+                                     ];
+
+              $this->FGetQueryResult($PDODBase, 'MySond', 'EditSQL', $QueryInsert, $ParametriInsertBase);
+
+              if ($FatturaIsInviata)
+                   $this->FGetQueryResult($PDODBase, 'MySond', 'EditSQL', $QueryUpdate, $ParametriUpdate);
           }
 
           private function FGetParametriEmailConfigurazioni($PDODBase)

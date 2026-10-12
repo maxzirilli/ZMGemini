@@ -88,9 +88,13 @@
         <text style="font-weight: bold;">Intestatario</text>
         <hr style="margin-top:5px">
       </div>
-      <div class="col-md-4" v-if="SchedaAutoFattura.Dati.INVIATA_ALLO_SDI" style="border:1px solid #b3dbff">
-            <img src="@/assets/images/IconeAlbero/Inviata2.png" style="margin-top:6px;float:left;width:20%">
-            <text style="float:left;margin-top:2%;font-weight: bold;font-size:15px;width:80%">AUTOFATTURA TRASMESSA ALLO SDI</text>
+      <div class="col-md-4" v-if="SchedaAutoFattura.Dati.INVIATA_ALLO_SDI && !SchedaAutoFattura.IsDecorrenzaTermini()" style="border:1px solid #b3dbff;display:flex;align-items:center;padding:4px 0;">
+            <img :src="SchedaAutoFattura.GetIconaSemaforo()" style="max-width:58px;max-height:116px;margin-right:10px;">
+            <span style="font-weight:bold;font-size:15px;">AUTOFATTURA TRASMESSA ALLO SDI</span>
+      </div>
+      <div class="col-md-4" v-if="SchedaAutoFattura.Dati.INVIATA_ALLO_SDI && SchedaAutoFattura.IsDecorrenzaTermini()" style="border:1px solid #b3dbff;display:flex;align-items:center;padding:4px 0;">
+            <img :src="SchedaAutoFattura.GetIconaSemaforo()" style="width:68px;max-height:116px;margin-right:10px;">
+            <span style="font-weight:bold;font-size:15px;">AUTOFATTURA TRASMESSA ALLO SDI SENZA AVER RICEVUTO RISCONTRO DALL'ENTE NEI TEMPI PREVISTI</span>
       </div>
       <div class="col-md-4" v-if="SchedaAutoFattura.Dati.INVIATA_ALLO_SDI">
             <button class="btn btn-sm btn-info" style="height:36px;width:100%" @click="OnClickScaricaFileAutoFattura">Scarica file xml</button>
@@ -250,6 +254,20 @@
   <div  v-if="Tabs.ActiveTab == 'LogAutoFattura'" style="height:50%">
       <VUELogDocumentiEconomici :SchedaLogDocumentiEconomici="SchedaAutoFattura.SchedaLogAutoFattura"/>
    </div>
+  <div v-if="Tabs.ActiveTab == 'NotificheSDI'" style="padding:15px;">
+    <table class="table table-striped">
+      <thead><tr><th style="width:30px;"></th><th>Data invio</th><th>File</th><th>Data notifica</th><th>Esito SDI</th><th style="width:110px;"></th><th style="width:40px;"></th></tr></thead>
+      <tbody>
+        <tr v-for="Notifica in SchedaAutoFattura.ListaNotificheMySond" :key="Notifica.CHIAVE">
+          <td><img :src="GetIconaStatoSDI(Notifica.STATUS, SchedaAutoFattura.Dati.ENTE_PUBBLICO)" style="max-height:20px;"></td>
+          <td>{{ FormattaDataOra(Notifica.DATA_INVIO) }}</td><td>{{ Notifica.NOME_FILE }}</td>
+          <td>{{ FormattaDataOra(Notifica.DATA_NOTIFICA) || '-' }}</td><td>{{ GetTestoErroreNotifica(Notifica) }}</td>
+          <td><button v-if="Notifica.HAS_RICEVUTA_SDI == 1" class="btn btn-sm btn-info" style="height:30px;width:100%;padding:4px 6px;" @click="OnClickScaricaRicevutaSDI(Notifica)">Ricevuta SDI</button></td>
+          <td><button class="btn btn-sm btn-light" style="padding:4px 6px;" @click="OnClickScaricaFileAutoFatturaSDI(Notifica)"><i class="fa fa-download" title="XML Autofattura"></i></button></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </div>
 </template>
 
@@ -262,7 +280,8 @@ import { SystemInformation,
          TIPO_AUTOFATTURA,
          RIFERIMENTO_CAUSALI,
          RUOLI,
-         NOME_PROGRAMMA } from '@/SystemInformation.js'
+         NOME_PROGRAMMA,
+         NOTIFICHE_MY_SOND } from '@/SystemInformation.js'
 import { TZFatturaElettronica,
          TZFattElettronicaRegimeFiscale,
          TZFatturaTipoRitenuta } from '../../../../../../../../Librerie/VUE/ZFatturaElettronica.js';
@@ -289,12 +308,41 @@ export class TSchedaAutoFattura extends TSchedaGenerica
 {
   OnInitialization()
   {
+     this.UltimaNotificaMySond = []
+     this.ListaNotificheMySond = []
      this.SchedaAllegati        = new TSchedaAllegati();
      this.SchedaAllegati.ClearAllegati()
      this.SchedaVociAutoFattura = new TSchedaVociDocumentiEconomici()
      this.SchedaVociAutoFattura.ClearVociDocumentiEconomici()
      this.SchedaLogAutoFattura  = new TSchedaLogDocumentiEconomici()
      this.SchedaLogAutoFattura.ClearLogDocumentiEconomici()
+  }
+
+  GetIconaSemaforo()
+  {
+    if(!this.UltimaNotificaMySond?.[0])
+      return require('@/assets/images/SemaforoGRIGIO.png')
+
+    if(this.UltimaNotificaMySond[0].STATUS === 'I' && this.Dati.ENTE_PUBBLICO)
+      return require('@/assets/images/SemaforoGIALLO.png')
+
+    switch(this.UltimaNotificaMySond[0].STATUS)
+    {
+      case 'I':
+      case 'C':
+      case 'P': return require('@/assets/images/SemaforoVERDE.png')
+      case 'D': return require('@/assets/images/SemaforoDecorrenza.png')
+      case 'A': return require('@/assets/images/SemaforoGIALLO.png')
+      case 'R':
+      case 'X':
+      case '?': return require('@/assets/images/SemaforoROSSO.png')
+      default: return require('@/assets/images/SemaforoGIALLO.png')
+    }
+  }
+
+  IsDecorrenzaTermini()
+  {
+    return this.UltimaNotificaMySond?.[0]?.STATUS === 'D'
   }
 
   CanRecord()
@@ -442,6 +490,8 @@ export class TSchedaAutoFattura extends TSchedaGenerica
    
     Clear()
     {
+      this.UltimaNotificaMySond = []
+      this.ListaNotificheMySond = []
       this.SchedaAllegati.SetIdDocumento(-1)
       this.SchedaVociAutoFattura.SetIdDocumento(-1)
       this.SchedaLogAutoFattura.AssignDati([])
@@ -490,6 +540,8 @@ export class TSchedaAutoFattura extends TSchedaGenerica
                                             let ArrayAllegati        = Self.AdvQuery.FindResults(Results,"AllegatiAutoFattura");
                                             let ArrayVociAutoFattura = Self.AdvQuery.FindResults(Results,"VociAutoFattura");
                                             let ArrayLogAutoFattura  = Self.AdvQuery.FindResults(Results,"LogAutoFattura");
+                                            Self.UltimaNotificaMySond = Self.AdvQuery.FindResults(Results,"UltimaNotificaMySond") || [];
+                                            Self.ListaNotificheMySond = Self.AdvQuery.FindResults(Results,"ListaNotificheMySond") || [];
                                             if(ArrayInfo != undefined)
                                             {
                                               if(ArrayLogAutoFattura.length != 0)
@@ -697,7 +749,17 @@ export default
     
     TabsVisibili()
     {
-      return this.Tabs.Tabs.filter(tab => tab.Id !== 'LogAutoFattura' || this.VisibilitaLogVariazioni);
+      let TabOk = this.Tabs.Tabs.filter(Tab => Tab.Id !== 'LogAutoFattura' || this.VisibilitaLogVariazioni);
+
+      if(this.SchedaAutoFattura?.Dati?.INVIATA_ALLO_SDI)
+      {
+        TabOk.push({
+                     Caption : 'Notifiche SDI',
+                     Id      : 'NotificheSDI'
+                   });
+      }
+
+      return TabOk
     }
    },
    
@@ -744,8 +806,66 @@ export default
         }
      },
    },
-   methods: 
+   methods:
    {
+     GetIconaStatoSDI(Stato, EntePubblico)
+     {
+       if(!Stato) return require('@/assets/images/PallinoGRIGIO.png')
+       if(Stato === 'I' && EntePubblico) return require('@/assets/images/PallinoGIALLO.png')
+       switch(Stato)
+       {
+         case 'I':
+         case 'C':
+         case 'P': return require('@/assets/images/PallinoVERDE.png')
+         case 'D': return require('@/assets/images/PallinoVerdeDecorrenza.png')
+         case 'A': return require('@/assets/images/PallinoGIALLO.png')
+         case 'R':
+         case 'X':
+         case '?': return require('@/assets/images/PallinoROSSO.png')
+         default: return require('@/assets/images/PallinoGIALLO.png')
+       }
+     },
+
+     GetTestoErroreNotifica(Notifica)
+     {
+       let IsEsito = ['R', 'X', '?', 'D'].includes(Notifica.STATUS)
+       if(!IsEsito) return '-'
+
+       let Codice = Notifica.STATO_MYSOND
+       if(!Codice) return '-'
+
+       return NOTIFICHE_MY_SOND[Codice] || Codice
+     },
+
+     FormattaDataOra(Data)
+     {
+       if(!Data) return
+       return TZDateFunct.FormatDateTime('dd/mm/yyyy hh:nn:ss', new Date(Date.parse(Data)))
+     },
+
+     OnClickScaricaFileAutoFatturaSDI(Notifica)
+     {
+       var Self = this
+       SystemInformation.AdvQuery.GetSQL('Autofatture', { CHIAVE : this.SchedaAutoFattura.Chiave, NOME_FILE : Notifica.NOME_FILE },
+                                         function(Results)
+                                         {
+                                           let ArrayInfo = SystemInformation.AdvQuery.FindResults(Results, 'ScaricaFileAutoFatturaSDI')
+                                           if(ArrayInfo != undefined && ArrayInfo.length > 0)
+                                             saveAs(TZStringConvFunct.MoveStringToBlob(ArrayInfo[0].XML_BODY), 'Autofattura_N_' + Self.SchedaAutoFattura.Dati.NUMERO + '_DataInvio_' + Self.FormattaDataOra(ArrayInfo[0].DATA_INVIO) + '.xml')
+                                         },SystemInformation.HandleError,'ScaricaFileAutoFatturaSDI')
+     },
+
+     OnClickScaricaRicevutaSDI(Notifica)
+     {
+       var Self = this
+       SystemInformation.AdvQuery.GetSQL('Autofatture', { CHIAVE : this.SchedaAutoFattura.Chiave, CHIAVE_NOTIFICA : Notifica.CHIAVE },
+                                         function(Results)
+                                         {
+                                           let ArrayInfo = SystemInformation.AdvQuery.FindResults(Results, 'ScaricaFileRicevutaSDI')
+                                           if(ArrayInfo != undefined && ArrayInfo.length > 0)
+                                             saveAs(TZStringConvFunct.MoveStringToBlob(ArrayInfo[0].RICEVUTA_SDI), 'RicevutaSDI_N_' + Self.SchedaAutoFattura.Dati.NUMERO + '_DataNotifica_' + Self.FormattaDataOra(ArrayInfo[0].DATA_NOTIFICA) + '.xml')
+                                         },SystemInformation.HandleError,'ScaricaFileRicevutaSDI')
+     },
 
     OnClickChiudiPopupScegliFile()
     {

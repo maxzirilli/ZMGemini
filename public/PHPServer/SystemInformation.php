@@ -70,6 +70,16 @@ const STATO_INVIO_MANUALE_FATTURA_DA_ZIPPARE      = 'D';
 const STATO_INVIO_MANUALE_FATTURA_INVIATO         = 'I';
 const STATO_INVIO_MANUALE_FATTURA_CONFERMATO      = 'Z';
 
+const STATO_XML_IN_ATTESA          = 'A';
+const STATO_XML_INVIATO            = 'I';
+const STATO_XML_RIFIUTATO          = 'R';
+const STATO_XML_FALLITO            = 'F';
+const STATO_XML_ACCETTATO_PA       = 'P';
+const STATO_XML_RIFIUTATO_PA       = 'X';
+const STATO_XML_CASSETTO_FISCALE   = 'C';
+const STATO_XML_DECORRENZA_TERMINI = 'D';
+const STATO_XML_ERRORE_GENERICO    = '?';
+
 class TTotaliNota
 {
    public $TotaleImponibile = null;

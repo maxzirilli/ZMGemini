@@ -1,0 +1,55 @@
+{
+	"RuoliAbilitati" : "",
+	"EditSQL" : [
+		{
+			"Name" : "UpdateFatturaInviata",
+			"SQL" : "UPDATE fatture\n   SET INVIATA_ALLO_SDI = 'T'\n WHERE CHIAVE = :CHIAVE\n\n"
+		},
+		{
+			"Name" : "InsertXMLFattura",
+			"SQL" : "INSERT INTO xml_fatture (CHIAVE, ID_FATTURA, XML_BODY, DATA_INVIO, RISULTATO, NOME_FILE, STATUS, STATO_MYSOND)\n     VALUES (:CHIAVE, :ID_DOCUMENTO, #BODY_FATTURA, NOW(), #RISULTATO, #NOME_FILE, #STATUS, :STATO_MYSOND)\n"
+		},
+		{
+			"Name" : "UpdateAutofatturaInviata",
+			"SQL" : "UPDATE autofatture\n   SET INVIATA_ALLO_SDI = 'T'\n WHERE CHIAVE = :CHIAVE\n\n"
+		},
+		{
+			"Name" : "UpdateNotaInviata",
+			"SQL" : "UPDATE note_di_credito\n   SET INVIATA_ALLO_SDI = 'T'\n WHERE CHIAVE = :CHIAVE\n\n"
+		},
+		{
+			"Name" : "InsertXMLAutofattura",
+			"SQL" : "INSERT INTO xml_autofatture (CHIAVE, ID_AUTOFATTURA, XML_BODY, DATA_INVIO, RISULTATO, NOME_FILE, STATUS, STATO_MYSOND)\n     VALUES (:CHIAVE, :ID_DOCUMENTO, #BODY_FATTURA, NOW(), #RISULTATO, #NOME_FILE, #STATUS, :STATO_MYSOND)\n\n"
+		},
+		{
+			"Name" : "InsertXMLNota",
+			"SQL" : "INSERT INTO xml_note_di_credito (CHIAVE, ID_NOTA_DI_CREDITO, XML_BODY, DATA_INVIO, RISULTATO, NOME_FILE, STATUS, STATO_MYSOND)\n     VALUES (:CHIAVE, :ID_DOCUMENTO, #BODY_FATTURA, NOW(), #RISULTATO, #NOME_FILE, #STATUS, :STATO_MYSOND)\n\n"
+		},
+		{
+			"Name" : "UpdateXMLFatturaNotifica",
+			"SQL" : "UPDATE xml_fatture\nSET STATUS        = #STATUS,\n    STATO_MYSOND  = :STATO_MYSOND,\n    RICEVUTA_SDI  = #RICEVUTA_SDI,\n    DATA_NOTIFICA = #DATA_NOTIFICA\nWHERE CHIAVE = :CHIAVE;\n\n"
+		},
+		{
+			"Name" : "UpdateXMLNotaNotifica",
+			"SQL" : "UPDATE xml_note_di_credito\nSET STATUS        = #STATUS,\n    STATO_MYSOND  = :STATO_MYSOND,\n    RICEVUTA_SDI  = #RICEVUTA_SDI,\n    DATA_NOTIFICA = #DATA_NOTIFICA\nWHERE CHIAVE = :CHIAVE;\n\n"
+		},
+		{
+			"Name" : "UpdateXMLAutofatturaNotifica",
+			"SQL" : "UPDATE xml_autofatture\nSET STATUS        = #STATUS,\n    STATO_MYSOND  = :STATO_MYSOND,\n    RICEVUTA_SDI  = #RICEVUTA_SDI,\n    DATA_NOTIFICA = #DATA_NOTIFICA\nWHERE CHIAVE = :CHIAVE;\n\n"
+		}
+	],
+	"SelectSQL" : [
+		{
+			"Name" : "SelectXMLFattureInAttesa",
+			"SQL" : "SELECT xml_fatture.*\nFROM xml_fatture\nJOIN fatture ON fatture.CHIAVE = xml_fatture.ID_FATTURA\nWHERE (xml_fatture.STATUS = 'A'\n       OR (xml_fatture.STATUS = 'I' AND fatture.ENTE_PUBBLICO = 'T'))\n/*  AND xml_fatture.DATA_INVIO >= DATE_SUB(CURRENT_DATE, INTERVAL 30 DAY) */\nORDER BY DATA_INVIO DESC\nLIMIT :MYSOND_POLL_LIMIT\n"
+		},
+		{
+			"Name" : "SelectXMLNoteInAttesa",
+			"SQL" : "SELECT xml_note_di_credito.*\nFROM xml_note_di_credito\nJOIN note_di_credito ON note_di_credito.CHIAVE = xml_note_di_credito.ID_NOTA_DI_CREDITO\nWHERE (xml_note_di_credito.STATUS = 'A'\n       OR (xml_note_di_credito.STATUS = 'I' AND note_di_credito.ENTE_PUBBLICO = 'T'))\n/*  AND xml_note_di_credito.DATA_INVIO >= DATE_SUB(CURRENT_DATE, INTERVAL 30 DAY)*/\nORDER BY DATA_INVIO DESC\nLIMIT :MYSOND_POLL_LIMIT\n"
+		},
+		{
+			"Name" : "SelectXMLAutofattureInAttesa",
+			"SQL" : "SELECT xml_autofatture.*\n  FROM xml_autofatture\n       JOIN autofatture ON autofatture.CHIAVE = xml_autofatture.ID_AUTOFATTURA\n WHERE xml_autofatture.STATUS = 'A'\n/*   AND xml_autofatture.DATA_INVIO >= DATE_SUB(CURRENT_DATE, INTERVAL 30 DAY)*/\nORDER BY DATA_INVIO DESC\nLIMIT :MYSOND_POLL_LIMIT\n"
+		}
+]
+}

@@ -5,6 +5,19 @@
             Versione software
         </div>
         <div>
+            <div class="col-md-12" style="background-color: #b3dbff;">
+            <hr>
+            <div class="col-md-3">
+                <b style="color:#2596be; font-size: 20px; font:bold; margin-left:10px">Versione 1.009.002</b>
+            </div>
+            <div class="col-md-3">
+              12 Ottobre 2026
+            </div>
+            <div class="col-md-6">
+                <strong>Martina Cabras</strong>
+                <p>CHG:Cambiata gestione dell'invio delle fatture allo sdi e relative notifiche di risposta</p>
+            </div>
+           </div>
            <div class="col-md-12" style="background-color: #b3dbff;">
             <hr>
             <div class="col-md-3">

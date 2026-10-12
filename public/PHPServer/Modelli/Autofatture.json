@@ -82,7 +82,27 @@
 			"SQL" : "SELECT XML_BODY, DATA_INVIO\n  FROM xml_autofatture\nWHERE ID_AUTOFATTURA = :CHIAVE\n     AND RISULTATO IS NULL\n"
 		}
 	],
+	"ScaricaFileAutoFatturaSDI" : [
+		{
+			"Name" : "ScaricaFileAutoFatturaSDI",
+			"SQL" : "SELECT XML_BODY, DATA_INVIO\n  FROM xml_autofatture\n WHERE ID_AUTOFATTURA = :CHIAVE\n   AND NOME_FILE = #NOME_FILE\n   AND RISULTATO IS NULL\n"
+		}
+	],
+	"ScaricaFileRicevutaSDI" : [
+		{
+			"Name" : "ScaricaFileRicevutaSDI",
+			"SQL" : "SELECT RICEVUTA_SDI, DATA_NOTIFICA\n  FROM xml_autofatture\n WHERE CHIAVE = :CHIAVE_NOTIFICA\n   AND ID_AUTOFATTURA = :CHIAVE\n   AND RICEVUTA_SDI IS NOT NULL\n"
+		}
+	],
 	"SelectDettaglio" : [
+		{
+			"Name" : "UltimaNotificaMySond",
+			"SQL" : "SELECT CHIAVE, STATUS, STATO_MYSOND, DATA_INVIO, DATA_NOTIFICA FROM xml_autofatture WHERE ID_AUTOFATTURA = :CHIAVE ORDER BY DATA_NOTIFICA DESC, DATA_INVIO DESC, CHIAVE DESC LIMIT 1"
+		},
+		{
+			"Name" : "ListaNotificheMySond",
+			"SQL" : "SELECT CHIAVE, STATUS, STATO_MYSOND, DATA_INVIO, DATA_NOTIFICA, NOME_FILE, RISULTATO, (RICEVUTA_SDI IS NOT NULL) AS HAS_RICEVUTA_SDI FROM xml_autofatture WHERE ID_AUTOFATTURA = :CHIAVE ORDER BY DATA_INVIO DESC, DATA_NOTIFICA DESC, CHIAVE DESC"
+		},
 		{
 			"Name" : "Dettaglio",
 			"SQL" : "SELECT autofatture.*,\n            anagrafiche.IVA_FORNITORE\n  FROM autofatture\n            JOIN anagrafiche ON anagrafiche.CHIAVE = autofatture.ID_FORNITORE\nWHERE autofatture.CHIAVE = :CHIAVE\n"

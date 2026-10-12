@@ -117,6 +117,9 @@ CHIAVE
 ##FOREIGN_KEY
 FK1_ID_DOCUMENTO_ALLEGATI	ID_DOCUMENTO	doc_scarico_prodotti_composti	CHIAVE	
 ##END_FOREIGN_KEY
+##INDEXES
+FK_allegati_doc_scarico_prod_composti_doc_scarico	BTREE	ID_DOCUMENTO	
+##END_INDEXES
 ##END_TABELLA 
 ##TABELLA
 allegati_fatture
@@ -3516,6 +3519,10 @@ XML_BODY	__TRUE__	mediumtext	__FALSE__	__CAMPO_VUOTO__	__NULL__	__NULL__
 DATA_INVIO	__TRUE__	date	__FALSE__	__CAMPO_VUOTO__	__NULL__	__NULL__	
 NOME_FILE	__TRUE__	varchar(255)	__FALSE__	__CAMPO_VUOTO__	__NULL__	__NULL__	
 RISULTATO	__TRUE__	varchar(255)	__FALSE__	__CAMPO_VUOTO__	__NULL__	__NULL__	
+STATUS	__FALSE__	enum('A','I','R','F','P','X','C','?','D')	__FALSE__	__CAMPO_VUOTO__	A	__NULL__	
+RICEVUTA_SDI	__TRUE__	text	__FALSE__	__CAMPO_VUOTO__	__NULL__	__NULL__	
+STATO_MYSOND	__FALSE__	int	__FALSE__	__CAMPO_VUOTO__	-1	__NULL__	
+DATA_NOTIFICA	__TRUE__	datetime	__FALSE__	__CAMPO_VUOTO__	__NULL__	__NULL__	
 ##END_CAMPI_TABELLA
 ##PRIMARY_KEY
 CHIAVE	
@@ -3533,6 +3540,10 @@ XML_BODY	__TRUE__	mediumtext	__FALSE__	__CAMPO_VUOTO__	__NULL__	__NULL__
 DATA_INVIO	__TRUE__	date	__FALSE__	__CAMPO_VUOTO__	__NULL__	__NULL__	
 NOME_FILE	__TRUE__	varchar(255)	__FALSE__	__CAMPO_VUOTO__	__NULL__	__NULL__	
 RISULTATO	__TRUE__	text	__FALSE__	__CAMPO_VUOTO__	__NULL__	__NULL__	
+STATUS	__FALSE__	enum('A','I','R','F','P','X','C','?','D')	__FALSE__	__CAMPO_VUOTO__	A	__NULL__	
+RICEVUTA_SDI	__TRUE__	text	__FALSE__	__CAMPO_VUOTO__	__NULL__	__NULL__	
+STATO_MYSOND	__FALSE__	int	__FALSE__	__CAMPO_VUOTO__	-1	__NULL__	
+DATA_NOTIFICA	__TRUE__	datetime	__FALSE__	__CAMPO_VUOTO__	__NULL__	__NULL__	
 ##END_CAMPI_TABELLA
 ##PRIMARY_KEY
 CHIAVE	
@@ -3550,6 +3561,10 @@ XML_BODY	__TRUE__	mediumtext	__FALSE__	__CAMPO_VUOTO__	__NULL__	__NULL__
 DATA_INVIO	__TRUE__	date	__FALSE__	__CAMPO_VUOTO__	__NULL__	__NULL__	
 NOME_FILE	__TRUE__	varchar(255)	__FALSE__	__CAMPO_VUOTO__	__NULL__	__NULL__	
 RISULTATO	__TRUE__	varchar(255)	__FALSE__	__CAMPO_VUOTO__	__NULL__	__NULL__	
+STATUS	__FALSE__	enum('A','I','R','F','P','X','C','?','D')	__FALSE__	__CAMPO_VUOTO__	A	__NULL__	
+RICEVUTA_SDI	__TRUE__	text	__FALSE__	__CAMPO_VUOTO__	__NULL__	__NULL__	
+STATO_MYSOND	__FALSE__	int	__FALSE__	__CAMPO_VUOTO__	-1	__NULL__	
+DATA_NOTIFICA	__TRUE__	datetime	__FALSE__	__CAMPO_VUOTO__	__NULL__	__NULL__	
 ##END_CAMPI_TABELLA
 ##PRIMARY_KEY
 CHIAVE	

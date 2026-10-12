@@ -118,6 +118,28 @@ export const FATT_ELE_ESIGIBILITA_IVA = {
                                              Scissione : 'S'
                                          }
 
+export const NOTIFICHE_MY_SOND = {
+                                    '1'  : 'Fattura Rifiutata',
+                                    '6'  : 'Fattura Scartata (controlli non superati)',
+                                    '8'  : 'Fattura Non Consegnata (in cassetto fiscale)',
+                                    '10' : 'Rifiuto PA (solo PA, non B2B)',
+                                    '11' : 'Fattura in Decorrenza Termini',
+                                    '12' : 'Trasmissione avvenuta ma impossibilità di recapito',
+                                    '13' : 'File Vuoto.',
+                                    '14' : 'Servizio non disponibile.',
+                                    '15' : 'Utente non abilitato.',
+                                    '16' : 'Errore generico.',
+                                    '20' : 'Notifica di esito committente',
+                                    '22' : 'Liquidazione IVA Validata.',
+                                    '23' : 'Errore generico.',
+                                    '24' : 'Liquidazione IVA Scartata.',
+                                    '25' : 'Fattura non ancora inviata.',
+                                    '26' : 'Fattura inviata con altri sistemi',
+                                    '27' : 'Fattura firmata, seguirà invio automatico verso SDI',
+                                    '28' : 'Fattura creata ma NON inviata verso SDI',
+                                    '99' : 'Errore: fattura NON inviata (file/canale SDI)'
+                                 }
+
 export const TRASPORTO_A_MEZZO        = {
                                              Mittente     : 'M',
                                              Destinatario : 'D',

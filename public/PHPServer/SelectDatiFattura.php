@@ -39,6 +39,12 @@
           $JSONAnswer->DatiLog                    = array();
           $this->SelectQueryFattura($PDODBase, $Parametri, $JSONAnswer->DatiLog, 'LogFattura');
 
+          $JSONAnswer->UltimaNotificaMySond       = array();
+          $this->SelectQueryFattura($PDODBase, $Parametri, $JSONAnswer->UltimaNotificaMySond, 'UltimaNotificaMySond');
+
+          $JSONAnswer->ListaNotificheMySond       = array();
+          $this->SelectQueryFattura($PDODBase, $Parametri, $JSONAnswer->ListaNotificheMySond, 'ListaNotificheMySond');
+
 
           $JSONAnswer->DatiRateNoteDiCreditoCorrelate = array();
           $this->SelectQueryFattura($PDODBase, $Parametri, $JSONAnswer->DatiRateNoteDiCreditoCorrelate, 'RateNoteDiCreditoCorrelate');

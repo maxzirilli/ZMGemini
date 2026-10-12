@@ -29,6 +29,7 @@
     define('MYSOND_DEBUG', true);
     define('MYSOND_SANDBOX', false);
     define('MYSOND_INVIA_IMMEDIATAMENTE', false);
+    define('MYSOND_POLL_LIMIT', 25);
     
     define('PATH_ACCESSORIE', "/ppp/GeminiVarie/");
     define('PATH_LOG', "/ppp/LogGemini.txt");
