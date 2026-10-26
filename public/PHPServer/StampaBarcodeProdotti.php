@@ -15,14 +15,15 @@
 
       class TStampaBarcodeProdotti
       {
-        public $BAND_PRODOTTI = null;
+        public $BAND_PRODOTTI    = null;
         public $BAND_PAGE_FOOTER = null;
       }
 
       class TDatiProdotto
       {
         public $LB_DESCRIZIONE = null;
-        public $LB_BARCODE = null;
+        public $LB_BARCODE     = null;
+        public $IMG_PRODOTTO   = null;
       }
 
       class TReportProdotti extends TZReport
@@ -62,6 +63,17 @@
 
                 $Dati->LB_DESCRIZIONE = $Row['NOME_PRODOTTO'];
                 $Dati->LB_BARCODE     = TZEAN13::GetEAN13Code($Row['BARCODE']);
+
+                if(!empty($Row['IMG_PRODOTTO']))
+                {
+                  $Immagine = $Row['IMG_PRODOTTO'];
+                  if(preg_match('/^data:image\/(png|jpeg|gif);base64,/i', $Immagine, $Corrispondenze))
+                  {
+                    $Contenuto = base64_decode(substr($Immagine, strlen($Corrispondenze[0])), true);
+                    if($Contenuto !== false)
+                      $Dati->IMG_PRODOTTO = '@' . $Contenuto;
+                  }
+                }
 
                 array_push($Result->BAND_PRODOTTI,$Dati);
               }
