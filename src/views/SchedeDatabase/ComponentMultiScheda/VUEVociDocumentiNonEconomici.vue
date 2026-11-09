@@ -39,7 +39,14 @@
         <tbody>
           <tr v-for="Voce in LsVociVisibili" :key="Voce.Chiave">
             <td style="padding:2px;border:1px solid #ddd; border-bottom:0; background-color:white">
-              <textarea :readonly="CurrentReadOnly" type="text" wrap="off" v-model="Voce.Dati.Descrizione" @input="OnInputDescrizioneVoce(Voce)" class="form-control" :style="{height : Voce.AltezzaTextArea? Voce.AltezzaTextArea : '34px'}" style="resize:none;overflow-y:hidden"></textarea>
+              <VUEInputNomeProdotto v-model="Voce.Dati.Descrizione"
+                                    :disabled="CurrentReadOnly"
+                                    TipoProdotti="DDT"
+                                    :IdCliente="ID_CLIENTE"
+                                    :IdMagazzino="IdMagazzino"
+                                    :AltezzaTextArea="Voce.AltezzaTextArea"
+                                    @onChangeDescrizione="OnInputDescrizioneVoce(Voce)"
+                                    @onSelectProdotto="SelezioneNomeProdotto(Voce, $event)"/>
                <label v-if="Voce.Dati.Descrizione.trim() == '' && !Voce.VoceVuota()" class="ZMFormLabelError">Campo obbligatorio</label>
             </td>
             <td style="padding:2px;border:1px solid #ddd; border-bottom:0; background-color:white">
@@ -89,7 +96,13 @@
         <tbody>
           <tr v-for="Voce in LsVociVisibili" :key="Voce.Chiave">
             <td style="padding:2px;border:1px solid #ddd; border-bottom:0; background-color:white">
-              <textarea :readonly="CurrentReadOnly" type="text" wrap="off" v-model="Voce.Dati.Descrizione" @input="OnInputDescrizioneVoce(Voce)" class="form-control" :style="{height : Voce.AltezzaTextArea? Voce.AltezzaTextArea : '34px'}" style="resize:none;overflow-y:hidden"></textarea>
+              <VUEInputNomeProdotto v-model="Voce.Dati.Descrizione"
+                                    :disabled="CurrentReadOnly"
+                                    TipoProdotti="DDTEntrante"
+                                    :IdCliente="ID_CLIENTE"
+                                    :AltezzaTextArea="Voce.AltezzaTextArea"
+                                    @onChangeDescrizione="OnInputDescrizioneVoce(Voce)"
+                                    @onSelectProdotto="SelezioneNomeProdotto(Voce, $event)"/>
                <label v-if="Voce.Dati.Descrizione.trim() == '' && !Voce.VoceVuota()" class="ZMFormLabelError">Campo obbligatorio</label>
             </td>
             <td style="padding:2px;border:1px solid #ddd; border-bottom:0; background-color:white">
@@ -135,7 +148,13 @@
             <tbody>
               <tr v-for="Voce in LsVociVisibili" :key="Voce.Chiave">
                 <td style="padding:2px;border:1px solid #ddd; border-bottom:0; background-color:white">
-                  <textarea :readonly="CurrentReadOnly" type="text" wrap="off" v-model="Voce.Dati.Descrizione" @input="OnInputDescrizioneVoce(Voce)" class="form-control" :style="{height : Voce.AltezzaTextArea? Voce.AltezzaTextArea : '34px'}" style="resize:none;overflow-y:hidden"></textarea>
+                  <VUEInputNomeProdotto v-model="Voce.Dati.Descrizione"
+                                        :disabled="CurrentReadOnly"
+                                        TipoProdotti="Scarico"
+                                        :IdMagazzino="IdMagazzino"
+                                        :AltezzaTextArea="Voce.AltezzaTextArea"
+                                        @onChangeDescrizione="OnInputDescrizioneVoce(Voce)"
+                                        @onSelectProdotto="SelezioneNomeProdotto(Voce, $event)"/>
                   <label v-if="Voce.Dati.Descrizione.trim() == ''" class="ZMFormLabelError">Campo obbligatorio</label>
                 </td>
                 <td style="padding:2px;border:1px solid #ddd; border-bottom:0; background-color:white">
@@ -346,6 +365,7 @@
 
 <script>
 import VUEInputUdm from '@/components/InputComponents/VUEInputUdm.vue'
+import VUEInputNomeProdotto from '@/components/InputComponents/VUEInputNomeProdotto.vue'
 import { SystemInformation, TIPO_SCONTO, NOME_PROGRAMMA} from '@/SystemInformation.js'
 import { TZDateFunct } from '../../../../../../../../../Librerie/VUE/ZDateFunct.js'
 import VUEModal from '../../../../../../../../../Librerie/VUE/TemplateGestionale/VUEModal.vue'
@@ -583,6 +603,7 @@ export default {
   components : 
    {
     VUEInputUdm,
+    VUEInputNomeProdotto,
     VUEModal
    },
 
@@ -857,6 +878,21 @@ export default {
     OnInputDescrizioneVoce(Voce)
     {
        this.SchedaVociDocumentiNonEconomici.SetAltezzaTextarea(Voce)
+    },
+
+    SelezioneNomeProdotto(Voce, Prodotto)
+    {
+      Voce.Dati.Descrizione = TSchedaGenerica.DisponiFromString(Prodotto.NOME_PRODOTTO)
+      Voce.Dati.IdProdotto = TSchedaGenerica.DisponiFromInteger(Prodotto.CHIAVE)
+      Voce.Dati.Quantita = TSchedaGenerica.DisponiFromInteger(Prodotto.QUANTITA_SUGGERITA)
+      Voce.Dati.Unita_di_Misura = Prodotto.UNITA_DI_MISURA == null ?
+                                  SystemInformation.Configurazioni.Impostazioni.UNITA_DI_MISURA_SUGGERITA : Prodotto.UNITA_DI_MISURA
+      Voce.Dati.Prezzo = Prodotto.PREZZO_DOCUMENTO
+      Voce.Dati.Iva = TSchedaGenerica.DisponiFromInteger(Prodotto.IVA) / 10
+      Voce.Dati.Sconto = Prodotto.SCONTO_DOCUMENTO
+      Voce.Dati.Sconto2 = 0
+      Voce.Dati.Sconto3 = 0
+      this.SchedaVociDocumentiNonEconomici.SetAltezzaTextarea(Voce)
     },
     
 

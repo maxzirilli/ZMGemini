@@ -5,6 +5,19 @@
             Versione software
         </div>
         <div>
+             <div class="col-md-12" style="background-color: #b3dbff;">
+            <hr>
+            <div class="col-md-3">
+                <b style="color:#2596be; font-size: 20px; font:bold; margin-left:10px">Versione 1.010.002</b>
+            </div>
+            <div class="col-md-3">
+              09 Novembre 2026
+            </div>
+            <div class="col-md-6">
+                <strong>Martina Cabras</strong>
+                <p>NEW: Introdotto l’autocompletamento dei prodotti durante la digitazione della descrizione nelle voci dei documenti.</p>
+            </div>
+           </div>
             <div class="col-md-12" style="background-color: #b3dbff;">
             <hr>
             <div class="col-md-3">

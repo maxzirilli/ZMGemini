@@ -237,7 +237,12 @@
                           <input :readonly="IsDiventatoConfermaDOrdine || Disabilitato" v-model="Voce.Dati.CodiceProdotto" type="text" class="form-control" @input="OnEmitVociFattura(Voce)"/>
                         </td> -->
                         <td style="padding:2px;border:1px solid #ddd; border-bottom:0; background-color:white">
-                          <textarea :readonly="IsDiventatoConfermaDOrdine || Disabilitato" type="text" wrap="off" v-model="Voce.Dati.Descrizione" class="form-control" @input="OnInputDescrizioneVoce(Voce)" :style="{height : Voce.AltezzaTextArea? Voce.AltezzaTextArea : '34px'}" style="resize:none;overflow-y:hidden;"></textarea>
+                          <VUEInputNomeProdotto v-model="Voce.Dati.Descrizione"
+                                                :disabled="IsDiventatoConfermaDOrdine || Disabilitato"
+                                                :IdCliente="ID_CLIENTE"
+                                                :AltezzaTextArea="Voce.AltezzaTextArea"
+                                                @onChangeDescrizione="OnInputDescrizioneVoce(Voce)"
+                                                @onSelectProdotto="SelezioneNomeProdotto(Voce, $event)"/>
                           <label v-if="Voce.Dati.Descrizione.trim() == '' && Voce.Dati.Quantita != 0" class="ZMFormLabelError">Campo obbligatorio</label>
                         </td>
                         <td style="padding:2px;border:1px solid #ddd; border-bottom:0; background-color:white">
@@ -351,6 +356,7 @@ import { TZDateFunct } from '../../../../../../../../../Librerie/VUE/ZDateFunct.
 import { TSchedaGenerica } from '../../../../../../../../../Librerie/VUE/ZSchedaGenerica.js'
 import VUEModal from '../../../../../../../../../Librerie/VUE/TemplateGestionale/VUEModal.vue';
 import { TZFatturaElettronica, TZFattElettronicaNaturaPagamenti } from '../../../../../../../../../Librerie/VUE/ZFatturaElettronica.js';
+import VUEInputNomeProdotto from '@/components/InputComponents/VUEInputNomeProdotto.vue';
 
 const DEFAULT_NATURA_PAGAMENTO = TZFattElettronicaNaturaPagamenti.natInversioneContabileSubappaltoEdile
 
@@ -1161,6 +1167,7 @@ export default {
   components : 
    {
       VUEInputUdm,
+      VUEInputNomeProdotto,
       VUEModal,
    },
 
@@ -1643,6 +1650,28 @@ export default {
     {
        this.CurrentSchedaVociPreventivoMultiparametrico.SetAltezzaTextarea(Voce)
        this.$emit('onChange')
+    },
+
+    SelezioneNomeProdotto(Voce, Prodotto)
+    {
+      Voce.Dati.Descrizione = Prodotto.NOME_PRODOTTO
+      Voce.Dati.CodiceProdotto = Prodotto.CODICE || ''
+      Voce.Dati.IdProdotto = Prodotto.CHIAVE
+      Voce.Dati.NaturaPagamento = -1
+      Voce.Dati.Quantita = TSchedaGenerica.DisponiFromInteger(Prodotto.QUANTITA_SUGGERITA)
+      Voce.Dati.UnitaDiMisura = Prodotto.UNITA_DI_MISURA == null ?
+                                SystemInformation.Configurazioni.Impostazioni.UNITA_DI_MISURA_SUGGERITA : Prodotto.UNITA_DI_MISURA
+
+      let IVA = this.CurrentSchedaVociPreventivoMultiparametrico.Dati.IvaSuggerita
+      Voce.Dati.Iva = IVA < TSchedaGenerica.DisponiFromInteger(Prodotto.IVA) / 10 ?
+                      IVA : TSchedaGenerica.DisponiFromInteger(Prodotto.IVA) / 10
+      Voce.Dati.Imponibile = Prodotto.PREZZO_DOCUMENTO
+      Voce.Dati.Sconto = Prodotto.SCONTO_DOCUMENTO
+      Voce.Dati.Sconto2 = 0
+      Voce.Dati.Sconto3 = 0
+      this.CurrentSchedaVociPreventivoMultiparametrico.SetAltezzaTextarea(Voce)
+      this.OnInputImponibile(Voce)
+      this.$emit('onChange')
     },
 
     OnEmitVociFattura()
